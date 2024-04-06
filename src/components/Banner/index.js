@@ -1,7 +1,8 @@
 import { Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { BannerContainer, BannerContent, BannerDescription, BannerImage, BannerShopButton, BannerTitle } from '../../styles/banner';
-
+import { Image } from 'antd';
+import Banner1 from './Banner.jpg'
 
 
 export default function Banner(){
@@ -10,7 +11,14 @@ export default function Banner(){
     const matches = useMediaQuery(theme.breakpoints.down('md'));
     return (
         <BannerContainer>
-            <BannerImage src=""/>
+            {/* <BannerImage src=""/> */}
+            <Image
+          alt=""
+          width={400}
+          height={400}
+          src={Banner1}
+          style={{ marginRight: '0px' }}
+        />
             <BannerContent>
                 <Typography variant='h6'>Huge Collection</Typography>
                 <BannerTitle variant='h2' >Tools </BannerTitle>
@@ -20,8 +28,9 @@ export default function Banner(){
                 Our companies motto is to find and categories the available tool makers in there expertise to get them business as per there expertise from all over the locations. 
                 Its easy to connect and fast.
                 </BannerDescription>
+                <BannerShopButton color='primary'>Shop Now</BannerShopButton>
             </BannerContent>
-            <BannerShopButton color='primary'>Shop Now</BannerShopButton>
+           
         
         </BannerContainer>
        

@@ -13,7 +13,7 @@ export default function Appbar() {
         ): (
         <AppbarDesktop matches={matches} />
       )
-      }; 
+      }
     </>
   );
 }

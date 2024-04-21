@@ -1,0 +1,22 @@
+.input-style{
+    border-radius: 4px;
+    padding-top:12px; 
+    padding-bottom:12px; 
+    border-color:rgb(51, 54, 57);
+    width:18rem;
+  }
+
+  .button-style{
+    margin-bottom:12px;
+    margin-top:12px;
+    height:40px;
+    width:20rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  
+    &:hover {
+      color: rgb(29, 155, 240); /* Change 'your_desired_hover_color' to the desired hover color */
+      text-decoration: underline;
+    }
+  }

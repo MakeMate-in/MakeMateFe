@@ -18,6 +18,8 @@ export enum API_METHODS {
 
 export enum OPEN_ROUTES {
     PARENT_ROUTE = '/', 
+    LOGIN = '/login',
+    SIGNUP = '/signup',
 };
 
 export enum MESSAGES {

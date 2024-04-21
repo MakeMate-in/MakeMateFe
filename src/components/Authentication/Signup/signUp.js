@@ -52,6 +52,7 @@ const SignUp = () => {
               className=" input-style input  input-extras"
               placeholder="Enter Name"
               onChange={handleChange}
+              variant="filled"
               id={"name"}
               autoComplete='off'
               value={user["name"]}
@@ -61,6 +62,7 @@ const SignUp = () => {
               placeholder="Enter Email"
               onChange={handleChange}
               id={"email"}
+              variant="filled"
               autoComplete='off'
               value={user["email"]}
             />
@@ -77,6 +79,7 @@ const SignUp = () => {
               className=" input-style input  input-extras"
               placeholder="Enter Company Name"
               onChange={handleChange}
+              variant="filled"
               id={"company_name"}
               autoComplete='off'
               value={user["company_name"]}
@@ -85,6 +88,7 @@ const SignUp = () => {
               className=" input-style input  input-extras"
               placeholder="Enter GST Number"
               onChange={handleChange}
+              variant="filled"
               id={"gst_no"}
               autoComplete='off'
               value={user["gst_no"]}
@@ -103,6 +107,7 @@ const SignUp = () => {
               placeholder="Password"
               onChange={handleChange}
               id={"password"}
+              variant="filled"
               value={user["password"]}
               autoComplete='off'
             />

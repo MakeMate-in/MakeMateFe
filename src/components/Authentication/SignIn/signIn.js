@@ -31,7 +31,7 @@ const SignIn = () => {
   return (
     <div style={{ background: '' }}>
       <Card
-        title="Create your Account" >
+        title="Log In" >
         <Form
           ref={formRef}
           onFinish={handleSubmit}
@@ -41,6 +41,7 @@ const SignIn = () => {
               className=" input-style input  input-extras"
               placeholder="Enter Email"
               onChange={handleChange}
+              variant="filled"
               id={"email"}
               autoComplete='off'
               value={user["email"]}
@@ -58,6 +59,7 @@ const SignIn = () => {
               className="input black input-style"
               placeholder="Password"
               onChange={handleChange}
+              variant="filled"
               id={"password"}
               value={user["password"]}
               autoComplete='off'
@@ -73,7 +75,7 @@ const SignIn = () => {
               }}
             // disabled={user["name"].length === 0 || user["uniqueField"].length === 0 || user["password"].length === 0 || user["handle"].length === 0 || !checked}
             >
-              <span style={{ color: 'black', fontWeight: 'bolder' }}>Sign Up</span>
+              <span style={{ color: 'black', fontWeight: 'bolder' }}>Sign In</span>
             </Button>
           </Flex>
         </Form>

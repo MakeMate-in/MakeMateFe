@@ -5,11 +5,15 @@ import {
   Form,
   Flex,
   Button,
-  Checkbox
+  Checkbox,
+  Image,
+  Row,
+  Col
 } from 'antd'
 import "./SignUp.css"
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import gojo from './../../images/3.jpg'
 
 const SignUp = () => {
   
@@ -41,31 +45,41 @@ const SignUp = () => {
 
   return (
     <div style={{ background: '' }}>
-      <Card
-        title="Create your Account" >
+          <Flex>
+          <Image src={gojo} style={{height:'46rem', width:'30rem'}}/>
         <Form
           ref={formRef}
           onFinish={handleSubmit}
+          style={{transform:'translate(0%,15%)'}}
         >
-          <Flex vertical={true} gap={"middle"}>
+          <h1 style={{transform:'translate(52%,5%)'}}>Create your Account</h1>
+          <Flex vertical={true} gap={"middle"} style={{transform:'translate(25%,10%)'}}>
+            <Row>
+              <Col span={12}>
             <Input
               className=" input-style input  input-extras"
-              placeholder="Enter Name"
+              placeholder="Your Name"
               onChange={handleChange}
               variant="filled"
               id={"name"}
               autoComplete='off'
               value={user["name"]}
             />
+            </Col>
+            <Col  span={12}>
             <Input
               className=" input-style input  input-extras"
-              placeholder="Enter Email"
+              placeholder="Your Email"
               onChange={handleChange}
               id={"email"}
               variant="filled"
               autoComplete='off'
               value={user["email"]}
             />
+            </Col>
+            </Row>
+            <Row>
+              <Col  span={12}>
             <PhoneInput
               country='in'
               regions={'asia'}
@@ -75,18 +89,25 @@ const SignUp = () => {
                 autoFocus: true
               }}
             />
+            </Col>
+            <Col  span={12}>
             <Input
               className=" input-style input  input-extras"
-              placeholder="Enter Company Name"
+              placeholder="Your Company Name"
               onChange={handleChange}
               variant="filled"
               id={"company_name"}
               autoComplete='off'
               value={user["company_name"]}
             />
+       </Col>
+       </Row>
+       <Row>
+        <Col  span={12}>
+        <Flex vertical={true}>
             <Input
               className=" input-style input  input-extras"
-              placeholder="Enter GST Number"
+              placeholder="GST Number"
               onChange={handleChange}
               variant="filled"
               id={"gst_no"}
@@ -102,6 +123,9 @@ const SignUp = () => {
             >
               I do not have a GST Number
             </Checkbox>
+            </Flex>
+            </Col>
+            <Col  span={12}>
             <Input.Password
               className="input black input-style"
               placeholder="Password"
@@ -111,6 +135,8 @@ const SignUp = () => {
               value={user["password"]}
               autoComplete='off'
             />
+            </Col>
+            </Row>
             <Button
 
               type="primary"
@@ -126,7 +152,7 @@ const SignUp = () => {
             </Button>
           </Flex>
         </Form>
-      </Card>
+        </Flex>
     </div>
   )
 }

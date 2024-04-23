@@ -3,7 +3,7 @@ import { Box, Container,Typography } from '@mui/material';
 import { useEffect } from 'react';
 import theme from './styles/theme';
 import Appbar from './components/appbar';
-import Banner from './components/Banner';
+import Banner from './components/footer/Banner';
 import Promotions from './components/promotions';
 import Products from './components/products';
 import Footer from './components/footer';

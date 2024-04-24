@@ -50,36 +50,75 @@ const SignUp = () => {
         <Form
           ref={formRef}
           onFinish={handleSubmit}
-          style={{transform:'translate(0%,15%)'}}
+          style={{transform:'translate(0%,5%)'}}
         >
           <h1 style={{transform:'translate(52%,5%)'}}>Create your Account</h1>
-          <Flex vertical={true} gap={"middle"} style={{transform:'translate(25%,10%)'}}>
+          <Flex vertical={true} gap={"large"} style={{transform:'translate(25%,5%)'}}>
             <Row>
               <Col span={12}>
+            <Row>
+            <span>First Name <span style={{color:'red'}}>*</span></span>
+            </Row>
+            <Row>
+            <Input
+              label="First Name"
+              className=" input-style input  input-extras"
+              placeholder="First Name"
+              onChange={handleChange}
+              variant="filled"
+              id={"name"}
+              autoComplete='off'
+              value={user["name"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input valid email!",
+                },
+              ]}
+            />
+         
+         </Row>
+            </Col>
+            <Col span={12}>
+           <Row>
+            <span>Last Name <span style={{color:'red'}}>*</span></span>
+            </Row>
+            <Row>
             <Input
               className=" input-style input  input-extras"
-              placeholder="Your Name"
+              placeholder="Last Name"
               onChange={handleChange}
               variant="filled"
               id={"name"}
               autoComplete='off'
               value={user["name"]}
             />
+            </Row>
             </Col>
+            </Row>
+            <Row>
             <Col  span={12}>
+              <Row>
+            <span>Email <span style={{color:'red'}}>*</span></span>
+            </Row>
+            <Row>
             <Input
               className=" input-style input  input-extras"
-              placeholder="Your Email"
+              placeholder="Email"
               onChange={handleChange}
               id={"email"}
               variant="filled"
               autoComplete='off'
               value={user["email"]}
             />
+            </Row>
             </Col>
+              <Col  span={12}>
+                <Row>
+              <span>Mobile No. <span style={{color:'red'}}>*</span></span>
+            
             </Row>
             <Row>
-              <Col  span={12}>
             <PhoneInput
               country='in'
               regions={'asia'}
@@ -89,22 +128,31 @@ const SignUp = () => {
                 autoFocus: true
               }}
             />
+            </Row>
             </Col>
-            <Col  span={12}>
+       </Row>
+       <Row>
+       <Col  span={12}>
+        <Row>
+       <span>Company Name <span style={{color:'red'}}>*</span></span>
+       </Row>
+            <Row>
             <Input
               className=" input-style input  input-extras"
-              placeholder="Your Company Name"
+              placeholder="Company Name"
               onChange={handleChange}
               variant="filled"
               id={"company_name"}
               autoComplete='off'
               value={user["company_name"]}
             />
+            </Row>
        </Col>
-       </Row>
-       <Row>
         <Col  span={12}>
-        <Flex vertical={true}>
+      <Row>
+        <span>GST Number <span style={{color:'red'}}>*</span></span>
+        </Row>
+            <Row>
             <Input
               className=" input-style input  input-extras"
               placeholder="GST Number"
@@ -114,7 +162,8 @@ const SignUp = () => {
               autoComplete='off'
               value={user["gst_no"]}
             />
-
+</Row>
+<Row>
             <Checkbox
               checked={checked}
               disabled={disabled}
@@ -123,9 +172,16 @@ const SignUp = () => {
             >
               I do not have a GST Number
             </Checkbox>
-            </Flex>
+            </Row>
             </Col>
+            </Row>
+            <Row>
             <Col  span={12}>
+              <Row>
+            <span>Password <span style={{color:'red'}}>*</span></span>  
+            </Row>
+            <Row>
+
             <Input.Password
               className="input black input-style"
               placeholder="Password"
@@ -135,6 +191,23 @@ const SignUp = () => {
               value={user["password"]}
               autoComplete='off'
             />
+          </Row>
+            </Col>
+            <Col  span={12}>
+  <Row>
+            <span>Confirm Password <span style={{color:'red'}}>*</span></span>
+            </Row>
+            <Row>
+            <Input.Password
+              className="input black input-style"
+              placeholder="Confirm Password"
+              onChange={handleChange}
+              id={"password"}
+              variant="filled"
+              value={user["password"]}
+              autoComplete='off'
+            />
+            </Row>
             </Col>
             </Row>
             <Button
@@ -148,7 +221,7 @@ const SignUp = () => {
               }}
             // disabled={user["name"].length === 0 || user["uniqueField"].length === 0 || user["password"].length === 0 || user["handle"].length === 0 || !checked}
             >
-              <span style={{ color: 'black', fontWeight: 'bolder' }}>Sign Up</span>
+               <span style={{ color: 'black', fontWeight: 'bolder' }}>Sign Up</span>
             </Button>
           </Flex>
         </Form>

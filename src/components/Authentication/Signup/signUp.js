@@ -24,14 +24,15 @@ import { checkUser, getOtp } from '../../../apis/authentication.'
 
 const SignUp = () => {
   const navigate = useNavigate();
-  
+
   const [user, setUser] = useState({
-    "name": "",
+    "first_name": "",
+    "last_name": "",
     "email": "",
-    "phone_no": "",
+    "mobile_no": "",
     "password": "",
     "company_name": "",
-    "gst_no": ""
+    "GST_no": ""
   });
   const [disabled, setDisabled] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -50,32 +51,36 @@ const SignUp = () => {
     setUser({ ...user, [event.target.id]: event.target.value })
   }
 
-  
-  const sendOTP = async (isMail, uniqueField) => {
-    try{
-    let res = await getOtp(isMail, uniqueField)
+  const handlePhone = (value) => {
+    setUser({ ...user, ['mobile_no']: value })
+  }
 
-    if (isMail) {
-      setUser({ ...user, ["isMail"]: true })
+
+  const sendOTP = async (isMail, uniqueField) => {
+    try {
+      let res = await getOtp(isMail, uniqueField)
+
+      if (isMail) {
+        setUser({ ...user, ["isMail"]: true })
+      }
+      if (res.Status === MESSAGES.SUCCESS) {
+        setemailOTPresp(res)
+        setstep1(false)
+        setstep2(true)
+      }
+      else {
+        // Give a toast OTP service is not available  
+      }
     }
-    if (res.Status === MESSAGES.SUCCESS) { 
-      setemailOTPresp(res)
-      setstep1(false)
-      setstep2(true)
+    catch (err) {
+      throw err
     }
-    else {
-     // Give a toast OTP service is not available  
-    }
-  }
-  catch(err){
-    throw err
-  }
   }
 
   const formRef = React.createRef();
 
   const handleSubmit = async () => {
-    
+
     if (validateForm(user, setUser, setErrors)) {
       let errors = {}
       // Form is valid, submit the data or perform further actions
@@ -116,170 +121,162 @@ const SignUp = () => {
 
   return (
     <div style={{ background: '' }}>
-          <Flex>
-          <Image src={gojo} style={{height:'46rem', width:'30rem'}}/>
+      <Flex>
+        <Image src={gojo} style={{ height: '46rem', width: '30rem' }} />
         <Form
           ref={formRef}
           onFinish={handleSubmit}
-          style={{transform:'translate(0%,5%)'}}
+          style={{ transform: 'translate(0%,5%)' }}
         >
-          <h1 style={{transform:'translate(52%,5%)'}}>Create your Account</h1>
-          <Flex vertical={true} gap={"large"} style={{transform:'translate(25%,5%)'}}>
+          <h1 style={{ transform: 'translate(52%,5%)' }}>Create your Account</h1>
+          <Flex vertical={true} gap={"large"} style={{ transform: 'translate(25%,5%)' }}>
             <Row>
               <Col span={12}>
-            <Row>
-            <span>First Name <span style={{color:'red'}}>*</span></span>
-            </Row>
-            <Row>
-            <Input
-              label="First Name"
-              className=" input-style input  input-extras"
-              placeholder="First Name"
-              onChange={handleChange}
-              variant="filled"
-              id={"name"}
-              autoComplete='off'
-              value={user["name"]}
-              rules={[
-                {
-                  required: true,
-                  message: "Please input valid email!",
-                },
-              ]}
-            />
-         
-         </Row>
-            </Col>
-            <Col span={12}>
-           <Row>
-            <span>Last Name <span style={{color:'red'}}>*</span></span>
-            </Row>
-            <Row>
-            <Input
-              className=" input-style input  input-extras"
-              placeholder="Last Name"
-              onChange={handleChange}
-              variant="filled"
-              id={"name"}
-              autoComplete='off'
-              value={user["name"]}
-            />
-            </Row>
-            </Col>
-            </Row>
-            <Row>
-            <Col  span={12}>
-              <Row>
-            <span>Email <span style={{color:'red'}}>*</span></span>
-            </Row>
-            <Row>
-            <Input
-              className=" input-style input  input-extras"
-              placeholder="Email"
-              onChange={handleChange}
-              id={"email"}
-              variant="filled"
-              autoComplete='off'
-              value={user["email"]}
-            />
-            </Row>
-            </Col>
-              <Col  span={12}>
                 <Row>
-              <span>Mobile No. <span style={{color:'red'}}>*</span></span>
-            
-            </Row>
-            <Row>
-            <PhoneInput
-              country='in'
-              regions={'asia'}
-              inputProps={{
-                name: 'phone',
-                required: true,
-                autoFocus: true
-              }}
-            />
-            </Row>
-            </Col>
-       </Row>
-       <Row>
-       <Col  span={12}>
-        <Row>
-       <span>Company Name <span style={{color:'red'}}>*</span></span>
-       </Row>
-            <Row>
-            <Input
-              className=" input-style input  input-extras"
-              placeholder="Company Name"
-              onChange={handleChange}
-              variant="filled"
-              id={"company_name"}
-              autoComplete='off'
-              value={user["company_name"]}
-            />
-            </Row>
-       </Col>
-        <Col  span={12}>
-      <Row>
-        <span>GST Number <span style={{color:'red'}}>*</span></span>
-        </Row>
-            <Row>
-            <Input
-              className=" input-style input  input-extras"
-              placeholder="GST Number"
-              onChange={handleChange}
-              variant="filled"
-              id={"gst_no"}
-              autoComplete='off'
-              value={user["gst_no"]}
-            />
-</Row>
-<Row>
-            <Checkbox
-              checked={checked}
-              disabled={disabled}
-              onChange={onChange}
-              style={{ marginRight: '5px' }}
-            >
-              I do not have a GST Number
-            </Checkbox>
-            </Row>
-            </Col>
-            </Row>
-            <Row>
-            <Col  span={12}>
-              <Row>
-            <span>Password <span style={{color:'red'}}>*</span></span>  
-            </Row>
-            <Row>
+                  <span>First Name <span style={{ color: 'red' }}>*</span></span>
+                </Row>
+                <Row>
+                  <Input
+                    label="First Name"
+                    className=" input-style input  input-extras"
+                    placeholder="First Name"
+                    onChange={handleChange}
+                    variant="filled"
+                    id={"first_name"}
+                    autoComplete='off'
+                    value={user["first_name"]}
+                  />
 
-            <Input.Password
-              className="input black input-style"
-              placeholder="Password"
-              onChange={handleChange}
-              id={"password"}
-              variant="filled"
-              value={user["password"]}
-              autoComplete='off'
-            />
-          </Row>
-            </Col>
-            <Col  span={12}>
-  <Row>
-            <span>Confirm Password <span style={{color:'red'}}>*</span></span>
+                </Row>
+              </Col>
+              <Col span={12}>
+                <Row>
+                  <span>Last Name <span style={{ color: 'red' }}>*</span></span>
+                </Row>
+                <Row>
+                  <Input
+                    className=" input-style input  input-extras"
+                    placeholder="Last Name"
+                    onChange={handleChange}
+                    variant="filled"
+                    id={"last_name"}
+                    autoComplete='off'
+                    value={user["last_name"]}
+                  />
+                </Row>
+              </Col>
             </Row>
             <Row>
-            <Input.Password
-              className="input black input-style"
-              placeholder="Confirm Password"
-              onChange={handleChange}
-              id={"password"}
-              variant="filled"
-              value={user["password"]}
-              autoComplete='off'
-            />
+              <Col span={12}>
+                <Row>
+                  <span>Email <span style={{ color: 'red' }}>*</span></span>
+                </Row>
+                <Row>
+                  <Input
+                    className=" input-style input  input-extras"
+                    placeholder="Email"
+                    onChange={handleChange}
+                    id={"email"}
+                    variant="filled"
+                    autoComplete='off'
+                    value={user["email"]}
+                  />
+                </Row>
+              </Col>
+              <Col span={12}>
+                <Row>
+                  <span>Mobile No. <span style={{ color: 'red' }}>*</span></span>
+
+                </Row>
+                <Row>
+                  <PhoneInput
+                    country='in'
+                    regions={'asia'}
+                    id="mobile_no"
+                    onChange={handlePhone}
+                  />
+                </Row>
+              </Col>
             </Row>
-            </Col>
+            <Row>
+              <Col span={12}>
+                <Row>
+                  <span>Company Name <span style={{ color: 'red' }}>*</span></span>
+                </Row>
+                <Row>
+                  <Input
+                    className=" input-style input  input-extras"
+                    placeholder="Company Name"
+                    onChange={handleChange}
+                    variant="filled"
+                    id={"company_name"}
+                    autoComplete='off'
+                    value={user["company_name"]}
+                  />
+                </Row>
+              </Col>
+              <Col span={12}>
+                <Row>
+                  <span>GST Number <span style={{ color: 'red' }}>*</span></span>
+                </Row>
+                <Row>
+                  <Input
+                    className=" input-style input  input-extras"
+                    placeholder="GST Number"
+                    onChange={handleChange}
+                    variant="filled"
+                    id={"gst_no"}
+                    autoComplete='off'
+                    value={user["GST_no"]}
+                    disabled={checked}
+                  />
+                </Row>
+                <Row>
+                  <Checkbox
+                    checked={checked}
+                    disabled={disabled}
+                    onChange={onChange}
+                    style={{ marginRight: '5px' }}
+                  >
+                    I do not have a GST Number
+                  </Checkbox>
+                </Row>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={12}>
+                <Row>
+                  <span>Password <span style={{ color: 'red' }}>*</span></span>
+                </Row>
+                <Row>
+
+                  <Input.Password
+                    className="input black input-style"
+                    placeholder="Password"
+                    onChange={handleChange}
+                    id={"password"}
+                    variant="filled"
+                    value={user["password"]}
+                    autoComplete='off'
+                  />
+                </Row>
+              </Col>
+              <Col span={12}>
+                <Row>
+                  <span>Confirm Password <span style={{ color: 'red' }}>*</span></span>
+                </Row>
+                <Row>
+                  <Input.Password
+                    className="input black input-style"
+                    placeholder="Confirm Password"
+                    onChange={handleChange}
+                    id={"password"}
+                    variant="filled"
+                    value={user["password"]}
+                    autoComplete='off'
+                  />
+                </Row>
+              </Col>
             </Row>
             <Button
 
@@ -292,18 +289,18 @@ const SignUp = () => {
               }}
             // disabled={user["name"].length === 0 || user["uniqueField"].length === 0 || user["password"].length === 0 || user["handle"].length === 0 || !checked}
             >
-               <span style={{ color: 'black', fontWeight: 'bolder' }}>Sign Up</span>
+              <span style={{ color: 'black', fontWeight: 'bolder' }}>Sign Up</span>
             </Button>
             <Flex>
-            <p style={{margin:'0px'}}>Already have an account ?   </p>
-          <span onClick={() => { navigate(OPEN_ROUTES.LOGIN) }}  style={{ color: 'rgb(29, 155, 240)' }}>
-             Log In
-          </span>
-          </Flex>
+              <p style={{ margin: '0px' }}>Already have an account ?   </p>
+              <span onClick={() => { navigate(OPEN_ROUTES.LOGIN) }} style={{ color: 'rgb(29, 155, 240)' }}>
+                Log In
+              </span>
+            </Flex>
           </Flex>
         </Form>
-       
-        </Flex>
+
+      </Flex>
     </div>
   )
 }

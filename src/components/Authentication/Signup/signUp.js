@@ -14,8 +14,16 @@ import "./SignUp.css"
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import gojo from './../../images/3.jpg'
+import { OPEN_ROUTES } from '../../../utils/constants'
+import { useNavigate } from 'react-router-dom';
+import { validateForm } from '../../../utils/commons/validators'
+import { EMAIL, MESSAGES } from '../../../utils/constants'
+import { checkUser, getOtp } from '../../../apis/authentication.'
+
+
 
 const SignUp = () => {
+  const navigate = useNavigate();
   
   const [user, setUser] = useState({
     "name": "",
@@ -27,19 +35,82 @@ const SignUp = () => {
   });
   const [disabled, setDisabled] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [otpResponse, setotpResponse] = useState("")
+  const [step1, setstep1] = useState(true)
+  const [step2, setstep2] = useState(false)
+  const [emailOTPresp, setemailOTPresp] = useState({})
 
 
-  const onChange = () => {
-
+  const onChange = (e) => {
+    setChecked(e.target.checked);
   }
 
-  const handleChange = () => {
+  const handleChange = (event) => {
+    setUser({ ...user, [event.target.id]: event.target.value })
+  }
 
+  
+  const sendOTP = async (isMail, uniqueField) => {
+    try{
+    let res = await getOtp(isMail, uniqueField)
+
+    if (isMail) {
+      setUser({ ...user, ["isMail"]: true })
+    }
+    if (res.Status === MESSAGES.SUCCESS) { 
+      setemailOTPresp(res)
+      setstep1(false)
+      setstep2(true)
+    }
+    else {
+     // Give a toast OTP service is not available  
+    }
+  }
+  catch(err){
+    throw err
+  }
   }
 
   const formRef = React.createRef();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    
+    if (validateForm(user, setUser, setErrors)) {
+      let errors = {}
+      // Form is valid, submit the data or perform further actions
+      let isMail = EMAIL.test(user["uniqueField"])
+      let uniqueField = user["uniqueField"]
+      let userName = user['handle']
+      let id = 1
+      try {
+        let isUser = await checkUser(isMail, uniqueField, userName, id)
+        if (isUser.Status == 400) {
+          if (isUser.msg.uniqueField != undefined) {
+            errors.uniqueField = isUser.msg.uniqueField
+          }
+          if (isUser.msg.userName != undefined) {
+            errors.userName = isUser.msg.userName
+          }
+          setErrors(errors);
+        }
+        else {
+          try {
+            sendOTP(isMail, uniqueField)
+          }
+          catch (err) {
+            throw err
+          }
+        }
+
+      }
+      catch (err) {
+        throw err
+      }
+    } else {
+      // Form is invalid, handle errors or display error messages
+      console.log('Form validation failed');
+    }
 
   }
 
@@ -223,8 +294,15 @@ const SignUp = () => {
             >
                <span style={{ color: 'black', fontWeight: 'bolder' }}>Sign Up</span>
             </Button>
+            <Flex>
+            <p style={{margin:'0px'}}>Already have an account ?   </p>
+          <span onClick={() => { navigate(OPEN_ROUTES.LOGIN) }}  style={{ color: 'rgb(29, 155, 240)' }}>
+             Log In
+          </span>
+          </Flex>
           </Flex>
         </Form>
+       
         </Flex>
     </div>
   )

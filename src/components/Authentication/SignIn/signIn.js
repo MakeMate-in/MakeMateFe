@@ -5,18 +5,32 @@ import {
   Form,
   Flex,
   Button,
+  Checkbox,
+  Image,
+  Row,
+  Col
 } from 'antd'
-import "./../Signup/SignUp.css"
+import "../Signup/SignUp.css"
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import gojo from './../../images/3.jpg'
 
 const SignIn = () => {
   
   const [user, setUser] = useState({
+    
     "email": "",
     "phone_no": "",
     "password": "",
+    "isEmail": false
   });
+  const [disabled, setDisabled] = useState(false);
+  const [checked, setChecked] = useState(false);
+
+
+  const onChange = () => {
+
+  }
 
   const handleChange = () => {
 
@@ -30,22 +44,39 @@ const SignIn = () => {
 
   return (
     <div style={{ background: '' }}>
-      <Card
-        title="Log In" >
+          <Flex>
+          <Image src={gojo} style={{height:'46rem', width:'30rem'}}/>
         <Form
           ref={formRef}
           onFinish={handleSubmit}
+          style={{transform:'translate(0%,5%)'}}
         >
-          <Flex vertical={true} gap={"middle"}>
+          <h1 style={{transform:'translate(64%,5%)'}}>Log In</h1>
+          <Flex vertical={true} gap={"large"} style={{transform:'translate(25%,5%)'}}>
+   
+          { user["isEmail"]?
+           ( <Col  span={12}>
+              <Row>
+            <span>Email <span style={{color:'red'}}>*</span></span>
+            </Row>
+            <Row>
             <Input
               className=" input-style input  input-extras"
-              placeholder="Enter Email"
+              placeholder="Email"
               onChange={handleChange}
-              variant="filled"
               id={"email"}
+              variant="filled"
               autoComplete='off'
               value={user["email"]}
             />
+            </Row>
+            </Col>):
+              (<Col  span={12}>
+                <Row>
+              <span>Mobile No. <span style={{color:'red'}}>*</span></span>
+            
+            </Row>
+            <Row>
             <PhoneInput
               country='in'
               regions={'asia'}
@@ -55,15 +86,28 @@ const SignIn = () => {
                 autoFocus: true
               }}
             />
+            </Row>
+            </Col>)
+            }
+             <Col  span={12}>
+              <Row>
+            <span>Password <span style={{color:'red'}}>*</span></span>  
+            </Row>
+            <Row>
+
             <Input.Password
               className="input black input-style"
               placeholder="Password"
               onChange={handleChange}
-              variant="filled"
               id={"password"}
+              variant="filled"
               value={user["password"]}
               autoComplete='off'
             />
+          </Row>
+            </Col>
+
+           
             <Button
 
               type="primary"
@@ -75,11 +119,11 @@ const SignIn = () => {
               }}
             // disabled={user["name"].length === 0 || user["uniqueField"].length === 0 || user["password"].length === 0 || user["handle"].length === 0 || !checked}
             >
-              <span style={{ color: 'black', fontWeight: 'bolder' }}>Sign In</span>
+               <span style={{ color: 'black', fontWeight: 'bolder' }}>Sign Up</span>
             </Button>
           </Flex>
         </Form>
-      </Card>
+        </Flex>
     </div>
   )
 }

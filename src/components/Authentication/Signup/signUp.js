@@ -280,7 +280,8 @@ const SignUp = () => {
           </Flex>
         </Form>
         {
-          otpResponse.Status == MESSAGES.SUCCESS && <OtpModal otpRes={otpResponse} user={user} />
+          // otpResponse.Status == MESSAGES.SUCCESS &&
+           <OtpModal otpRes={otpResponse} user={user} />
         }
       </Flex>
     </div>

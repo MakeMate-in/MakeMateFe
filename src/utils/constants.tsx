@@ -20,6 +20,7 @@ export enum OPEN_ROUTES {
     PARENT_ROUTE = '/', 
     LOGIN = '/login',
     SIGNUP = '/signup',
+    FORGOTPASSWORD = '/forgotpassword',
 };
 
 export enum MESSAGES {

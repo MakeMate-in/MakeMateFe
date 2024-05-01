@@ -1,18 +1,14 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import {
     Modal,
     ConfigProvider,
     theme,
-    Flex,
     Button,
     Row,
     Col,
     Input
 } from 'antd'
-import { useNavigate } from 'react-router-dom'
 import OtpInput from 'react-otp-input';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import MessageIcon from '@mui/icons-material/Message';
 import EmailIcon from '@mui/icons-material/Email';
 
 
@@ -21,6 +17,8 @@ const OtpModal = (props) => {
     const [modal1, setmodal1] = useState(true)
     const [otp, setOtp] = useState('')
 
+
+  
 
     return (
         <div>
@@ -76,7 +74,7 @@ const OtpModal = (props) => {
                         <Row>
                             <Button  
                              className="button-submit otp-button-style"
-                             
+                             onClick={() => {props.submitOTP(otp)}}
                              >
                                 Verify
                             </Button>

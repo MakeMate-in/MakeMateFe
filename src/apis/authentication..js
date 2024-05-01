@@ -20,7 +20,7 @@ export const getOtp = async (mobile_no) => {
     }
 }
 
-export const verifyOtp = async (isMail, data) => {
+export const verifyOtp = async (data) => {
     try {
         const url =  AUTHEN_URLS.VERIFY_MOBILE_OTP
         const response = await requestHandler.get(baseAPIUrl+url, data);

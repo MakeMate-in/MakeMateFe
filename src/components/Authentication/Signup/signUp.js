@@ -19,6 +19,8 @@ import { useNavigate } from 'react-router-dom';
 import { validateForm } from '../../../utils/commons/validators'
 import { EMAIL, MESSAGES } from '../../../utils/constants'
 import { checkUser, getOtp } from '../../../apis/authentication.'
+import { sendOTP } from '../../../apis/commonFunctions'
+import OtpModal from '../OTP/otpModal'
 
 
 
@@ -34,14 +36,11 @@ const SignUp = () => {
     "company_name": "",
     "GST_no": ""
   });
+  const [checkPassword, setCheckPassword] = useState("")
   const [disabled, setDisabled] = useState(false);
   const [checked, setChecked] = useState(false);
   const [errors, setErrors] = useState({});
-  const [otpResponse, setotpResponse] = useState("")
-  const [step1, setstep1] = useState(true)
-  const [step2, setstep2] = useState(false)
-  const [emailOTPresp, setemailOTPresp] = useState({})
-
+  const [otpResponse, setotpResponse] = useState({})
 
   const onChange = (e) => {
     setChecked(e.target.checked);
@@ -56,52 +55,33 @@ const SignUp = () => {
   }
 
 
-  const sendOTP = async (isMail, uniqueField) => {
-    try {
-      let res = await getOtp(isMail, uniqueField)
-
-      if (isMail) {
-        setUser({ ...user, ["isMail"]: true })
-      }
-      if (res.Status === MESSAGES.SUCCESS) {
-        setemailOTPresp(res)
-        setstep1(false)
-        setstep2(true)
-      }
-      else {
-        // Give a toast OTP service is not available  
-      }
-    }
-    catch (err) {
-      throw err
-    }
-  }
-
   const formRef = React.createRef();
 
   const handleSubmit = async () => {
-
+    console.log(user)
     if (validateForm(user, setUser, setErrors)) {
       let errors = {}
       // Form is valid, submit the data or perform further actions
-      let isMail = EMAIL.test(user["uniqueField"])
-      let uniqueField = user["uniqueField"]
-      let userName = user['handle']
-      let id = 1
+
       try {
-        let isUser = await checkUser(isMail, uniqueField, userName, id)
+        let isUser = await checkUser(user, 1)
         if (isUser.Status == 400) {
-          if (isUser.msg.uniqueField != undefined) {
-            errors.uniqueField = isUser.msg.uniqueField
+          if (isUser.msg.email != undefined) {
+            errors.email = isUser.msg.email
           }
-          if (isUser.msg.userName != undefined) {
-            errors.userName = isUser.msg.userName
+          if (isUser.msg.mobile_no != undefined) {
+            errors.mobile_no = isUser.msg.mobile_no
+          }
+          if (isUser.msg.GST_no != undefined) {
+            errors.GST_no = isUser.msg.GST_no
           }
           setErrors(errors);
         }
         else {
           try {
-            sendOTP(isMail, uniqueField)
+            const otpRes = sendOTP(user["mobile_no"])
+            console.log(otpRes)
+            setotpResponse(otpRes)
           }
           catch (err) {
             throw err
@@ -269,10 +249,10 @@ const SignUp = () => {
                   <Input.Password
                     className="input black input-style"
                     placeholder="Confirm Password"
-                    onChange={handleChange}
+                    onChange={(e) => { setCheckPassword(e.target.value) }}
                     id={"password"}
                     variant="filled"
-                    value={user["password"]}
+                    value={checkPassword}
                     autoComplete='off'
                   />
                 </Row>
@@ -299,7 +279,9 @@ const SignUp = () => {
             </Flex>
           </Flex>
         </Form>
-
+        {
+          otpResponse.Status == MESSAGES.SUCCESS && <OtpModal otpRes={otpResponse} user={user} />
+        }
       </Flex>
     </div>
   )

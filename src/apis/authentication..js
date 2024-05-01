@@ -1,27 +1,18 @@
 import { requestHandler } from "./requestHandler";
-import  AUTHEN_URLS  from './../utils/urls'
+import  { AUTHEN_URLS }  from './../utils/urls'
 import axios from 'axios'
 import { baseAPIUrl } from "./../utils/constants";
 
 
 
 
-export const getOtp = async (isMail, data) => {
+export const getOtp = async (mobile_no) => {
     try {
-        const url = isMail == 1 ? AUTHEN_URLS.GET_MAIL_OTP : AUTHEN_URLS.GET_MOBILE_OTP
-        
-        if (isMail) {
-            let obj = {}
-            obj.email = data;
-            obj.type = "VERIFICATION"
-            data = obj;
-        }
-        else {
-            let obj = {};
-            obj.mobile_no = data
-            data = obj
-        }
-        const response = await requestHandler.get(baseAPIUrl+url, data);
+        const url = AUTHEN_URLS.GET_MOBILE_OTP
+        console.log(url)   
+        let obj = {};
+        obj.mobile_no = mobile_no
+        const response = await requestHandler.get(baseAPIUrl+url, obj);
         return response
     }
     catch (err) {
@@ -31,7 +22,7 @@ export const getOtp = async (isMail, data) => {
 
 export const verifyOtp = async (isMail, data) => {
     try {
-        const url = isMail == 1 ? AUTHEN_URLS.VERIFY_MAIL_OTP : AUTHEN_URLS.VERIFY_MOBILE_OTP
+        const url =  AUTHEN_URLS.VERIFY_MOBILE_OTP
         const response = await requestHandler.get(baseAPIUrl+url, data);
         return response
     }
@@ -67,18 +58,17 @@ export const login =async (data,isMail)=>{
     }
 }
 
-export const checkUser=async (isMail,uniqueField,userName, id)=>{
+export const checkUser=async (user, id)=>{
       const url=AUTHEN_URLS.CHECK_USER;
        let isUser;
        let params={
-        isMail: isMail,
-        uniqueField: uniqueField,
-        userName: userName,
+        user: user,
         id: id
        }
       isUser= axios.get(baseAPIUrl+url, {
         params
       }).then((res)=>{
+        console.log(res)
         return res.data;
       })
       .catch(err=>console.log(err))

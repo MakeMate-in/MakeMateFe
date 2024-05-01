@@ -5,19 +5,18 @@ export const  validateForm = (user,setUser,setErrors) => {
     let errors = {};
    
     // Email validation
-    if (!EMAIL.test(user["uniqueField"]) && !MOBILE.test(user["uniqueField"])) {
-      errors.uniqueField = 'Invalid Mobile number or Email';
+    if (!EMAIL.test(user["email"]) && !MOBILE.test(user["mobile_no"])) {
+      errors.email = 'Invalid Email';
     }
-    else{
-      let isMail = EMAIL.test(user["uniqueField"])
-      if (isMail) {
-        setUser({ ...user, ["isMail"]: true })
-      }
+
+    if(user["mobile_no"].length<12 || (!MOBILE.test(user["mobile_no"].substring(2)))){
+      errors.mobile_no = 'Invalid Mobile number';
     }
 
     if (user["password"]!==undefined && !PASSWORD.test(user["password"])) {
       errors.password = 'Missing Criteria for password';
     }
+    
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };

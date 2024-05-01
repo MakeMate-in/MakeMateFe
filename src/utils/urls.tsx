@@ -12,3 +12,19 @@ export enum AUTHEN_URLS{
     REFRESH_TOKEN = '/api/auth/refresh',
     LOGOUT = '/api/auth/logout'
 }
+
+export enum PROFILE_URLS{
+    PROFILE='/api/profile/',
+    GET_PROFILE = '/api/profile/getProfile',
+    UPLOAD_AVATAR = '/api/profile/upload-profile',
+    GET_AVATAR = '/api/profile/get-avatar',
+    REMOVE_AVATAR = '/api/profile/remove-avatar'
+}
+
+export enum POSTS_URL{
+    UPLOAD_POST='/api/posts/upload-post',
+    UPLOAD_DATA='/api/posts/upload-data',
+    GET_POST='/api/posts/get-posts',
+    POST_COMMENT = '/api/posts/post-comment',
+    GET_COMMENT = '/api/posts/get-comment'
+}

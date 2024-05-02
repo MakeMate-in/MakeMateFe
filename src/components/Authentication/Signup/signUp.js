@@ -21,6 +21,7 @@ import { EMAIL, MESSAGES } from '../../../utils/constants'
 import { checkUser, getOtp } from '../../../apis/authentication.'
 import { sendOTP } from '../../../apis/commonFunctions'
 import OtpModal from '../OTP/otpModal'
+import { signUp, verifyOtp } from '../../../apis/authentication.'
 
 
 
@@ -98,6 +99,25 @@ const SignUp = () => {
     }
 
   }
+
+
+  const submitOTP = async (otp) => {
+    let data={}
+    data.mobile_no = user["mobile_no"]
+    data.otp = otp
+    const res = await verifyOtp(data)
+    if (res.Status === MESSAGES.SUCCESS) {
+        let user_created = await signUp(user)
+        console.log(user_created)
+        // props.setToken(user_created.token)
+        navigate(OPEN_ROUTES.MAIN_PAGE)
+      }
+      else {
+        errors.otp = res.msg
+        setErrors(errors)
+      }
+
+}
 
   return (
     <div style={{ background: '' }}>
@@ -280,7 +300,8 @@ const SignUp = () => {
           </Flex>
         </Form>
         {
-          otpResponse.Status == MESSAGES.SUCCESS && <OtpModal otpRes={otpResponse} user={user} />
+          // otpResponse.Status == MESSAGES.SUCCESS &&
+           <OtpModal otpRes={otpResponse} user={user} submitOTP={submitOTP} />
         }
       </Flex>
     </div>

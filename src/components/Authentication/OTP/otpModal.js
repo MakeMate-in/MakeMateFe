@@ -8,12 +8,12 @@ import {
     Col,
     Input
 } from 'antd'
-import OtpInput from 'react-otp-input';
 import EmailIcon from '@mui/icons-material/Email';
+import OTPInput, { ResendOTP } from "otp-input-react";
 
 
 const OtpModal = (props) => {
-    console.log(props)
+
     const [modal1, setmodal1] = useState(true)
     const [otp, setOtp] = useState('')
 
@@ -42,7 +42,7 @@ const OtpModal = (props) => {
                     centered
                     open={modal1}
                     onCancel={() => {
-                        setmodal1(false)
+                      props.handleOtpResponse()
                     }}
                     className="modalStyle"
                     width={600}
@@ -61,14 +61,8 @@ const OtpModal = (props) => {
                             </p>
                         </Row>
                         <Row>
-                            <OtpInput
-                                value={otp}
-                                onChange={setOtp}
-                                numInputs={6}
-                                shouldAutoFocus={true}
-                                //   renderSeparator={<span>-</span>}
-                                renderInput={(props) => <Input style={{ height: '40px', width: '40px', margin: '10px' }} />}
-                            />
+
+<OTPInput value={otp} onChange={setOtp} autoFocus OTPLength={6} otpType="number" disabled={false}  style={{margin:'20px 0px 10px 0px'}} />
 
                         </Row>
                         <Row>

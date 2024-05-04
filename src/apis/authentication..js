@@ -33,9 +33,12 @@ export const verifyOtp = async (data) => {
 }
 
 
-export const signUp = async (data) => {
+export const signUp = async (user,role) => {
 
     try {
+        let data = {...user}
+        data.role = role
+        console.log(data)
         const url = AUTHEN_URLS.SIGNUP
         const user = await requestHandler.post(url, data)
         return user

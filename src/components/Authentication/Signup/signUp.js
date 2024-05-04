@@ -14,7 +14,7 @@ import "./SignUp.css"
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import gojo from './../../images/3.jpg'
-import { OPEN_ROUTES } from '../../../utils/constants'
+import { OPEN_ROUTES, ROLE } from '../../../utils/constants'
 import { useNavigate } from 'react-router-dom';
 import { validateForm } from '../../../utils/commons/validators'
 import { EMAIL, MESSAGES } from '../../../utils/constants'
@@ -55,6 +55,9 @@ const SignUp = () => {
     setUser({ ...user, ['mobile_no']: value })
   }
 
+  const handleOtpResponse = () => {
+    setotpResponse({})
+  }
 
   const formRef = React.createRef();
 
@@ -80,7 +83,7 @@ const SignUp = () => {
         }
         else {
           try {
-            const otpRes = sendOTP(user["mobile_no"])
+            const otpRes = await sendOTP(user["mobile_no"])
             console.log(otpRes)
             setotpResponse(otpRes)
           }
@@ -105,17 +108,20 @@ const SignUp = () => {
     let data={}
     data.mobile_no = user["mobile_no"]
     data.otp = otp
+    console.log(otp)
     const res = await verifyOtp(data)
     if (res.Status === MESSAGES.SUCCESS) {
-        let user_created = await signUp(user)
-        console.log(user_created)
-        // props.setToken(user_created.token)
-        navigate(OPEN_ROUTES.MAIN_PAGE)
+      console.log(user)
+        let user_created = await signUp(user,ROLE.VENDOR)
+        // console.log(user_created)
+        // // props.setToken(user_created.token)
+        // navigate(OPEN_ROUTES.MAIN_PAGE)
       }
       else {
         errors.otp = res.msg
         setErrors(errors)
       }
+    setotpResponse({})
 
 }
 
@@ -225,7 +231,7 @@ const SignUp = () => {
                     placeholder="GST Number"
                     onChange={handleChange}
                     variant="filled"
-                    id={"gst_no"}
+                    id={"GST_no"}
                     autoComplete='off'
                     value={user["GST_no"]}
                     disabled={checked}
@@ -300,8 +306,8 @@ const SignUp = () => {
           </Flex>
         </Form>
         {
-          // otpResponse.Status == MESSAGES.SUCCESS &&
-           <OtpModal otpRes={otpResponse} user={user} submitOTP={submitOTP} />
+          otpResponse.Status == MESSAGES.SUCCESS &&
+           <OtpModal otpRes={otpResponse} user={user} submitOTP={submitOTP}  handleOtpResponse={handleOtpResponse} />
         }
       </Flex>
     </div>

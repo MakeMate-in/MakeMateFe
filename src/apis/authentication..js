@@ -2,6 +2,7 @@ import { requestHandler } from "./requestHandler";
 import  { AUTHEN_URLS }  from './../utils/urls'
 import axios from 'axios'
 import { baseAPIUrl } from "./../utils/constants";
+import { getUserData } from "../utils/helper";
 
 
 
@@ -33,11 +34,11 @@ export const verifyOtp = async (data) => {
 }
 
 
-export const signUp = async (user,role) => {
+export const signUp = async (userData,role) => {
 
     try {
-        let data = {...user}
-        data.role = role
+        let data = {}
+        data = getUserData(userData, role)
         console.log(data)
         const url = AUTHEN_URLS.SIGNUP
         const user = await requestHandler.post(url, data)

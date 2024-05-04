@@ -7,6 +7,18 @@ export const LOCAL_STORAGE_ITEMS = {
     IS_MAIL:"isMail"
 };
 
+export const getUserData = (user, role) => {
+    let data = {}
+    data.name = user.first_name + " " + user.last_name
+    data.email = user.email
+    data.mobile_no = user.mobile_no.substring(2)
+    data.password = user.password
+    data.company_name = user.company_name
+    data.GST_no = user.GST_no
+    data.role = role
+    return data
+}
+
 
 // export const getAccessToken = () => {
 //     const state = store.getState();

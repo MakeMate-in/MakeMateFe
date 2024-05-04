@@ -108,14 +108,19 @@ const SignUp = () => {
     let data={}
     data.mobile_no = user["mobile_no"]
     data.otp = otp
-    console.log(otp)
     const res = await verifyOtp(data)
     if (res.Status === MESSAGES.SUCCESS) {
       console.log(user)
+        try{
         let user_created = await signUp(user,ROLE.VENDOR)
-        // console.log(user_created)
-        // // props.setToken(user_created.token)
-        // navigate(OPEN_ROUTES.MAIN_PAGE)
+        console.log(user_created)
+       
+        navigate(OPEN_ROUTES.MAIN_PAGE)
+        }
+        catch(err){
+          console.log(err)
+          return err
+        }
       }
       else {
         errors.otp = res.msg
@@ -289,10 +294,6 @@ const SignUp = () => {
               type="primary"
               htmlType="submit"
               className="button-submit button-style"
-              style={{
-                color: 'white',
-                backgroundColor: 'rgb(239, 243, 244)',
-              }}
             // disabled={user["name"].length === 0 || user["uniqueField"].length === 0 || user["password"].length === 0 || user["handle"].length === 0 || !checked}
             >
               <span style={{ color: 'black', fontWeight: 'bolder' }}>Sign Up</span>

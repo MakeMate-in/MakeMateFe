@@ -8,7 +8,8 @@ import {
   Checkbox,
   Image,
   Row,
-  Col
+  Col,
+  notification
 } from 'antd'
 import "./SignUp.css"
 import PhoneInput from 'react-phone-input-2'
@@ -28,6 +29,7 @@ import { signUp, verifyOtp } from '../../../apis/authentication.'
 const SignUp = () => {
   const navigate = useNavigate();
 
+  const [api, contextHolder] = notification.useNotification();
   const [user, setUser] = useState({
     "first_name": "",
     "last_name": "",
@@ -42,6 +44,19 @@ const SignUp = () => {
   const [checked, setChecked] = useState(false);
   const [errors, setErrors] = useState({});
   const [otpResponse, setotpResponse] = useState({})
+
+  const openNotification = () => {
+    console.log(1)
+    api.open({
+      message: 'Notification Title',
+      description:
+        'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+      className: 'custom-class',
+      style: {
+        width: 600,
+      },
+    });
+  };
 
   const onChange = (e) => {
     setChecked(e.target.checked);
@@ -63,7 +78,7 @@ const SignUp = () => {
 
   const handleSubmit = async () => {
     console.log(user)
-    if (validateForm(user, setUser, setErrors)) {
+    if (validateForm(user, setUser, setErrors, checked, checkPassword)) {
       let errors = {}
       // Form is valid, submit the data or perform further actions
 
@@ -80,6 +95,7 @@ const SignUp = () => {
             errors.GST_no = isUser.msg.GST_no
           }
           setErrors(errors);
+
         }
         else {
           try {
@@ -98,7 +114,9 @@ const SignUp = () => {
       }
     } else {
       // Form is invalid, handle errors or display error messages
+      console.log(errors)
       console.log('Form validation failed');
+      openNotification(errors)
     }
 
   }
@@ -132,6 +150,7 @@ const SignUp = () => {
 
   return (
     <div style={{ background: '' }}>
+       {contextHolder}
       <Flex>
         <Image src={gojo} style={{ height: '46rem', width: '30rem' }} />
         <Form
@@ -310,6 +329,7 @@ const SignUp = () => {
           otpResponse.Status == MESSAGES.SUCCESS &&
            <OtpModal otpRes={otpResponse} user={user} submitOTP={submitOTP}  handleOtpResponse={handleOtpResponse} />
         }
+
       </Flex>
     </div>
   )

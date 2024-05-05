@@ -7,13 +7,22 @@ import { getUserData } from "../utils/helper";
 
 
 
-export const getOtp = async (mobile_no) => {
+export const getOtp = async (data,isEmail) => {
     try {
-        const url = AUTHEN_URLS.GET_MOBILE_OTP
+        const url = isEmail == 1 ? AUTHEN_URLS.GET_MAIL_OTP : AUTHEN_URLS.GET_MOBILE_OTP
         console.log(url)   
-        let obj = {};
-        obj.mobile_no = mobile_no
-        const response = await requestHandler.get(baseAPIUrl+url, obj);
+        if (isEmail) {
+            let obj = {}
+            obj.email = data;
+            obj.type = "VERIFICATION"
+            data = obj;
+        }
+        else {
+            let obj = {};
+            obj.mobile_no = data
+            data = obj
+        }
+        const response = await requestHandler.get(baseAPIUrl+url, data);
         return response
     }
     catch (err) {
@@ -21,9 +30,9 @@ export const getOtp = async (mobile_no) => {
     }
 }
 
-export const verifyOtp = async (data) => {
+export const verifyOtp = async (data,isEmail) => {
     try {
-        const url =  AUTHEN_URLS.VERIFY_MOBILE_OTP
+        const url = isEmail == 1 ? AUTHEN_URLS.VERIFY_MAIL_OTP : AUTHEN_URLS.VERIFY_MOBILE_OTP
         const response = await requestHandler.get(baseAPIUrl+url, data);
         return response
     }

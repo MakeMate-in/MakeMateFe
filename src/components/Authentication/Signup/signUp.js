@@ -99,7 +99,7 @@ const SignUp = () => {
         }
         else {
           try {
-            const otpRes = await sendOTP(user["mobile_no"])
+            const otpRes = await sendOTP(user["email"],true)
             console.log(otpRes)
             setotpResponse(otpRes)
           }
@@ -124,9 +124,10 @@ const SignUp = () => {
 
   const submitOTP = async (otp) => {
     let data={}
-    data.mobile_no = user["mobile_no"]
+    data.check = user["email"]
     data.otp = otp
-    const res = await verifyOtp(data)
+    data.verification_key = otpResponse.response
+    const res = await verifyOtp(data,true)
     if (res.Status === MESSAGES.SUCCESS) {
       console.log(user)
         try{

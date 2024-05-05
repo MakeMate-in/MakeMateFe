@@ -57,12 +57,12 @@ const OtpModal = (props) => {
                         </Row>
                         <Row>
                             <p style={{ fontSize: '15px', margin: '0px' }}>
-                                We have sent a SMS to <b>{props.user.mobile_no}</b><br />with your vericfication Code
+                                We have sent a SMS to <b>{props.user.email}</b><br />with your vericfication Code
                             </p>
                         </Row>
                         <Row>
 
-<OTPInput value={otp} onChange={setOtp} autoFocus OTPLength={6} otpType="number" disabled={false}  style={{margin:'20px 0px 10px 0px'}} />
+<OTPInput value={otp} onChange={setOtp} autoFocus={true} OTPLength={6} disabled={false}  style={{margin:'20px 0px 10px 0px'}} />
 
                         </Row>
                         <Row>

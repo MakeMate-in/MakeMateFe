@@ -1,4 +1,6 @@
-
+import Home from '@mui/icons-material/Home';
+import Factory from '@mui/icons-material/Factory';
+import Logout from '@mui/icons-material/Logout';
 
 export const baseAPIUrl = 'http://localhost:5000';
 
@@ -21,7 +23,7 @@ export enum OPEN_ROUTES {
     LOGIN = '/login',
     SIGNUP = '/signup',
     FORGOTPASSWORD = '/forgotpassword',
-    MAIN_PAGE = '/dashboard'
+    VENDOR_DASHBOARD = '/vendor/dashboard'
 };
 
 export enum MESSAGES {
@@ -37,6 +39,22 @@ export const ROLE = {
     VENDOR: "Vendor",
     CUSTOMER: "Customer"
 }
+
+
+export const VENDOR_DRAWER_LIST = [
+    {
+        name: 'Dashboard',
+        icon: <Home/>
+    },
+    {
+        name: 'Digital Factory',
+        icon: <Factory/>
+    },
+    {
+        name: 'Logout',
+        icon: <Logout/>
+    },
+]
 
 
 // export const HANDLE_REGEX:RegExp = /^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?/~\\-]+$/;

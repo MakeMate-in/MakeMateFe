@@ -4,6 +4,7 @@ import Home from '../components/Home';
 import SignIn from '../components/Authentication/SignIn/signIn';
 import SignUp from '../components/Authentication/Signup/signUp';
 import ForgotPassword from '../components/Authentication/SignIn/forgotPassword';
+import Dashboard from '../components/Vendor/Dashboard/Dashboard';
 
 
 const AppRoutes=()=>{
@@ -14,6 +15,7 @@ return(
         <Route path={OPEN_ROUTES.SIGNUP} element={<SignUp/>}/>
         <Route path={OPEN_ROUTES.LOGIN} element={<SignIn />}/>
         <Route path={OPEN_ROUTES.FORGOTPASSWORD} element={<ForgotPassword />}/>
+        <Route path={OPEN_ROUTES.VENDOR_DASHBOARD} element={<Dashboard />}/>
     </Routes>
     </Router>
 

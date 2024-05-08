@@ -60,8 +60,8 @@ export const signUp = async (userData,role) => {
 }
 
 
-export const login =async (data,isMail)=>{
-    data.isMail=isMail
+export const login =async (data)=>{
+    
     try{
        const url=AUTHEN_URLS.LOGIN;
        const user = await requestHandler.post(url,data);

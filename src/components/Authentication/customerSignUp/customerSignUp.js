@@ -65,6 +65,7 @@ const CustomerSignUp = () => {
   }
 
   const handlePhone = (value) => {
+    console.log(value)
     setUser({ ...user, ['mobile_no']: value })
   }
 

@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
-import { Flex, Button, Checkbox, Image, Row, Col, Input, Form } from 'antd'
+import { useState } from 'react'
+import { Flex, Button, Checkbox, Image, Input, Form } from 'antd'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import gojo from './../../images/3.jpg'
 import { useNavigate } from 'react-router-dom'
 import { OPEN_ROUTES } from '../../../utils/constants'
+
 
 const SignIn = () => {
   const [isEmail, setIsEmail] = useState(true)
@@ -12,7 +13,7 @@ const SignIn = () => {
   const [user, setUser] = useState({
     uniqueField: '',
     password: '',
-    isEmail: true,
+    isEmail: true
   })
 
   const navigate = useNavigate()
@@ -21,12 +22,15 @@ const SignIn = () => {
     const { id, value } = e.target
     setUser((prevState) => ({
       ...prevState,
-      [id]: value,
+      [id]: value
     }))
   }
 
   const handleSubmit = () => {
-    console.log('User data:', user)
+    console.log('User data:', user);
+    if(!isEmail){
+      user.uniqueField = user.uniqueField.substring(2);
+    }
     fetch('http://localhost:5000/api/users/login', {
       method: 'POST',
       headers: {
@@ -36,7 +40,8 @@ const SignIn = () => {
     })
       .then((response) => {
         if (response.ok) {
-          console.log('Login successful')
+          console.log('Login successful');
+          navigate(OPEN_ROUTES.VENDOR_DASHBOARD)
         } else {
           throw new Error('Login failed')
         }
@@ -64,112 +69,64 @@ const SignIn = () => {
   }
 
   return (
-    <div style={{ background: '' }}>
-      <Flex gap={'small'} justifyContent="center">
+    <div style={{ display: 'flex' }}>
+      <div style={{  }}>
         <Image src={gojo} style={{ height: '46rem', width: '30rem' }} />
-        <Form style={{ transform: 'translate(0%,5%)' }} onFinish={handleSubmit}>
-          <h1 style={{ transform: 'translate(64%,5%)' }}>Log In</h1>
-          <Flex vertical={true} gap={'large'} style={{ transform: 'translate(25%,5%)' }}>
-            {isEmail ? (
-              <Col span={12}>
-                <Row>
-                  <span>
-                    Email <span style={{ color: 'red' }}>*</span>
-                  </span>
-                </Row>
-                <Row>
-                  <Input
-                    className="input-style input input-extras"
-                    placeholder="Email"
-                    onChange={handleChange}
-                    id={'uniqueField'}
-                    variant="filled"
-                    autoComplete="off"
-                    value={user['uniqueField']}
-                  />
-                </Row>
-                <Row style={{ marginTop: '10px' }}>
-                  <Button onClick={handleToggle}>{isEmail ? 'Switch to Number' : 'Switch to Email'}</Button>
-                </Row>
-              </Col>
-            ) : (
-              <Col span={12}>
-                <Row>
-                  <span>
-                    Mobile No. <span style={{ color: 'red' }}>*</span>
-                  </span>
-                </Row>
-                <Row>
-                  <PhoneInput
-                    country="in"
-                    regions={'asia'}
-                    value={user['uniqueField']}
-                    onChange={(value) => handleChange({ target: { id: 'uniqueField', value } })}
-                    inputProps={{
-                      name: 'phone',
-                      required: true,
-                      autoFocus: true,
-                    }}
-                  />
-                </Row>
-                <Row style={{ marginTop: '10px' }}>
-                  <Button onClick={handleToggle}>{isEmail ? 'Switch to Number' : 'Switch to Email'}</Button>
-                </Row>
-              </Col>
-            )}
-            <Col span={12}>
-              <Row>
-                <span>
-                  Password <span style={{ color: 'red' }}>*</span>
-                </span>
-              </Row>
-              <Row>
-                <Input.Password
-                  className="input black input-style"
-                  placeholder="Password"
-                  onChange={handleChange}
-                  id={'password'}
-                  variant="filled"
-                  value={user['password']}
-                  autoComplete="off"
-                />
-              </Row>
-            </Col>
+      </div>
+      <div style={{margin: 'auto', alignItems: 'center', justifyContent: 'center'}}>
+      <Form
+        layout="vertical"
+        initialValues={{ remember: rememberMe }}
+        onFinish={handleSubmit}
+        style={{ width: '400px'}}
+      >
+        <h1 style={{textAlign:'center'}}>Log In</h1>
+        <Form.Item name="emailOrMobile" label={isEmail?"Email":"Mobile No."} rules={[{ required: true, message: 'Please input your email!' }]}>
+          {isEmail ? (
+            <div>
+            <Input placeholder="Email" id={'uniqueField'} variant="filled" autoComplete='on' value={user['uniqueField']} onChange={handleChange} />
+            <a onClick={handleToggle} style={{float:'right'}}>{isEmail ? 'Switch to Number' : 'Switch to Email'}</a>
+            </div>
+          ) : (
+            <div>
+            <PhoneInput placeholder="Mobile Number" country="in" regions={'asia'} value={user['uniqueField']} inputStyle={{width:'400px'}}
+              onChange={(value) => handleChange({ target: { id: 'uniqueField', value } })} rules={[{ required: true, message: 'Please input your mobile no.!' }]}
+              inputProps={{
+                name: 'phone',
+                required: true,
+                autoFocus: true,
+              }}
+              style={{ width: '400px'} }
+              />
+             <a onClick={handleToggle} style={{float:'right'}}>{isEmail ? 'Switch to Number' : 'Switch to Email'}</a>
+            </div>
+          )}
+        </Form.Item>
 
-            <Col span={12}>
-              <Row>
-                <Checkbox checked={rememberMe} onChange={handleRememberMeChange}>
-                  Remember Me
-                </Checkbox>
-              </Row>
-            </Col>
+        <Form.Item name="password" label="Password" rules={[{ required: true, message: 'Please input your password!' }]}>
+          <Input.Password placeholder="Password" variant="filled" onChange={handleChange} autoComplete='off' id={'password'} value={user['password']} />
+          </Form.Item>
+          <Form.Item>
+          <Checkbox onChange={handleRememberMeChange} style={{float: 'left'}}>Remember me</Checkbox>
+          <a href="#" onClick={handleForgotPasswordClick} style={{float: 'right'}}>Forgot password?</a>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" style={{ width: '400px', textAlign: 'center' }}>
+            Log In
+          </Button>
+        </Form.Item>
 
-            <Flex>
-              <span onClick={handleForgotPasswordClick} style={{ color: 'rgb(29, 155, 240)' }}>
-                Forgot Password?
-              </span>
-            </Flex>
-
-            <Col span={12}>
-              <Row>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="button-submit button-style"
-                  style={{
-                    color: 'white',
-                    backgroundColor: 'rgb(239, 243, 244)',
-                  }}
-                >
-                  <span style={{ color: 'black', fontWeight: 'bolder' }}>Sign Up</span>
-                </Button>
-              </Row>
-            </Col>
+        <Form.Item>
+          <Flex style={{alignItems:'center', justifyContent:'center'}}>
+          <p style={{ margin: '0px' }}>Don't have an account?&nbsp;</p>
+          <a onClick={() => { navigate(OPEN_ROUTES.SIGNUP) }}>Sign Up</a>
           </Flex>
-        </Form>
-      </Flex>
+        </Form.Item>
+      </Form>
+      </div>
     </div>
   )
 }
 
 export default SignIn
+

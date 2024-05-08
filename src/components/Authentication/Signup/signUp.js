@@ -134,7 +134,7 @@ const SignUp = () => {
         let user_created = await signUp(user,ROLE.VENDOR)
         console.log(user_created)
        
-        navigate(OPEN_ROUTES.MAIN_PAGE)
+        navigate(OPEN_ROUTES.VENDOR_DASHBOARD)
         }
         catch(err){
           console.log(err)

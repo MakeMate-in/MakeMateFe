@@ -23,7 +23,11 @@ export enum OPEN_ROUTES {
     LOGIN = '/login',
     SIGNUP = '/signup',
     FORGOTPASSWORD = '/forgotpassword',
+    MAIN_PAGE = '/dashboard',
+    CUSTOMER_SIGNUP = '/customer/signUp'
     VENDOR_DASHBOARD = '/vendor/dashboard'
+    CUSTOMER_DASHBOARD = '/customer/dashboard'
+
 };
 
 export enum MESSAGES {

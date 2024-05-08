@@ -33,6 +33,13 @@ const Home = () => {
             <h3 style={{ color: 'rgb(29, 155, 240)' }} >Sign In</h3>
           </Button>
         </div>
+        <div className="already-account-div">
+          <Button className="button home-sign-in-button"
+            onClick={() => { navigate(OPEN_ROUTES.CUSTOMER_SIGNUP) }}>
+            <h3 style={{ color: 'rgb(29, 155, 240)' }} >Customer Sign up</h3>
+          </Button>
+        </div>
+
       </div>
 
 

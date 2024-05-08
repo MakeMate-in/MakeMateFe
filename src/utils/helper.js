@@ -19,6 +19,16 @@ export const getUserData = (user, role) => {
     return data
 }
 
+export const getCustomerData = (user, role) => {
+    let data = {}
+    data.name = user.first_name + " " + user.last_name
+    data.email = user.email
+    data.mobile_no = user.mobile_no.substring(2)
+    data.password = user.password
+    data.role = role
+    return data
+}
+
 
 // export const getAccessToken = () => {
 //     const state = store.getState();

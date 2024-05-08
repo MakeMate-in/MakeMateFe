@@ -5,7 +5,6 @@ import 'react-phone-input-2/lib/style.css'
 import gojo from './../../images/3.jpg'
 import { useNavigate } from 'react-router-dom'
 import { OPEN_ROUTES } from '../../../utils/constants'
-import "./signIn.css"
 
 
 const SignIn = () => {
@@ -42,7 +41,7 @@ const SignIn = () => {
       .then((response) => {
         if (response.ok) {
           console.log('Login successful');
-          navigate(OPEN_ROUTES.MAIN_PAGE)
+          navigate(OPEN_ROUTES.VENDOR_DASHBOARD)
         } else {
           throw new Error('Login failed')
         }

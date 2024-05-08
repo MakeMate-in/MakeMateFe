@@ -3,6 +3,7 @@ import  { AUTHEN_URLS }  from './../utils/urls'
 import axios from 'axios'
 import { baseAPIUrl } from "./../utils/constants";
 import { getUserData } from "../utils/helper";
+import { getCustomerData } from "../utils/helper";
 
 
 
@@ -67,6 +68,21 @@ export const login =async (data,isMail)=>{
        return user
     }
     catch(err){
+        throw (err)
+    }
+}
+
+export const customerSignUp = async (userData,role) => {
+
+    try {
+        let data = {}
+        data = getCustomerData(userData, role)
+        console.log(data)
+        const url = AUTHEN_URLS.CUSTOMERSIGNUP
+        const user = await requestHandler.post(url, data)
+        return user
+    }
+    catch (err) {
         throw (err)
     }
 }

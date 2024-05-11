@@ -27,11 +27,11 @@ export const  validateForm = (user,setUser,setErrors,checked,checkPassword) => {
     }
 
 
-    if (user["company_name"].length===0) {
+    if (user["company_name"]!=undefined && user["company_name"].length===0) {
       errors.company_name = 'Company Name is Required';
     }
 
-    if (user["GST_no"].length<1 && checked==false) {
+    if (user["GST_no"]!=undefined  && user["GST_no"].length<1 && checked==false) {
       errors.GST_no = 'GST_no is Required';
     }
 

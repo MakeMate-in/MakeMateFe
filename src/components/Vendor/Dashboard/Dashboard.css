@@ -1,0 +1,23 @@
+.custom-input {
+    height: 40px; 
+    width: calc(100% - 24px);
+  }
+
+  .company-logo {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .company-logo img {
+    border-radius: 50%; /* to create a circle shape */
+    max-width: 100px; /* adjust the max-width as needed */
+  }
+  
+  .ant-form-item-label > label {
+    text-align: left; /* align label text to left */
+    font-weight: 600;
+    font-size: 1rem !important;
+  }
+
+  
+  

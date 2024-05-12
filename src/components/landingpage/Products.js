@@ -18,7 +18,7 @@ const Products = () => {
               justifyContent:'center',
               width:'100%',
               textAlign:'centre',
-              gap:'1rem',
+              gap:'2rem',
               marginBottom:'2rem'
       }}>
         <Box sx={{

@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from '@mui/material'
 import React from 'react'
-import ai from '../landingpage/Assets/ai.png';
+// import ai from '../landingpage/Assets/ai.png';
 
 
 const Header = () => {
@@ -13,7 +13,7 @@ const Header = () => {
       }}>
         Welcome To MAKERS-MATE
       
-      <Typography sx={{fontSize: '1rem', textAlign: 'center', 
+      <Typography sx={{fontSize: '2rem', textAlign: 'center', 
         marginBottom: '1rem',
         '@media(max-width: 442px)': {
           fontSize: '1rem'
@@ -29,12 +29,13 @@ const Header = () => {
         marginTop:'3rem',
       }}>
         <Box sx={{ 
-         backgroundImage: `url(${ai})`,
+        //  backgroundImage: `url(${ai})`,
          width:'100%',}}>
 
           <Typography>
-            Our company's motto is to find and categorize the available tool makers in their expertise to get them business as per their expertise from all over the locations.
-            It's easy to connect and fast.
+            We MakersMate are partners of your precision tooling. We help you in finding the best tool & die maker in your nearby location and that has the expertise of that product. 
+Our companies motto is to find and categories the available tool makers in there expertise to get them business as per there expertise from all over the locations. 
+Its easy to connect and fast.
           </Typography>
 
           <Button sx={{
@@ -42,6 +43,7 @@ const Header = () => {
             color: 'white',
             transition: 'transform 0.3s',
             marginTop: '1rem',
+            justifyContent:'center',
             '&:hover': {
               transform: 'scale(1.05)',
               backgroundImage: 'linear-gradient(to right, blue, green)'

@@ -1,7 +1,7 @@
 import  { useState } from 'react';
 import { Divider,} from '@mui/material';
 import { Card, Col, Row, Steps, Button } from 'antd';
-import './Dashboard.css';
+import './../Dashboard/Dashboard.css';
 import { forms } from '../CompanyDetails/CompanyDetails.js';
 
 const { Step } = Steps;

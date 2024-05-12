@@ -19,7 +19,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { AppBar, Drawer, DrawerHeader } from './Drawer.tsx';
 import { VENDOR_DRAWER_LIST } from '../../../utils/constants';
 import './Dashboard.css';
-import DigitalFactory from './DigitalFactory.js'
+import DigitalFactory from '../DigitalFactory/DigitalFactory.js'
 
 
 const Dashboard = () => {

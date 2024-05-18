@@ -7,16 +7,25 @@ import './DigitalFactory.css'
 import BasicDetails from '../CompanyDetails/BasicDetails';
 import AdditionalInfo from '../CompanyDetails/AdditionalInfo';
 import Certificates from '../CompanyDetails/Certificates';
-import {STEP_TAB_MAP, STEP_TAB_MAP_2} from './../../../utils/constants'
+import { STEP_TAB_MAP, STEP_TAB_MAP_2 } from './../../../utils/constants';
+
 
 const { Step } = Steps;
 
 const DigitalFactory = () => {
 
-  
+
   const [current, setCurrent] = useState(0);
   const [currentSub, setCurrentSub] = useState(0);
   const { TabPane } = Tabs;
+
+  const onSaveAndSubmit = () => {   
+    if(currentSub==3){
+      setCurrent(current+1);
+    } else {
+      setCurrentSub(currentSub+1);
+    }
+  };
 
   const onChange = (value) => {
     console.log('onChange:', value);
@@ -33,22 +42,22 @@ const DigitalFactory = () => {
     {
       key: '1',
       label: 'Basic Details',
-      children: <BasicDetails/>,
+      children: <BasicDetails onSaveAndSubmit={onSaveAndSubmit} />,
     },
     {
       key: '2',
       label: 'Addresses & Contacts',
-      children: <AddressDetails/>,
+      children: <AddressDetails />,
     },
     {
       key: '3',
       label: 'Certificates',
-      children: <Certificates/>,
+      children: <Certificates />,
     },
     {
       key: '4',
       label: 'Additional Information',
-      children: <AdditionalInfo/>,
+      children: <AdditionalInfo />,
     },
   ]
 
@@ -82,16 +91,16 @@ const DigitalFactory = () => {
   };
 
   return (
-    
+
     <div>
       <Row gutter={16}>
         <Col span={6}>
           <Card title="Card title" bordered hoverable style={{ height: '39rem' }}>
-            
+
             <div>
               <Steps direction="vertical" current={current}
                 onChange={onChange}>
-                <Step title='Company Overview'  description={<StepDropdown />} />
+                <Step title='Company Overview' description={<StepDropdown />} />
                 <Step title="Machines" description="Add your machineries" />
                 <Step title="Customer Details" description="This is a description." />
                 <Step title="Services" description="Your Business Related Info" />
@@ -103,17 +112,21 @@ const DigitalFactory = () => {
           </Card>
         </Col>
         <Col span={18}>
-          <Card bordered hoverable style={{ height: '39rem', overflow: 'auto', scrollbarWidth: 'thin' }}>
+          <Card bordered hoverable style={{ height: '39rem', overflow: 'auto', scrollbarWidth: 'thin', position:'relative' }}>
             <div>
               <h2 style={{ marginTop: '0' }}>Company Overview</h2>
               <hr />
               <Row>
-              <div style={{width:'100%'}}>
-                <Tabs defaultActiveKey="1" items={items} onChange={onChangeTab} size='large' activeKey={STEP_TAB_MAP[currentSub]}/>
-              </div>
+                <div style={{ width: '100%' }}>
+                  <Tabs defaultActiveKey="1" items={items} onChange={onChangeTab} size='large' activeKey={STEP_TAB_MAP[currentSub]} />
+                </div>
               </Row>
-            
+
+              {currentSub!=0?<div style={{bottom:'0', position: 'absolute' }}>
+                <Button type='primary' form='form1' onClick={onSaveAndSubmit}>Save and Submit</Button>
+              </div>:''}
             </div>
+
           </Card>
         </Col>
       </Row>

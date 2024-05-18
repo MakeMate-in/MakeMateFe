@@ -4,7 +4,8 @@ import './../Dashboard/Dashboard.css'
 import { getCompanyDetails, updateCompanyDetails } from '../../../apis/Vendor/CompanyDetails';
 import { USER_ID } from '../../../utils/constants';
 
-const BasicDetails = () => {
+const BasicDetails = (props) => {
+
 
   const [basicDetails, setBasicDetails] = useState({
     "description": "",
@@ -19,26 +20,27 @@ const BasicDetails = () => {
   }
 
   const handleFormSubmit = async() => {
+    props.onSaveandSubmit();
     console.log(basicDetails)
-    try{
-    let params = {
-      // user: localStorage.get(USER_ID)
-      user: USER_ID
-    }
-    const res = await updateCompanyDetails(params,basicDetails)
-    if(res.success){
-      const updatedData = await getCompanyDetails(params)
-      console.log(updatedData)
-      
-    }
-    else{
-      //Toast
-    }
-    console.log(res)
-    }
-    catch(err){
-      console.log(err)
-    }
+    // try{
+    // let params = {
+    //   // user: localStorage.get(USER_ID)
+    //   user: USER_ID
+    // }
+    // const res = await updateCompanyDetails(params,basicDetails)
+    // if(res.success){
+    //   const updatedData = await getCompanyDetails(params)
+    //   console.log(updatedData)
+    //   // props.onSaveandSubmit();
+    // }
+    // else{
+    //   //Toast
+    // }
+    // console.log(res)
+    // }
+    // catch(err){
+    //   console.log(err)
+    // }
   }
 
 
@@ -77,11 +79,12 @@ const BasicDetails = () => {
           <Form.Item
             label="Company Name"
             name="companyName"
-            rules={[{ required: true, message: 'Field 1 is required' }]}
+            rules={[{ required: true, message: 'Company Name is required' }]}
           >
             <Input 
             className="custom-input" 
             variant="filled"
+            placeholder="Enter your Company Name"
             id={"company_name"}
             onChange={handleChange}
             autoComplete='off'
@@ -91,11 +94,12 @@ const BasicDetails = () => {
           <Form.Item
             label="Total Experience (in Years)"
             name="totalExperience"
-            rules={[{ required: true, message: 'Field 2 is required' }]}
+            rules={[{ required: true, message: 'Total Experience is required' }]}
           >
             <Input 
             className="custom-input" 
             variant="filled"
+            placeholder="Enter your Total Experience"
             id={"experience"}
             autoComplete='off'
             onChange={handleChange}
@@ -107,11 +111,12 @@ const BasicDetails = () => {
           <Form.Item
             label="GST"
             name="gst"
-            rules={[{ required: true, message: 'Field 4 is required' }]}
+            rules={[{ required: true, message: 'GST is required' }]}
           >
             <Input 
             className="custom-input" 
             variant="filled"
+            placeholder="Enter your GST No."
             id={"GST_no"}
             autoComplete='off'
             onChange={handleChange}
@@ -121,11 +126,12 @@ const BasicDetails = () => {
           <Form.Item
             label="Current Running Project"
             name="currentRunningProject"
-            rules={[{ required: true, message: 'Field 5 is required' }]}
+            rules={[{ required: true, message: 'Current Running Project is required' }]}
           >
             <Input
             className="custom-input" 
             variant="filled"
+            placeholder="Enter your Current Running Project"
             id={"current_projects_no"}
             autoComplete='off'
             onChange={handleChange}
@@ -137,7 +143,7 @@ const BasicDetails = () => {
       
       <Form.Item>
         <Button type="primary" htmlType="submit">
-          Submit
+          Save and Submit
         </Button>
       </Form.Item>
     </Form>

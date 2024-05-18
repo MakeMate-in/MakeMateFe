@@ -19,8 +19,8 @@ return(
         <Route path={OPEN_ROUTES.FORGOTPASSWORD} element={<ForgotPassword />}/>
         <Route path={OPEN_ROUTES.CUSTOMER_SIGNUP} element={<CustomerSignUP/>}/>
         <Route element={<Dashboard/>}>
-        <Route path={OPEN_ROUTES.VENDOR_DASHBOARD} Component={DashboardPage}/>
-        <Route path={OPEN_ROUTES.DIGITAL_FACTORY} Component={DigitalFactory} />
+        <Route path={OPEN_ROUTES.VENDOR_DASHBOARD} element={<DashboardPage />}/>
+        <Route path={OPEN_ROUTES.DIGITAL_FACTORY} element={<DigitalFactory/>} />
         </Route>
     </Routes>
     </Router>

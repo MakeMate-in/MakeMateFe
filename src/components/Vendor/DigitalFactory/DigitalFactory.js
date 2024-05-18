@@ -84,7 +84,6 @@ const DigitalFactory = () => {
   return (
     
     <div>
-    Hi
       <Row gutter={16}>
         <Col span={6}>
           <Card title="Card title" bordered hoverable style={{ height: '39rem' }}>
@@ -112,9 +111,6 @@ const DigitalFactory = () => {
               <div style={{width:'100%'}}>
                 <Tabs defaultActiveKey="1" items={items} onChange={onChangeTab} size='large' activeKey={STEP_TAB_MAP[currentSub]}/>
               </div>
-              
-
-
               </Row>
             
             </div>

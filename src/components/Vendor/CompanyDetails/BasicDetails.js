@@ -28,46 +28,32 @@ const BasicDetails = () => {
       <Row gutter={16}>
         <Col span={12}>
           <Form.Item
-            label="Field 1"
-            name="field1"
+            label="Company Name"
+            name="companyName"
             rules={[{ required: true, message: 'Field 1 is required' }]}
           >
             <Input className="custom-input" variant="filled"/>
           </Form.Item>
           <Form.Item
-            label="Field 2"
-            name="field2"
+            label="Total Experience (in Years)"
+            name="totalExperience"
             rules={[{ required: true, message: 'Field 2 is required' }]}
-          >
-            <Input className="custom-input" variant="filled"/>
-          </Form.Item>
-          <Form.Item
-            label="Field 3"
-            name="field3"
-            rules={[{ required: true, message: 'Field 3 is required' }]}
           >
             <Input className="custom-input" variant="filled"/>
           </Form.Item>
         </Col>
         <Col span={12}>
           <Form.Item
-            label="Field 4"
-            name="field4"
+            label="GST"
+            name="gst"
             rules={[{ required: true, message: 'Field 4 is required' }]}
           >
             <Input className="custom-input" variant="filled"/>
           </Form.Item>
           <Form.Item
-            label="Field 5"
-            name="field5"
+            label="Current Running Project"
+            name="currentRunningProject"
             rules={[{ required: true, message: 'Field 5 is required' }]}
-          >
-            <Input className="custom-input" variant="filled"/>
-          </Form.Item>
-          <Form.Item
-            label="Field 6"
-            name="field6"
-            rules={[{ required: true, message: 'Field 6 is required' }]}
           >
             <Input className="custom-input" variant="filled"/>
           </Form.Item>

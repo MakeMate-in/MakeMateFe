@@ -60,5 +60,17 @@ export const VENDOR_DRAWER_LIST = [
     },
 ]
 
+export const STEP_TAB_MAP = {
+    0: '1',
+    1: '2',
+    2: '3',
+    3: '4'
+}
 
+export const STEP_TAB_MAP_2 = {
+    '1': 0,
+    '2': 1,
+    '3': 2,
+    '4': 3
+}
 // export const HANDLE_REGEX:RegExp = /^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?/~\\-]+$/;

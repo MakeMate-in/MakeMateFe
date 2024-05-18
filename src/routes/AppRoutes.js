@@ -6,7 +6,8 @@ import SignUp from '../components/Authentication/Signup/signUp';
 import ForgotPassword from '../components/Authentication/SignIn/forgotPassword';
 import CustomerSignUP from '../components/Authentication/customerSignUp/customerSignUp';
 import Dashboard from '../components/Vendor/Dashboard/Dashboard';
-
+import DigitalFactory from '../components/Vendor/DigitalFactory/DigitalFactory';
+import DashboardPage from '../components/Vendor/Dashboard/DashboardPage';
 
 const AppRoutes=()=>{
 return(
@@ -17,7 +18,10 @@ return(
         <Route path={OPEN_ROUTES.LOGIN} element={<SignIn />}/>
         <Route path={OPEN_ROUTES.FORGOTPASSWORD} element={<ForgotPassword />}/>
         <Route path={OPEN_ROUTES.CUSTOMER_SIGNUP} element={<CustomerSignUP/>}/>
-        <Route path={OPEN_ROUTES.VENDOR_DASHBOARD} element={<Dashboard />}/>
+        <Route element={<Dashboard/>}>
+        <Route path={OPEN_ROUTES.VENDOR_DASHBOARD} Component={DashboardPage}/>
+        <Route path={OPEN_ROUTES.DIGITAL_FACTORY} Component={DigitalFactory} />
+        </Route>
     </Routes>
     </Router>
 

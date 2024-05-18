@@ -82,8 +82,9 @@ const DigitalFactory = () => {
   };
 
   return (
-
+    
     <div>
+    Hi
       <Row gutter={16}>
         <Col span={6}>
           <Card title="Card title" bordered hoverable style={{ height: '39rem' }}>

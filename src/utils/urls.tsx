@@ -14,18 +14,30 @@ export enum AUTHEN_URLS{
     LOGOUT = '/api/auth/logout'
 }
 
-export enum PROFILE_URLS{
-    PROFILE='/api/profile/',
-    GET_PROFILE = '/api/profile/getProfile',
-    UPLOAD_AVATAR = '/api/profile/upload-profile',
-    GET_AVATAR = '/api/profile/get-avatar',
-    REMOVE_AVATAR = '/api/profile/remove-avatar'
+export enum COMPANY_DETAILS_URLS{
+  UPDATE_COMPANY_DETAILS = '/api/company/update/company-details',
+  UPDATE_COMPANY_DETAILS_ARRAY = '/api/company/update/company-details/add',
+  UPDATE_COMPANY_DETAILS_ARRAY_ELEMENT = '/api/company/update/company-details/update',
+  GET_COMPANY_DETAILS = '/api/company//get/company-details',
+  REMOVE_COMPANY_DETAILS_ARRAY_ELEMENT = '/api/company/delete/company-detail/one'
 }
 
-export enum POSTS_URL{
-    UPLOAD_POST='/api/posts/upload-post',
-    UPLOAD_DATA='/api/posts/upload-data',
-    GET_POST='/api/posts/get-posts',
-    POST_COMMENT = '/api/posts/post-comment',
-    GET_COMMENT = '/api/posts/get-comment'
+export enum MACHINE_DETAILS_URL{
+    
+}
+
+export enum INFRA_DETAILS_URL{
+
+}
+
+export enum UPLOAD_FILES_URL{
+
+}
+
+export enum PRODUCT_DETAILS_URL{
+CREATE_PRODUCT = '/api/company/create-product',
+UPDATE_PRODUCT = '/api/company/update-product',
+GET_PRODUCT_DETAILS = '/api/company/get-products',
+DELETE_SINGLE_PRODUCT = '/api/company/delete-product',
+DELETE_ALL_PRODUCTS = '/api/company/delete-all-product'
 }

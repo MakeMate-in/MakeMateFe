@@ -26,8 +26,8 @@ export enum OPEN_ROUTES {
     MAIN_PAGE = '/dashboard',
     CUSTOMER_SIGNUP = '/customer/signUp',
     VENDOR_DASHBOARD = '/vendor/dashboard',
-    CUSTOMER_DASHBOARD = '/customer/dashboard'
-
+    CUSTOMER_DASHBOARD = '/customer/dashboard',
+    DIGITAL_FACTORY = '/vendor/digital-factory'
 };
 
 export enum MESSAGES {
@@ -48,15 +48,18 @@ export const ROLE = {
 export const VENDOR_DRAWER_LIST = [
     {
         name: 'Dashboard',
-        icon: <Home/>
+        icon: <Home/>,
+        route: OPEN_ROUTES.VENDOR_DASHBOARD
     },
     {
         name: 'Digital Factory',
-        icon: <Factory/>
+        icon: <Factory/>,
+        route: OPEN_ROUTES.DIGITAL_FACTORY
     },
     {
         name: 'Logout',
-        icon: <Logout/>
+        icon: <Logout/>,
+        
     },
 ]
 

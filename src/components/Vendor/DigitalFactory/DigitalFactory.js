@@ -104,7 +104,6 @@ const DigitalFactory = () => {
                 <Step title="Machines" description="Add your machineries" />
                 <Step title="Customer Details" description="This is a description." />
                 <Step title="Services" description="Your Business Related Info" />
-                <Step title="Photos" description="This is a description." />
                 <Step title="Complete" description="Woah, we are here" />
               </Steps>
             </div>

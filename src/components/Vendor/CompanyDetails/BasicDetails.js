@@ -20,27 +20,32 @@ const BasicDetails = (props) => {
   }
 
   const handleFormSubmit = async() => {
-    props.onSaveandSubmit();
+   
     console.log(basicDetails)
-    // try{
-    // let params = {
-    //   // user: localStorage.get(USER_ID)
-    //   user: USER_ID
-    // }
-    // const res = await updateCompanyDetails(params,basicDetails)
-    // if(res.success){
-    //   const updatedData = await getCompanyDetails(params)
-    //   console.log(updatedData)
-    //   // props.onSaveandSubmit();
-    // }
-    // else{
-    //   //Toast
-    // }
-    // console.log(res)
-    // }
-    // catch(err){
-    //   console.log(err)
-    // }
+    try{
+    let params = {
+      // user: localStorage.get(USER_ID)
+      user: USER_ID
+    }
+    const res = await updateCompanyDetails(params,basicDetails)
+    if(res.success){
+      const updatedData = await getCompanyDetails(params)
+      console.log(updatedData)
+      if(updatedData.success){
+      props.onSaveAndSubmit();
+      }
+      else{
+        //Toast
+      }
+    }
+    else{
+      //Toast
+    }
+    console.log(res)
+    }
+    catch(err){
+      console.log(err)
+    }
   }
 
 

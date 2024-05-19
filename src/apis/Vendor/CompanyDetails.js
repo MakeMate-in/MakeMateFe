@@ -32,3 +32,40 @@ export const updateCompanyDetails = async (params,data) => {
     }
 
 }
+
+
+
+export const updateAddressandContacts = async (params,data) => {
+    try {
+        const url = COMPANY_DETAILS_URLS.UPDATE_COMPANY_DETAILS_ARRAY
+        data = await axios.patch(baseAPIUrl+url,data,{
+            params: params
+        }).then((res)=>{
+          return res.data;
+        })
+        .catch(err=>console.log(err))
+        return data
+    }
+    catch (err) {
+        throw err
+    }
+
+}
+
+
+export const deleteElement = async (params,data) => {
+    try {
+        const url = COMPANY_DETAILS_URLS.REMOVE_COMPANY_DETAILS_ARRAY_ELEMENT
+        data = await axios.patch(baseAPIUrl+url,data,{
+            params: params
+        }).then((res)=>{
+          return res.data;
+        })
+        .catch(err=>console.log(err))
+        return data
+    }
+    catch (err) {
+        throw err
+    }
+
+}

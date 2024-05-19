@@ -2,7 +2,7 @@ import { Card, Col, Row, ConfigProvider, Modal, Form, Input, Button, Image, Flex
 import { useState, useEffect } from 'react';
 import { CitySelect, CountrySelect, StateSelect } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
-import { getCompanyDetails, updateAddressandContacts } from '../../../apis/Vendor/CompanyDetails';
+import { getCompanyDetails, updateAddressandContacts, deleteElement } from '../../../apis/Vendor/CompanyDetails';
 import { USER_ID } from '../../../utils/constants';
 import del from './../../../assets/del.png'
 import pen from './../../../assets/pen.png'
@@ -42,12 +42,33 @@ const AddressDetails = () => {
         getCompany()
     }, [])
 
-    const handleDelete = () => {
-        
+    const handleDelete = async (item) => {
+        try{
+            let param ={
+                user: USER_ID
+            }
+            let data = {}
+            data.key = "address"
+            data.keyId = item._id
+            const res = await deleteElement(param,data)
+            if(res.success){
+                const updatedData = await getCompanyDetails(param)
+                if (updatedData.success) {
+                    setcompanyDetails(updatedData.data)
+                }
+            }
+            else{
+                //Toast
+            }
+            
+        }
+        catch(err){
+            console.log(err)
+        }
     }
 
+
     const handleFormSubmit = async () => {
-        console.log(address)
         try {
             let params = {
                 user: USER_ID
@@ -55,10 +76,8 @@ const AddressDetails = () => {
             let data = {}
             data.address = address
             const res = await updateAddressandContacts(params, data)
-            console.log(res)
             if (res.success) {
                 const updatedData = await getCompanyDetails(params)
-                console.log(updatedData)
                 if (updatedData.success) {
                     setcompanyDetails(updatedData.data)
                 }
@@ -70,7 +89,7 @@ const AddressDetails = () => {
         catch (err) {
             console.log(err)
         }
-        // setModalOpen(false)
+        setModalOpen(false)
     }
 
     console.log(CompanyDetails)
@@ -100,8 +119,12 @@ const AddressDetails = () => {
                                                 <Flex justify='space-between' >
                                                     <p style={{ margin: '0px' }}>{item.address_title}</p>
                                                     <Flex gap="small">
+                                                        <div onClick={() => {handleDelete(item)}}>
                                                         <img src={del} alt="My Icon" style={{ width: '30px', height: '30px' }} />
+                                                        </div>
+                                                        <div>
                                                         <img src={pen} alt="My Icon" style={{ width: '30px', height: '30px' }} />
+                                                        </div>
                                                     </Flex>
                                                 </Flex>
                                                 {/* <Image src={del}/> <Image src={pen}/> */}

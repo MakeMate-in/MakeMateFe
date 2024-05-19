@@ -55,7 +55,26 @@ export const updateAddressandContacts = async (params,data) => {
 
 export const deleteElement = async (params,data) => {
     try {
+        data.params = params
         const url = COMPANY_DETAILS_URLS.REMOVE_COMPANY_DETAILS_ARRAY_ELEMENT
+        data = await axios.delete(baseAPIUrl+url,{
+            data: data
+        }).then((res)=>{
+          return res.data;
+        })
+        .catch(err=>console.log(err))
+        return data
+    }
+    catch (err) {
+        throw err
+    }
+
+}
+
+export const updateElement = async (params,data) => {
+    try {
+        data.params = params
+        const url = COMPANY_DETAILS_URLS.UPDATE_COMPANY_DETAILS_ARRAY_ELEMENT
         data = await axios.patch(baseAPIUrl+url,data,{
             params: params
         }).then((res)=>{

@@ -13,6 +13,7 @@ import { Icon } from '@mui/material';
 const ContactDetails = (props) => {
 
     const [contactModalOpen, setContactModalOpen] = useState(false);
+    const [form] = Form.useForm()
     const [contact, setContact] = useState({
         "name": "",
         "designation": "",
@@ -145,13 +146,14 @@ const ContactDetails = (props) => {
                     centered
                     open={contactModalOpen}
                     okText="Save"
-                    onOk={() => setContactModalOpen(false)}
+                    onOk={form.submit}
                     onCancel={() => setContactModalOpen(false)}
                     width={700}
                 >
                     <div>
                         <Form
                             layout="vertical"
+                            form={form}
                             onFinish={handleFormSubmit}
                         >
                             <Row gutter={16}>
@@ -212,11 +214,11 @@ const ContactDetails = (props) => {
                                     </Form.Item>
                                 </Col>
                             </Row>
-                            <Form.Item>
+                            {/* <Form.Item>
                                 <Button type="primary" htmlType="submit">
                                     Save and Submit
                                 </Button>
-                            </Form.Item>
+                            </Form.Item> */}
                         </Form>
                     </div>
                 </Modal>

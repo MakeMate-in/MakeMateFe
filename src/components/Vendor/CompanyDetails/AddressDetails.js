@@ -11,8 +11,7 @@ import ContactDetails from './ContactDetails';
 const AddressDetails = () => {
 
     const [modalOpen, setModalOpen] = useState(false);
-    const [contactModalOpen, setContactModalOpen] = useState(false);
-
+    const [form] = Form.useForm()
     const [countryid, setCountryid] = useState(0);
     const [stateid, setstateid] = useState(0);
     const [CompanyDetails, setcompanyDetails] = useState({})
@@ -141,14 +140,14 @@ const AddressDetails = () => {
                                 title="Add New Address"
                                 centered
                                 open={modalOpen}
-                                // okText="Save"
-                                // onOk={() => setModalOpen(false)}
-                                // onCancel={() => setModalOpen(false)}
-                                // onOk={() => toggleModal(0, false)}
+                                okText="Save"
+                                onOk={form.submit}
+                                onCancel={() => setModalOpen(false)}
                                 width={700}
                             >
                                 <Form
                                     layout="vertical"
+                                    form={form}
                                     onFinish={handleFormSubmit}
                                 >
                                     <Row gutter={16}>

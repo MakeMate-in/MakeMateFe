@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Divider, } from '@mui/material';
-import { Card, Col, Row, Steps, Button, Tabs } from 'antd';
+import { Card, Col, Row, Steps, Button, Tabs, Progress, Flex } from 'antd';
 import './../Dashboard/Dashboard.css';
 import AddressDetails from '../CompanyDetails/AddressDetails';
 import './DigitalFactory.css'
@@ -19,11 +19,11 @@ const DigitalFactory = () => {
   const [currentSub, setCurrentSub] = useState(0);
   const { TabPane } = Tabs;
 
-  const onSaveAndSubmit = () => {   
-    if(currentSub==3){
-      setCurrent(current+1);
+  const onSaveAndSubmit = () => {
+    if (currentSub == 3) {
+      setCurrent(current + 1);
     } else {
-      setCurrentSub(currentSub+1);
+      setCurrentSub(currentSub + 1);
     }
   };
 
@@ -95,23 +95,27 @@ const DigitalFactory = () => {
     <div>
       <Row gutter={16}>
         <Col span={6}>
-          <Card title="Card title" bordered hoverable style={{ height: '39rem' }}>
-
-            <div>
-              <Steps direction="vertical" current={current}
-                onChange={onChange}>
-                <Step title='Company Overview' description={<StepDropdown />} />
-                <Step title="Machines" description="Add your machineries" />
-                <Step title="Customer Details" description="This is a description." />
-                <Step title="Services" description="Your Business Related Info" />
-                <Step title="Complete" description="Woah, we are here" />
-              </Steps>
-            </div>
-
+          <Card bordered hoverable style={{ height: '39rem' }}>
+            <Flex vertical style={{ alignItems: 'center' }}>
+              <div>
+                <h4>Return to Dashboard</h4>
+                <Progress strokeWidth={13} type="dashboard" percent={75} size={150} gapDegree={180} />
+              </div>
+              <div style={{margin:'0'}}>
+                <Steps direction="vertical" current={current}
+                  onChange={onChange}>
+                  <Step title='Company Overview' description={<StepDropdown />} />
+                  <Step title="Machines" description="Add your machineries" />
+                  <Step title="Customer Details" description="This is a description." />
+                  <Step title="Services" description="Your Business Related Info" />
+                  <Step title="Complete" description="Woah, we are here" />
+                </Steps>
+              </div>
+            </Flex>
           </Card>
         </Col>
         <Col span={18}>
-          <Card bordered hoverable style={{ height: '39rem', overflow: 'auto', scrollbarWidth: 'thin', position:'relative' }}>
+          <Card bordered hoverable style={{ height: '39rem', overflow: 'auto', scrollbarWidth: 'thin', position: 'relative' }}>
             <div>
               <h2 style={{ marginTop: '0' }}>Company Overview</h2>
               <hr />
@@ -121,15 +125,15 @@ const DigitalFactory = () => {
                 </div>
               </Row>
 
-              {currentSub!=0?<div style={{bottom:'0', position: 'absolute' }}>
+              {currentSub != 0 ? <div style={{ bottom: '0', position: 'absolute' }}>
                 <Button type='primary' form='form1' onClick={onSaveAndSubmit}>Save and Submit</Button>
-              </div>:''}
+              </div> : ''}
             </div>
 
           </Card>
         </Col>
-      </Row>
-    </div>
+      </Row >
+    </div >
 
 
   )

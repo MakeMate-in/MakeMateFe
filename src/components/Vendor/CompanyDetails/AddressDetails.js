@@ -91,7 +91,6 @@ const AddressDetails = () => {
         setModalOpen(false)
     }
 
-    console.log(CompanyDetails)
 
     return (
 
@@ -239,11 +238,11 @@ const AddressDetails = () => {
                                             </Form.Item>
                                         </Col>
                                     </Row>
-                                    <Form.Item>
+                                    {/* <Form.Item>
                                         <Button type="primary" htmlType="submit">
                                             Save and Submit
                                         </Button>
-                                    </Form.Item>
+                                    </Form.Item> */}
                                 </Form>
                             </Modal>
                         </Card>

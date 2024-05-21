@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { Divider, } from '@mui/material';
 import { Card, Col, Row, Steps, Button, Tabs, Progress, Flex } from 'antd';
 import './../Dashboard/Dashboard.css';
 import AddressDetails from '../CompanyDetails/AddressDetails';
 import './DigitalFactory.css'
 import BasicDetails from '../CompanyDetails/BasicDetails';
-import AdditionalInfo from '../CompanyDetails/AdditionalInfo';
+import AdditionalInfo from '../CompanyDetails/AdditionalInfo/index';
 import Certificates from '../CompanyDetails/Certificates';
-import { STEP_TAB_MAP, STEP_TAB_MAP_2 } from './../../../utils/constants';
-
+import { STEP_TAB_MAP, STEP_TAB_MAP_2, USER_ID } from './../../../utils/constants';
+import { getCompanyDetails } from '../../../apis/Vendor/CompanyDetails';
 
 const { Step } = Steps;
 
@@ -18,6 +18,19 @@ const DigitalFactory = () => {
   const [current, setCurrent] = useState(0);
   const [currentSub, setCurrentSub] = useState(0);
   const { TabPane } = Tabs;
+  const [CompanyDetails, setcompanyDetails] = useState({})
+
+  useEffect(() => {
+    const getCompany = async () => {
+        let param = {
+            user: USER_ID
+        }
+        const resp = await getCompanyDetails(param)
+        setcompanyDetails(resp.data)
+    }
+
+    getCompany()
+}, [])
 
   const onSaveAndSubmit = () => {
     if (currentSub == 3) {
@@ -42,22 +55,22 @@ const DigitalFactory = () => {
     {
       key: '1',
       label: 'Basic Details',
-      children: <BasicDetails onSaveAndSubmit={onSaveAndSubmit} />,
+      children: <BasicDetails onSaveAndSubmit={onSaveAndSubmit} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails} />,
     },
     {
       key: '2',
       label: 'Addresses & Contacts',
-      children: <AddressDetails />,
+      children: <AddressDetails  CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails}/>,
     },
     {
       key: '3',
       label: 'Certificates',
-      children: <Certificates />,
+      children: <Certificates  CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails}/>,
     },
     {
       key: '4',
       label: 'Additional Information',
-      children: <AdditionalInfo />,
+      children: <AdditionalInfo  CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails} />,
     },
   ]
 
@@ -99,7 +112,7 @@ const DigitalFactory = () => {
             <Flex vertical style={{ alignItems: 'center' }}>
               <div>
                 <h4>Return to Dashboard</h4>
-                <Progress strokeWidth={13} type="dashboard" percent={75} size={150} gapDegree={180} />
+                <Progress steps={10} strokeWidth={13} type="dashboard" percent={10} size={150} gapDegree={150} />
               </div>
               <div style={{margin:'0'}}>
                 <Steps direction="vertical" current={current}

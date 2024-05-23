@@ -12,22 +12,22 @@ const CompanyDetailsComp = (props) => {
     {
       key: '1',
       label: 'Basic Details',
-      children: <BasicDetails onSaveAndSubmit={props.onSaveAndSubmit} />,
+      children: <BasicDetails {...props} />,
     },
     {
       key: '2',
       label: 'Addresses & Contacts',
-      children: <AddressDetails />,
+      children: <AddressDetails {...props}/>,
     },
     {
       key: '3',
       label: 'Certificates',
-      children: <Certificates />,
+      children: <Certificates {...props}/>,
     },
     {
       key: '4',
       label: 'Additional Information',
-      children: <AdditionalInfo />,
+      children: <AdditionalInfo {...props}/>,
     },
   ]
 

@@ -130,7 +130,7 @@ useEffect(() => {
             <div>
               <h2 style={{ marginTop: '0' }}>{STEPS_HEADINGS[current]}</h2>
               <hr />
-              {current == 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} /> : ''}
+              {current == 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails}/> : ''}
 
               {currentSub != 0 ? <div style={{ bottom: '0', position: 'absolute' }}>
                 <Button type='primary' form='form1' onClick={onSaveAndSubmit}>Save and Submit</Button>

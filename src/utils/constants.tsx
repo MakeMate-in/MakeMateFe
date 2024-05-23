@@ -79,6 +79,13 @@ export const STEP_TAB_MAP_2 = {
     '4': 3
 }
 
+export const STEPS_HEADINGS = {
+    0: 'Company Overview',
+    1: 'Machines',
+    2: 'Customer Details',
+    3: 'Complete'
+}
+
 
 
 export const USER_ID = "66379ae26a6866cccf8b3bfd"

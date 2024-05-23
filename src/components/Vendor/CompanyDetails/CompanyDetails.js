@@ -1,110 +1,45 @@
-import { Col, Row, Form, Input, Button } from 'antd';
-import './../Dashboard/Dashboard.css'
+import React from 'react'
+import {Row, Tabs} from 'antd'
+import BasicDetails from '../CompanyDetails/BasicDetails';
+import AdditionalInfo from '../CompanyDetails/AdditionalInfo';
+import Certificates from '../CompanyDetails/Certificates';
+import AddressDetails from '../CompanyDetails/AddressDetails';
+import { STEP_TAB_MAP, STEP_TAB_MAP_2, STEPS_HEADINGS } from './../../../utils/constants';
 
+const CompanyDetails = (props) => {
 
-export const forms = [
+  const items = [
     {
-      label: 'Form for A',
-      content: (
-        <Form
-      layout="vertical"
-    >
-      <Row gutter={16}>
-        <Col span={24}>
-          <Row gutter={16} align="middle">
-            <Col span={8}>
-              <Form.Item label="Company Logo">
-                <div className="company-logo">
-                  <img src="https://via.placeholder.com/150" alt="Company Logo" />
-                </div>
-              </Form.Item>
-            </Col>
-            <Col span={16}>
-              <Form.Item label="About Us" name="aboutUs">
-                <Input.TextArea rows={4}  placeholder='Provide your company description and an overview of your company'/>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Col>
+      key: '1',
+      label: 'Basic Details',
+      children: <BasicDetails onSaveAndSubmit={props.onSaveAndSubmit} />,
+    },
+    {
+      key: '2',
+      label: 'Addresses & Contacts',
+      children: <AddressDetails />,
+    },
+    {
+      key: '3',
+      label: 'Certificates',
+      children: <Certificates />,
+    },
+    {
+      key: '4',
+      label: 'Additional Information',
+      children: <AdditionalInfo />,
+    },
+  ]
+
+  return (
+    <div>
+      <Row>
+        <div style={{ width: '100%' }}>
+          <Tabs defaultActiveKey="1" items={items} onChange={props.onChangeTab} size='large' activeKey={STEP_TAB_MAP[props.currentSub]} />
+        </div>
       </Row>
-      <Row gutter={16}>
-        <Col span={12}>
-          <Form.Item
-            label="Field 1"
-            name="field1"
-            rules={[{ required: true, message: 'Field 1 is required' }]}
-          >
-            <Input className="custom-input" variant="filled"/>
-          </Form.Item>
-          <Form.Item
-            label="Field 2"
-            name="field2"
-            rules={[{ required: true, message: 'Field 2 is required' }]}
-          >
-            <Input className="custom-input" variant="filled"/>
-          </Form.Item>
-          <Form.Item
-            label="Field 3"
-            name="field3"
-            rules={[{ required: true, message: 'Field 3 is required' }]}
-          >
-            <Input className="custom-input" variant="filled"/>
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item
-            label="Field 4"
-            name="field4"
-            rules={[{ required: true, message: 'Field 4 is required' }]}
-          >
-            <Input className="custom-input" variant="filled"/>
-          </Form.Item>
-          <Form.Item
-            label="Field 5"
-            name="field5"
-            rules={[{ required: true, message: 'Field 5 is required' }]}
-          >
-            <Input className="custom-input" variant="filled"/>
-          </Form.Item>
-          <Form.Item
-            label="Field 6"
-            name="field6"
-            rules={[{ required: true, message: 'Field 6 is required' }]}
-          >
-            <Input className="custom-input" variant="filled"/>
-          </Form.Item>
-        </Col>
-      </Row>
-      
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
-      )
-    },
-    {
-      label: 'Form for B',
-      content: (
-        <Form>
-          <Form.Item label="Field B">
-            <Input />
-          </Form.Item>
-          {/* Add more form fields as needed */}
-        </Form>
-      )
-    },
-    {
-      label: 'Form for C',
-      content: (
-        <Form>
-          <Form.Item label="Field C">
-            <Input />
-          </Form.Item>
-          {/* Add more form fields as needed */}
-        </Form>
-      )
-    },
-    // Add more form configurations as needed
-  ];
+    </div>
+  )
+}
+
+export default CompanyDetails

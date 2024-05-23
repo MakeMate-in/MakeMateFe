@@ -1,19 +1,15 @@
-import { useState,useEffect } from 'react';
-import { Divider, } from '@mui/material';
-import { Card, Col, Row, Steps, Button, Tabs, Progress, Flex } from 'antd';
+import { useState, useEffect } from 'react';
+import { Card, Col, Row, Steps, Button, Tabs, Progress, Flex, Collapse } from 'antd';
 import './../Dashboard/Dashboard.css';
-import AddressDetails from '../CompanyDetails/AddressDetails';
 import './DigitalFactory.css'
-import BasicDetails from '../CompanyDetails/BasicDetails';
-import AdditionalInfo from '../CompanyDetails/AdditionalInfo/index';
-import Certificates from '../CompanyDetails/Certificates';
-import { STEP_TAB_MAP, STEP_TAB_MAP_2, USER_ID } from './../../../utils/constants';
-import { getCompanyDetails } from '../../../apis/Vendor/CompanyDetails';
+import InfraDetails from '../CompanyDetails/Machines';
+import { STEP_TAB_MAP, STEP_TAB_MAP_2, STEPS_HEADINGS } from './../../../utils/constants';
+import CompanyDetails from '../CompanyDetails/CompanyDetails';
+
 
 const { Step } = Steps;
 
 const DigitalFactory = () => {
-
 
   const [current, setCurrent] = useState(0);
   const [currentSub, setCurrentSub] = useState(0);
@@ -50,30 +46,6 @@ const DigitalFactory = () => {
     setCurrentSub(value);
   };
 
-
-  const items = [
-    {
-      key: '1',
-      label: 'Basic Details',
-      children: <BasicDetails onSaveAndSubmit={onSaveAndSubmit} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails} />,
-    },
-    {
-      key: '2',
-      label: 'Addresses & Contacts',
-      children: <AddressDetails  CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails}/>,
-    },
-    {
-      key: '3',
-      label: 'Certificates',
-      children: <Certificates  CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails}/>,
-    },
-    {
-      key: '4',
-      label: 'Additional Information',
-      children: <AdditionalInfo  CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails} />,
-    },
-  ]
-
   const onChangeTab = (key) => {
     setCurrentSub(STEP_TAB_MAP_2[key]);
   };
@@ -108,20 +80,26 @@ const DigitalFactory = () => {
     <div>
       <Row gutter={16}>
         <Col span={6}>
-          <Card bordered hoverable style={{ height: '39rem' }}>
+          <Card bordered hoverable style={{ height: '39rem', overflow: 'auto', scrollbarWidth: 'thin' }}>
             <Flex vertical style={{ alignItems: 'center' }}>
               <div>
                 <h4>Return to Dashboard</h4>
                 <Progress steps={10} strokeWidth={13} type="dashboard" percent={10} size={150} gapDegree={150} />
+                <Progress strokeWidth={13} type="dashboard" percent={75} size={150} gapDegree={150} />
               </div>
-              <div style={{margin:'0'}}>
+              <div style={{ margin: '0' }}>
                 <Steps direction="vertical" current={current}
                   onChange={onChange}>
-                  <Step title='Company Overview' description={<StepDropdown />} />
-                  <Step title="Machines" description="Add your machineries" />
-                  <Step title="Customer Details" description="This is a description." />
-                  <Step title="Services" description="Your Business Related Info" />
-                  <Step title="Complete" description="Woah, we are here" />
+                  <Step title={STEPS_HEADINGS[0]} description={<Collapse
+                    items={[{ key: '1', children: <StepDropdown /> }]}
+                  />} />
+                  {/* <Collapse
+                    items={[{ key: '1',label:'Company', children: <Step title={STEPS_HEADINGS[0]} description={<StepDropdown />} /> }]}
+                  /> */}
+                  <Step title={STEPS_HEADINGS[1]} description="Add your machineries" />
+                  <Step title={STEPS_HEADINGS[2]} description="This is a description." />
+                  {/* <Step title="Services" description="Your Business Related Info" /> */}
+                  <Step title={STEPS_HEADINGS[3]} description="Woah, we are here" />
                 </Steps>
               </div>
             </Flex>
@@ -130,13 +108,9 @@ const DigitalFactory = () => {
         <Col span={18}>
           <Card bordered hoverable style={{ height: '39rem', overflow: 'auto', scrollbarWidth: 'thin', position: 'relative' }}>
             <div>
-              <h2 style={{ marginTop: '0' }}>Company Overview</h2>
+              <h2 style={{ marginTop: '0' }}>{STEPS_HEADINGS[current]}</h2>
               <hr />
-              <Row>
-                <div style={{ width: '100%' }}>
-                  <Tabs defaultActiveKey="1" items={items} onChange={onChangeTab} size='large' activeKey={STEP_TAB_MAP[currentSub]} />
-                </div>
-              </Row>
+              {current == 0 ? <CompanyDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} /> : ''}
 
               {currentSub != 0 ? <div style={{ bottom: '0', position: 'absolute' }}>
                 <Button type='primary' form='form1' onClick={onSaveAndSubmit}>Save and Submit</Button>

@@ -3,11 +3,9 @@ import { Card, Col, Row, Steps, Button, Tabs, Progress, Flex, Collapse } from 'a
 import './../Dashboard/Dashboard.css';
 import './DigitalFactory.css'
 // import InfraDetails from '../CompanyDetails/Machines';
-import { STEP_TAB_MAP, STEP_TAB_MAP_2, STEPS_HEADINGS, USER_ID } from './../../../utils/constants';
+import { STEP_TAB_MAP, STEP_TAB_MAP_2, STEPS_HEADINGS, USER_ID, PER_COUNT } from './../../../utils/constants';
 import CompanyDetailsComp from '../CompanyDetails/CompanyDetails';
-import { getCompanyDetails
-
- } from '../../../apis/Vendor/CompanyDetails';
+import { getCompanyDetails} from '../../../apis/Vendor/CompanyDetails';
 
 
 const { Step } = Steps;
@@ -35,12 +33,16 @@ const DigitalFactory = () => {
 useEffect(() => {
     const CalculatePercentage = async () => {
       let per = 0;
-      if(CompanyDetails.company_name!=undefined && CompanyDetails.company_name!=='')per=per+10
-      if(CompanyDetails.address!=undefined && CompanyDetails.address.kength>0) per=per+10
-      if(CompanyDetails.contact_person!=undefined && CompanyDetails.contact_person.kength>0) per=per+10
-      if(CompanyDetails.customer_details!=undefined && CompanyDetails.customer_details.length>0) per=per+10
-      if(CompanyDetails.product_details!=undefined && CompanyDetails.product_details.length>0) per=per+10
-   
+      if(CompanyDetails.company_name!=undefined && CompanyDetails.company_name!=='')per=per+PER_COUNT
+    
+      if(CompanyDetails.address!=undefined && CompanyDetails.address.length>0) per=per+PER_COUNT
+    
+      if(CompanyDetails.contact_person!=undefined && CompanyDetails.contact_person.length>0) per=per+PER_COUNT
+    
+      if(CompanyDetails.customer_details!=undefined && CompanyDetails.customer_details.length>0) per=per+PER_COUNT
+    
+      if(CompanyDetails.product_details!=undefined && CompanyDetails.product_details.length>0) per=per+PER_COUNT
+    
       setPercent(per)
     }
 

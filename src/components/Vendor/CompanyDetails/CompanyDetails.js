@@ -6,7 +6,7 @@ import Certificates from '../CompanyDetails/Certificates';
 import AddressDetails from '../CompanyDetails/AddressDetails';
 import { STEP_TAB_MAP, STEP_TAB_MAP_2, STEPS_HEADINGS } from './../../../utils/constants';
 
-const CompanyDetails = (props) => {
+const CompanyDetailsComp = (props) => {
 
   const items = [
     {
@@ -42,4 +42,4 @@ const CompanyDetails = (props) => {
   )
 }
 
-export default CompanyDetails
+export default CompanyDetailsComp

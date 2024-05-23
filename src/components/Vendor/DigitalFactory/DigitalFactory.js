@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react';
 import { Card, Col, Row, Steps, Button, Tabs, Progress, Flex, Collapse } from 'antd';
 import './../Dashboard/Dashboard.css';
 import './DigitalFactory.css'
-import InfraDetails from '../CompanyDetails/Machines';
-import { STEP_TAB_MAP, STEP_TAB_MAP_2, STEPS_HEADINGS } from './../../../utils/constants';
-import CompanyDetails from '../CompanyDetails/CompanyDetails';
+// import InfraDetails from '../CompanyDetails/Machines';
+import { STEP_TAB_MAP, STEP_TAB_MAP_2, STEPS_HEADINGS, USER_ID } from './../../../utils/constants';
+import CompanyDetailsComp from '../CompanyDetails/CompanyDetails';
+import { getCompanyDetails
+
+ } from '../../../apis/Vendor/CompanyDetails';
 
 
 const { Step } = Steps;
@@ -127,7 +130,7 @@ useEffect(() => {
             <div>
               <h2 style={{ marginTop: '0' }}>{STEPS_HEADINGS[current]}</h2>
               <hr />
-              {current == 0 ? <CompanyDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} /> : ''}
+              {current == 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} /> : ''}
 
               {currentSub != 0 ? <div style={{ bottom: '0', position: 'absolute' }}>
                 <Button type='primary' form='form1' onClick={onSaveAndSubmit}>Save and Submit</Button>

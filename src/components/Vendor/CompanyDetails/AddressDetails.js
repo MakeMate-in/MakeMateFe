@@ -8,13 +8,13 @@ import del from './../../../assets/del.png'
 import pen from './../../../assets/pen.png'
 import ContactDetails from './ContactDetails';
 
-const AddressDetails = () => {
+const AddressDetails = (props) => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [form] = Form.useForm()
     const [countryid, setCountryid] = useState(0);
     const [stateid, setstateid] = useState(0);
-    const [CompanyDetails, setcompanyDetails] = useState({})
+    // const [CompanyDetails, setcompanyDetails] = useState({})
 
     const [address, setAddress] = useState({
         "address_title": "",
@@ -35,7 +35,7 @@ const AddressDetails = () => {
                 user: USER_ID
             }
             const resp = await getCompanyDetails(param)
-            setcompanyDetails(resp.data)
+            props.setcompanyDetails(resp.data)
         }
 
         getCompany()
@@ -53,7 +53,7 @@ const AddressDetails = () => {
             if(res.success){
                 const updatedData = await getCompanyDetails(param)
                 if (updatedData.success) {
-                    setcompanyDetails(updatedData.data)
+                    props.setcompanyDetails(updatedData.data)
                 }
             }
             else{
@@ -78,7 +78,7 @@ const AddressDetails = () => {
             if (res.success) {
                 const updatedData = await getCompanyDetails(params)
                 if (updatedData.success) {
-                    setcompanyDetails(updatedData.data)
+                    props.setcompanyDetails(updatedData.data)
                 }
             }
             else {
@@ -111,7 +111,7 @@ const AddressDetails = () => {
                             <hr style={{ background: 'rgba(22, 119, 255)', height: '2px' }} />
                             <div style={{ height: '18rem', overflow: 'auto', scrollbarWidth: 'thin' }}>
                                 {
-                                    CompanyDetails.address != undefined ? CompanyDetails.address.map((item) => {
+                                    props.CompanyDetails.address != undefined ? props.CompanyDetails.address.map((item) => {
                                         return (
                                             <div style={{ marginBottom: '20px' }}>
                                                 <Flex justify='space-between' >
@@ -249,7 +249,7 @@ const AddressDetails = () => {
                     </Col>
                     <Col span={12}>
 
-                        <ContactDetails CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails}/>
+                        <ContactDetails {...props}/>
                     </Col>
                 </Row>
             </div>

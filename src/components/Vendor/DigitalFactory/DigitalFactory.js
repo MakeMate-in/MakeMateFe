@@ -16,6 +16,7 @@ const DigitalFactory = () => {
   const [currentSub, setCurrentSub] = useState(0);
   const { TabPane } = Tabs;
   const [CompanyDetails, setcompanyDetails] = useState({})
+  const [percent,setPercent] = useState(0)
 
   useEffect(() => {
     const getCompany = async () => {
@@ -29,6 +30,26 @@ const DigitalFactory = () => {
     getCompany()
 }, [])
 
+useEffect(() => {
+    const CalculatePercentage = async () => {
+      let per = 0;
+      if(CompanyDetails.company_name!=undefined && CompanyDetails.company_name!=='')per=per+PER_COUNT
+    
+      if(CompanyDetails.address!=undefined && CompanyDetails.address.length>0) per=per+PER_COUNT
+    
+      if(CompanyDetails.contact_person!=undefined && CompanyDetails.contact_person.length>0) per=per+PER_COUNT
+    
+      if(CompanyDetails.customer_details!=undefined && CompanyDetails.customer_details.length>0) per=per+PER_COUNT
+    
+      if(CompanyDetails.product_details!=undefined && CompanyDetails.product_details.length>0) per=per+PER_COUNT
+    
+      setPercent(per)
+    }
+
+   CalculatePercentage()
+
+},[CompanyDetails])
+
   const onSaveAndSubmit = () => {
     if (currentSub == 3) {
       setCurrent(current + 1);
@@ -36,6 +57,7 @@ const DigitalFactory = () => {
       setCurrentSub(currentSub + 1);
     }
   };
+
 
   const onChange = (value) => {
     console.log('onChange:', value);
@@ -108,8 +130,7 @@ const DigitalFactory = () => {
             <Flex vertical style={{ alignItems: 'center' }}>
               <div>
                 <h4>Return to Dashboard</h4>
-                <Progress steps={10} strokeWidth={13} type="dashboard" percent={10} size={150} gapDegree={150} />
-                <Progress strokeWidth={13} type="dashboard" percent={75} size={150} gapDegree={150} />
+                <Progress strokeWidth={13} type="dashboard" percent={percent} size={150} gapDegree={150} />
               </div>
               <div style={{ margin: '0' }}>
                 <Steps direction="vertical" current={current}
@@ -138,7 +159,7 @@ const DigitalFactory = () => {
               <hr />
               {current == 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails}/> : ''}
               {current == 1 ? <InfraDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} /> : ''}
-              
+
               {currentSub != 0 ? <div style={{ bottom: '0', position: 'absolute' }}>
                 <Button type='primary' form='form1' onClick={onSaveAndSubmit}>Save and Submit</Button>
               </div> : ''}

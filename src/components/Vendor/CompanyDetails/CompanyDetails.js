@@ -6,28 +6,28 @@ import Certificates from '../CompanyDetails/Certificates';
 import AddressDetails from '../CompanyDetails/AddressDetails';
 import { STEP_TAB_MAP, STEP_TAB_MAP_2, STEPS_HEADINGS } from './../../../utils/constants';
 
-const CompanyDetails = (props) => {
+const CompanyDetailsComp = (props) => {
 
   const items = [
     {
       key: '1',
       label: 'Basic Details',
-      children: <BasicDetails onSaveAndSubmit={props.onSaveAndSubmit} />,
+      children: <BasicDetails {...props} />,
     },
     {
       key: '2',
       label: 'Addresses & Contacts',
-      children: <AddressDetails />,
+      children: <AddressDetails {...props}/>,
     },
     {
       key: '3',
       label: 'Certificates',
-      children: <Certificates />,
+      children: <Certificates {...props}/>,
     },
     {
       key: '4',
       label: 'Additional Information',
-      children: <AdditionalInfo />,
+      children: <AdditionalInfo {...props}/>,
     },
   ]
 
@@ -42,4 +42,4 @@ const CompanyDetails = (props) => {
   )
 }
 
-export default CompanyDetails
+export default CompanyDetailsComp

@@ -89,4 +89,6 @@ export const STEPS_HEADINGS = {
 
 
 export const USER_ID = "66379ae26a6866cccf8b3bfd"
+
+export const PER_COUNT=10
 // export const HANDLE_REGEX:RegExp = /^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?/~\\-]+$/;

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, Col, Row, Steps, Button, Tabs, Progress, Flex, Collapse } from 'antd';
 import './../Dashboard/Dashboard.css';
 import './DigitalFactory.css'
-// import InfraDetails from '../CompanyDetails/Machines';
+import InfraDetails from '../CompanyDetails/Machines';
 import { STEP_TAB_MAP, STEP_TAB_MAP_2, STEPS_HEADINGS, USER_ID, PER_COUNT } from './../../../utils/constants';
 import CompanyDetailsComp from '../CompanyDetails/CompanyDetails';
 import { getCompanyDetails} from '../../../apis/Vendor/CompanyDetails';
@@ -98,6 +98,29 @@ useEffect(() => {
     );
   };
 
+
+  const StepDropdownMachines = () => {
+    return (
+      <Steps
+        progressDot
+        direction='vertical'
+        current={currentSub}
+        onChange={onChangeSub}
+        items={[
+          {
+            title: 'Machines'
+          },
+          {
+            title: 'Addresses & Contacts'
+          },
+          {
+            title: 'Certificates'
+          },
+        ]}
+      />
+    );
+  };
+
   return (
 
     <div>
@@ -118,7 +141,9 @@ useEffect(() => {
                   {/* <Collapse
                     items={[{ key: '1',label:'Company', children: <Step title={STEPS_HEADINGS[0]} description={<StepDropdown />} /> }]}
                   /> */}
-                  <Step title={STEPS_HEADINGS[1]} description="Add your machineries" />
+                  <Step title={STEPS_HEADINGS[1]} description={<Collapse
+                    items={[{ key: '1', children: <StepDropdownMachines /> }]}
+                  />} />
                   <Step title={STEPS_HEADINGS[2]} description="This is a description." />
                   {/* <Step title="Services" description="Your Business Related Info" /> */}
                   <Step title={STEPS_HEADINGS[3]} description="Woah, we are here" />
@@ -133,6 +158,7 @@ useEffect(() => {
               <h2 style={{ marginTop: '0' }}>{STEPS_HEADINGS[current]}</h2>
               <hr />
               {current == 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails}/> : ''}
+              {current == 1 ? <InfraDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} /> : ''}
 
               {currentSub != 0 ? <div style={{ bottom: '0', position: 'absolute' }}>
                 <Button type='primary' form='form1' onClick={onSaveAndSubmit}>Save and Submit</Button>

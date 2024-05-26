@@ -102,7 +102,6 @@ const BasicDetails = (props) => {
     onRemove: uploadImage
   };
 
-  console.log(fileList)
   return (
     <Form
       layout="vertical"

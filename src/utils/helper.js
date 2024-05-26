@@ -164,12 +164,9 @@ export const getToken = () => {
 
 
 export const convertBufferToBinary = (buffer) => {
-    // console.log(buffer.data.length)
 	if(buffer==undefined || buffer.data==undefined || buffer.data.length==0) return ''
-
 	const base64Image = Buffer.from(buffer, 'binary').toString('base64');
     const avatar_url = `data:image/png;base64,${base64Image}`;
-    console.log(avatar_url)
 	return avatar_url
 }
 
@@ -200,4 +197,23 @@ export const uploadButton = (
           </div>
         </button>
       );
-    
+
+   export  const options = [
+        {
+          value: 'jack',
+          label: 'Jack',
+        },
+        {
+          value: 'lucy',
+          label: 'Lucy',
+        },
+        {
+          value: 'Yiminghe',
+          label: 'yiminghe',
+        },
+        {
+          value: 'disabled',
+          label: 'Disabled',
+          disabled: true,
+        }
+      ];

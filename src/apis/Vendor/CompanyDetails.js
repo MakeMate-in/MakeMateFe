@@ -116,3 +116,32 @@ export const uploadAvatar = ( async(file,user) => {
     })
     return res;
 })
+
+
+export const uploadCertificate = async (user, file, name) => {
+    const url = COMPANY_DETAILS_URLS.UPLOAD_CERTIFICATE;
+    // const authToken = getAccessToken();
+    const headers = {
+        // 'Authorization': authToken,
+        'Content-Type':' multipart/form-data;',
+      }
+    const params={
+        user:user
+    }
+    let data={}
+    data.file=file;
+    data.name = name
+    let res = await axios.post(
+        baseAPIUrl+url,data,
+        {
+            headers:headers,
+            params:params
+        
+        }).then((response) => {
+        return response.data;
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    return res;
+}

@@ -20,7 +20,8 @@ export enum COMPANY_DETAILS_URLS{
   UPDATE_COMPANY_DETAILS_ARRAY_ELEMENT = '/api/company/update/company-details/update',
   GET_COMPANY_DETAILS = '/api/company//get/company-details',
   REMOVE_COMPANY_DETAILS_ARRAY_ELEMENT = '/api/company/delete/company-detail/one',
-  UPLOAD_AVATAR = '/api/company/upload-avatar'
+  UPLOAD_AVATAR = '/api/company/upload-avatar',
+  UPLOAD_CERTIFICATE = '/api/company/upload-certificate'
 }
 
 export enum MACHINE_DETAILS_URL{

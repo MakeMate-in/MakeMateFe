@@ -3,7 +3,7 @@ import { Card, Col, Row, Steps, Button, Tabs, Progress, Flex, Collapse, ConfigPr
 import './../Dashboard/Dashboard.css';
 import './DigitalFactory.css'
 import InfraDetails from '../CompanyDetails/Machines';
-import { STEP_TAB_MAP, STEP_TAB_MAP_2, STEPS_HEADINGS, USER_ID, PER_COUNT } from './../../../utils/constants';
+import { STEP_TAB_MAP, STEP_TAB_MAP_2, STEP_TAB_MAP_INFRA_2 , STEPS_HEADINGS, USER_ID, PER_COUNT } from './../../../utils/constants';
 import CompanyDetailsComp from '../CompanyDetails/CompanyDetails';
 import { getCompanyDetails} from '../../../apis/Vendor/CompanyDetails';
 
@@ -14,6 +14,7 @@ const DigitalFactory = () => {
 
   const [current, setCurrent] = useState(0);
   const [currentSub, setCurrentSub] = useState(0);
+  const [currentInfraSub, setCurrentInfraSub] = useState(0);
   const { TabPane } = Tabs;
   const [CompanyDetails, setcompanyDetails] = useState({})
   const [percent,setPercent] = useState(0)
@@ -56,6 +57,12 @@ useEffect(() => {
     } else {
       setCurrentSub(currentSub + 1);
     }
+
+    if (currentInfraSub == 2) {
+      setCurrent(current + 1);
+    } else {
+      setCurrentInfraSub(currentSub + 1);
+    }
   };
 
 
@@ -69,8 +76,17 @@ useEffect(() => {
     setCurrentSub(value);
   };
 
+  const onChangeInfraSub = (value) => {
+    console.log('onChangeSub:', value);
+    setCurrentInfraSub(value);
+  };
+
   const onChangeTab = (key) => {
     setCurrentSub(STEP_TAB_MAP_2[key]);
+  };
+
+  const onChangeInfraTab = (key) => {
+    setCurrentInfraSub(STEP_TAB_MAP_INFRA_2[key]);
   };
 
   const StepDropdown = () => {
@@ -104,17 +120,17 @@ useEffect(() => {
       <Steps
         progressDot
         direction='vertical'
-        current={currentSub}
-        onChange={onChangeSub}
+        current={currentInfraSub}
+        onChange={onChangeInfraSub}
         items={[
           {
             title: 'Machines'
           },
           {
-            title: 'Addresses & Contacts'
+            title: 'Yellow Table'
           },
           {
-            title: 'Certificates'
+            title: 'Services'
           },
         ]}
       />
@@ -167,7 +183,7 @@ useEffect(() => {
               <h2 style={{ marginTop: '0' }}>{STEPS_HEADINGS[current]}</h2>
               <hr />
               {current == 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails}/> : ''}
-              {current == 1 ? <InfraDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} /> : ''}
+              {current == 1 ? <InfraDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} /> : ''}
 
               {currentSub != 0 ? <div style={{ bottom: '0', position: 'absolute' }}>
                 <Button type='primary' form='form1' onClick={onSaveAndSubmit}>Save and Submit</Button>

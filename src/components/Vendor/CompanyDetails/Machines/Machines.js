@@ -1,9 +1,25 @@
 import React, { useState } from 'react'
-import { Space, Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider } from 'antd';
+import { Space, Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Upload } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 
 const Machines = () => {
 
     const [modalOpen, setModalOpen] = useState(false);
+    const [form] = Form.useForm()
+    const { Option } = Select;
+
+    const onChangeYear = (dateString) => {
+        console.log(dateString);
+    };
+
+    const [isVisible, setIsVisible] = useState(true)
+    const handleChangeType = (value) => {
+        console.log(value);
+        if (value == 'Conventional')
+            setIsVisible(false);
+        else
+            setIsVisible(true);
+    };
 
     const columns = [
         {
@@ -158,13 +174,15 @@ const Machines = () => {
                 theme={{
                     components: {
                         InputNumber: {
-                            controlWidth: 200
+                            controlWidth: 319
                         },
+
                     },
                 }}
             >
                 <div >
                     <Table columns={columns} dataSource={data} scroll={{ y: 265 }} />
+                    {/* <Table columns={columns} dataSource={data} scroll={{ y: 265 }} style={{ display: 'none' }} /> */}
                 </div>
                 <div style={{ marginTop: 'auto' }}>
                     <Button type="primary" onClick={() => setModalOpen(true)}>
@@ -174,31 +192,45 @@ const Machines = () => {
                         title="Add Machine"
                         centered
                         open={modalOpen}
-                        onOk={() => setModalOpen(false)}
+                        okText="Save"
+                        onOk={form.submit}
                         onCancel={() => setModalOpen(false)}
+                        width={750}
                     >
-                        <Form layout="vertical">
+                        {isVisible ? <Form layout="vertical" >
                             <Row gutter={16}>
                                 <Col span={12}>
-                                    <Form.Item
-                                        label="Machine Type"
-                                        name="type"
-                                        rules={[{ required: true, message: 'Machine Type is required' }]}>
-                                        <Input
-                                            className="custom-input"
-                                            variant="filled"
-                                            id="type"
-                                        />
+                                    <Form.Item name="type" label="Machine Type" rules={[{ required: true, },]}>
+                                        <Select size='large' variant="filled" onChange={handleChangeType}
+                                            style={{ width: '93%' }} placeholder='Select Machine Type' >
+                                            <Option value="CNC Machine 1">CNC Machine 1</Option>
+                                            <Option value="CNC Machine 2">CNC Machine 2</Option>
+                                            <Option value="CNC EDM 1">CNC EDM 1</Option>
+                                            <Option value="CNC EDM 2">CNC EDM 2</Option>
+                                            <Option value="ZNC EDM 1">ZNC EDM 1</Option>
+                                            <Option value="ZNC EDM 2">ZNC EDM 2</Option>
+                                            <Option value="Wirecut 1">Wirecut 1</Option>
+                                            <Option value="Wirecut 2">Wirecut 2</Option>
+                                            <Option value="Conventional">Conventional</Option>
+                                        </Select>
+                                    </Form.Item>
+
+                                    <Form.Item label="Make" name="make" rules={[{ required: true, message: 'Make is required' }]}>
+                                        <Input className="custom-input" variant="filled" id="make" placeholder='Enter Machine Make' />
                                     </Form.Item>
                                     <Form.Item
-                                        label="Make"
-                                        name="make"
-                                        rules={[{ required: true, message: 'Make is required' }]}>
-                                        <Input
-                                            className="custom-input"
-                                            variant="filled"
-                                            id="make"
-                                        />
+                                        label="Spindle RPM(max)"
+                                        name="rpm"
+                                        rules={[{ required: true, message: 'No. of Axis is required' }]}>
+                                        <InputNumber min={1} id="rpm" size='large' variant="filled" placeholder='Enter Spindle RPM' />
+                                    </Form.Item>
+                                    <Form.Item
+                                        label="Specification (Breadth)"
+                                        name="breadth">
+                                        <InputNumber id="breadth" size='large' variant="filled" placeholder='Enter Breadth (mm)' />
+                                    </Form.Item>
+                                    <Form.Item label="Specification (Diameter)" name="diameter">
+                                        <Input className="custom-input" variant="filled" id="diameter" placeholder='Enter Diameter' />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
@@ -206,21 +238,88 @@ const Machines = () => {
                                         label="No. of Axis"
                                         name="axis"
                                         rules={[{ required: true, message: 'No. of Axis is required' }]}>
-                                        <InputNumber min={1} id="axis" size='large' variant="filled"/>
+                                        <InputNumber min={1} id="axis" size='large' variant="filled" placeholder='Enter No. of Axis' />
                                     </Form.Item>
                                     <Form.Item
-                                        label="Machine Type"
-                                        name="type"
-                                        rules={[{ required: true, message: 'Machine Type is required' }]}>
-                                        <Input
-                                            className="custom-input"
-                                            variant="filled"
-                                            id="type"
-                                        />
+                                        label="Manufacturing Year"
+                                        name="year"
+                                        rules={[{ required: true, message: 'Year is required' }]}>
+                                        <DatePicker onChange={onChangeYear} picker="year" placeholder='Select Manufacturing Year' size="large" variant="filled" style={{ width: '93%' }} />
+                                    </Form.Item>
+                                    <Form.Item
+                                        label="Specification (Length)"
+                                        name="length">
+                                        <InputNumber id="length" size='large' variant="filled" placeholder='Enter Length (mm)' />
+                                    </Form.Item>
+                                    <Form.Item
+                                        label="Specification (Height)"
+                                        name="height">
+                                        <InputNumber id="height" size='large' variant="filled" placeholder='Enter Height (mm)' />
+                                    </Form.Item>
+                                    <Form.Item
+                                        label="Upload Image"
+                                        name="image">
+                                        <Upload>
+                                            <Button size='large' icon={<UploadOutlined />}>Click to Upload</Button>
+                                        </Upload>
                                     </Form.Item>
                                 </Col>
                             </Row>
-                        </Form>
+                        </Form> :
+
+
+
+                            <Form layout="vertical" >
+                                <Row gutter={16}>
+                                    <Col span={12}>
+                                        <Form.Item name="type" label="Machine Type" rules={[{ required: true, },]}>
+                                            <Select size='large' variant="filled" onChange={handleChangeType}
+                                                style={{ width: '93%' }} placeholder='Select Machine Type'>
+                                                <Option value="CNC Machine 1">CNC Machine 1</Option>
+                                                <Option value="CNC Machine 2">CNC Machine 2</Option>
+                                                <Option value="CNC EDM 1">CNC EDM 1</Option>
+                                                <Option value="CNC EDM 2">CNC EDM 2</Option>
+                                                <Option value="ZNC EDM 1">ZNC EDM 1</Option>
+                                                <Option value="ZNC EDM 2">ZNC EDM 2</Option>
+                                                <Option value="Wirecut 1">Wirecut 1</Option>
+                                                <Option value="Wirecut 2">Wirecut 2</Option>
+                                                <Option value="Conventional">Conventional</Option>
+                                            </Select>
+                                        </Form.Item>
+
+                                        <Form.Item
+                                            label="Specification (Length)"
+                                            name="length">
+                                            <InputNumber id="length" size='large' variant="filled" placeholder='Enter Length (mm)' />
+                                        </Form.Item>
+                                        <Form.Item
+                                            label="Specification (Height)"
+                                            name="height">
+                                            <InputNumber id="height" size='large' variant="filled" placeholder='Enter Height (mm)' />
+                                        </Form.Item>
+                                        <Form.Item
+                                            label="Upload Image"
+                                            name="image">
+                                            <Upload>
+                                                <Button size='large' icon={<UploadOutlined />}>Click to Upload</Button>
+                                            </Upload>
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={12}>
+                                        <Form.Item label="Machine Name" name="machineName" rules={[{ required: true, message: 'Machine Name is required' }]}>
+                                            <Input className="custom-input" variant="filled" id="machineName" placeholder='Enter Machine Name' />
+                                        </Form.Item>
+                                        <Form.Item
+                                            label="Specification (Breadth)"
+                                            name="breadth">
+                                            <InputNumber id="breadth" size='large' variant="filled" placeholder='Enter Breadth (mm)' />
+                                        </Form.Item>
+                                        <Form.Item label="Specification (Diameter)" name="diameter">
+                                            <Input className="custom-input" variant="filled" id="diameter" placeholder='Enter Diameter' />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            </Form>}
                     </Modal>
                 </div>
             </ConfigProvider>

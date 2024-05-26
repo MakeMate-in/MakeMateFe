@@ -79,9 +79,21 @@ export const STEP_TAB_MAP_2 = {
     '4': 3
 }
 
+export const STEP_TAB_MAP_INFRA = {
+    0: '1',
+    1: '2',
+    2: '3',
+}
+
+export const STEP_TAB_MAP_INFRA_2 = {
+    '1': 0,
+    '2': 1,
+    '3': 2,
+}
+
 export const STEPS_HEADINGS = {
     0: 'Company Overview',
-    1: 'Machines',
+    1: 'Infrastructure Details',
     2: 'Customer Details',
     3: 'Complete'
 }

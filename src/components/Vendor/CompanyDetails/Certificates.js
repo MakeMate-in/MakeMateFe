@@ -1,4 +1,4 @@
-import { Space, Select, Button, message, Upload, Image } from 'antd';
+import { Space, Select, Button, message, Upload, Image } from 'antd'
 import { useState } from 'react';
 import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
 

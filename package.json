@@ -14,6 +14,8 @@
     "@testing-library/user-event": "^13.5.0",
     "antd": "^5.17.0",
     "axios": "^1.6.8",
+    "buffer": "^6.0.3",
+    "country-state-city": "^3.2.1",
     "fontsource-montez": "^4.0.0",
     "jwt-decode": "^4.0.0",
     "mui-layout": "^1.2.9",

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card, Col, Row, Steps, Button, Tabs, Progress, Flex, Collapse } from 'antd';
+import { Card, Col, Row, Steps, Button, Tabs, Progress, Flex, Collapse, ConfigProvider } from 'antd';
 import './../Dashboard/Dashboard.css';
 import './DigitalFactory.css'
 import InfraDetails from '../CompanyDetails/Machines';
@@ -122,7 +122,17 @@ useEffect(() => {
   };
 
   return (
-
+<ConfigProvider
+  theme={{
+    components: {
+      Collapse: {
+        /* here is your component tokens */
+        headerPadding: '0px',
+        contentPadding: '0px'
+      },
+    },
+  }}
+>
     <div>
       <Row gutter={16}>
         <Col span={6}>
@@ -135,13 +145,12 @@ useEffect(() => {
               <div style={{ margin: '0' }}>
                 <Steps direction="vertical" current={current}
                   onChange={onChange}>
-                  <Step title={STEPS_HEADINGS[0]} description={<Collapse
-                    items={[{ key: '1', children: <StepDropdown /> }]}
-                  />} />
+                  <Step title={<span>{STEPS_HEADINGS[0]} <Collapse ghost items={[{ key: '1', children: <StepDropdown /> }]}
+                  /></span>} />
                   {/* <Collapse
                     items={[{ key: '1',label:'Company', children: <Step title={STEPS_HEADINGS[0]} description={<StepDropdown />} /> }]}
                   /> */}
-                  <Step title={STEPS_HEADINGS[1]} description={<Collapse
+                  <Step title={STEPS_HEADINGS[1]} description={<Collapse ghost
                     items={[{ key: '1', children: <StepDropdownMachines /> }]}
                   />} />
                   <Step title={STEPS_HEADINGS[2]} description="This is a description." />
@@ -170,7 +179,7 @@ useEffect(() => {
       </Row >
     </div >
 
-
+    </ConfigProvider>
   )
 }
 

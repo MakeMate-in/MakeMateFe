@@ -88,3 +88,31 @@ export const updateElement = async (params,data) => {
     }
 
 }
+
+
+export const uploadAvatar = ( async(file,user) => {
+    const url = COMPANY_DETAILS_URLS.UPLOAD_AVATAR;
+    // const authToken = getAccessToken();
+    const headers = {
+        // 'Authorization': authToken,
+        'Content-Type':' multipart/form-data;',
+      }
+    const params={
+        user:user
+    }
+    let data={}
+    data.file=file;
+    let res = await axios.post(
+        baseAPIUrl+url,data,
+        {
+            headers:headers,
+            params:params
+        
+        }).then((response) => {
+        return response.data;
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    return res;
+})

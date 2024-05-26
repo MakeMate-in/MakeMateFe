@@ -1,18 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Col, Row, Form, Input, Button, Image, Upload } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
 import './../Dashboard/Dashboard.css'
-import { getCompanyDetails, updateCompanyDetails } from '../../../apis/Vendor/CompanyDetails';
+import { getCompanyDetails, updateCompanyDetails, uploadAvatar } from '../../../apis/Vendor/CompanyDetails';
 import { USER_ID } from '../../../utils/constants';
+import { convertBufferToBinary, getBase64, uploadButton } from '../../../utils/helper';
 
-
-const getBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
 
 const BasicDetails = (props) => {
 
@@ -20,6 +12,8 @@ const BasicDetails = (props) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [fileList, setFileList] = useState();
+
+
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
@@ -27,26 +21,20 @@ const BasicDetails = (props) => {
     setPreviewImage(file.url || file.preview);
     setPreviewOpen(true);
   };
-  const handleChangeLogo = ({ fileList: newFileList }) => setFileList(newFileList);
-  const uploadButton = (
-    <button
-      style={{
-        border: 0,
-        background: 'none',
-      }}
-      type="button"
-    >
-      <PlusOutlined />
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </button>
-  );
 
+  const handleChangeLogo = ({ fileList: newFileList }) => setFileList(newFileList);
+
+  useEffect(() => {
+    let file = convertBufferToBinary(props.CompanyDetails.company_logo)
+    if(file!=""){
+    setFileList([{
+      uid: '-1',
+      name: 'pen.png',
+      status: 'done',
+      url: file,
+  }])
+}
+  },[props.CompanyDetails.company_logo])
 
   const [basicDetails, setBasicDetails] = useState({
     "description": "",
@@ -90,6 +78,31 @@ const BasicDetails = (props) => {
   }
 
 
+  const uploadImage = async options => {
+    const { onSuccess, onError, file, onProgress } = options;
+    try {
+      const res = await uploadAvatar(file,USER_ID) 
+      onSuccess("Ok");
+      console.log("server res: ", res);
+    } catch (err) {
+      console.log("Eroor: ", err);
+      const error = new Error("Some error");
+      // onError({ err });
+    }
+  };
+
+
+  const draggerProps = {
+    name: "file",
+    onChange: handleChangeLogo,
+    fileList: fileList,
+    onPreview: handlePreview,
+    listType:"picture-circle",
+    customRequest: uploadImage,
+    onRemove: uploadImage
+  };
+
+  console.log(fileList)
   return (
     <Form
       layout="vertical"
@@ -101,16 +114,9 @@ const BasicDetails = (props) => {
             <Col span={8}>
               <Form.Item label="Company Logo">
                 <div className="company-logo">
-                  {/* <img src="https://via.placeholder.com/150" alt="Company Logo" /> */}
 
-                  <Upload
-                    action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-                    listType="picture-circle"
-                    fileList={fileList}
-                    onPreview={handlePreview}
-                    onChange={handleChangeLogo}
-                  >
-                    {fileList && fileList.length >= 1 ? null : uploadButton}
+                <Upload {...draggerProps}>
+                    {fileList && fileList.length>0? null : uploadButton}
                   </Upload>
                   {previewImage && (
                     <Image

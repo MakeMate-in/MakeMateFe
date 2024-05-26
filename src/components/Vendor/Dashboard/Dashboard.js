@@ -17,11 +17,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { AppBar, Drawer, DrawerHeader } from './Drawer.tsx';
-import { VENDOR_DRAWER_LIST, OPEN_ROUTES } from '../../../utils/constants';
+import { VENDOR_DRAWER_LIST } from '../../../utils/constants';
 import './Dashboard.css';
-import DigitalFactory from '../DigitalFactory/DigitalFactory.js'
 import { Link } from "react-router-dom";
-import { Route, Routes } from "react-router-dom";
+import { Outlet } from 'react-router-dom';
 
 
 const Dashboard = () => {
@@ -76,7 +75,6 @@ const Dashboard = () => {
         <Divider />
         <List>
           {VENDOR_DRAWER_LIST.map((item, index) => {
-            {console.log(item)}
           return( <Link to={item.route} style={{ color: "inherit", textDecoration: "inherit" }} >  
             <ListItem key={index} disablePadding sx={{ display: 'block' }} onClick={selectTab}>
               <ListItemButton  sx={{ minHeight: 48, justifyContent: open ? 'initial' : 'center', px: 2.5, }} >
@@ -94,7 +92,8 @@ const Dashboard = () => {
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }} style={{ backgroundColor: '#f0f2f5' }}>
       <DrawerHeader />
-          <DigitalFactory/>
+          {/* <DigitalFactory/> */}
+          <Outlet />
       </Box>
 
 

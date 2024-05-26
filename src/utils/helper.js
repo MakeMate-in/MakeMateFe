@@ -1,4 +1,7 @@
 // import jwtDecode from 'jwt-decode';
+import {Buffer} from 'buffer';
+import { PlusOutlined } from '@ant-design/icons';
+
 
 export const LOCAL_STORAGE_ITEMS = {
     TOKEN: "token",
@@ -160,9 +163,41 @@ export const getToken = () => {
 // })
 
 
-// export const convertBufferToBinary = (buffer) => {
-// 	if(buffer==undefined || buffer.data==undefined || buffer.data.length==0) return ''
-// 	const base64Image = Buffer.from(buffer, 'binary').toString('base64');
-//     const avatar_url = `data:image/png;base64,${base64Image}`;
-// 	return avatar_url
-// }
+export const convertBufferToBinary = (buffer) => {
+    // console.log(buffer.data.length)
+	if(buffer==undefined || buffer.data==undefined || buffer.data.length==0) return ''
+
+	const base64Image = Buffer.from(buffer, 'binary').toString('base64');
+    const avatar_url = `data:image/png;base64,${base64Image}`;
+    console.log(avatar_url)
+	return avatar_url
+}
+
+export const getBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
+
+export const uploadButton = (
+        <button
+          style={{
+            border: 0,
+            background: 'none',
+          }}
+          type="button"
+        >
+          <PlusOutlined />
+          <div
+            style={{
+              marginTop: 8,
+            }}
+          >
+            Upload
+          </div>
+        </button>
+      );
+    

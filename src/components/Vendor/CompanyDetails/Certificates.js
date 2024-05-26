@@ -1,11 +1,6 @@
-import React from 'react'
-import { Space, Table, Tag } from 'antd';
-import React, { useState } from 'react';
-import { Select, Space } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-import { Button, message, Upload } from 'antd';
-import { Image } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Space, Select, Button, message, Upload, Image } from 'antd';
+import { useState } from 'react';
+import { UploadOutlined, PlusOutlined } from '@ant-design/icons';
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {

@@ -2,7 +2,7 @@ import React from 'react'
 import {Row, Tabs} from 'antd'
 import BasicDetails from '../CompanyDetails/BasicDetails';
 import AdditionalInfo from '../CompanyDetails/AdditionalInfo';
-import Certificates from '../CompanyDetails/Certificates';
+import Certificates from './Certificates/Certificates';
 import AddressDetails from '../CompanyDetails/AddressDetails';
 import { STEP_TAB_MAP, STEP_TAB_MAP_2, STEPS_HEADINGS } from './../../../utils/constants';
 

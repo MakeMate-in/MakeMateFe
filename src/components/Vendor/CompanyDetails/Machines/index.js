@@ -1,6 +1,6 @@
 import React from 'react'
 import { Row, Tabs } from 'antd'
-import Certificates from '../Certificates';
+import Certificates from '../Certificates/Certificates';
 import { STEP_TAB_MAP } from '../../../../utils/constants';
 import Machines from './Machines';
 

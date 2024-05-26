@@ -163,14 +163,14 @@ export const getToken = () => {
 // })
 
 
-export const convertBufferToBinary = (buffer) => {
+export const convertBufferToBinary =  (buffer) => {
 	if(buffer==undefined || buffer.data==undefined || buffer.data.length==0) return ''
-	const base64Image = Buffer.from(buffer, 'binary').toString('base64');
-    const avatar_url = `data:image/png;base64,${base64Image}`;
+	const base64Image =  Buffer.from(buffer, 'binary').toString('base64');
+  const avatar_url = `data:image/png;base64,${base64Image}`;
 	return avatar_url
 }
 
-export const getBase64 = (file) =>
+export const getBase64 = async (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);

@@ -1,5 +1,5 @@
 import { requestHandler } from "./../requestHandler";
-import  {  COMPANY_DETAILS_URLS }  from './../../utils/urls'
+import  {  CERTIFICATES_URLS, COMPANY_DETAILS_URLS, PLANT_IMAGES_URLS }  from './../../utils/urls'
 import axios from 'axios'
 import { baseAPIUrl } from "./../../utils/constants";
 
@@ -118,19 +118,150 @@ export const uploadAvatar = ( async(file,user) => {
 })
 
 
-export const uploadCertificate = async (user, file, name) => {
-    const url = COMPANY_DETAILS_URLS.UPLOAD_CERTIFICATE;
+export const uploadCertificate = async (company_id, file) => {
+    const url = CERTIFICATES_URLS.UPLOAD_CERTIFICATE;
     // const authToken = getAccessToken();
     const headers = {
         // 'Authorization': authToken,
         'Content-Type':' multipart/form-data;',
       }
     const params={
-        user:user
+        company_id:company_id
     }
     let data={}
     data.file=file;
-    data.name = name
+    let res = await axios.post(
+        baseAPIUrl+url,data,
+        {
+            headers:headers,
+            params:params
+        
+        }).then((response) => {
+        return response.data;
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    return res;
+}
+
+export const getCertificates     = async (company_id) => {
+    const url = CERTIFICATES_URLS.GET_CERTIFICATES;
+    // const authToken = getAccessToken();
+    const headers = {
+        // 'Authorization': authToken,
+        // 'Content-Type':' multipart/form-data;',
+      }
+      const params={
+        company_id:company_id
+    }
+    let res = await axios.get(
+        baseAPIUrl+url ,
+        {
+            // headers:headers,
+            params:params
+        
+        }).then((response) => {
+        return response.data;
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    return res;
+}
+
+export const deleteCertificates = async (company_id, file) => {
+    const url = CERTIFICATES_URLS.DELETE_CERTIFICATES;
+    // const authToken = getAccessToken();
+    const headers = {
+        // 'Authorization': authToken,
+        'Content-Type':' multipart/form-data;',
+      }
+    const params={
+        company_id:company_id
+    }
+    let data={}
+    data.file=file;
+    let res = await axios.post(
+        baseAPIUrl+url,data,
+        {
+            headers:headers,
+            params:params
+        
+        }).then((response) => {
+        return response.data;
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    return res;
+}
+
+
+export const uploadPlantImages = async (company_id, file) => {
+    const url = PLANT_IMAGES_URLS.UPLOAD_IMAGE;
+    // const authToken = getAccessToken();
+    const headers = {
+        // 'Authorization': authToken,
+        'Content-Type':' multipart/form-data;',
+      }
+    const params={
+        company_id:company_id
+    }
+    let data={}
+    data.file=file;
+    let res = await axios.post(
+        baseAPIUrl+url,data,
+        {
+            headers:headers,
+            params:params
+        
+        }).then((response) => {
+        return response.data;
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    return res;
+}
+
+export const getPlantImages = async (company_id) => {
+    const url = PLANT_IMAGES_URLS.GET_IMAGES;
+    // const authToken = getAccessToken();
+    const headers = {
+        // 'Authorization': authToken,
+        // 'Content-Type':' multipart/form-data;',
+      }
+      const params={
+        company_id:company_id
+    }
+    let res = await axios.get(
+        baseAPIUrl+url ,
+        {
+            // headers:headers,
+            params:params
+        
+        }).then((response) => {
+        return response.data;
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    return res;
+}
+
+export const deletePlantImages = async (company_id, file) => {
+    const url = PLANT_IMAGES_URLS.DELETE_IMAGES;
+    // const authToken = getAccessToken();
+    const headers = {
+        // 'Authorization': authToken,
+        'Content-Type':' multipart/form-data;',
+      }
+    const params={
+        company_id:company_id
+    }
+    let data={}
+    data.file=file;
     let res = await axios.post(
         baseAPIUrl+url,data,
         {

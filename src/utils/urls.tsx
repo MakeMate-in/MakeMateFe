@@ -21,7 +21,18 @@ export enum COMPANY_DETAILS_URLS{
   GET_COMPANY_DETAILS = '/api/company//get/company-details',
   REMOVE_COMPANY_DETAILS_ARRAY_ELEMENT = '/api/company/delete/company-detail/one',
   UPLOAD_AVATAR = '/api/company/upload-avatar',
-  UPLOAD_CERTIFICATE = '/api/company/upload-certificate'
+}
+
+export enum CERTIFICATES_URLS{
+  UPLOAD_CERTIFICATE = '/api/company/upload-certificate',
+  GET_CERTIFICATES = '/api/company/get-certifiates',
+  DELETE_CERTIFICATES = '/api/company/delete-certifiates'
+}
+
+export enum PLANT_IMAGES_URLS{
+  UPLOAD_IMAGE = '/api/company/upload-images',
+  GET_IMAGES = '/api/company/get-images',
+  DELETE_IMAGES = '/api/company/delete-images',
 }
 
 export enum MACHINE_DETAILS_URL{

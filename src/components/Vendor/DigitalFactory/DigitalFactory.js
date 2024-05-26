@@ -152,9 +152,16 @@ useEffect(() => {
     <div>
       <Row gutter={16}>
         <Col span={6}>
-          <Card bordered hoverable style={{ height: '39rem', overflow: 'auto', scrollbarWidth: 'thin' }}>
-            <Flex vertical style={{ alignItems: 'center' }}>
-              <div>
+          <Card bordered hoverable 
+          style={{ 
+            height: '39rem', 
+            overflow: 'auto', 
+            // overflow:'hidden', 
+            scrollbarWidth: 'none' }}>
+            <Flex vertical
+            //  style={{ alignItems: 'center' }}
+             >
+              <div  style={{ display:'flex', flexDirection:'column', alignItems: 'center' }}>
                 <h4>Return to Dashboard</h4>
                 <Progress strokeWidth={13} type="dashboard" percent={percent} size={150} gapDegree={150} />
               </div>

@@ -1,17 +1,20 @@
-import { Select, Button, Upload, Divider } from 'antd';
+import { Select, Button, Upload, Divider, Card } from 'antd';
 import { useState, useEffect } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { convertBufferToBinary, options } from '../../../../utils/helper';
-import { COMPANY_ID } from '../../../../utils/constants';
-import { uploadCertificate, getCertificates } from '../../../../apis/Vendor/CompanyDetails';
+import { COMPANY_ID, baseAPIUrl } from '../../../../utils/constants';
+import { uploadCertificate, getCertificates, deleteCertificates } from '../../../../apis/Vendor/CompanyDetails';
 import './styles.css'
 import PlantImages from './PlantImages';
+import { CERTIFICATES_URLS } from '../../../../utils/urls';
 
 
 const Certificates = () => {
   const [certificates, setCertificates] = useState('');
   const [certificate, setCertificate] = useState("");
   const [fileList, setFileList] = useState([]);
+  const [filesData,setfileData] = useState([]);
+  const [delfilesData,setdelfileData] = useState([]);
   
   useEffect(() => {
 
@@ -48,18 +51,24 @@ const Certificates = () => {
   };
 
   const onChange = ({ fileList: newFileList }) => {
-    let len = newFileList.length
-    newFileList[len-1].name = certificate
+    console.log(fileList)
+    console.log(newFileList)
+    if(newFileList.length>fileList.length){
+      let len = newFileList.length
+      newFileList[len-1].name = certificate
+      }
     setFileList(newFileList);
   }
 
   const uploadFiles =async () => {
     try{
-      const res = await uploadCertificate(COMPANY_ID, fileList) 
+      console.log(filesData)
+      const res = await uploadCertificate(COMPANY_ID, filesData) 
       if(res.success){
         const resp = await getCertificates(COMPANY_ID)
         if(resp.success){
         setCertificates(resp.data)
+        setfileData([])
         }
         
       }
@@ -71,18 +80,61 @@ const Certificates = () => {
   }
 
 
+  const deleteFiles =async () => {
+    try{
+      console.log(filesData)
+      const res = await deleteCertificates(COMPANY_ID, delfilesData) 
+      console.log(res)
+      if(res.success){
+        const resp = await getCertificates(COMPANY_ID)
+        if(resp.success){
+        setCertificates(resp.data)
+        setfileData([])
+        }
+        
+      }
+      console.log(res)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+
+  
+  const uploadImage = async options => {
+    const { onSuccess, onError, file, onProgress } = options;
+    try {
+      setfileData([...filesData,file])
+      // onSuccess("Ok");
+    } catch (err) {
+      console.log("Eroor: ", err);
+      const error = new Error("Some error");
+      // onError({ err });
+    }
+  };
+
+  const deleteFileData = async (file) => {
+    setdelfileData([...delfilesData,file.uid])
+  }
+
   const props= {
-    listType: 'picture',
+    listType: 'picture-card',
     onChange: onChange,
-    // customRequest: uploadImage,
+    customRequest: uploadImage,
     fileList: fileList,
     multiple: true,
+    onRemove: deleteFileData
   };
 
 
   return (
     <div>
-      <h2>Certificates</h2>
+      <Card style={{ 
+            height: '50%', 
+            overflow: 'auto', 
+            // overflow:'hidden', 
+            scrollbarWidth: 'none' }}>
+      <h2 style={{margin:'0px'}}>Certificates</h2>
       
       <Select
             onChange={handleChange}
@@ -92,10 +144,11 @@ const Certificates = () => {
             style={{ width: '75%', height:'40px' }}
           />
            <Button onClick={uploadFiles}>Save</Button>
+           <Button onClick={deleteFiles}>Delete</Button>
            <Upload {...props}>
             <Button icon={<UploadOutlined />}>Upload Certificate</Button>
           </Upload>
-       
+          </Card>
     <hr/>
     <PlantImages/>
 

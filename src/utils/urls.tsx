@@ -26,7 +26,8 @@ export enum COMPANY_DETAILS_URLS{
 export enum CERTIFICATES_URLS{
   UPLOAD_CERTIFICATE = '/api/company/upload-certificate',
   GET_CERTIFICATES = '/api/company/get-certifiates',
-  DELETE_CERTIFICATES = '/api/company/delete-certifiates'
+  DELETE_CERTIFICATES = '/api/company/delete-certifiates',
+  UPLOAD_DATA = '/api/company/upload-data'
 }
 
 export enum PLANT_IMAGES_URLS{

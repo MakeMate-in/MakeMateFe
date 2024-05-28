@@ -1,12 +1,12 @@
 import { Select, Button, Upload, Divider, Card } from 'antd';
 import { useState, useEffect } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
-import { convertBufferToBinary, options } from '../../../../utils/helper';
-import { COMPANY_ID, baseAPIUrl } from '../../../../utils/constants';
-import { uploadCertificate, getCertificates, deleteCertificates } from '../../../../apis/Vendor/CompanyDetails';
+import { convertBufferToBinary, options } from '../../../../../utils/helper';
+import { COMPANY_ID, baseAPIUrl } from '../../../../../utils/constants';
+import { uploadCertificate, getCertificates, deleteCertificates } from '../../../../../apis/Vendor/CompanyDetails';
 import './styles.css'
 import PlantImages from './PlantImages';
-import { CERTIFICATES_URLS } from '../../../../utils/urls';
+import { CERTIFICATES_URLS } from '../../../../../utils/urls';
 
 
 const Certificates = () => {

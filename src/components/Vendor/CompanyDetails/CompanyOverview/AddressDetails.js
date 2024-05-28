@@ -2,10 +2,10 @@ import { Card, Col, Row, ConfigProvider, Modal, Form, Input, Button, Image, Flex
 import { useState, useEffect } from 'react';
 import { CitySelect, CountrySelect, StateSelect } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
-import { getCompanyDetails, updateAddressandContacts, deleteElement } from '../../../apis/Vendor/CompanyDetails';
-import { USER_ID } from '../../../utils/constants';
-import del from './../../../assets/del.png'
-import pen from './../../../assets/pen.png'
+import { getCompanyDetails, updateAddressandContacts, deleteElement } from '../../../../apis/Vendor/CompanyDetails';
+import { USER_ID } from './../../../../utils/constants';
+import del from './../../../../assets/del.png'
+import pen from './../../../../assets/pen.png'
 import ContactDetails from './ContactDetails';
 
 const AddressDetails = (props) => {

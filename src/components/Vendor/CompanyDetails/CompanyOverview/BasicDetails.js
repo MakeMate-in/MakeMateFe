@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Col, Row, Form, Input, Button, Image, Upload } from 'antd';
-import './../Dashboard/Dashboard.css'
-import { getCompanyDetails, updateCompanyDetails, uploadAvatar } from '../../../apis/Vendor/CompanyDetails';
-import { USER_ID } from '../../../utils/constants';
-import { convertBufferToBinary, getBase64, uploadButton } from '../../../utils/helper';
+import './../../Dashboard/Dashboard.css'
+import { getCompanyDetails, updateCompanyDetails, uploadAvatar } from '../../../../apis/Vendor/CompanyDetails';
+import { USER_ID } from '../../../../utils/constants';
+import { convertBufferToBinary, getBase64, uploadButton } from '../../../../utils/helper';
 
 
 const BasicDetails = (props) => {

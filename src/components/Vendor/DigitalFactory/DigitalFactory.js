@@ -4,7 +4,7 @@ import './../Dashboard/Dashboard.css';
 import './DigitalFactory.css'
 import InfraDetails from '../CompanyDetails/Machines';
 import { STEP_TAB_MAP, STEP_TAB_MAP_2, STEP_TAB_MAP_INFRA_2 , STEPS_HEADINGS, USER_ID, PER_COUNT } from './../../../utils/constants';
-import CompanyDetailsComp from '../CompanyDetails/CompanyDetails';
+import CompanyDetailsComp from '../CompanyDetails/CompanyOverview/CompanyDetails';
 import { getCompanyDetails} from '../../../apis/Vendor/CompanyDetails';
 
 
@@ -168,16 +168,12 @@ useEffect(() => {
               <div style={{ margin: '0' }}>
                 <Steps direction="vertical" current={current}
                   onChange={onChange}>
-                  <Step title={<span>{STEPS_HEADINGS[0]} <Collapse ghost items={[{ key: '1', children: <StepDropdown /> }]}
+                  <Step title={<span>{STEPS_HEADINGS[0]} <Collapse ghost items={[{ key: '1',  label:'This is Description',children: <StepDropdown /> }]}
                   /></span>} />
-                  {/* <Collapse
-                    items={[{ key: '1',label:'Company', children: <Step title={STEPS_HEADINGS[0]} description={<StepDropdown />} /> }]}
-                  /> */}
                   <Step title={STEPS_HEADINGS[1]} description={<Collapse ghost
-                    items={[{ key: '1', children: <StepDropdownMachines /> }]}
+                    items={[{ key: '1', label:'This is Description',children: <StepDropdownMachines /> }]}
                   />} />
                   <Step title={STEPS_HEADINGS[2]} description="This is a description." />
-                  {/* <Step title="Services" description="Your Business Related Info" /> */}
                   <Step title={STEPS_HEADINGS[3]} description="Woah, we are here" />
                 </Steps>
               </div>

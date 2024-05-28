@@ -1,8 +1,8 @@
 import React,{useState, useEffect  } from 'react'
-import { COMPANY_ID } from './../../../../utils/constants';
+import { COMPANY_ID } from '../../../../../utils/constants';
 import { Upload, Button, Card } from 'antd';
-import { uploadPlantImages, getPlantImages, deletePlantImages } from '../../../../apis/Vendor/CompanyDetails';
-import { uploadButton, convertBufferToBinary } from '../../../../utils/helper';
+import { uploadPlantImages, getPlantImages, deletePlantImages } from '../../../../../apis/Vendor/CompanyDetails';
+import { uploadButton, convertBufferToBinary } from '../../../../../utils/helper';
 
 
 const PlantImages = () => {

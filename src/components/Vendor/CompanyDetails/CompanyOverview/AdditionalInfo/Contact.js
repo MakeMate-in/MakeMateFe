@@ -1,8 +1,8 @@
 import {useState} from 'react'
 import { Button, Flex, Modal, Form, Input, Avatar } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { USER_ID } from '../../../../utils/constants';
-import { updateAddressandContacts,getCompanyDetails } from './../../../../apis/Vendor/CompanyDetails'
+import { USER_ID } from '../../../../../utils/constants';
+import { updateAddressandContacts,getCompanyDetails } from '../../../../../apis/Vendor/CompanyDetails'
 import randomColor from 'randomcolor'
 
 

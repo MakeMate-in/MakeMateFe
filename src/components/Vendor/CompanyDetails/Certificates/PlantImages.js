@@ -10,6 +10,7 @@ const PlantImages = () => {
     const [fileList, setFileLsit] = useState()
     const [plantImages, setPlantImages] = useState()
     const [filesData,setfileData] = useState([]);
+    const [delfilesData,setdelfileData] = useState([]);
 
       
   useEffect(() => {
@@ -76,13 +77,39 @@ const PlantImages = () => {
           // onError({ err });
         }
       };
+
+
+      const deleteFiles =async () => {
+        try{
+          console.log(filesData)
+          const res = await deletePlantImages(COMPANY_ID, delfilesData) 
+          console.log(res)
+          if(res.success){
+            const resp = await getPlantImages(COMPANY_ID)
+            if(resp.success){
+            setCertificates(resp.data)
+            setfileData([])
+            }
+            
+          }
+          console.log(res)
+        }
+        catch(err){
+          console.log(err)
+        }
+      }
     
+      const deleteFileData = async (file) => {
+        setdelfileData([...delfilesData,file.uid])
+      }
+
     const props= {
         listType: 'picture-card',
         name: "file",
         onChange: onChange,
         fileList: fileList,
         customRequest: uploadImage,
+        onRemove: deleteFileData
       };
     
   return (
@@ -93,6 +120,7 @@ const PlantImages = () => {
             scrollbarWidth: 'none' }}>
     <h2>Plant Images</h2>
     <Button onClick={uploadFiles}>Save</Button>
+    <Button onClick={deleteFiles}>Delete</Button>
     <Upload {...props}>
     {fileList && fileList.length>0? null : uploadButton}
     </Upload>

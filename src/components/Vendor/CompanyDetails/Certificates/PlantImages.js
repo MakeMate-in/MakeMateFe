@@ -87,7 +87,7 @@ const PlantImages = () => {
           if(res.success){
             const resp = await getPlantImages(COMPANY_ID)
             if(resp.success){
-            setCertificates(resp.data)
+            setPlantImages(resp.data)
             setfileData([])
             }
             

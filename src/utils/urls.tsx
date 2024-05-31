@@ -37,7 +37,10 @@ export enum PLANT_IMAGES_URLS{
 }
 
 export enum MACHINE_DETAILS_URL{
-    
+    ADD_MACHINE_DETAILS = '/api/company/machine-details/add',
+    UPDATE_MACHINE_DETAILS = '/api/company/machine-details/update',
+    GET_MACHINE_DETAILS = '/api/company/machine-details/get',
+    DELETE_MACHINE_DETAILS = '/api/company/machine-details/delete',
 }
 
 export enum INFRA_DETAILS_URL{

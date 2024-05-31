@@ -136,7 +136,8 @@ useEffect(() => {
       />
     );
   };
-
+console.log(current)
+console.log(currentSub)
   return (
 <ConfigProvider
   theme={{
@@ -188,7 +189,7 @@ useEffect(() => {
               {current == 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails}/> : ''}
               {current == 1 ? <InfraDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} /> : ''}
 
-              {currentSub != 0 ? <div style={{ bottom: '0', position: 'absolute' }}>
+              { current!=0 || currentSub != 0 ? <div style={{ bottom: '0', position: 'absolute' }}>
                 <Button type='primary' form='form1' onClick={onSaveAndSubmit}>Save and Submit</Button>
               </div> : ''}
             </div>

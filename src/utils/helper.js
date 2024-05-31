@@ -1,6 +1,7 @@
 // import jwtDecode from 'jwt-decode';
 import {Buffer} from 'buffer';
 import { PlusOutlined } from '@ant-design/icons';
+import {Space} from 'antd'
 
 
 export const LOCAL_STORAGE_ITEMS = {
@@ -217,3 +218,69 @@ export const uploadButton = (
           disabled: true,
         }
       ];
+
+
+export const MACHINE_COLUMNS = [
+        {
+            title: 'Machine Type',
+            dataIndex: 'type',
+            key: 'type',
+            render: (text) => <a>{text}</a>,
+        },
+        {
+          title: 'Company Name',
+          dataIndex: 'type',
+          key: 'type',
+        },
+        {
+            title: 'Make',
+            dataIndex: 'make',
+            key: 'make',
+        },
+        {
+            title: 'Bed Size(in mm)',
+            dataIndex: 'bedSize',
+            key: 'bedSize',
+        },
+        {
+            title: 'Spindle RPM (max)',
+            dataIndex: 'rpm',
+            key: 'rpm',
+        },
+        {
+            title: 'No. of Axis',
+            dataIndex: 'axis',
+            key: 'axis',
+        },
+        {
+            title: 'Manufacture Year',
+            dataIndex: 'year',
+            key: 'year',
+        },
+        {
+            title: 'Image',
+            key: 'image',
+            render: (_, record) => (
+                <Space size="large">
+                    <a>View</a>
+                    <a>Delete</a>
+                </Space>
+            ),
+        },
+    ];
+
+
+export const ROW_COLUMNS = [
+  'Part DFM / Review',
+  'Part DFM / Review',
+  'Part DFM / Review',
+  'Part DFM / Review',
+  'Part DFM / Review',
+  'Part DFM / Review',
+  'Part DFM / Review',
+  'Part DFM / Review',
+  'Part DFM / Review',
+  'Part DFM / Review',
+  'Part DFM / Review',
+  'Part DFM / Review'
+]

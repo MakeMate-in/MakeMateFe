@@ -3,6 +3,9 @@ import { Row, Tabs } from 'antd'
 import Certificates from '../CompanyOverview/Certificates/Certificates';
 import { STEP_TAB_MAP } from '../../../../utils/constants';
 import Machines from './Machines';
+import Services from './Services';
+import InfraStructureDetails from './InfraStructureDetails';
+
 
 const InfraDetails = (props) => {
 
@@ -14,13 +17,13 @@ const InfraDetails = (props) => {
         },
         {
             key: '2',
-            label: 'Certificates',
-            children: <Certificates {...props} />,
+            label: 'Infra Details',
+            children: <InfraStructureDetails />,
         },
         {
             key: '3',
-            label: 'Certificates',
-            children: <Certificates {...props} />,
+            label: 'Services',
+            children: <Services />,
         },
     ]
 

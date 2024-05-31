@@ -2,10 +2,10 @@ import React from 'react'
 import { Card, Col, Row, Modal, Form, Input, Flex } from 'antd';
 import { useState, useEffect } from 'react';
 import "react-country-state-city/dist/react-country-state-city.css";
-import { deleteElement, getCompanyDetails, updateAddressandContacts, updateElement } from '../../../../apis/Vendor/CompanyDetails';
-import { MESSAGES, USER_ID } from '../../../../utils/constants';
-import del from './../../../../assets/del.png'
-import pen from './../../../../assets/pen.png'
+import { deleteElement, getCompanyDetails, updateAddressandContacts, updateElement } from './../../../../../apis/Vendor/CompanyDetails';
+import { MESSAGES, USER_ID } from './../../../../../utils/constants';
+import del from './../../../../../assets/del.png'
+import pen from './../../../../../assets/pen.png'
 import { Icon } from '@mui/material';
 
 

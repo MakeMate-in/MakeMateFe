@@ -17,7 +17,7 @@ const InfraDetails = (props) => {
         },
         {
             key: '2',
-            label: 'Infra Details',
+            label: 'Infrastructure Details',
             children: <InfraStructureDetails />,
         },
         {

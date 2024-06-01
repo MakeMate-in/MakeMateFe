@@ -62,6 +62,7 @@ export const VENDOR_DRAWER_LIST = [
         name: 'Logout',
         icon: <Logout/>,
         
+        
     },
 ]
 

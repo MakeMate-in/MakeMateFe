@@ -17,16 +17,17 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { AppBar, Drawer, DrawerHeader } from './Drawer.tsx';
-import { VENDOR_DRAWER_LIST } from '../../../utils/constants';
+import { OPEN_ROUTES, VENDOR_DRAWER_LIST } from '../../../utils/constants';
 import './Dashboard.css';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Outlet } from 'react-router-dom';
-
+import { logOut } from '../../../apis/authentication..js';
 
 const Dashboard = () => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [tab, setTab] = useState(0)
+  const navigate = useNavigate();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -37,10 +38,19 @@ const Dashboard = () => {
   };
 
   const selectTab = (e) => {
-    console.log(e.target.key);
+    console.log(e.target);
     setTab(e.target.key);
   };
 
+  const getLogout = async () => {
+    try{
+      const res = await logOut()
+      navigate(OPEN_ROUTES.PARENT_ROUTE)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -75,7 +85,16 @@ const Dashboard = () => {
         <Divider />
         <List>
           {VENDOR_DRAWER_LIST.map((item, index) => {
-          return( <Link to={item.route} style={{ color: "inherit", textDecoration: "inherit" }} >  
+          return( item.name=="Logout"?
+          (<ListItem key={index} disablePadding sx={{ display: 'block' }} onClick={getLogout}>
+          <ListItemButton  sx={{ minHeight: 48, justifyContent: open ? 'initial' : 'center', px: 2.5, }} >
+            <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center',}}>
+              {item.icon}
+            </ListItemIcon>
+            <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
+          </ListItemButton>
+        </ListItem>)
+          :(<Link to={item.route} style={{ color: "inherit", textDecoration: "inherit" }} >  
             <ListItem key={index} disablePadding sx={{ display: 'block' }} onClick={selectTab}>
               <ListItemButton  sx={{ minHeight: 48, justifyContent: open ? 'initial' : 'center', px: 2.5, }} >
                 <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center',}}>
@@ -84,15 +103,13 @@ const Dashboard = () => {
                 <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
-            </Link>)
+            </Link>))
 })}  
         </List>
       </Drawer>
    
-
       <Box component="main" sx={{ flexGrow: 1, p: 3 }} style={{ backgroundColor: '#f0f2f5' }}>
       <DrawerHeader />
-          {/* <DigitalFactory/> */}
           <Outlet />
       </Box>
 

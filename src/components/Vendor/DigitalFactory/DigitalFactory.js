@@ -136,8 +136,6 @@ useEffect(() => {
       />
     );
   };
-console.log(current)
-console.log(currentSub)
   return (
 <ConfigProvider
   theme={{

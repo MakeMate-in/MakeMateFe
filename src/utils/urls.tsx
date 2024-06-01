@@ -44,7 +44,17 @@ export enum MACHINE_DETAILS_URL{
 }
 
 export enum INFRA_DETAILS_URL{
+  ADD_INFRA_DETAILS = '/api/company/infrastructure-details/add',
+  UPDATE_INFRA_DETAILS = '/api/company/infrastructure-details/update',
+  GET_INFRA_DETAILS = '/api/company/infrastructure-details/get',
+  DELETE_INFRA_DETAILS = '/api/company/infrastructure-details/delete',
+}
 
+export enum SERVICE_DETAILS_URL{
+  ADD_SERVICE_DETAILS = '/api/company/add/services',
+  UPDATE_SERVICE_DETAILS = '/api/company/update/services',
+  GET_SERVICE_DETAILS = '/api/company/get/services',
+  DELETE_SERVICE_DETAILS = '/api/company/delete/services',
 }
 
 export enum UPLOAD_FILES_URL{

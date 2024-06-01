@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { MACHINE_COLUMNS } from '../../../../utils/helper';
+import { MACHINE_COLUMNS, MACHINE_TYPE } from '../../../../utils/helper';
+import { addMachineDetails } from '../../../../apis/Vendor/MachineDetails';
+import { COMPANY_ID } from '../../../../utils/constants';
 
 const Machines = () => {
 
@@ -10,12 +12,19 @@ const Machines = () => {
     const { Option } = Select;
     const [isVisible, setIsVisible] = useState(true)
     const [MachineDetails,setMachineDetails] = useState()
+    const [bedSize, setBedSize] = useState({
+        "length":"",
+        "height":"",
+        "breadth":"",
+        "diameter":""
+    })
     const [Machine, setMachine] =useState({
         "machine_type": "",
         "spindle_rpm": "",
         "no_of_Axis": "",
         "manufacturing_year": "",
-        "make":""
+        "make":"",
+        "bed_Size":{}
     })
 
     useEffect(() => {
@@ -26,9 +35,21 @@ const Machines = () => {
         fetchMachineDetails()
     },[])
 
+    useEffect(() => {
+        setMachine({...Machine,["bed_Size"]: {...bedSize}})
+        },[bedSize])
+
     const onChangeYear = (dateString) => {
-        console.log(dateString);
+        setMachine({...Machine,["manufacturing_year"]:dateString.$y})
     };
+
+    const handleInputNumber = (id,value) => {
+        setMachine({...Machine,[id]:value})
+    }
+
+    const handleBedSize = (id,value) => {
+        setBedSize({...bedSize,[id]:value})
+    }
 
     const handleChange = (e) => {
         setMachine({...Machine,[e.target.id]:e.target.value})
@@ -36,13 +57,26 @@ const Machines = () => {
 
     
     const handleChangeType = (value) => {
-        console.log(value);
         setMachine({...Machine,["machine_type"]: value})
         if (value == 'Conventional')
             setIsVisible(false);
         else
             setIsVisible(true);
     };
+
+
+    const handleFormSubmit = async () => {
+        try{
+        let params ={
+            company_id: COMPANY_ID
+        }
+           const res = await addMachineDetails(params,Machine)
+        }
+        catch(err){
+            console.log(err)
+        }
+    }
+
 
     const data = [
         {
@@ -55,6 +89,8 @@ const Machines = () => {
             year: 2019
         }
     ];
+
+   
 
 
     return (
@@ -85,22 +121,13 @@ const Machines = () => {
                         onCancel={() => setModalOpen(false)}
                         width={750}
                     >
-                        {isVisible ? <Form layout="vertical" >
+                        {isVisible ? <Form layout="vertical" onFinish={handleFormSubmit} form={form}>
                             <Row gutter={16}>
                                 <Col span={12}>
                                     <Form.Item name="type" label="Machine Type" rules={[{ required: true, },]}>
                                         <Select size='large' variant="filled" onChange={handleChangeType}
-                                            style={{ width: '93%' }} placeholder='Select Machine Type' >
-                                            <Option value="CNC Machine 1">CNC Machine 1</Option>
-                                            <Option value="CNC Machine 2">CNC Machine 2</Option>
-                                            <Option value="CNC EDM 1">CNC EDM 1</Option>
-                                            <Option value="CNC EDM 2">CNC EDM 2</Option>
-                                            <Option value="ZNC EDM 1">ZNC EDM 1</Option>
-                                            <Option value="ZNC EDM 2">ZNC EDM 2</Option>
-                                            <Option value="Wirecut 1">Wirecut 1</Option>
-                                            <Option value="Wirecut 2">Wirecut 2</Option>
-                                            <Option value="Conventional">Conventional</Option>
-                                        </Select>
+                                            style={{ width: '93%' }} placeholder='Select Machine Type' 
+                                             options={MACHINE_TYPE} />
                                     </Form.Item>
 
                                     <Form.Item label="Make" name="make" rules={[{ required: true, message: 'Make is required' }]}>
@@ -119,12 +146,11 @@ const Machines = () => {
                                         rules={[{ required: true, message: 'No. of Axis is required' }]}>
                                         <InputNumber 
                                         min={1} 
-                                        id="rpm" 
                                         size='large' 
                                         variant="filled" 
                                         placeholder='Enter Spindle RPM'
-                                        value={Machine["make"]}
-                                        onChange={handleChange} 
+                                        value={Machine["spindle_rpm"]}
+                                        onChange={(e) => {handleInputNumber("spindle_rpm",e)}} 
                                         />
                                     </Form.Item>
                                     <Form.Item
@@ -135,18 +161,19 @@ const Machines = () => {
                                         size='large' 
                                         variant="filled" 
                                         placeholder='Enter Breadth (mm)' 
-                                        value={Machine["make"]}
-                                        onChange={handleChange}
+                                        value={bedSize["breadth"]}
+                                        onChange={(e) => {handleBedSize("breadth",e)}}
                                         />
                                     </Form.Item>
                                     <Form.Item label="Specification (Diameter)" name="diameter">
-                                        <Input 
-                                        className="custom-input" 
+                                        <InputNumber 
+                                        // className="custom-input" 
+                                        label="Specification (Diameter)"
                                         variant="filled" 
                                         id="diameter" 
                                         placeholder='Enter Diameter' 
-                                        value={Machine["make"]}
-                                        onChange={handleChange}
+                                        value={bedSize["diameter"]}
+                                        onChange={(e) => {handleBedSize("diameter",e)}}
                                         />
                                     </Form.Item>
                                 </Col>
@@ -157,12 +184,11 @@ const Machines = () => {
                                         rules={[{ required: true, message: 'No. of Axis is required' }]}>
                                         <InputNumber 
                                         min={1} 
-                                        id="axis" 
                                         size='large' 
                                         variant="filled" 
                                         placeholder='Enter No. of Axis' 
-                                        value={Machine["make"]}
-                                        onChange={handleChange}
+                                        value={Machine["no_of_Axis"]}
+                                        onChange={(e) => {handleInputNumber("no_of_Axis",e)}} 
                                         />
                                     </Form.Item>
                                     <Form.Item
@@ -171,10 +197,12 @@ const Machines = () => {
                                         rules={[{ required: true, message: 'Year is required' }]}>
                                         <DatePicker 
                                         onChange={onChangeYear} 
+                                        id ="year"
                                         picker="year"
                                         placeholder='Select Manufacturing Year' 
                                         size="large" 
                                         variant="filled" 
+                                        value={Machine["manufacturing_year"]}
                                         style={{ width: '93%' }} 
                                         />
                                     </Form.Item>
@@ -186,8 +214,8 @@ const Machines = () => {
                                         size='large' 
                                         variant="filled" 
                                         placeholder='Enter Length (mm)'
-                                        value={Machine["make"]}
-                                        onChange={handleChange}
+                                        value={bedSize["length"]}
+                                        onChange={(e) => {handleBedSize("length",e)}}
                                         />
                                     </Form.Item>
                                     <Form.Item
@@ -198,17 +226,17 @@ const Machines = () => {
                                         size='large'
                                         variant="filled" 
                                         placeholder='Enter Height (mm)' 
-                                        value={Machine["make"]}
-                                        onChange={handleChange}
+                                        value={bedSize["height"]}
+                                        onChange={(e) => {handleBedSize("height",e)}}
                                         />
                                     </Form.Item>
-                                    <Form.Item
+                                    {/* <Form.Item
                                         label="Upload Image"
                                         name="image">
                                         <Upload>
                                             <Button size='large' icon={<UploadOutlined />}>Click to Upload</Button>
                                         </Upload>
-                                    </Form.Item>
+                                    </Form.Item> */}
                                 </Col>
                             </Row>
                         </Form> :

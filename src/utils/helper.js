@@ -284,3 +284,43 @@ export const ROW_COLUMNS = [
   'Part DFM / Review',
   'Part DFM / Review'
 ]
+
+
+export const MACHINE_TYPE = [
+  {
+      'label': "CNC Machine 1",
+      'value': "CNC Machine 1"
+  },
+  {
+      'label': "CNC Machine 2",
+      'value': "CNC Machine 2"
+  },
+  {
+      'label': "CNC EDM 1",
+      'value': "CNC EDM 1"
+  },
+  {
+      'label': "CNC EDM 2",
+      'value': "CNC EDM 2"
+  },
+  {
+      'label': "ZNC EDM 1",
+      'value': "ZNC EDM 1"
+  },
+  {
+      'label': "ZNC EDM 2",
+      'value': "ZNC EDM 2"
+  },
+  {
+      'label': "Wirecut 1",
+      'value': "Wirecut 1"
+  },
+  {
+      'label': "Wirecut 2",
+      'value': "Wirecut 2"
+  },
+  {
+      'label': "Conventional",
+      'value': "Conventional"
+  }
+]

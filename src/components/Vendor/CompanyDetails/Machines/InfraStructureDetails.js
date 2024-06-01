@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Form, Row, Col, InputNumber, Input, Select, Button, Flex } from 'antd'
+import { Form, Row, Col, InputNumber, Input, Select, Button, Flex, Card } from 'antd'
 import { DeleteTwoTone } from '@ant-design/icons';
 
 
@@ -55,7 +55,7 @@ const InfraStructureDetails = () => {
   }
 
   return (
-    <div>
+    <Card  style={{ overflow: 'auto',scrollbarWidth: 'none'}}>
       <Form layout="vertical" >
         <Row gutter={16}>
           <Col span={12}>
@@ -206,18 +206,18 @@ const InfraStructureDetails = () => {
                   </Row>
                   <Row>
                     {index === inputs.length - 1 && (
-                      <Button type='link' onClick={() => handleAddInput()}>Add Manpower</Button>
+                      <Button type='link' onClick={() => handleAddInput()}>+Add Manpower</Button>
                     )}
                   </Row>
                 </Flex>
               ))}
 
-              <div className="body"> {JSON.stringify(inputs)} </div>
+              {/* <div className="body"> {JSON.stringify(inputs)} </div> */}
             </div>
           </Form.Item>
         </Row>
       </Form>
-    </div>
+    </Card>
   )
 }
 

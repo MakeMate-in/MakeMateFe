@@ -18,6 +18,7 @@ const DigitalFactory = () => {
   const { TabPane } = Tabs;
   const [CompanyDetails, setcompanyDetails] = useState({})
   const [percent,setPercent] = useState(0)
+  const [data, setData] = useState()
 
   useEffect(() => {
     const getCompany = async () => {
@@ -180,19 +181,24 @@ useEffect(() => {
           </Card>
         </Col>
         <Col span={18}>
-          <Card bordered hoverable style={{ height: '39rem', overflow: 'auto', scrollbarWidth: 'thin', position: 'relative' }}>
+          <Card bordered hoverable style={{ height: '39rem', 
+          overflow: 'auto',
+           scrollbarWidth: 'none', position: 'relative' }}>
             <div>
               <h2 style={{ marginTop: '0' }}>{STEPS_HEADINGS[current]}</h2>
               <hr />
               {current == 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails}/> : ''}
               {current == 1 ? <InfraDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} /> : ''}
-
-              {/* { current!=0 || currentSub != 0 ? <div style={{ bottom: '0', position: 'absolute' }}>
-                <Button type='primary' form='form1' onClick={onSaveAndSubmit}>Save and Submit</Button>
-              </div> : ''} */}
             </div>
 
           </Card>
+          { current!=0 || currentSub != 0 ?
+              
+              <div style={{ bottom: '1%', position: 'absolute',right:'2%' }}>
+                <Button type='primary' form='form1' onClick={onSaveAndSubmit} style={{fontSize:'18px', fontWeight:'600', height:'40px', display:'flex', alignItems:'center'}}>Save & Continue</Button>
+              </div> 
+              
+              : ''}
         </Col>
       </Row >
     </div >

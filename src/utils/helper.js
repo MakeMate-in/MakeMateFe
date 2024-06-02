@@ -1,8 +1,6 @@
 // import jwtDecode from 'jwt-decode';
 import { Buffer } from 'buffer';
-import { PlusOutlined, DeleteTwoTone } from '@ant-design/icons';
-import { Space, Popover } from 'antd'
-
+import { PlusOutlined } from '@ant-design/icons';
 
 export const LOCAL_STORAGE_ITEMS = {
   TOKEN: "token",

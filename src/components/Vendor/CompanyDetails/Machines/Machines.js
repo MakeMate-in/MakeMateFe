@@ -260,6 +260,7 @@ const Machines = () => {
                                             label="Specification (Diameter)"
                                             variant="filled"
                                             id="diameter"
+                                            size='large'
                                             placeholder='Enter Diameter'
                                             value={bedSize["diameter"]}
                                             onChange={(e) => { handleBedSize("diameter", e) }}

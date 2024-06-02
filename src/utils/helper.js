@@ -1,36 +1,36 @@
 // import jwtDecode from 'jwt-decode';
-import {Buffer} from 'buffer';
-import { PlusOutlined } from '@ant-design/icons';
-import {Space} from 'antd'
+import { Buffer } from 'buffer';
+import { PlusOutlined, DeleteTwoTone } from '@ant-design/icons';
+import { Space, Popover } from 'antd'
 
 
 export const LOCAL_STORAGE_ITEMS = {
-    TOKEN: "token",
-    HANDLE: "handle",
-    USER_ID: "user_id",
-    IS_MAIL:"isMail"
+  TOKEN: "token",
+  HANDLE: "handle",
+  USER_ID: "user_id",
+  IS_MAIL: "isMail"
 };
 
 export const getUserData = (user, role) => {
-    let data = {}
-    data.name = user.first_name + " " + user.last_name
-    data.email = user.email
-    data.mobile_no = user.mobile_no.substring(2)
-    data.password = user.password
-    data.company_name = user.company_name
-    data.GST_no = user.GST_no
-    data.role = role
-    return data
+  let data = {}
+  data.name = user.first_name + " " + user.last_name
+  data.email = user.email
+  data.mobile_no = user.mobile_no.substring(2)
+  data.password = user.password
+  data.company_name = user.company_name
+  data.GST_no = user.GST_no
+  data.role = role
+  return data
 }
 
 export const getCustomerData = (user, role) => {
-    let data = {}
-    data.name = user.first_name + " " + user.last_name
-    data.email = user.email
-    data.mobile_no = user.mobile_no.substring(2)
-    data.password = user.password
-    data.role = role
-    return data
+  let data = {}
+  data.name = user.first_name + " " + user.last_name
+  data.email = user.email
+  data.mobile_no = user.mobile_no.substring(2)
+  data.password = user.password
+  data.role = role
+  return data
 }
 
 
@@ -40,8 +40,8 @@ export const getCustomerData = (user, role) => {
 //   };
 
 export const getToken = () => {
-    let token = localStorage.getItem(LOCAL_STORAGE_ITEMS.TOKEN)
-    return token;
+  let token = localStorage.getItem(LOCAL_STORAGE_ITEMS.TOKEN)
+  return token;
 };
 
 // export const getJWTData = (token) => {
@@ -164,114 +164,167 @@ export const getToken = () => {
 // })
 
 
-export const convertBufferToBinary =  (buffer) => {
-	if(buffer==undefined || buffer.data==undefined || buffer.data.length==0) return ''
-	const base64Image =  Buffer.from(buffer, 'binary').toString('base64');
+export const convertBufferToBinary = (buffer) => {
+  if (buffer == undefined || buffer.data == undefined || buffer.data.length == 0) return ''
+  const base64Image = Buffer.from(buffer, 'binary').toString('base64');
   const avatar_url = `data:image/png;base64,${base64Image}`;
-	return avatar_url
+  return avatar_url
 }
 
 export const getBase64 = async (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
 
 
 export const uploadButton = (
-        <button
-          style={{
-            border: 0,
-            background: 'none',
-          }}
-          type="button"
-        >
-          <PlusOutlined />
-          <div
-            style={{
-              marginTop: 8,
-            }}
-          >
-            Upload
-          </div>
-        </button>
-      );
+  <button
+    style={{
+      border: 0,
+      background: 'none',
+    }}
+    type="button"
+  >
+    <PlusOutlined />
+    <div
+      style={{
+        marginTop: 8,
+      }}
+    >
+      Upload
+    </div>
+  </button>
+);
 
-   export  const options = [
-        {
-          value: 'jack',
-          label: 'Jack',
-        },
-        {
-          value: 'lucy',
-          label: 'Lucy',
-        },
-        {
-          value: 'Yiminghe',
-          label: 'yiminghe',
-        },
-        {
-          value: 'disabled',
-          label: 'Disabled',
-          disabled: true,
-        }
-      ];
+export const options = [
+  {
+    value: 'jack',
+    label: 'Jack',
+  },
+  {
+    value: 'lucy',
+    label: 'Lucy',
+  },
+  {
+    value: 'Yiminghe',
+    label: 'yiminghe',
+  },
+  {
+    value: 'disabled',
+    label: 'Disabled',
+    disabled: true,
+  }
+];
 
-
-
-export const ROW_COLUMNS = [
-  'Part DFM / Review',
-  'Part DFM / Review',
-  'Part DFM / Review',
-  'Part DFM / Review',
-  'Part DFM / Review',
-  'Part DFM / Review',
-  'Part DFM / Review',
-  'Part DFM / Review',
-  'Part DFM / Review',
-  'Part DFM / Review',
-  'Part DFM / Review',
-  'Part DFM / Review'
-]
 
 
 export const MACHINE_TYPE = [
   {
-      'label': "CNC Machine 1",
-      'value': "CNC Machine 1"
+    'label': "CNC Machine 1",
+    'value': "CNC Machine 1"
   },
   {
-      'label': "CNC Machine 2",
-      'value': "CNC Machine 2"
+    'label': "CNC Machine 2",
+    'value': "CNC Machine 2"
   },
   {
-      'label': "CNC EDM 1",
-      'value': "CNC EDM 1"
+    'label': "CNC EDM 1",
+    'value': "CNC EDM 1"
   },
   {
-      'label': "CNC EDM 2",
-      'value': "CNC EDM 2"
+    'label': "CNC EDM 2",
+    'value': "CNC EDM 2"
   },
   {
-      'label': "ZNC EDM 1",
-      'value': "ZNC EDM 1"
+    'label': "ZNC EDM 1",
+    'value': "ZNC EDM 1"
   },
   {
-      'label': "ZNC EDM 2",
-      'value': "ZNC EDM 2"
+    'label': "ZNC EDM 2",
+    'value': "ZNC EDM 2"
   },
   {
-      'label': "Wirecut 1",
-      'value': "Wirecut 1"
+    'label': "Wirecut 1",
+    'value': "Wirecut 1"
   },
   {
-      'label': "Wirecut 2",
-      'value': "Wirecut 2"
+    'label': "Wirecut 2",
+    'value': "Wirecut 2"
   },
   {
-      'label': "Conventional",
-      'value': "Conventional"
+    'label': "Conventional",
+    'value': "Conventional"
   }
+]
+
+// export const MACHINE_COLUMNS = [
+//   {
+//     title: 'Machine Type',
+//     dataIndex: 'type',
+//     key: 'type',
+//     render: (text) => <a>{text}</a>,
+//   },
+//   {
+//     title: 'Company Name',
+//     dataIndex: 'type',
+//     key: 'type',
+//   },
+//   {
+//     title: 'Make',
+//     dataIndex: 'make',
+//     key: 'make',
+//   },
+//   {
+//     title: 'Bed Size(in mm)',
+//     dataIndex: 'bedSize',
+//     key: 'bedSize',
+//   },
+//   {
+//     title: 'Spindle RPM (max)',
+//     dataIndex: 'rpm',
+//     key: 'rpm',
+//   },
+//   {
+//     title: 'No. of Axis',
+//     dataIndex: 'axis',
+//     key: 'axis',
+//   },
+//   {
+//     title: 'Manufacture Year',
+//     dataIndex: 'year',
+//     key: 'year',
+//   },
+//   {
+//     title: 'Image',
+//     key: 'image',
+//     render: (_, record) => (
+//       <Space size="large">
+//         <a>View</a>
+//         <Popover content='Delete'>
+//           <DeleteTwoTone twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
+//         </Popover>
+//       </Space>
+//     ),
+//   },
+// ];
+
+
+export const ROW_COLUMNS = [
+  'Part DFM / Review',
+  'Mold Flow / Part Simulation',
+  'PLG Format',
+  'Tool Design',
+  'Insert Ordering',
+  'Mold Base',
+  'Standard Parts',
+  'Insert Machining Rough',
+  'Electrode Manufacturing',
+  'Insert Finalization',
+  'Ejector assembly',
+  'Mould assembly',
+  'Mould Trial',
+  'Mould Finalisation after trial (No of days)'
 ]

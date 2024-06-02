@@ -57,7 +57,7 @@ export const addMachineDetails = async (params,data) => {
 export const deleteMachineDetails = async (params,data) => {
     try {
         const url = MACHINE_DETAILS_URL.DELETE_MACHINE_DETAILS
-        data = await axios.delete(baseAPIUrl+url,data,{
+        data = await axios.delete(baseAPIUrl+url,{
             params: params
         }).then((res)=>{
           return res.data;

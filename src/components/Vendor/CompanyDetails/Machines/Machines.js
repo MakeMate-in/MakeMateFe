@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Upload } from 'antd';
+import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Upload, Space } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { MACHINE_COLUMNS, MACHINE_TYPE } from '../../../../utils/helper';
-import { addMachineDetails } from '../../../../apis/Vendor/MachineDetails';
+import { MACHINE_TYPE } from '../../../../utils/helper';
+import { addMachineDetails, getMachineDetails,deleteMachineDetails } from '../../../../apis/Vendor/MachineDetails';
 import { COMPANY_ID } from '../../../../utils/constants';
+import { DeleteTwoTone } from '@ant-design/icons';
 
 const Machines = () => {
 
@@ -27,13 +28,104 @@ const Machines = () => {
         "bed_Size":{}
     })
 
-    useEffect(() => {
-        const fetchMachineDetails = async() => {
+    let [MachineData, setMachineData ] = useState([])
 
+    const fetchMachineDetails = async() => {
+        let params ={ company_id: COMPANY_ID }
+        const machines = await getMachineDetails(params)
+        if(machines.success){
+            if(machines){
+                let data = []
+                if(machines.count>0){
+             data = machines.documents.map((machine, i) => {
+                    let machineObj =   {
+                        key: i+1,
+                        id: machine._id,
+                        type: machine.machine_type,
+                        make: machine.make,
+                        bedSize: '800 X 300',
+                        rpm: machine.spindle_rpm,
+                        axis: machine.no_of_Axis,
+                        year: machine.manufacturing_year
+                    }
+                    return machineObj
+                })
+            }             
+                setMachineData([...data]);
+            }
+        
         }
+    }
 
+    const handleDeleteInput = async (record) => {
+        try{
+            let params ={
+                id: record.id
+            }
+            const res = await deleteMachineDetails(params)
+            if(res.success){
+                fetchMachineDetails()
+            }
+        }   
+        catch(err){
+            console.log(err)
+        }
+    }
+
+    const MACHINE_COLUMNS = [
+        {
+            title: 'Machine Type',
+            dataIndex: 'type',
+            key: 'type',
+            render: (text) => <a>{text}</a>,
+        },
+        {
+          title: 'Company Name',
+          dataIndex: 'type',
+          key: 'type',
+        },
+        {
+            title: 'Make',
+            dataIndex: 'make',
+            key: 'make',
+        },
+        {
+            title: 'Bed Size(in mm)',
+            dataIndex: 'bedSize',
+            key: 'bedSize',
+        },
+        {
+            title: 'Spindle RPM (max)',
+            dataIndex: 'rpm',
+            key: 'rpm',
+        },
+        {
+            title: 'No. of Axis',
+            dataIndex: 'axis',
+            key: 'axis',
+        },
+        {
+            title: 'Manufacture Year',
+            dataIndex: 'year',
+            key: 'year',
+        },
+        {
+            title: 'Image',
+            key: 'image',
+            render: (_, record) => (
+                <Space size="large">
+                    <a>View</a>
+                    <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor='#F5222D' style={{ fontSize: '20px' }} />
+                </Space>
+            ),
+        },
+    ];
+
+    useEffect(() => {
         fetchMachineDetails()
     },[])
+
+ 
 
     useEffect(() => {
         setMachine({...Machine,["bed_Size"]: {...bedSize}})
@@ -71,25 +163,21 @@ const Machines = () => {
             company_id: COMPANY_ID
         }
            const res = await addMachineDetails(params,Machine)
+           if(res.success){
+            fetchMachineDetails()
+            setMachine({})
+            setBedSize({})
+            //Add Toast
+           }
+           else{
+            //Toast
+           }
+           setModalOpen(false)
         }
         catch(err){
             console.log(err)
         }
     }
-
-
-    const data = [
-        {
-            key: '1',
-            type: 'John Brown',
-            make: 32,
-            bedSize: '800 X 300',
-            rpm: 1500,
-            axis: 3,
-            year: 2019
-        }
-    ];
-
    
 
 
@@ -106,7 +194,7 @@ const Machines = () => {
                 }}
             >
                 <div >
-                    <Table columns={MACHINE_COLUMNS} dataSource={data} scroll={{ y: 265 }} />
+                    <Table columns={MACHINE_COLUMNS} dataSource={MachineData} scroll={{ y: 265 }} />
                 </div>
                 <div style={{ marginTop: 'auto' }}>
                     <Button type="primary" onClick={() => setModalOpen(true)}>
@@ -129,7 +217,6 @@ const Machines = () => {
                                             style={{ width: '93%' }} placeholder='Select Machine Type' 
                                              options={MACHINE_TYPE} />
                                     </Form.Item>
-
                                     <Form.Item label="Make" name="make" rules={[{ required: true, message: 'Make is required' }]}>
                                         <Input 
                                         className="custom-input" 
@@ -243,34 +330,39 @@ const Machines = () => {
 
 
 
-                            <Form layout="vertical" >
+                            <Form layout="vertical" onFinish={handleFormSubmit} form={form} >
                                 <Row gutter={16}>
                                     <Col span={12}>
                                         <Form.Item name="type" label="Machine Type" rules={[{ required: true, },]}>
                                             <Select size='large' variant="filled" onChange={handleChangeType}
-                                                style={{ width: '93%' }} placeholder='Select Machine Type'>
-                                                <Option value="CNC Machine 1">CNC Machine 1</Option>
-                                                <Option value="CNC Machine 2">CNC Machine 2</Option>
-                                                <Option value="CNC EDM 1">CNC EDM 1</Option>
-                                                <Option value="CNC EDM 2">CNC EDM 2</Option>
-                                                <Option value="ZNC EDM 1">ZNC EDM 1</Option>
-                                                <Option value="ZNC EDM 2">ZNC EDM 2</Option>
-                                                <Option value="Wirecut 1">Wirecut 1</Option>
-                                                <Option value="Wirecut 2">Wirecut 2</Option>
-                                                <Option value="Conventional">Conventional</Option>
-                                            </Select>
+                                                style={{ width: '93%' }} placeholder='Select Machine Type'  options={MACHINE_TYPE} />
                                         </Form.Item>
 
-                                        <Form.Item
-                                            label="Specification (Length)"
-                                            name="length">
-                                            <InputNumber id="length" size='large' variant="filled" placeholder='Enter Length (mm)' />
-                                        </Form.Item>
-                                        <Form.Item
-                                            label="Specification (Height)"
-                                            name="height">
-                                            <InputNumber id="height" size='large' variant="filled" placeholder='Enter Height (mm)' />
-                                        </Form.Item>
+                                    <Form.Item
+                                        label="Specification (Length)"
+                                        name="length">
+                                        <InputNumber 
+                                        id="length" 
+                                        size='large' 
+                                        variant="filled" 
+                                        placeholder='Enter Length (mm)'
+                                        value={bedSize["length"]}
+                                        onChange={(e) => {handleBedSize("length",e)}}
+                                        />
+                                    </Form.Item>
+                                    <Form.Item
+                                        label="Specification (Height)"
+                                        name="height">
+                                        <InputNumber 
+                                        id="height" 
+                                        size='large'
+                                        variant="filled" 
+                                        placeholder='Enter Height (mm)' 
+                                        value={bedSize["height"]}
+                                        onChange={(e) => {handleBedSize("height",e)}}
+                                        />
+                                    </Form.Item>
+
                                         <Form.Item
                                             label="Upload Image"
                                             name="image">
@@ -284,12 +376,27 @@ const Machines = () => {
                                             <Input className="custom-input" variant="filled" id="machineName" placeholder='Enter Machine Name' />
                                         </Form.Item>
                                         <Form.Item
-                                            label="Specification (Breadth)"
-                                            name="breadth">
-                                            <InputNumber id="breadth" size='large' variant="filled" placeholder='Enter Breadth (mm)' />
-                                        </Form.Item>
-                                        <Form.Item label="Specification (Diameter)" name="diameter">
-                                            <Input className="custom-input" variant="filled" id="diameter" placeholder='Enter Diameter' />
+                                        label="Specification (Breadth)"
+                                        name="breadth">
+                                        <InputNumber 
+                                        id="breadth" 
+                                        size='large' 
+                                        variant="filled" 
+                                        placeholder='Enter Breadth (mm)' 
+                                        value={bedSize["breadth"]}
+                                        onChange={(e) => {handleBedSize("breadth",e)}}
+                                        />
+                                    </Form.Item>
+                                    <Form.Item label="Specification (Diameter)" name="diameter">
+                                        <InputNumber 
+                                        // className="custom-input" 
+                                        label="Specification (Diameter)"
+                                        variant="filled" 
+                                        id="diameter" 
+                                        placeholder='Enter Diameter' 
+                                        value={bedSize["diameter"]}
+                                        onChange={(e) => {handleBedSize("diameter",e)}}
+                                        />
                                         </Form.Item>
                                     </Col>
                                 </Row>

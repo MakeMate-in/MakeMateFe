@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Card, Col, Row, Steps, Button, Tabs, Progress, Flex, Collapse, ConfigProvider } from 'antd';
+import { Card, Col, Row, Steps, Button, Progress, Flex, Collapse, ConfigProvider } from 'antd';
 import './../Dashboard/Dashboard.css';
 import './DigitalFactory.css'
 import InfraDetails from '../CompanyDetails/Machines';
-import { STEP_TAB_MAP, STEP_TAB_MAP_2, STEP_TAB_MAP_INFRA_2 , STEPS_HEADINGS, USER_ID, PER_COUNT } from './../../../utils/constants';
+import { STEP_TAB_MAP_2, STEP_TAB_MAP_INFRA_2 , STEPS_HEADINGS, USER_ID, PER_COUNT } from './../../../utils/constants';
 import CompanyDetailsComp from '../CompanyDetails/CompanyOverview/CompanyDetails';
 import { getCompanyDetails} from '../../../apis/Vendor/CompanyDetails';
-import CustomerDetails from '../CompanyDetails/CustomerDetails/CustomerDetails';
+// import CustomerDetails from '../CompanyDetails/CustomerDetails/CustomerDetails';
 
 
 const { Step } = Steps;
@@ -16,10 +16,8 @@ const DigitalFactory = () => {
   const [current, setCurrent] = useState(0);
   const [currentSub, setCurrentSub] = useState(0);
   const [currentInfraSub, setCurrentInfraSub] = useState(0);
-  const { TabPane } = Tabs;
   const [CompanyDetails, setcompanyDetails] = useState({})
   const [percent,setPercent] = useState(0)
-  const [data, setData] = useState()
 
   useEffect(() => {
     const getCompany = async () => {
@@ -36,15 +34,15 @@ const DigitalFactory = () => {
 useEffect(() => {
     const CalculatePercentage = async () => {
       let per = 0;
-      if(CompanyDetails.company_name!=undefined && CompanyDetails.company_name!=='')per=per+PER_COUNT
+      if(CompanyDetails.company_name!==undefined && CompanyDetails.company_name!=='')per=per+PER_COUNT
     
-      if(CompanyDetails.address!=undefined && CompanyDetails.address.length>0) per=per+PER_COUNT
+      if(CompanyDetails.address!==undefined && CompanyDetails.address.length>0) per=per+PER_COUNT
     
-      if(CompanyDetails.contact_person!=undefined && CompanyDetails.contact_person.length>0) per=per+PER_COUNT
+      if(CompanyDetails.contact_person!==undefined && CompanyDetails.contact_person.length>0) per=per+PER_COUNT
     
-      if(CompanyDetails.customer_details!=undefined && CompanyDetails.customer_details.length>0) per=per+PER_COUNT
+      if(CompanyDetails.customer_details!==undefined && CompanyDetails.customer_details.length>0) per=per+PER_COUNT
     
-      if(CompanyDetails.product_details!=undefined && CompanyDetails.product_details.length>0) per=per+PER_COUNT
+      if(CompanyDetails.product_details!==undefined && CompanyDetails.product_details.length>0) per=per+PER_COUNT
     
       setPercent(per)
     }
@@ -54,13 +52,13 @@ useEffect(() => {
 },[CompanyDetails])
 
   const onSaveAndSubmit = () => {
-    if (currentSub == 3) {
+    if (currentSub === 3) {
       setCurrent(current + 1);
     } else {
       setCurrentSub(currentSub + 1);
     }
 
-    if (currentInfraSub == 2) {
+    if (currentInfraSub === 2) {
       setCurrent(current + 1);
     } else {
       setCurrentInfraSub(currentSub + 1);
@@ -188,13 +186,13 @@ useEffect(() => {
             <div>
               <h2 style={{ marginTop: '0' }}>{STEPS_HEADINGS[current]}</h2>
               <hr />
-              {current == 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails}/> : ''}
-              {current == 1 ? <InfraDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} /> : ''}
-              {current == 2 ? <CustomerDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} /> : ''}
+              {current === 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails}/> : ''}
+              {current === 1 ? <InfraDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} /> : ''}
+              {/* {current == 2 ? <CustomerDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} /> : ''} */}
             </div>
 
           </Card>
-          { current!=0 || currentSub != 0 ?
+          { current!==0 || currentSub !== 0 ?
               
               <div style={{ bottom: '1%', position: 'absolute',right:'2%' }}>
                 <Button type='primary' form='form1' onClick={onSaveAndSubmit} style={{fontSize:'18px', fontWeight:'600', height:'40px', display:'flex', alignItems:'center'}}>Save & Continue</Button>

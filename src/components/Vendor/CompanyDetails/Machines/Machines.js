@@ -10,9 +10,7 @@ const Machines = () => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [form] = Form.useForm()
-    const { Option } = Select;
     const [isVisible, setIsVisible] = useState(true)
-    const [MachineDetails, setMachineDetails] = useState()
     const [bedSize, setBedSize] = useState({
         "length": "",
         "height": "",

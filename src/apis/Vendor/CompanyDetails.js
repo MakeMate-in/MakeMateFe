@@ -33,8 +33,6 @@ export const updateCompanyDetails = async (params,data) => {
 
 }
 
-
-
 export const updateAddressandContacts = async (params,data) => {
     try {
         const url = COMPANY_DETAILS_URLS.UPDATE_COMPANY_DETAILS_ARRAY
@@ -51,7 +49,6 @@ export const updateAddressandContacts = async (params,data) => {
     }
 
 }
-
 
 export const deleteElement = async (params,data) => {
     try {
@@ -89,7 +86,6 @@ export const updateElement = async (params,data) => {
 
 }
 
-
 export const uploadAvatar = ( async(file,user) => {
     const url = COMPANY_DETAILS_URLS.UPLOAD_AVATAR;
     // const authToken = getAccessToken();
@@ -116,7 +112,6 @@ export const uploadAvatar = ( async(file,user) => {
     })
     return res;
 })
-
 
 export const uploadCertificate = async (company_id, file) => {
     const url = CERTIFICATES_URLS.UPLOAD_CERTIFICATE;
@@ -196,7 +191,6 @@ export const deleteCertificates = async (company_id, file) => {
     })
     return res;
 }
-
 
 export const uploadPlantImages = async (company_id, file) => {
     const url = PLANT_IMAGES_URLS.UPLOAD_IMAGE;

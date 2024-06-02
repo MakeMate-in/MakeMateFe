@@ -15,52 +15,46 @@ export const getServiceDetails = async (company_id) => {
                 params:params
             }).then((response) => {
             return response.data;
-        })
+     })
         .catch((err) => {
             console.log(err);
         })
+        return res;
     }
     catch(err)
     {
         throw err;
     }
-        return res;
+    
 }
 
-export const updateServiceDetails = async (company_id,service_name,service_type,supplier_details) => {
+export const updateServiceDetails = async (params,data) => {
     try {
-        const data = {
-            company_id: company_id,
-            service_name: service_name,
-            service_type: service_type,
-            supplier_details: supplier_details
-        }
+       
         const url = SERVICE_DETAILS_URL.UPDATE_SERVICE_DETAILS;
-        data = await axios.patch(baseAPIUrl+url,data).then((res)=>{
+        const response = await axios.patch(baseAPIUrl+url,data,{
+            params:params
+        }).then((res)=>{
           return res.data;
         })
         .catch(err=>console.log(err))
-        return data
+        return response
     }
     catch (err) {
         throw err
     }
 }
 
-export const addServiceDetails = async (company_id,service_name,service_type,supplier_details) => {
+export const addServiceDetails = async (params,services) => {
     try {
-        const data = {
-            company_id: company_id,
-            service_name: service_name,
-            service_type: service_type,
-            supplier_details: supplier_details
-        }
         const url = SERVICE_DETAILS_URL.ADD_SERVICE_DETAILS;
-        data = await axios.post(baseAPIUrl+url,data).then((res)=>{
+        const response = await axios.post(baseAPIUrl+url,services,{
+            params:params
+        }).then((res)=>{
           return res.data;
         })
         .catch(err=>console.log(err))
-        return data
+        return response
     }
     catch (err) {
         throw err
@@ -74,13 +68,13 @@ export const deleteServiceDetails = async (company_id) => {
         const params={
             id:company_id
         };
-        data = await axios.delete(baseAPIUrl+url,{
+        const response = await axios.delete(baseAPIUrl+url,{
             params: params
         }).then((res)=>{
           return res.data;
         })
         .catch(err=>console.log(err))
-        return data
+        return response
     }
     catch (err) {
         throw err

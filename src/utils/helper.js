@@ -163,7 +163,7 @@ export const getToken = () => {
 
 
 export const convertBufferToBinary = (buffer) => {
-  if (buffer == undefined || buffer.data == undefined || buffer.data.length == 0) return ''
+  if (buffer === undefined || buffer.data === undefined || buffer.data.length === 0) return ''
   const base64Image = Buffer.from(buffer, 'binary').toString('base64');
   const avatar_url = `data:image/png;base64,${base64Image}`;
   return avatar_url

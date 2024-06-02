@@ -1,27 +1,47 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ROW_COLUMNS } from '../../../../utils/helper'
-import { Flex, Select, InputNumber, Form, Row, Col, Button } from 'antd'
+import { Flex, Select, Form, Row, Col, Button } from 'antd'
 import { DeleteTwoTone } from '@ant-design/icons';
 import TextArea from 'antd/es/input/TextArea'
+import { addServiceDetails, getServiceDetails } from '../../../../apis/Vendor/ServiceDetails';
+import { COMPANY_ID } from '../../../../utils/constants';
 
 
 const Services = () => {
 
-  const [inputs, setInputs] = useState([{ serviceName: "", serviceType: "", supplierDetails: "" }]);
+  const [inputs, setInputs] = useState([{ serviceName: undefined, serviceType: undefined, supplierDetails: "" }]);
 
   const handleAddInput = () => {
-    setInputs([...inputs, { serviceName: "", serviceType: "", supplierDetails: "" }]);
+    setInputs([...inputs, { serviceName: undefined, serviceType: undefined, supplierDetails: "" }]);
   };
 
+
+  const fetchServices = async() => {
+    try{
+
+      let res = await getServiceDetails(COMPANY_ID)
+      if(res.success){
+        if(res.count>0){
+        setInputs([...res.documents])
+        }
+        else{
+          handleAddInput()
+        }
+      }
+    } 
+    catch(err){
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    fetchServices()
+  },[])
+
+
   const handleManpowerChange = (event, index, id) => {
-    // if(id=='supplierDetails'){
-    //   let onChangeValue = [...inputs];
-    // onChangeValue[index][id] = event;
-    // setInputs(onChangeValue);
-    // }
-    console.log(event);
     let onChangeValue = [...inputs];
-    onChangeValue[index][id] = id=="supplierDetails"?event.target.value : event;
+    onChangeValue[index][id] = id==="supplierDetails"?event.target.value : event;
     setInputs(onChangeValue);
   };
 
@@ -31,19 +51,24 @@ const Services = () => {
     setInputs(newArray);
   };
 
+  const handleFormSubmit = async () => {
+    try{
+      let params= {
+        company_id:COMPANY_ID
+      }
+      const res = await addServiceDetails(params,inputs)
+      if(res.success){
+        fetchServices()
+      }
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+
+
   return (
-    // <div>
-    //     {ROW_COLUMNS.map((item) => {
-    //         return(
-    //          <Flex>
-    //             <p>{item}</p>
-    //             <Select style={{width:'500px'}}/>
-    //             <TextArea/>
-    //          </Flex>   
-    //         )
-    //     })}
-    // </div>
-    <Form layout="vertical">
+    <Form layout="vertical" onFinish={handleFormSubmit}>
       <h3>Working Process for Mold Development</h3>
       {inputs.map((item, index) => (
         <Flex vertical key={index}>
@@ -122,8 +147,10 @@ const Services = () => {
         </Flex>
       ))}
 
-      {/* <div className="body"> {JSON.stringify(inputs)} </div> */}
-
+<Button type="primary" htmlType="submit">
+          Save and Submit
+        </Button>
+      
     </Form>
   )
 }

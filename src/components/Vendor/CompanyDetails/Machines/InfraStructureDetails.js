@@ -1,7 +1,54 @@
-import { useState } from 'react'
-import { Form, Row, Col, InputNumber, Input, Select, Button, Flex, Popover, Card } from 'antd'
+import { useState, useEffect } from 'react'
+import { Form, Row, Col, InputNumber, Select, Button, Flex, Card } from 'antd'
 import { DeleteTwoTone } from '@ant-design/icons';
+import { addInfraDetails, getInfraDetails } from '../../../../apis/Vendor/InfrastructureDetails';
+import { COMPANY_ID } from '../../../../utils/constants';
 
+
+const DESIGN_SOFTWARE_OPTIONS = [{
+  label: 'PTC Creo',
+  value: 'PTC Creo',
+},
+{
+  label: 'Catia',
+  value: 'Catia'
+},
+{
+  label: 'UX',
+  value: 'UX'
+}];
+
+const MANPOWER_DESIGNATION = [
+    {
+      value: 'Project Engineer',
+      label: 'Project Engineer',
+    },
+    {
+      value: 'Design Team',
+      label: 'Design Team',
+    },
+      {
+        value: 'Programming Team',
+        label: 'Programming Team',
+      },
+      {
+        value: 'CNC Operator',
+        label: 'CNC Operator',
+      },
+
+      {
+        value: 'EDM Operator',
+        label: 'EDM Operator',
+      },
+      {
+        value: 'Diefitter',
+        label: 'Diefitter',
+      },
+      {
+        value: 'Quality Person',
+        label: 'Quality Person',
+      }
+]
 
 const InfraStructureDetails = () => {
 
@@ -9,22 +56,43 @@ const InfraStructureDetails = () => {
     "plant_area": "",
     "assembly_area": "",
     "assembly_table": "",
-    "softwares": "",
+    "design_softwares": [],
     "surface_table": "",
-    "cmm": "",
-    "tonnage": "",
-    "designation": "",
-    "count": ""
+    "CMM": "",
+    "crane_tonnage": "",
+    "manpower": []
   })
 
-  const [inputs, setInputs] = useState([{ designation: "", count: "" }]);
+  const [inputs, setInputs] = useState([{ designation: undefined, count: "" }]);
+
+  const fetchInfraDetails = async() => {
+    try{
+      const InfraDetails = await getInfraDetails(COMPANY_ID)
+      console.log(InfraDetails)
+      if(InfraDetails.success && InfraDetails.count===1){
+        setInfraStructureDetails({...InfraDetails.documents[0]})
+      }
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+
+
+  useEffect(() => {
+    fetchInfraDetails()
+  }, [])
+
+  useEffect(() => {
+    setInfraStructureDetails({...InfraStructureDetails,["manpower"]:inputs})
+},[inputs])
 
   const handleAddInput = () => {
-    setInputs([...inputs, { designation: "", count: "" }]);
+    setInputs([...inputs, { designation: undefined, count: "" }]);
   };
 
+
   const handleManpowerChange = (event, index, id) => {
-    console.log(event);
     let onChangeValue = [...inputs];
     onChangeValue[index][id] = event;
     setInputs(onChangeValue);
@@ -37,59 +105,65 @@ const InfraStructureDetails = () => {
   };
 
 
-
-  const options = [{
-    label: 'PTC Creo',
-    value: 'PTC Creo',
-  },
-  {
-    label: 'Catia',
-    value: 'Catia'
-  },
-  {
-    label: 'UX',
-    value: 'UX'
-  }];
-
-  const handleChange = (value) => {
+  const handleChange = (value,id) => {
+    setInfraStructureDetails({...InfraStructureDetails,[id]:value})
     console.log(`selected ${value}`);
+  }
+
+  const handleFormSubmit = async() => {
+    try{
+      let params = {
+        company_id: COMPANY_ID
+      }
+      const res = await addInfraDetails(params, InfraStructureDetails)
+      if(res.success){
+        fetchInfraDetails()
+      }
+    }
+    catch(err){
+      console.log(err)
+    }
   }
 
   return (
     <Card style={{ overflow: 'auto', scrollbarWidth: 'none' }}>
-      <Form layout="vertical" >
+      <Form layout="vertical"  onFinish={handleFormSubmit} >
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
               label="Area of plant (in sq meters)"
               name="plantArea"
-              rules={[{ required: true, message: 'Area of plant is required' }]}>
+              // rules={[{ required: true, message: 'Area of plant is required' }]}
+              >
               <InputNumber
                 min={1}
                 id="plantArea"
                 size='large'
                 variant="filled"
                 placeholder='Enter Area of plant'
-                onChange={handleChange}
+                value={InfraStructureDetails["plant_area"]}
+                onChange={(e) => {handleChange(e,"plant_area")}}
                 style={{ width: '100%' }}
               />
             </Form.Item>
             <Form.Item
               label="Number of Assembly table"
-              name="assemblyNumber">
+              name="assembly_table">
               <InputNumber
                 min={1}
-                id="assemblyNumber"
+                id="assembly_table"
                 size='large'
                 variant="filled"
                 placeholder='Enter Number of Assembly table'
-                onChange={handleChange}
+                value={InfraStructureDetails["assembly_table"]}
+                onChange={(e) => {handleChange(e,"assembly_table")}}
                 style={{ width: '100%' }}
               />
             </Form.Item>
             <Form.Item label="Surface Table">
-              <Select style={{ width: '100%' }}
+              <Select style={{ width: '100%' }} allowClear
                 size='large' variant="filled" placeholder="Enter Surface Table"
+                onChange={(e) => {handleChange(e,"surface_table")}}
                 options={[
                   {
                     value: 'Yes',
@@ -111,7 +185,8 @@ const InfraStructureDetails = () => {
                 size='large'
                 variant="filled"
                 placeholder='Enter Crane Tonnage (In Ton)'
-                onChange={handleChange}
+                value={InfraStructureDetails["crane_tonnage"]}
+                onChange={(e) => {handleChange(e,"crane_tonnage")}}
                 style={{ width: '100%' }}
               />
             </Form.Item>
@@ -120,14 +195,16 @@ const InfraStructureDetails = () => {
             <Form.Item
               label="Assembly area (in sq meters)"
               name="assemblyArea"
-              rules={[{ required: true, message: 'Assembly area is required' }]}>
+              // rules={[{ required: true, message: 'Assembly area is required' }]}
+              >
               <InputNumber
                 min={1}
                 id="assemblyArea"
                 size='large'
                 variant="filled"
                 placeholder='Enter Assembly Area'
-                onChange={handleChange}
+                value={InfraStructureDetails["assembly_area"]}
+                onChange={(e) => {handleChange(e,"assembly_area")}}
                 style={{ width: '100%' }}
               />
             </Form.Item>
@@ -138,15 +215,16 @@ const InfraStructureDetails = () => {
                   width: '100%',
                 }}
                 placeholder="Please select Design Softwares"
-                options={options}
-                onChange={handleChange}
+                options={DESIGN_SOFTWARE_OPTIONS}
+                onChange={(e) => {handleChange(e,"design_softwares")}}
                 size='large'
                 variant="filled"
               />
             </Form.Item>
             <Form.Item label="CMM">
-              <Select style={{ width: '100%' }}
+              <Select style={{ width: '100%' }} allowClear
                 size='large' variant="filled" placeholder="Enter CMM"
+                onChange={(e) => {handleChange(e,"CMM")}}
                 options={[
                   {
                     value: 'Outsourced',
@@ -169,22 +247,13 @@ const InfraStructureDetails = () => {
               <Row gutter={16}>
                 <Col span={10}>
                   <Form.Item label='Designation'>
-                    <Select style={{ width: '100%' }}
+                    <Select style={{ width: '100%' }} allowClear
                       id="designation"
                       placeholder="Please select"
                       size='large' variant="filled"
                       value={item.designation}
                       onChange={(event) => handleManpowerChange(event, index, "designation")}
-                      options={[
-                        {
-                          value: 'Outsourced',
-                          label: 'Outsourced',
-                        },
-                        {
-                          value: 'Inhouse',
-                          label: 'Inhouse',
-                        },
-                      ]}
+                      options={MANPOWER_DESIGNATION}
                     />
                   </Form.Item>
                   {index === inputs.length - 1 && (
@@ -213,12 +282,18 @@ const InfraStructureDetails = () => {
                   )}
                 </Col>
               </Row>
+
             </Flex>
           ))}
 
           {/* <div className="body"> {JSON.stringify(inputs)} </div> */}
 
         </div>
+        <Form.Item>
+        <Button type="primary" htmlType="submit">
+          Save and Submit
+        </Button>
+      </Form.Item>
       </Form>
     </Card>
   )

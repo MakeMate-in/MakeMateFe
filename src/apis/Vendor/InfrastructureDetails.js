@@ -7,7 +7,7 @@ export const getInfraDetails = async (company_id) => {
     try{
         const url = INFRA_DETAILS_URL.GET_INFRA_DETAILS;
         const params={
-            id:company_id
+            ids:company_id
         }
         let res = await axios.get(
             baseAPIUrl+url ,

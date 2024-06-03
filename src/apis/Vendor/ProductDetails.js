@@ -57,10 +57,10 @@ export const addProductDetails = async (params,data) => {
 
 }
 
-export const deleteProductDetails = async (params,data) => {
+export const deleteProductDetails = async (params) => {
     try {
         const url = PRODUCT_DETAILS_URL.DELETE_SINGLE_PRODUCT;
-        data = await axios.delete(baseAPIUrl+url, {
+        const data = await axios.delete(baseAPIUrl+url, {
             params: params
         }).then((res)=>{
           return res.data;

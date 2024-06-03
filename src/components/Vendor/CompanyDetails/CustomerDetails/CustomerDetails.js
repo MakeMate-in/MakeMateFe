@@ -62,7 +62,7 @@ const CustomerDetails = () => {
     const handleDeleteInput = async (record) => {
         try {
             let params = {
-                id: record.id
+                product_id: record.id
             }
             console.log(record.id);
             const res = await deleteProductDetails(params)

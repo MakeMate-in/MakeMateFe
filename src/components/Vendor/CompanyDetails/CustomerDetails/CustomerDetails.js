@@ -118,8 +118,8 @@ const CustomerDetails = () => {
             key: 'manufacturing_year',
         },
         {
-            title: 'Image',
-            key: 'image',
+            title: 'Tool Image',
+            key: 'tool_image',
             render: (_, record) => (
                 <Space size="large">
                     <a>View</a>
@@ -127,8 +127,8 @@ const CustomerDetails = () => {
             ),
         },
         {
-            title: 'Image',
-            key: 'image',
+            title: 'Product Image',
+            key: 'product_image',
             render: (_, record) => (
                 <Space size="large">
                     <a>View</a>

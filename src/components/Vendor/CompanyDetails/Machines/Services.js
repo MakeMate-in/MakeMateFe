@@ -7,6 +7,14 @@ import { addServiceDetails, getServiceDetails } from '../../../../apis/Vendor/Se
 import { COMPANY_ID } from '../../../../utils/constants';
 
 
+const SERVICE_NAMES = ROW_COLUMNS.map((item) => {
+  let data = {}
+  data.label = item
+  data.value = item
+  return data
+})
+
+
 const Services = () => {
 
   const [inputs, setInputs] = useState([{ service_name: undefined, service_type: undefined, supplier_details: "" }]);
@@ -82,16 +90,7 @@ const Services = () => {
                   value={item.service_name}
                   allowClear
                   onChange={(event) => handleManpowerChange(event, index, "service_name")}
-                  options={[
-                    {
-                      value: 'Outsourced',
-                      label: 'Outsourced',
-                    },
-                    {
-                      value: 'Inhouse',
-                      label: 'Inhouse',
-                    },
-                  ]}
+                  options={SERVICE_NAMES}
                 />
               </Form.Item>
               {index === inputs.length - 1 && (

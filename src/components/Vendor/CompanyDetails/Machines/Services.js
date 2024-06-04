@@ -94,7 +94,7 @@ const Services = () => {
                 />
               </Form.Item>
               {index === inputs.length - 1 && (
-                <a onClick={() => handleAddInput()} style={{ fontSize: '16px' }}>Add Manpower</a>
+                <a onClick={() => handleAddInput()} style={{ fontSize: '16px' }}>+ Add Services</a>
               )}
             </Col>
             <Col span={7}>

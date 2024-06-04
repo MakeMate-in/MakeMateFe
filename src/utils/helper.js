@@ -326,3 +326,11 @@ export const ROW_COLUMNS = [
   'Mould Trial',
   'Mould Finalisation after trial (No of days)'
 ]
+
+
+export const checkButtonRequired = (current, currentSub, currentInfraSub) => {
+  if(current===0 && currentSub===0) {
+    return false
+  }
+  return true
+}

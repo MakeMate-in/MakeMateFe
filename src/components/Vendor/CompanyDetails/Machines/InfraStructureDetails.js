@@ -64,6 +64,7 @@ const InfraStructureDetails = () => {
   })
 
   const [inputs, setInputs] = useState([{ designation: undefined, count: "" }]);
+  const [isLoading, setisLoading] = useState(false)  
 
   const fetchInfraDetails = async() => {
     try{
@@ -72,12 +73,14 @@ const InfraStructureDetails = () => {
       if(InfraDetails.success && InfraDetails.count===1){
         setInfraStructureDetails({...InfraDetails.documents[0]})
       }
+        setisLoading(true)
     }
     catch(err){
       console.log(err)
     }
   }
 
+console.log(InfraStructureDetails)
 
   useEffect(() => {
     fetchInfraDetails()
@@ -127,6 +130,7 @@ const InfraStructureDetails = () => {
 
   return (
     <Card style={{ overflow: 'auto', scrollbarWidth: 'none' }}>
+      {isLoading===true?
       <Form layout="vertical"  onFinish={handleFormSubmit} >
         <Row gutter={16}>
           <Col span={12}>
@@ -142,11 +146,12 @@ const InfraStructureDetails = () => {
                 variant="filled"
                 placeholder='Enter Area of plant'
                 value={InfraStructureDetails["plant_area"]}
+                defaultValue={InfraStructureDetails["plant_area"]}
                 onChange={(e) => {handleChange(e,"plant_area")}}
                 style={{ width: '100%' }}
               />
             </Form.Item>
-            <Form.Item
+           {isLoading==true? <Form.Item
               label="Number of Assembly table"
               name="assembly_table">
               <InputNumber
@@ -156,10 +161,11 @@ const InfraStructureDetails = () => {
                 variant="filled"
                 placeholder='Enter Number of Assembly table'
                 value={InfraStructureDetails["assembly_table"]}
+                defaultValue={InfraStructureDetails["assembly_table"]}
                 onChange={(e) => {handleChange(e,"assembly_table")}}
                 style={{ width: '100%' }}
               />
-            </Form.Item>
+            </Form.Item>: ''}
             <Form.Item label="Surface Table">
               <Select style={{ width: '100%' }} allowClear
                 size='large' variant="filled" placeholder="Enter Surface Table"
@@ -186,6 +192,7 @@ const InfraStructureDetails = () => {
                 variant="filled"
                 placeholder='Enter Crane Tonnage (In Ton)'
                 value={InfraStructureDetails["crane_tonnage"]}
+                defaultValue={InfraStructureDetails["crane_tonnage"]}
                 onChange={(e) => {handleChange(e,"crane_tonnage")}}
                 style={{ width: '100%' }}
               />
@@ -205,6 +212,7 @@ const InfraStructureDetails = () => {
                 placeholder='Enter Assembly Area'
                 value={InfraStructureDetails["assembly_area"]}
                 onChange={(e) => {handleChange(e,"assembly_area")}}
+                defaultValue={InfraStructureDetails["assembly_area"]}
                 style={{ width: '100%' }}
               />
             </Form.Item>
@@ -295,6 +303,7 @@ const InfraStructureDetails = () => {
         </Button>
       </Form.Item>
       </Form>
+:''}
     </Card>
   )
 }

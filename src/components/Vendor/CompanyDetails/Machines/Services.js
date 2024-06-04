@@ -38,7 +38,6 @@ const Services = () => {
     fetchServices()
   },[])
 
-  console.log(inputs)
 
   const handleManpowerChange = (event, index, id) => {
     let onChangeValue = [...inputs];
@@ -129,7 +128,7 @@ const Services = () => {
                   id="supplierDetails"
                   size='large'
                   variant="filled" allowClear
-                  value={item.supplierDetails}
+                  value={item.supplier_details}
                   style={{ width: '100%' }}
                   autoSize={{
                     maxRows: 6,

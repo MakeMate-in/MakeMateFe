@@ -36,6 +36,8 @@ const BasicDetails = (props) => {
 }
   },[props.CompanyDetails.company_logo])
 
+
+
   const [basicDetails, setBasicDetails] = useState({
     "description": "",
     "company_name": "",
@@ -44,6 +46,10 @@ const BasicDetails = (props) => {
     "current_projects_no": ""
   });
 
+  const [isLoading,setIsLoading] = useState(false)
+
+
+  
   const handleChange = (event) => {
     setBasicDetails({ ...basicDetails, [event.target.id]: event.target.value })
   }
@@ -102,7 +108,10 @@ const BasicDetails = (props) => {
     onRemove: uploadImage
   };
 
+  
   return (
+    <div>
+ { props && Object.keys(props.CompanyDetails).length>0 ? 
     <Form
       layout="vertical"
       onFinish={handleFormSubmit}
@@ -142,6 +151,7 @@ const BasicDetails = (props) => {
                   onChange={handleChange}
                   autoComplete='off'
                   value={basicDetails["description"]}
+                  defaultValue={props.CompanyDetails.description}
                 />
               </Form.Item>
             </Col>
@@ -163,6 +173,7 @@ const BasicDetails = (props) => {
               onChange={handleChange}
               autoComplete='off'
               value={basicDetails["company_name"]}
+              defaultValue={props.CompanyDetails.company_name}
             />
           </Form.Item>
           <Form.Item
@@ -178,6 +189,7 @@ const BasicDetails = (props) => {
               autoComplete='off'
               onChange={handleChange}
               value={basicDetails["experience"]}
+              defaultValue={props.CompanyDetails.experience}
             />
           </Form.Item>
         </Col>
@@ -195,6 +207,7 @@ const BasicDetails = (props) => {
               autoComplete='off'
               onChange={handleChange}
               value={basicDetails["GST_no"]}
+              defaultValue={props.CompanyDetails.GST_no}
             />
           </Form.Item>
           <Form.Item
@@ -210,6 +223,7 @@ const BasicDetails = (props) => {
               autoComplete='off'
               onChange={handleChange}
               value={basicDetails["current_projects_no"]}
+              defaultValue={props.CompanyDetails.current_projects_no}
             />
           </Form.Item>
         </Col>
@@ -220,7 +234,9 @@ const BasicDetails = (props) => {
           Save and Submit
         </Button>
       </Form.Item>
-    </Form>
+    </Form>:''
+}
+</div>
   )
 }
 

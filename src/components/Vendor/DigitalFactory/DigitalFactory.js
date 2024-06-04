@@ -7,6 +7,7 @@ import { STEP_TAB_MAP_2, STEP_TAB_MAP_INFRA_2 , STEPS_HEADINGS, USER_ID, PER_COU
 import CompanyDetailsComp from '../CompanyDetails/CompanyOverview/CompanyDetails';
 import { getCompanyDetails} from '../../../apis/Vendor/CompanyDetails';
 import CustomerDetails from '../CompanyDetails/CustomerDetails/CustomerDetails';
+import { checkButtonRequired } from '../../../utils/helper';
 
 
 const { Step } = Steps;
@@ -192,7 +193,7 @@ useEffect(() => {
             </div>
 
           </Card>
-          { current!==0 || currentSub !== 0 ?
+          { checkButtonRequired(current, currentSub, currentInfraSub) ?
               
               <div style={{ bottom: '1%', position: 'absolute',right:'2%' }}>
                 <Button type='primary' form='form1' onClick={onSaveAndSubmit} style={{fontSize:'18px', fontWeight:'600', height:'40px', display:'flex', alignItems:'center'}}>Save & Continue</Button>

@@ -9,10 +9,10 @@ import { COMPANY_ID } from '../../../../utils/constants';
 
 const Services = () => {
 
-  const [inputs, setInputs] = useState([{ serviceName: undefined, serviceType: undefined, supplierDetails: "" }]);
+  const [inputs, setInputs] = useState([{ service_name: undefined, service_type: undefined, supplier_details: "" }]);
 
   const handleAddInput = () => {
-    setInputs([...inputs, { serviceName: undefined, serviceType: undefined, supplierDetails: "" }]);
+    setInputs([...inputs, { service_name: undefined, service_type: undefined, supplier_details: "" }]);
   };
 
 
@@ -21,13 +21,13 @@ const Services = () => {
 
       let res = await getServiceDetails(COMPANY_ID)
       if(res.success){
-        if(res.count>0){
-        setInputs([...res.documents])
+          const services = res.documents[0].services
+          console.log(services)
+        setInputs([...services])
         }
-        else{
-          handleAddInput()
+        else {
+          // handleAddInput()
         }
-      }
     } 
     catch(err){
       console.log(err)
@@ -38,10 +38,11 @@ const Services = () => {
     fetchServices()
   },[])
 
+  console.log(inputs)
 
   const handleManpowerChange = (event, index, id) => {
     let onChangeValue = [...inputs];
-    onChangeValue[index][id] = id==="supplierDetails"?event.target.value : event;
+    onChangeValue[index][id] = id==="supplier_details"?event.target.value : event;
     setInputs(onChangeValue);
   };
 
@@ -58,7 +59,7 @@ const Services = () => {
       }
       const res = await addServiceDetails(params,inputs)
       if(res.success){
-        fetchServices()
+        // fetchServices()
       }
     }
     catch(err){
@@ -76,12 +77,12 @@ const Services = () => {
             <Col span={7}>
               <Form.Item label='Service Name'>
                 <Select style={{ width: '100%' }}
-                  id="serviceName"
+                  id="service_name"
                   placeholder="Please select"
                   size='large' variant="filled"
-                  value={item.serviceName}
+                  value={item.service_name}
                   allowClear
-                  onChange={(event) => handleManpowerChange(event, index, "serviceName")}
+                  onChange={(event) => handleManpowerChange(event, index, "service_name")}
                   options={[
                     {
                       value: 'Outsourced',
@@ -101,11 +102,11 @@ const Services = () => {
             <Col span={7}>
               <Form.Item label='Service Type'>
                 <Select style={{ width: '100%' }}
-                  id="serviceType" allowClear
+                  id="service_type" allowClear
                   placeholder="Please select"
                   size='large' variant="filled"
-                  value={item.serviceType}
-                  onChange={(event) => handleManpowerChange(event, index, "serviceType")}
+                  value={item.service_type}
+                  onChange={(event) => handleManpowerChange(event, index, "service_type")}
                   options={[
                     {
                       value: 'Outsourced',
@@ -123,7 +124,7 @@ const Services = () => {
               <Form.Item label='Supplier Details'>
                 <TextArea
                   placeholder="Enter Supplier Details"
-                  onChange={(event) => handleManpowerChange(event, index, 'supplierDetails')}
+                  onChange={(event) => handleManpowerChange(event, index, 'supplier_details')}
                   name="supplierDetails"
                   id="supplierDetails"
                   size='large'

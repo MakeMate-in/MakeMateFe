@@ -6,7 +6,7 @@ import InfraDetails from '../CompanyDetails/Machines';
 import { STEP_TAB_MAP_2, STEP_TAB_MAP_INFRA_2 , STEPS_HEADINGS, USER_ID, PER_COUNT } from './../../../utils/constants';
 import CompanyDetailsComp from '../CompanyDetails/CompanyOverview/CompanyDetails';
 import { getCompanyDetails} from '../../../apis/Vendor/CompanyDetails';
-// import CustomerDetails from '../CompanyDetails/CustomerDetails/CustomerDetails';
+import CustomerDetails from '../CompanyDetails/CustomerDetails/CustomerDetails';
 
 
 const { Step } = Steps;
@@ -188,7 +188,7 @@ useEffect(() => {
               <hr />
               {current === 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails}/> : ''}
               {current === 1 ? <InfraDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} /> : ''}
-              {/* {current == 2 ? <CustomerDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} /> : ''} */}
+              {current === 2 ? <CustomerDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} /> : ''} 
             </div>
 
           </Card>

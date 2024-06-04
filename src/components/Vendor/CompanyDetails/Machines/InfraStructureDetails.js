@@ -72,6 +72,7 @@ const InfraStructureDetails = () => {
       console.log(InfraDetails)
       if(InfraDetails.success && InfraDetails.count===1){
         setInfraStructureDetails({...InfraDetails.documents[0]})
+        setInputs([...InfraDetails.documents[0].manpower])
       }
         setisLoading(true)
     }
@@ -170,6 +171,7 @@ console.log(InfraStructureDetails)
               <Select style={{ width: '100%' }} allowClear
                 size='large' variant="filled" placeholder="Enter Surface Table"
                 onChange={(e) => {handleChange(e,"surface_table")}}
+                value={InfraStructureDetails["surface_table"]}
                 options={[
                   {
                     value: 'Yes',
@@ -222,6 +224,7 @@ console.log(InfraStructureDetails)
                 style={{
                   width: '100%',
                 }}
+                value={InfraStructureDetails["design_softwares"]}
                 placeholder="Please select Design Softwares"
                 options={DESIGN_SOFTWARE_OPTIONS}
                 onChange={(e) => {handleChange(e,"design_softwares")}}
@@ -233,6 +236,7 @@ console.log(InfraStructureDetails)
               <Select style={{ width: '100%' }} allowClear
                 size='large' variant="filled" placeholder="Enter CMM"
                 onChange={(e) => {handleChange(e,"CMM")}}
+                value={InfraStructureDetails["CMM"]}
                 options={[
                   {
                     value: 'Outsourced',

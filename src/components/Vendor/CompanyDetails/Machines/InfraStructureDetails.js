@@ -1,8 +1,18 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo} from 'react'
 import { Form, Row, Col, InputNumber, Select, Button, Flex, Card } from 'antd'
 import { DeleteTwoTone } from '@ant-design/icons';
 import { addInfraDetails, getInfraDetails } from '../../../../apis/Vendor/InfrastructureDetails';
 import { COMPANY_ID } from '../../../../utils/constants';
+import {
+  RadiusBottomleftOutlined,
+  RadiusBottomrightOutlined,
+  RadiusUpleftOutlined,
+  RadiusUprightOutlined,
+} from '@ant-design/icons';
+import { Divider, notification} from 'antd';
+const Context = React.createContext({
+  name: 'Default',
+});
 
 
 const DESIGN_SOFTWARE_OPTIONS = [{
@@ -64,7 +74,50 @@ const InfraStructureDetails = () => {
   })
 
   const [inputs, setInputs] = useState([{ designation: undefined, count: "" }]);
-  const [isLoading, setisLoading] = useState(false)  
+  const [isLoading, setisLoading] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = (placement) => {
+    api.info({
+      message: `Data Added`,
+      description: <Context.Consumer>{({ name }) => `Infrastructure Details Added Successfully`}</Context.Consumer>,
+      placement,
+    });
+  };
+  let contextValue = useMemo(
+    () => ({
+      name: 'Make Mate',
+    }),
+    [],
+  );
+
+  const openFailedNotification = (placement) => {
+    api.info({
+      message: `Something went wrong`,
+      description: <Context.Consumer>{({ name }) => `Unable to add Infrastructure Details `}</Context.Consumer>,
+      placement,
+    });
+  };
+    contextValue = useMemo(
+    () => ({
+      name: 'Make Mate',
+    }),
+    [],
+  );
+
+  const deleteNotification = (placement) => {
+    api.info({
+      message: `Data Deleted`,
+      description: <Context.Consumer>{({ name }) => `Infrastructure Details deleted Successfully`}</Context.Consumer>,
+      placement,
+    });
+  };
+  contextValue = useMemo(
+    () => ({
+      name: 'Make Mate',
+    }),
+    [],
+  );
 
   const fetchInfraDetails = async() => {
     try{
@@ -103,6 +156,7 @@ console.log(InfraStructureDetails)
   };
 
   const handleDeleteInput = (index) => {
+    deleteNotification('topRight');
     const newArray = [...inputs];
     newArray.splice(index, 1);
     setInputs(newArray);
@@ -122,6 +176,10 @@ console.log(InfraStructureDetails)
       const res = await addInfraDetails(params, InfraStructureDetails)
       if(res.success){
         fetchInfraDetails()
+        openNotification('topRight')
+      }
+      else{
+        openFailedNotification('topRight');
       }
     }
     catch(err){
@@ -130,6 +188,8 @@ console.log(InfraStructureDetails)
   }
 
   return (
+    <Context.Provider value={contextValue}>
+                {contextHolder}
     <Card style={{ overflow: 'auto', scrollbarWidth: 'none' }}>
       {isLoading===true?
       <Form layout="vertical"  onFinish={handleFormSubmit} >
@@ -309,6 +369,7 @@ console.log(InfraStructureDetails)
       </Form>
 :''}
     </Card>
+    </Context.Provider>
   )
 }
 

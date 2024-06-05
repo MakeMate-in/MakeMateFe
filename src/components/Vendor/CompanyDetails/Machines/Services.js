@@ -1,10 +1,20 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo} from 'react'
 import { ROW_COLUMNS } from '../../../../utils/helper'
 import { Flex, Select, Form, Row, Col, Button } from 'antd'
 import { DeleteTwoTone } from '@ant-design/icons';
 import TextArea from 'antd/es/input/TextArea'
 import { addServiceDetails, getServiceDetails } from '../../../../apis/Vendor/ServiceDetails';
 import { COMPANY_ID } from '../../../../utils/constants';
+import {
+  RadiusBottomleftOutlined,
+  RadiusBottomrightOutlined,
+  RadiusUpleftOutlined,
+  RadiusUprightOutlined,
+} from '@ant-design/icons';
+import { Divider, notification} from 'antd';
+const Context = React.createContext({
+  name: 'Default',
+});
 
 
 const SERVICE_NAMES = ROW_COLUMNS.map((item) => {
@@ -18,6 +28,50 @@ const SERVICE_NAMES = ROW_COLUMNS.map((item) => {
 const Services = () => {
 
   const [inputs, setInputs] = useState([{ service_name: undefined, service_type: undefined, supplier_details: "" }]);
+  const [isLoading, setisLoading] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = (placement) => {
+    api.info({
+      message: `Data Added`,
+      description: <Context.Consumer>{({ name }) => `Services Added Successfully`}</Context.Consumer>,
+      placement,
+    });
+  };
+  let contextValue = useMemo(
+    () => ({
+      name: 'Make Mate',
+    }),
+    [],
+  );
+
+  const openFailedNotification = (placement) => {
+    api.info({
+      message: `Something went wrong`,
+      description: <Context.Consumer>{({ name }) => `Unable to add Services `}</Context.Consumer>,
+      placement,
+    });
+  };
+    contextValue = useMemo(
+    () => ({
+      name: 'Make Mate',
+    }),
+    [],
+  );
+
+  const deleteNotification = (placement) => {
+    api.info({
+      message: `Data Deleted`,
+      description: <Context.Consumer>{({ name }) => `Services deleted Successfully`}</Context.Consumer>,
+      placement,
+    });
+  };
+  contextValue = useMemo(
+    () => ({
+      name: 'Make Mate',
+    }),
+    [],
+  );
 
   const handleAddInput = () => {
     setInputs([...inputs, { service_name: undefined, service_type: undefined, supplier_details: "" }]);
@@ -54,6 +108,7 @@ const Services = () => {
   };
 
   const handleDeleteInput = (index) => {
+    deleteNotification('topRight');
     const newArray = [...inputs];
     newArray.splice(index, 1);
     setInputs(newArray);
@@ -67,6 +122,10 @@ const Services = () => {
       const res = await addServiceDetails(params,inputs)
       if(res.success){
         // fetchServices()
+        openNotification('topRight');
+      }
+      else{
+        openFailedNotification('topRight');
       }
     }
     catch(err){
@@ -76,6 +135,8 @@ const Services = () => {
 
 
   return (
+    <Context.Provider value={contextValue}>
+    {contextHolder}
     <Form layout="vertical" onFinish={handleFormSubmit}>
       <h3>Working Process for Mold Development</h3>
       {inputs.map((item, index) => (
@@ -151,6 +212,7 @@ const Services = () => {
         </Button>
       
     </Form>
+    </Context.Provider>
   )
 }
 

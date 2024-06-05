@@ -1,16 +1,27 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo} from 'react'
 import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Upload, Space, Popover } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { MACHINE_TYPE } from '../../../../utils/helper';
 import { addMachineDetails, getMachineDetails, deleteMachineDetails } from '../../../../apis/Vendor/MachineDetails';
 import { COMPANY_ID } from '../../../../utils/constants';
 import { DeleteTwoTone } from '@ant-design/icons';
+import {
+    RadiusBottomleftOutlined,
+    RadiusBottomrightOutlined,
+    RadiusUpleftOutlined,
+    RadiusUprightOutlined,
+  } from '@ant-design/icons';
+  import { Divider, notification} from 'antd';
+  const Context = React.createContext({
+    name: 'Default',
+  });
 
 const Machines = () => {
 
     const [modalOpen, setModalOpen] = useState(false);
-    const [form] = Form.useForm()
-    const [isVisible, setIsVisible] = useState(true)
+    const [form] = Form.useForm();
+    const [isVisible, setIsVisible] = useState(true);
+    const [api, contextHolder] = notification.useNotification();
     const [bedSize, setBedSize] = useState({
         "length": "",
         "height": "",
@@ -27,6 +38,49 @@ const Machines = () => {
     })
 
     let [MachineData, setMachineData] = useState([])
+
+    const openNotification = (placement) => {
+        api.info({
+          message: `Data Added`,
+          description: <Context.Consumer>{({ name }) => `Machine Details Added Successfully`}</Context.Consumer>,
+          placement,
+        });
+      };
+      let contextValue = useMemo(
+        () => ({
+          name: 'Make Mate',
+        }),
+        [],
+      );
+
+      const openFailedNotification = (placement) => {
+        api.info({
+          message: `Something went wrong`,
+          description: <Context.Consumer>{({ name }) => `Unable to add Machine Details `}</Context.Consumer>,
+          placement,
+        });
+      };
+        contextValue = useMemo(
+        () => ({
+          name: 'Make Mate',
+        }),
+        [],
+      );
+
+
+      const deleteNotification = (placement) => {
+        api.info({
+          message: `Data Deleted`,
+          description: <Context.Consumer>{({ name }) => `Machine Details deleted Successfully`}</Context.Consumer>,
+          placement,
+        });
+      };
+      contextValue = useMemo(
+        () => ({
+          name: 'Make Mate',
+        }),
+        [],
+      );
 
     const fetchMachineDetails = async () => {
         let params = { company_id: COMPANY_ID }
@@ -62,6 +116,7 @@ const Machines = () => {
             }
             const res = await deleteMachineDetails(params)
             if (res.success) {
+                deleteNotification('topRight');
                 fetchMachineDetails()
             }
         }
@@ -164,13 +219,14 @@ const Machines = () => {
             }
             const res = await addMachineDetails(params, Machine)
             if (res.success) {
+                openNotification('topRight');
                 fetchMachineDetails()
                 setMachine({})
                 setBedSize({})
                 //Add Toast
             }
             else {
-                //Toast
+                openFailedNotification('topRight');
             }
             setModalOpen(false)
         }
@@ -193,6 +249,8 @@ const Machines = () => {
                     },
                 }}
             >
+                <Context.Provider value={contextValue}>
+                {contextHolder}
                 <div >
                     <Table columns={MACHINE_COLUMNS} dataSource={MachineData} scroll={{ y: 265 }} />
                 </div>
@@ -404,6 +462,7 @@ const Machines = () => {
                             </Form>}
                     </Modal>
                 </div>
+                </Context.Provider>
             </ConfigProvider>
         </div>
     )

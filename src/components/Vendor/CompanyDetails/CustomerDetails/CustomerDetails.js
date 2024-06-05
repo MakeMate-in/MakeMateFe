@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo} from 'react'
 import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Upload, Space, Popover } from 'antd';
 import { COMPANY_ID } from '../../../../utils/constants';
 import { addProductDetails, getProductDetails, deleteProductDetails} from '../../../../apis/Vendor/ProductDetails';
 import { DeleteTwoTone } from '@ant-design/icons';
-
+import {
+    RadiusBottomleftOutlined,
+    RadiusBottomrightOutlined,
+    RadiusUpleftOutlined,
+    RadiusUprightOutlined,
+  } from '@ant-design/icons';
+  import { Divider, notification} from 'antd';
+  const Context = React.createContext({
+    name: 'Default',
+  });
 
 const CustomerDetails = () => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -22,6 +31,50 @@ const CustomerDetails = () => {
     })
 
     let [CustomerData, setCustomerData] = useState([]);
+    const [isLoading, setisLoading] = useState(false);
+    const [api, contextHolder] = notification.useNotification();
+
+    const openNotification = (placement) => {
+        api.info({
+        message: `Data Added`,
+        description: <Context.Consumer>{({ name }) => `Services Added Successfully`}</Context.Consumer>,
+        placement,
+        });
+    };
+    let contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
+
+    const openFailedNotification = (placement) => {
+        api.info({
+        message: `Something went wrong`,
+        description: <Context.Consumer>{({ name }) => `Unable to add Services `}</Context.Consumer>,
+        placement,
+        });
+    };
+        contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
+
+    const deleteNotification = (placement) => {
+        api.info({
+        message: `Data Deleted`,
+        description: <Context.Consumer>{({ name }) => `Services deleted Successfully`}</Context.Consumer>,
+        placement,
+        });
+    };
+    contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
 
     const fetchCustomerDetails = async () => {
         let params = { company_id: COMPANY_ID }
@@ -68,6 +121,7 @@ const CustomerDetails = () => {
             const res = await deleteProductDetails(params)
             if (res.success) {
                 fetchCustomerDetails()
+                deleteNotification('topRight');
             }
         }
         catch (err) {
@@ -169,8 +223,10 @@ const CustomerDetails = () => {
             if (res.success) {
                 fetchCustomerDetails()
                 setCustomer({})
+                openNotification('topRight');
             }
             else {
+                openFailedNotification('topRight');
             }
             setModalOpen(false)
         }
@@ -190,7 +246,8 @@ const CustomerDetails = () => {
                         },
                     }}
                 >
-
+                <Context.Provider value={contextValue}>
+                {contextHolder}
             <div >
                 <Table columns={Customer_COLUMNS} dataSource={CustomerData} scroll={{ y: 265 }} />
             </div>
@@ -314,6 +371,7 @@ const CustomerDetails = () => {
                 </Form> 
             </Modal>
         </div>
+        </Context.Provider>
         </ConfigProvider>
         </div>
         )

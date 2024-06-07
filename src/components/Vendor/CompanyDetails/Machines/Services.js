@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo} from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { ROW_COLUMNS } from '../../../../utils/helper'
 import { Flex, Select, Form, Row, Col, Button } from 'antd'
 import { DeleteTwoTone } from '@ant-design/icons';
@@ -11,7 +11,7 @@ import {
   RadiusUpleftOutlined,
   RadiusUprightOutlined,
 } from '@ant-design/icons';
-import { Divider, notification} from 'antd';
+import { Divider, notification } from 'antd';
 const Context = React.createContext({
   name: 'Default',
 });
@@ -25,7 +25,7 @@ const SERVICE_NAMES = ROW_COLUMNS.map((item) => {
 })
 
 
-const Services = () => {
+const Services = (props) => {
 
   const [inputs, setInputs] = useState([{ service_name: undefined, service_type: undefined, supplier_details: "" }]);
   const [isLoading, setisLoading] = useState(false);
@@ -52,7 +52,7 @@ const Services = () => {
       placement,
     });
   };
-    contextValue = useMemo(
+  contextValue = useMemo(
     () => ({
       name: 'Make Mate',
     }),
@@ -78,32 +78,32 @@ const Services = () => {
   };
 
 
-  const fetchServices = async() => {
-    try{
+  const fetchServices = async () => {
+    try {
 
       let res = await getServiceDetails(COMPANY_ID)
-      if(res.success){
-          const services = res.documents[0].services
-          console.log(services)
+      if (res.success) {
+        const services = res.documents[0].services
+        console.log(services)
         setInputs([...services])
-        }
-        else {
-          // handleAddInput()
-        }
-    } 
-    catch(err){
+      }
+      else {
+        // handleAddInput()
+      }
+    }
+    catch (err) {
       console.log(err)
     }
   }
 
   useEffect(() => {
     fetchServices()
-  },[])
+  }, [])
 
 
   const handleManpowerChange = (event, index, id) => {
     let onChangeValue = [...inputs];
-    onChangeValue[index][id] = id==="supplier_details"?event.target.value : event;
+    onChangeValue[index][id] = id === "supplier_details" ? event.target.value : event;
     setInputs(onChangeValue);
   };
 
@@ -115,20 +115,21 @@ const Services = () => {
   };
 
   const handleFormSubmit = async () => {
-    try{
-      let params= {
-        company_id:COMPANY_ID
+    try {
+      let params = {
+        company_id: COMPANY_ID
       }
-      const res = await addServiceDetails(params,inputs)
-      if(res.success){
+      const res = await addServiceDetails(params, inputs)
+      if (res.success) {
         // fetchServices()
         openNotification('topRight');
+        props.onSaveAndSubmit();
       }
-      else{
+      else {
         openFailedNotification('topRight');
       }
     }
-    catch(err){
+    catch (err) {
       console.log(err)
     }
   }
@@ -136,82 +137,84 @@ const Services = () => {
 
   return (
     <Context.Provider value={contextValue}>
-    {contextHolder}
-    <Form layout="vertical" onFinish={handleFormSubmit}>
-      <h3>Working Process for Mold Development</h3>
-      {inputs.map((item, index) => (
-        <Flex vertical key={index}>
-          <Row gutter={16}>
-            <Col span={7}>
-              <Form.Item label='Service Name'>
-                <Select style={{ width: '100%' }}
-                  id="service_name"
-                  placeholder="Please select"
-                  size='large' variant="filled"
-                  value={item.service_name}
-                  allowClear
-                  onChange={(event) => handleManpowerChange(event, index, "service_name")}
-                  options={SERVICE_NAMES}
-                />
-              </Form.Item>
-              {index === inputs.length - 1 && (
-                <a onClick={() => handleAddInput()} style={{ fontSize: '16px' }}>+ Add Services</a>
-              )}
-            </Col>
-            <Col span={7}>
-              <Form.Item label='Service Type'>
-                <Select style={{ width: '100%' }}
-                  id="service_type" allowClear
-                  placeholder="Please select"
-                  size='large' variant="filled"
-                  value={item.service_type}
-                  onChange={(event) => handleManpowerChange(event, index, "service_type")}
-                  options={[
-                    {
-                      value: 'Outsourced',
-                      label: 'Outsourced',
-                    },
-                    {
-                      value: 'Inhouse',
-                      label: 'Inhouse',
-                    },
-                  ]}
-                />
-              </Form.Item>
-            </Col>
-            <Col span={7}>
-              <Form.Item label='Supplier Details'>
-                <TextArea
-                  placeholder="Enter Supplier Details"
-                  onChange={(event) => handleManpowerChange(event, index, 'supplier_details')}
-                  name="supplierDetails"
-                  id="supplierDetails"
-                  size='large'
-                  variant="filled" allowClear
-                  value={item.supplier_details}
-                  style={{ width: '100%' }}
-                  autoSize={{
-                    maxRows: 6,
-                  }}
-                />
-              </Form.Item>
-            </Col>
-            <Col span={3}>
-              {inputs.length > 1 && (
-                <Form.Item label="Delete">
-                  <DeleteTwoTone onClick={() => handleDeleteInput(index)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
+      {contextHolder}
+      <Form layout="vertical" onFinish={handleFormSubmit}>
+        <h3>Working Process for Mold Development</h3>
+        {inputs.map((item, index) => (
+          <Flex vertical key={index}>
+            <Row gutter={16}>
+              <Col span={7}>
+                <Form.Item label='Service Name'>
+                  <Select style={{ width: '100%' }}
+                    id="service_name"
+                    placeholder="Please select"
+                    size='large' variant="filled"
+                    value={item.service_name}
+                    allowClear
+                    onChange={(event) => handleManpowerChange(event, index, "service_name")}
+                    options={SERVICE_NAMES}
+                  />
                 </Form.Item>
-              )}
-            </Col>
-          </Row>
-        </Flex>
-      ))}
+                {index === inputs.length - 1 && (
+                  <a onClick={() => handleAddInput()} style={{ fontSize: '16px' }}>+ Add Services</a>
+                )}
+              </Col>
+              <Col span={7}>
+                <Form.Item label='Service Type'>
+                  <Select style={{ width: '100%' }}
+                    id="service_type" allowClear
+                    placeholder="Please select"
+                    size='large' variant="filled"
+                    value={item.service_type}
+                    onChange={(event) => handleManpowerChange(event, index, "service_type")}
+                    options={[
+                      {
+                        value: 'Outsourced',
+                        label: 'Outsourced',
+                      },
+                      {
+                        value: 'Inhouse',
+                        label: 'Inhouse',
+                      },
+                    ]}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={7}>
+                <Form.Item label='Supplier Details'>
+                  <TextArea
+                    placeholder="Enter Supplier Details"
+                    onChange={(event) => handleManpowerChange(event, index, 'supplier_details')}
+                    name="supplierDetails"
+                    id="supplierDetails"
+                    size='large'
+                    variant="filled" allowClear
+                    value={item.supplier_details}
+                    style={{ width: '100%' }}
+                    autoSize={{
+                      maxRows: 6,
+                    }}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={3}>
+                {inputs.length > 1 && (
+                  <Form.Item label="Delete">
+                    <DeleteTwoTone onClick={() => handleDeleteInput(index)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
+                  </Form.Item>
+                )}
+              </Col>
+            </Row>
+          </Flex>
+        ))}
 
-<Button type="primary" htmlType="submit">
-          Save and Submit
-        </Button>
-      
-    </Form>
+        <Form.Item style={{ bottom: '-79%', position: 'absolute', right: '-1%' }}>
+          <Button type="primary" htmlType="submit" style={{ fontSize: '18px', fontWeight: '600', height: '40px' }}>
+            Save & Continue
+          </Button>
+        </Form.Item>
+
+      </Form>
     </Context.Provider>
   )
 }

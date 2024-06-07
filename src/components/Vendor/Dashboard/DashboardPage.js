@@ -32,7 +32,7 @@ const DashboardPage = () => {
           </Row>
 
           <h2 style={{ margin: '0' }}>Machine Details</h2>
-          <Card size='small' style={{ backgroundImage: business_plan }}>
+          <Card size='small' style={{ overflow: 'auto', scrollbarWidth: 'none' }}>
             <Machines />
           </Card>
         </Col>

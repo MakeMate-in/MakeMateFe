@@ -329,7 +329,7 @@ export const ROW_COLUMNS = [
 
 
 export const checkButtonRequired = (current, currentSub, currentInfraSub) => {
-  if(current===0 && currentSub===0) {
+  if ((current === 0 && currentSub === 0) || (current === 1 && (currentInfraSub === 1 || currentInfraSub === 2))) {
     return false
   }
   return true

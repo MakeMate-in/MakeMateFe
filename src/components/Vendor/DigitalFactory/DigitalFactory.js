@@ -61,16 +61,16 @@ const DigitalFactory = () => {
   }, [CompanyDetails])
 
   const onSaveAndSubmit = () => {
-    if (currentSub === 3) {
-      setCurrent(current + 1);
-    } else {
-      setCurrentSub(currentSub + 1);
-    }
 
-    if (currentInfraSub === 2) {
+    if (current === 0 && currentSub < 3) {
+      setCurrentSub(currentSub + 1);
+    } else if (current === 0 && currentSub === 3) {
       setCurrent(current + 1);
+      setCurrentInfraSub(0);
+    } else if (current === 1 && currentInfraSub < 2) {
+      setCurrentInfraSub(currentInfraSub + 1);
     } else {
-      setCurrentInfraSub(currentSub + 1);
+      setCurrent(current + 1);
     }
   };
 

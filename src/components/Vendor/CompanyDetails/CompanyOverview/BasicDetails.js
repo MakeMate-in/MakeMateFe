@@ -229,9 +229,9 @@ const BasicDetails = (props) => {
         </Col>
       </Row>
 
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Save and Submit
+      <Form.Item style={{ bottom: '-37%', position: 'absolute', right: '-1%' }}>
+        <Button type="primary" htmlType="submit" style={{ fontSize: '18px', fontWeight: '600', height: '40px'}}>
+          Save & Continue
         </Button>
       </Form.Item>
     </Form>:''

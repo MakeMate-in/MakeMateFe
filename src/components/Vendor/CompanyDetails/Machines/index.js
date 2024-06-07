@@ -13,17 +13,17 @@ const InfraDetails = (props) => {
         {
             key: '1',
             label: 'Machines',
-            children: <Machines/>,
+            children: <Machines {...props} />,
         },
         {
             key: '2',
             label: 'Infrastructure Details',
-            children: <InfraStructureDetails />,
+            children: <InfraStructureDetails {...props} />,
         },
         {
             key: '3',
             label: 'Services',
-            children: <Services />,
+            children: <Services {...props} />,
         },
     ]
 

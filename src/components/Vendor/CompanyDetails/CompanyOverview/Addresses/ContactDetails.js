@@ -6,7 +6,6 @@ import { deleteElement, getCompanyDetails, updateAddressandContacts, updateEleme
 import { MESSAGES, USER_ID } from './../../../../../utils/constants';
 import del from './../../../../../assets/del.png'
 import pen from './../../../../../assets/pen.png'
-import { Icon } from '@mui/material';
 
 
 const ContactDetails = (props) => {
@@ -27,6 +26,8 @@ const ContactDetails = (props) => {
     }
     const [updateContact,setUpdateContact] = useState({})
     const [modalHeading,setModalHeading] = useState(MESSAGES.ADD)
+
+    const [loading,setIsLoading] = useState(false)
 
     const handleChange = (event) => {
         setContact({ ...contact, [event.target.id]: event.target.value })
@@ -56,6 +57,16 @@ const ContactDetails = (props) => {
             console.log(err)
         }
     }
+
+    useEffect(() => {
+        if(contactModalOpen){
+            setIsLoading(true)
+        }
+        else{
+            setIsLoading(false)
+        }
+
+    },[contactModalOpen])
 
     const handleFormSubmit = async () => {
         try {
@@ -93,8 +104,6 @@ const ContactDetails = (props) => {
         setContactModalOpen(false)
     }
 
-
-
     const handleEdit = (item,type) => {
         console.log(item)
         setModalHeading(type)
@@ -107,8 +116,7 @@ const ContactDetails = (props) => {
             ["mobile_no"]: item.mobile_no})
         setContactModalOpen(true)
     }
-    console.log(contact)
-
+    
     return (
         <div>
             <Card style={{ height: '25rem', overflow: 'hidden' }}>
@@ -120,7 +128,7 @@ const ContactDetails = (props) => {
                             return (
                                 <div style={{ marginBottom: '20px' }}>
                                     <Flex justify='space-between' >
-                                        <p style={{ margin: '0px' }}>{item.name}, {item.designation}</p>
+                                        <p style={{ margin: '0px' }}><b>{item.name}</b></p>
                                         <Flex gap="small">
                                             <div onClick={() => {handleDelete(item)}}>
                                                 <img src={del} alt="My Icon" style={{ width: '30px', height: '30px' }} />
@@ -131,8 +139,9 @@ const ContactDetails = (props) => {
                                         </Flex>
                                     </Flex>
                                     {/* <Image src={del}/> <Image src={pen}/> */}
-                                    <p style={{ margin: '0px' }}>{item.email}</p>
-                                    <p style={{ margin: '0px' }}>{item.mobile_no}</p>
+                                    <p style={{ margin: '0px' }}>Designation: {item.designation} </p>
+                                    <p style={{ margin: '0px' }}>Email: {item.email}</p>
+                                    <p style={{ margin: '0px' }}>Phone: {item.mobile_no}</p>
                                 </div>
                             )
                         }) : ''
@@ -146,11 +155,15 @@ const ContactDetails = (props) => {
                     open={contactModalOpen}
                     okText="Save"
                     onOk={form.submit}
-                    onCancel={() => setContactModalOpen(false)}
+                    onCancel={() => {
+                        setContactModalOpen(false)
+                    }}
                     width={700}
                 >
                     <div>
-                        <Form
+
+                      { loading==true?
+                      <Form
                             layout="vertical"
                             form={form}
                             onFinish={handleFormSubmit}
@@ -167,7 +180,7 @@ const ContactDetails = (props) => {
                                             id="name"
                                             onChange={handleChange}
                                             value={contact["name"]}
-                                            defaultValue={contact["name"]}
+                                            defaultValue={empty["name"]}
                                             // value={"Vaibhav"}
                                         />
                                     </Form.Item>
@@ -213,12 +226,8 @@ const ContactDetails = (props) => {
                                     </Form.Item>
                                 </Col>
                             </Row>
-                            {/* <Form.Item>
-                                <Button type="primary" htmlType="submit">
-                                    Save and Submit
-                                </Button>
-                            </Form.Item> */}
-                        </Form>
+
+                        </Form>:''}
                     </div>
                 </Modal>
             </Card>

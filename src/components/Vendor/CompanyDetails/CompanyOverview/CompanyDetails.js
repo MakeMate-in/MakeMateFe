@@ -4,7 +4,7 @@ import BasicDetails from './BasicDetails';
 import AdditionalInfo from './AdditionalInfo';
 import Certificates from './Certificates/Certificates';
 import AddressDetails from './Addresses/AddressDetails';
-import { STEP_TAB_MAP, STEP_TAB_MAP_2, STEPS_HEADINGS } from '../../../../utils/constants';
+import { STEP_TAB_MAP } from '../../../../utils/constants';
 
 const CompanyDetailsComp = (props) => {
 

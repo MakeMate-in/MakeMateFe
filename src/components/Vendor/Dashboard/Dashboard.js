@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 import {
   Box,
@@ -22,12 +22,22 @@ import './Dashboard.css';
 import { Link, useNavigate } from "react-router-dom";
 import { Outlet } from 'react-router-dom';
 import { logOut } from '../../../apis/authentication..js';
+import {  useLocation } from 'react-router-dom';
 
 const Dashboard = () => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [tab, setTab] = useState(0)
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log(window.location)
+    const list = VENDOR_DRAWER_LIST.filter((item) => {
+      return item.route===window.location.pathname
+    })
+    setTab(list[0].id)
+    },[])
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -37,9 +47,8 @@ const Dashboard = () => {
     setOpen(false);
   };
 
-  const selectTab = (e) => {
-    console.log(e.target);
-    setTab(e.target.key);
+  const selectTab = (e,item) => {
+    setTab(item.id);
   };
 
   const getLogout = async () => {
@@ -51,7 +60,7 @@ const Dashboard = () => {
       console.log(err)
     }
   }
-
+console.log(tab)
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -95,7 +104,7 @@ const Dashboard = () => {
           </ListItemButton>
         </ListItem>)
           :(<Link to={item.route} style={{ color: "inherit", textDecoration: "inherit" }} >  
-            <ListItem key={index} disablePadding sx={{ display: 'block' }} onClick={selectTab}>
+            <ListItem key={index} disablePadding sx={{ display: 'block' }} onClick={(e) => {selectTab(e,item)}}>
               <ListItemButton  sx={{ minHeight: 48, justifyContent: open ? 'initial' : 'center', px: 2.5, }} >
                 <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center',}}>
                   {item.icon}

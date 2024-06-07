@@ -4,7 +4,7 @@ import { DeleteTwoTone } from '@ant-design/icons';
 import { addInfraDetails, getInfraDetails } from '../../../../apis/Vendor/InfrastructureDetails';
 import { COMPANY_ID } from '../../../../utils/constants';
 
-import { Divider, notification} from 'antd';
+import { notification} from 'antd';
 const Context = React.createContext({
   name: 'Default',
 });
@@ -73,9 +73,9 @@ const InfraStructureDetails = () => {
   const [api, contextHolder] = notification.useNotification();
 
   const openNotification = (placement) => {
-    api.info({
-      message: `Data Added`,
-      description: <Context.Consumer>{({ name }) => `Infrastructure Details Added Successfully`}</Context.Consumer>,
+    api.success({
+      message: `Success`,
+      description: <Context.Consumer>{({ name }) => `Infrastructure Details Updated Successfully`}</Context.Consumer>,
       placement,
     });
   };
@@ -87,9 +87,9 @@ const InfraStructureDetails = () => {
   );
 
   const openFailedNotification = (placement) => {
-    api.info({
+    api.error({
       message: `Something went wrong`,
-      description: <Context.Consumer>{({ name }) => `Unable to add Infrastructure Details `}</Context.Consumer>,
+      description: <Context.Consumer>{({ name }) => `Unable to update Infrastructure Details `}</Context.Consumer>,
       placement,
     });
   };
@@ -100,19 +100,6 @@ const InfraStructureDetails = () => {
     [],
   );
 
-  const deleteNotification = (placement) => {
-    api.info({
-      message: `Data Deleted`,
-      description: <Context.Consumer>{({ name }) => `Infrastructure Details deleted Successfully`}</Context.Consumer>,
-      placement,
-    });
-  };
-  contextValue = useMemo(
-    () => ({
-      name: 'Make Mate',
-    }),
-    [],
-  );
 
   const fetchInfraDetails = async() => {
     try{
@@ -129,7 +116,7 @@ const InfraStructureDetails = () => {
     }
   }
 
-console.log(InfraStructureDetails)
+
 
   useEffect(() => {
     fetchInfraDetails()
@@ -151,7 +138,6 @@ console.log(InfraStructureDetails)
   };
 
   const handleDeleteInput = (index) => {
-    deleteNotification('topRight');
     const newArray = [...inputs];
     newArray.splice(index, 1);
     setInputs(newArray);
@@ -160,7 +146,6 @@ console.log(InfraStructureDetails)
 
   const handleChange = (value,id) => {
     setInfraStructureDetails({...InfraStructureDetails,[id]:value})
-    console.log(`selected ${value}`);
   }
 
   const handleFormSubmit = async() => {

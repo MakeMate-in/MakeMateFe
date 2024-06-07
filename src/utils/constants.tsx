@@ -49,20 +49,21 @@ export const ROLE = {
 
 export const VENDOR_DRAWER_LIST = [
     {
+        id: 0,
         name: 'Dashboard',
         icon: <Home/>,
         route: OPEN_ROUTES.VENDOR_DASHBOARD
     },
     {
+        id: 1,
         name: 'Digital Factory',
         icon: <Factory/>,
         route: OPEN_ROUTES.DIGITAL_FACTORY
     },
     {
+        id: 2,
         name: 'Logout',
         icon: <Logout/>,
-        
-        
     },
 ]
 

@@ -3,21 +3,15 @@ import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvide
 import { COMPANY_ID } from '../../../../utils/constants';
 import { addProductDetails, getProductDetails, deleteProductDetails} from '../../../../apis/Vendor/ProductDetails';
 import { DeleteTwoTone } from '@ant-design/icons';
-import {
-    RadiusBottomleftOutlined,
-    RadiusBottomrightOutlined,
-    RadiusUpleftOutlined,
-    RadiusUprightOutlined,
-  } from '@ant-design/icons';
-  import { Divider, notification} from 'antd';
-  const Context = React.createContext({
+import { notification} from 'antd';
+
+const Context = React.createContext({
     name: 'Default',
   });
 
 const CustomerDetails = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [form] = Form.useForm();
-    const { Option } = Select;
     const [CustomerDetails, setCustomerDetails] = useState()
     const [Customer, setCustomer] = useState({
         "customer_name": "",
@@ -35,9 +29,9 @@ const CustomerDetails = () => {
     const [api, contextHolder] = notification.useNotification();
 
     const openNotification = (placement) => {
-        api.info({
-        message: `Data Added`,
-        description: <Context.Consumer>{({ name }) => `Services Added Successfully`}</Context.Consumer>,
+        api.success({
+        message: `Success`,
+        description: <Context.Consumer>{({ name }) => `Customer Added Successfully`}</Context.Consumer>,
         placement,
         });
     };
@@ -49,9 +43,9 @@ const CustomerDetails = () => {
     );
 
     const openFailedNotification = (placement) => {
-        api.info({
+        api.error({
         message: `Something went wrong`,
-        description: <Context.Consumer>{({ name }) => `Unable to add Services `}</Context.Consumer>,
+        description: <Context.Consumer>{({ name }) => `Unable to add Customer `}</Context.Consumer>,
         placement,
         });
     };
@@ -63,9 +57,9 @@ const CustomerDetails = () => {
     );
 
     const deleteNotification = (placement) => {
-        api.info({
-        message: `Data Deleted`,
-        description: <Context.Consumer>{({ name }) => `Services deleted Successfully`}</Context.Consumer>,
+        api.success({
+        message: `Success`,
+        description: <Context.Consumer>{({ name }) => `Customer deleted Successfully`}</Context.Consumer>,
         placement,
         });
     };
@@ -76,10 +70,10 @@ const CustomerDetails = () => {
         [],
     );
 
+
     const fetchCustomerDetails = async () => {
         let params = { company_id: COMPANY_ID }
         const customers = await getProductDetails(params)
-        console.log("Customers", customers.data);
         if (customers.success) {
             if (customers) {
                 let data = [];

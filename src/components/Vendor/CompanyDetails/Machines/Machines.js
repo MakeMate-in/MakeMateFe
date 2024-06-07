@@ -5,13 +5,7 @@ import { MACHINE_TYPE } from '../../../../utils/helper';
 import { addMachineDetails, getMachineDetails, deleteMachineDetails } from '../../../../apis/Vendor/MachineDetails';
 import { COMPANY_ID } from '../../../../utils/constants';
 import { DeleteTwoTone } from '@ant-design/icons';
-import {
-    RadiusBottomleftOutlined,
-    RadiusBottomrightOutlined,
-    RadiusUpleftOutlined,
-    RadiusUprightOutlined,
-  } from '@ant-design/icons';
-  import { Divider, notification} from 'antd';
+import { notification} from 'antd';
   const Context = React.createContext({
     name: 'Default',
   });
@@ -39,10 +33,11 @@ const Machines = () => {
 
     let [MachineData, setMachineData] = useState([])
 
+
     const openNotification = (placement) => {
         api.success({
-          message: `Data Added`,
-          description: <Context.Consumer>{({ name }) => `Machine Details Added Successfully`}</Context.Consumer>,
+          message: `Success`,
+          description: <Context.Consumer>{({ name }) => `Machine Added Successfully`}</Context.Consumer>,
           placement,
         });
       };
@@ -54,9 +49,9 @@ const Machines = () => {
       );
 
       const openFailedNotification = (placement) => {
-        api.info({
+        api.error({
           message: `Something went wrong`,
-          description: <Context.Consumer>{({ name }) => `Unable to add Machine Details `}</Context.Consumer>,
+          description: <Context.Consumer>{({ name }) => `Unable to add Machine `}</Context.Consumer>,
           placement,
         });
       };
@@ -69,8 +64,8 @@ const Machines = () => {
 
 
       const deleteNotification = (placement) => {
-        api.info({
-          message: `Data Deleted`,
+        api.success({
+          message: `Success`,
           description: <Context.Consumer>{({ name }) => `Machine Details deleted Successfully`}</Context.Consumer>,
           placement,
         });
@@ -221,7 +216,14 @@ const Machines = () => {
             if (res.success) {
                 openNotification('topRight');
                 fetchMachineDetails()
-                setMachine({})
+                setMachine({
+                    "machine_type": "",
+                    "spindle_rpm": "",
+                    "no_of_Axis": "",
+                    "manufacturing_year": "",
+                    "make": "",
+                    "bed_Size": {}
+                })
                 setBedSize({})
                 //Add Toast
             }
@@ -234,8 +236,6 @@ const Machines = () => {
             console.log(err)
         }
     }
-
-
 
     return (
 

@@ -54,7 +54,7 @@ export const addInfraDetails = async (params,data) => {
             {
             params:params
             })
-        return response
+        return response.data
     }
     catch (err) {
         throw err

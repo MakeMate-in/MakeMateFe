@@ -28,7 +28,7 @@ const AddressDetails = (props) => {
     const handleChange = (event) => {
         setAddress({ ...address, [event.target.id]: event.target.value })
     }
-
+    console.log(props.CompanyDetails)
     useEffect(() => {
         const getCompany = async () => {
             let param = {
@@ -115,7 +115,7 @@ const AddressDetails = (props) => {
                                         return (
                                             <div style={{ marginBottom: '20px' }}>
                                                 <Flex justify='space-between' >
-                                                    <p style={{ margin: '0px' }}>{item.address_title}</p>
+                                                    <p style={{ margin: '0px' }}><b>{item.address_title}</b></p>
                                                     <Flex gap="small">
                                                         <div onClick={() => {handleDelete(item)}}>
                                                         <img src={del} alt="My Icon" style={{ width: '30px', height: '30px' }} />
@@ -126,8 +126,9 @@ const AddressDetails = (props) => {
                                                     </Flex>
                                                 </Flex>
                                                 {/* <Image src={del}/> <Image src={pen}/> */}
-                                                <p style={{ margin: '0px' }}>{item.address_line}, {item.city}</p>
-                                                <p style={{ margin: '0px' }}>{item.state}, {item.country}</p>
+                                                <p style={{ margin: '0px' }}>{item.address_line}</p>
+                                                <p style={{ margin: '0px' }}> {item.city}, {item.state}</p>
+                                                <p style={{ margin: '0px' }}>{item.country}, {item.pincode}</p>
                                             </div>
                                         )
                                     }) : ''

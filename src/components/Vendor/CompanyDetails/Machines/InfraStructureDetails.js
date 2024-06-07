@@ -3,12 +3,7 @@ import { Form, Row, Col, InputNumber, Select, Button, Flex, Card } from 'antd'
 import { DeleteTwoTone } from '@ant-design/icons';
 import { addInfraDetails, getInfraDetails } from '../../../../apis/Vendor/InfrastructureDetails';
 import { COMPANY_ID } from '../../../../utils/constants';
-import {
-  RadiusBottomleftOutlined,
-  RadiusBottomrightOutlined,
-  RadiusUpleftOutlined,
-  RadiusUprightOutlined,
-} from '@ant-design/icons';
+
 import { Divider, notification} from 'antd';
 const Context = React.createContext({
   name: 'Default',

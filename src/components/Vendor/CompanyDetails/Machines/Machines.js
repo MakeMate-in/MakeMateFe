@@ -40,7 +40,7 @@ const Machines = () => {
     let [MachineData, setMachineData] = useState([])
 
     const openNotification = (placement) => {
-        api.info({
+        api.success({
           message: `Data Added`,
           description: <Context.Consumer>{({ name }) => `Machine Details Added Successfully`}</Context.Consumer>,
           placement,

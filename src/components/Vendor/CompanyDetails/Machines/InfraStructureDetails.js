@@ -99,6 +99,7 @@ const InfraStructureDetails = (props) => {
     }),
     [],
   );
+  
 
 
   const fetchInfraDetails = async () => {

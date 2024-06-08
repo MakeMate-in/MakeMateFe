@@ -1,5 +1,5 @@
+import React, { useState, useEffect, useMemo} from 'react';
 import { Card, Col, Row, ConfigProvider, Modal, Form, Input, Button, Image, Flex } from 'antd';
-import { useState, useEffect } from 'react';
 import { CitySelect, CountrySelect, StateSelect } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
 import { getCompanyDetails, updateAddressandContacts, deleteElement } from '../../../../../apis/Vendor/CompanyDetails';
@@ -7,6 +7,10 @@ import { USER_ID } from '../../../../../utils/constants';
 import del from './../../../../../assets/del.png'
 import pen from './../../../../../assets/pen.png'
 import ContactDetails from './ContactDetails';
+import { notification} from 'antd';
+const Context = React.createContext({
+    name: 'Default',
+  });
 
 const AddressDetails = (props) => {
 
@@ -24,6 +28,64 @@ const AddressDetails = (props) => {
         "city": "",
         "pincode": ""
     });
+
+    const [api, contextHolder] = notification.useNotification();
+
+    const openNotification = (placement) => {
+        api.success({
+        message: `Success`,
+        description: <Context.Consumer>{({ name }) => `Address Added Successfully`}</Context.Consumer>,
+        placement,
+        });
+    };
+    let contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
+
+    const openFailedNotification = (placement) => {
+        api.error({
+        message: `Something went wrong`,
+        description: <Context.Consumer>{({ name }) => `Unable to add Address `}</Context.Consumer>,
+        placement,
+        });
+    };
+        contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
+
+    const deleteNotification = (placement) => {
+        api.success({
+        message: `Success`,
+        description: <Context.Consumer>{({ name }) => `Address deleted Successfully`}</Context.Consumer>,
+        placement,
+        });
+    };
+    contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
+
+    const deleteFailedNotification = (placement) => {
+        api.error({
+        message: `Success`,
+        description: <Context.Consumer>{({ name }) => `Unable to delete Address`}</Context.Consumer>,
+        placement,
+        });
+    };
+    contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
 
     const handleChange = (event) => {
         setAddress({ ...address, [event.target.id]: event.target.value })
@@ -54,10 +116,11 @@ const AddressDetails = (props) => {
                 const updatedData = await getCompanyDetails(param)
                 if (updatedData.success) {
                     props.setcompanyDetails(updatedData.data)
+                    deleteNotification('topRight');
                 }
             }
             else{
-                //Toast
+                deleteFailedNotification('topRight');
             }
             
         }
@@ -79,10 +142,11 @@ const AddressDetails = (props) => {
                 const updatedData = await getCompanyDetails(params)
                 if (updatedData.success) {
                     props.setcompanyDetails(updatedData.data)
+                    openNotification('topRight');
                 }
             }
             else {
-                //Toast
+                openFailedNotification('topRight');
             }
         }
         catch (err) {
@@ -104,6 +168,8 @@ const AddressDetails = (props) => {
             }}
         >
             <div>
+            <Context.Provider value={contextValue}>
+                {contextHolder}
                 <Row gutter={20}>
                     <Col span={12}>
                         <Card style={{ height: '25rem', overflow: 'hidden' }}>
@@ -253,6 +319,7 @@ const AddressDetails = (props) => {
                         <ContactDetails {...props}/>
                     </Col>
                 </Row>
+                </Context.Provider>
             </div>
 
         </ConfigProvider>

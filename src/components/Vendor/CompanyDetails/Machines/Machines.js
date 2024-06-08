@@ -81,6 +81,20 @@ const Machines = () => {
         [],
     );
 
+    const deleteFailedNotification = (placement) => {
+        api.success({
+            message: `Success`,
+            description: <Context.Consumer>{({ name }) => `Unable to delete Machine Details`}</Context.Consumer>,
+            placement,
+        });
+    };
+    contextValue = useMemo(
+        () => ({
+            name: 'Make Mate',
+        }),
+        [],
+    );
+
     const fetchMachineDetails = async () => {
         let params = { company_id: COMPANY_ID }
         const machines = await getMachineDetails(params)
@@ -117,6 +131,9 @@ const Machines = () => {
             if (res.success) {
                 deleteNotification('topRight');
                 fetchMachineDetails()
+            }
+            else{
+                deleteFailedNotification('topRight')
             }
         }
         catch (err) {

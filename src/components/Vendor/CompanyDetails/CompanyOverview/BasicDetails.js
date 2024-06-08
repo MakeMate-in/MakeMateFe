@@ -1,9 +1,13 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo} from 'react';
 import { Col, Row, Form, Input, Button, Image, Upload } from 'antd';
 import './../../Dashboard/Dashboard.css'
 import { getCompanyDetails, updateCompanyDetails, uploadAvatar } from '../../../../apis/Vendor/CompanyDetails';
 import { USER_ID } from '../../../../utils/constants';
 import { convertBufferToBinary, deepEqual, getBase64, uploadButton } from '../../../../utils/helper';
+import { notification} from 'antd';
+const Context = React.createContext({
+  name: 'Default',
+});
 
 
 const BasicDetails = (props) => {
@@ -12,6 +16,49 @@ const BasicDetails = (props) => {
   const [previewImage, setPreviewImage] = useState('');
   const [fileList, setFileList] = useState();
   const [allvalues,setallValues] = useState(undefined)
+  const [api, contextHolder] = notification.useNotification();
+
+    const openNotification = (placement) => {
+        api.success({
+        message: `Success`,
+        description: <Context.Consumer>{({ name }) => `Detail Added Successfully`}</Context.Consumer>,
+        placement,
+        });
+    };
+    let contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
+
+    const openFailedNotification = (placement) => {
+        api.error({
+        message: `Something went wrong`,
+        description: <Context.Consumer>{({ name }) => `Unable to add detail `}</Context.Consumer>,
+        placement,
+        });
+    };
+        contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
+
+    const deleteNotification = (placement) => {
+        api.success({
+        message: `Success`,
+        description: <Context.Consumer>{({ name }) => `Detail deleted Successfully`}</Context.Consumer>,
+        placement,
+        });
+    };
+    contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
 
 
   const handlePreview = async (file) => {
@@ -72,6 +119,7 @@ const BasicDetails = (props) => {
     }
     if((res && res.success) || equal){
       let updatedData;
+      openNotification('topRight');
       if(!equal){
        updatedData = await getCompanyDetails(params)
       }
@@ -83,7 +131,7 @@ const BasicDetails = (props) => {
       }
     }
     else{
-      //Toast
+      openFailedNotification('topRight');
     }
  
     }
@@ -123,6 +171,8 @@ const BasicDetails = (props) => {
 
   return (
     <div>
+      <Context.Provider value={contextValue}>
+                {contextHolder}
  { props && Object.keys(props.CompanyDetails).length>0 ? 
     <Form
       layout="vertical"
@@ -245,6 +295,7 @@ const BasicDetails = (props) => {
       </Form.Item>
     </Form>:''
 }
+</Context.Provider>
 </div>
   )
 }

@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useState, useEffect, useMemo} from 'react';
 import { Card, Col, Row, Modal, Form, Input, Flex } from 'antd';
-import { useState, useEffect } from 'react';
 import "react-country-state-city/dist/react-country-state-city.css";
 import { deleteElement, getCompanyDetails, updateAddressandContacts, updateElement } from './../../../../../apis/Vendor/CompanyDetails';
 import { MESSAGES, USER_ID } from './../../../../../utils/constants';
 import del from './../../../../../assets/del.png'
 import pen from './../../../../../assets/pen.png'
+import { notification} from 'antd';
+const Context = React.createContext({
+    name: 'Default',
+  });
 
 
 const ContactDetails = (props) => {
@@ -28,6 +31,63 @@ const ContactDetails = (props) => {
     const [modalHeading,setModalHeading] = useState(MESSAGES.ADD)
 
     const [loading,setIsLoading] = useState(false)
+    const [api, contextHolder] = notification.useNotification();
+
+    const openNotification = (placement) => {
+        api.success({
+        message: `Success`,
+        description: <Context.Consumer>{({ name }) => `Contact Details Added Successfully`}</Context.Consumer>,
+        placement,
+        });
+    };
+    let contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
+
+    const openFailedNotification = (placement) => {
+        api.error({
+        message: `Something went wrong`,
+        description: <Context.Consumer>{({ name }) => `Unable to add Contact Details `}</Context.Consumer>,
+        placement,
+        });
+    };
+        contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
+
+    const deleteNotification = (placement) => {
+        api.success({
+        message: `Success`,
+        description: <Context.Consumer>{({ name }) => `Contact Details deleted Successfully`}</Context.Consumer>,
+        placement,
+        });
+    };
+    contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
+
+    const deleteFailedNotification = (placement) => {
+        api.error({
+        message: `Success`,
+        description: <Context.Consumer>{({ name }) => `Unable to delete Contact Details`}</Context.Consumer>,
+        placement,
+        });
+    };
+    contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
 
     const handleChange = (event) => {
         setContact({ ...contact, [event.target.id]: event.target.value })
@@ -46,10 +106,11 @@ const ContactDetails = (props) => {
                 const updatedData = await getCompanyDetails(param)
                 if (updatedData.success) {
                     props.setcompanyDetails(updatedData.data)
+                    deleteNotification('topRight');
                 }
             }
             else{
-                //Toast
+                deleteFailedNotification('topRight');
             }
             
         }
@@ -92,10 +153,11 @@ const ContactDetails = (props) => {
                 const updatedData = await getCompanyDetails(params)
                 if (updatedData.success) {
                     props.setcompanyDetails(updatedData.data)
+                    openNotification('topRight');
                 }
             }
             else {
-                //Toast
+                openFailedNotification('topRight');
             }
         }
         catch (err) {
@@ -119,6 +181,8 @@ const ContactDetails = (props) => {
     
     return (
         <div>
+            <Context.Provider value={contextValue}>
+                {contextHolder}
             <Card style={{ height: '25rem', overflow: 'hidden' }}>
                 <h3 style={{ margin: '0', color: 'rgba(22, 119, 255)' }}>Contacts</h3>
                 <hr style={{ background: 'rgba(22, 119, 255)', height: '2px' }} />
@@ -231,6 +295,7 @@ const ContactDetails = (props) => {
                     </div>
                 </Modal>
             </Card>
+            </Context.Provider>
         </div>
     )
 }

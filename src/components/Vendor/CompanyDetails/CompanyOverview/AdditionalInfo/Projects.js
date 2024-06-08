@@ -1,10 +1,13 @@
-import {useState} from 'react'
+import React, { useState, useEffect, useMemo} from 'react';
 import { Button, Flex, Modal, Form, Input, Avatar } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { USER_ID } from '../../../../../utils/constants';
 import { updateAddressandContacts,getCompanyDetails } from '../../../../../apis/Vendor/CompanyDetails'
 import randomColor from 'randomcolor'
-
+import { notification} from 'antd';
+const Context = React.createContext({
+    name: 'Default',
+  });
 
 const Projects = (props) => {
 
@@ -15,6 +18,63 @@ const Projects = (props) => {
     })
 
     const [form] = Form.useForm()
+    const [api, contextHolder] = notification.useNotification();
+
+    const openNotification = (placement) => {
+        api.success({
+        message: `Success`,
+        description: <Context.Consumer>{({ name }) => `Project Added Successfully`}</Context.Consumer>,
+        placement,
+        });
+    };
+    let contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
+
+    const openFailedNotification = (placement) => {
+        api.error({
+        message: `Something went wrong`,
+        description: <Context.Consumer>{({ name }) => `Unable to add Project `}</Context.Consumer>,
+        placement,
+        });
+    };
+        contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
+
+    const deleteNotification = (placement) => {
+        api.success({
+        message: `Success`,
+        description: <Context.Consumer>{({ name }) => `Project deleted Successfully`}</Context.Consumer>,
+        placement,
+        });
+    };
+    contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
+
+    const deleteFailedNotification = (placement) => {
+        api.error({
+        message: `Success`,
+        description: <Context.Consumer>{({ name }) => `Unable to delete Project`}</Context.Consumer>,
+        placement,
+        });
+    };
+    contextValue = useMemo(
+        () => ({
+        name: 'Make Mate',
+        }),
+        [],
+    );
   
     const showModal = () => {
       setIsModalOpen(true);
@@ -41,10 +101,11 @@ const Projects = (props) => {
                 const updatedData = await getCompanyDetails(params)
                 if (updatedData.success) {
                     props.setcompanyDetails(updatedData.data)
+                    openNotification('topRight');
                 }
             }
             else {
-                //Toast
+                openFailedNotification('topRight');
             }
         }
         catch (err) {
@@ -56,6 +117,8 @@ const Projects = (props) => {
 
     return (
         <div>
+            <Context.Provider value={contextValue}>
+                {contextHolder}
             <Flex>
                 <div>
                     <h2 style={{ margin: '0' }}>Projects</h2>
@@ -101,6 +164,7 @@ const Projects = (props) => {
                     )
             }):''}
             </Flex>
+            </Context.Provider>
         </div>
     )
 }

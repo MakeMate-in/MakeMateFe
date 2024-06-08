@@ -66,6 +66,20 @@ const Services = (props) => {
     [],
   );
 
+  const deleteFailedNotification = (placement) => {
+    api.success({
+        message: `Success`,
+        description: <Context.Consumer>{({ name }) => `Unable to delete Services`}</Context.Consumer>,
+        placement,
+    });
+};
+contextValue = useMemo(
+    () => ({
+        name: 'Make Mate',
+    }),
+    [],
+);
+
   const handleAddInput = () => {
     setInputs([...inputs, { service_name: undefined, service_type: undefined, supplier_details: "" }]);
   };

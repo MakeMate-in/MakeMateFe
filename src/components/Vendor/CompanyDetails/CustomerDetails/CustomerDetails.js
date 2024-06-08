@@ -4,6 +4,7 @@ import { COMPANY_ID } from '../../../../utils/constants';
 import { addProductDetails, getProductDetails, deleteProductDetails} from '../../../../apis/Vendor/ProductDetails';
 import { DeleteTwoTone } from '@ant-design/icons';
 import { notification} from 'antd';
+import ImageUpload from '../../../ImageUpload/ImageUpload';
 
 const Context = React.createContext({
     name: 'Default',
@@ -12,7 +13,6 @@ const Context = React.createContext({
 const CustomerDetails = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [form] = Form.useForm();
-    const [CustomerDetails, setCustomerDetails] = useState()
     const [Customer, setCustomer] = useState({
         "customer_name": "",
         "product_name": "",
@@ -24,8 +24,11 @@ const CustomerDetails = () => {
         "manufacturing_year": ""
     })
 
+    const [imageModal, setImageModal] = useState(false)
+    const [toolImageModal,settoolImageModal] = useState(false)
+
     let [CustomerData, setCustomerData] = useState([]);
-    const [isLoading, setisLoading] = useState(false);
+
     const [api, contextHolder] = notification.useNotification();
 
     const openNotification = (placement) => {
@@ -170,7 +173,7 @@ const CustomerDetails = () => {
             key: 'tool_image',
             render: (_, record) => (
                 <Space size="large">
-                    <a>View</a>
+                    <a onClick ={() => {setImageModal(true)}}>View</a>
                 </Space>
             ),
         },
@@ -179,7 +182,7 @@ const CustomerDetails = () => {
             key: 'product_image',
             render: (_, record) => (
                 <Space size="large">
-                    <a>View</a>
+                    <a onClick ={() => {setImageModal(true)}}>View</a>
                     <Popover content='Delete'>
                         <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
                     </Popover>
@@ -207,6 +210,8 @@ const CustomerDetails = () => {
     const handleChangeType = (id, value) => {
         setCustomer({ ...Customer, [id]: value })
     };
+
+    console.log(imageModal)
 
     const handleFormSubmit = async () => {
         try {
@@ -365,6 +370,34 @@ const CustomerDetails = () => {
                 </Form> 
             </Modal>
         </div>
+
+
+        <Modal
+                title="Product Images"
+                centered
+                open={imageModal}
+                okText="Save"
+                // onOk={form.submit}
+                onCancel={() => setImageModal(false)}
+                width={750}
+            >
+                <ImageUpload/>
+
+        </Modal>
+
+        <Modal
+                title="Product Images"
+                centered
+                open={toolImageModal}
+                okText="Save"
+                // onOk={form.submit}
+                onCancel={() => settoolImageModal(false)}
+                width={750}
+            >
+                <ImageUpload/>
+
+        </Modal>
+
         </Context.Provider>
         </ConfigProvider>
         </div>

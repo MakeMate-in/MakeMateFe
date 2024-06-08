@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Col, Row, Form, Input, Button, Image, Upload } from 'antd';
 import './../../Dashboard/Dashboard.css'
 import { getCompanyDetails, updateCompanyDetails, uploadAvatar } from '../../../../apis/Vendor/CompanyDetails';
 import { USER_ID } from '../../../../utils/constants';
-import { convertBufferToBinary, getBase64, uploadButton } from '../../../../utils/helper';
+import { convertBufferToBinary, deepEqual, getBase64, uploadButton } from '../../../../utils/helper';
 
 
 const BasicDetails = (props) => {
@@ -11,6 +11,7 @@ const BasicDetails = (props) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [fileList, setFileList] = useState();
+  const [allvalues,setallValues] = useState(undefined)
 
 
   const handlePreview = async (file) => {
@@ -36,36 +37,45 @@ const BasicDetails = (props) => {
   },[props.CompanyDetails.company_logo])
 
 
-
   const [basicDetails, setBasicDetails] = useState({
-    "description": "",
-    "company_name": "",
-    "GST_no": "",
-    "experience": "",
-    "current_projects_no": ""
+    "description": props.CompanyDetails.description,
+    "company_name": props.CompanyDetails.company_name,
+    "GST_no": props.CompanyDetails.GST_no,
+    "experience": props.CompanyDetails.experience,
+    "current_projects_no": props.CompanyDetails.current_projects_no
   });
 
-  const [isLoading,setIsLoading] = useState(false)
-
-
+  const initialValues = {
+    "description": props.CompanyDetails.description,
+    "company_name": props.CompanyDetails.company_name,
+    "GST_no": props.CompanyDetails.GST_no,
+    "experience": props.CompanyDetails.experience,
+    "current_projects_no": props.CompanyDetails.current_projects_no
+     }
   
   const handleChange = (event) => {
     setBasicDetails({ ...basicDetails, [event.target.id]: event.target.value })
   }
 
   const handleFormSubmit = async() => {
-   
-    console.log(basicDetails)
+
     try{
     let params = {
       // user: localStorage.get(USER_ID)
       user: USER_ID
     }
-    const res = await updateCompanyDetails(params,basicDetails)
-    if(res.success){
-      const updatedData = await getCompanyDetails(params)
-      console.log(updatedData)
-      if(updatedData.success){
+    let equal = deepEqual(allvalues,initialValues) || allvalues==undefined
+
+    let res;
+    if(!equal){
+    res = await updateCompanyDetails(params,basicDetails)
+    }
+    if((res && res.success) || equal){
+      let updatedData;
+      if(!equal){
+       updatedData = await getCompanyDetails(params)
+      }
+      if((updatedData && updatedData.success) || equal){
       props.onSaveAndSubmit();
       }
       else{
@@ -75,7 +85,7 @@ const BasicDetails = (props) => {
     else{
       //Toast
     }
-    console.log(res)
+ 
     }
     catch(err){
       console.log(err)
@@ -92,7 +102,6 @@ const BasicDetails = (props) => {
     } catch (err) {
       console.log("Eroor: ", err);
       const error = new Error("Some error");
-      // onError({ err });
     }
   };
 
@@ -107,12 +116,18 @@ const BasicDetails = (props) => {
     onRemove: uploadImage
   };
 
-  
+
+  const handleValuechange = (changedValues, allValues) => {
+    setallValues(allValues)
+  }
+
   return (
     <div>
  { props && Object.keys(props.CompanyDetails).length>0 ? 
     <Form
       layout="vertical"
+      initialValues={initialValues}
+      onValuesChange={handleValuechange}
       onFinish={handleFormSubmit}
     >
       <Row gutter={16}>
@@ -142,7 +157,7 @@ const BasicDetails = (props) => {
               </Form.Item>
             </Col>
             <Col span={16}>
-              <Form.Item label="About Us" name="aboutUs">
+              <Form.Item label="About Us" name="description">
                 <Input.TextArea
                   rows={4}
                   placeholder='Provide your company description and an overview of your company'
@@ -150,7 +165,6 @@ const BasicDetails = (props) => {
                   onChange={handleChange}
                   autoComplete='off'
                   value={basicDetails["description"]}
-                  defaultValue={props.CompanyDetails.description}
                 />
               </Form.Item>
             </Col>
@@ -161,7 +175,7 @@ const BasicDetails = (props) => {
         <Col span={12}>
           <Form.Item
             label="Company Name"
-            name="companyName"
+            name="company_name"
             rules={[{ required: true, message: 'Company Name is required' }]}
           >
             <Input
@@ -172,12 +186,11 @@ const BasicDetails = (props) => {
               onChange={handleChange}
               autoComplete='off'
               value={basicDetails["company_name"]}
-              defaultValue={props.CompanyDetails.company_name}
             />
           </Form.Item>
           <Form.Item
             label="Total Experience (in Years)"
-            name="totalExperience"
+            name="experience"
             rules={[{ required: true, message: 'Total Experience is required' }]}
           >
             <Input
@@ -188,14 +201,13 @@ const BasicDetails = (props) => {
               autoComplete='off'
               onChange={handleChange}
               value={basicDetails["experience"]}
-              defaultValue={props.CompanyDetails.experience}
             />
           </Form.Item>
         </Col>
         <Col span={12}>
           <Form.Item
             label="GST"
-            name="gst"
+            name="GST_no"
             rules={[{ required: true, message: 'GST is required' }]}
           >
             <Input
@@ -206,12 +218,11 @@ const BasicDetails = (props) => {
               autoComplete='off'
               onChange={handleChange}
               value={basicDetails["GST_no"]}
-              defaultValue={props.CompanyDetails.GST_no}
             />
           </Form.Item>
           <Form.Item
             label="Current Running Project"
-            name="currentRunningProject"
+            name="current_projects_no"
             rules={[{ required: true, message: 'Current Running Project is required' }]}
           >
             <Input
@@ -222,7 +233,6 @@ const BasicDetails = (props) => {
               autoComplete='off'
               onChange={handleChange}
               value={basicDetails["current_projects_no"]}
-              defaultValue={props.CompanyDetails.current_projects_no}
             />
           </Form.Item>
         </Col>

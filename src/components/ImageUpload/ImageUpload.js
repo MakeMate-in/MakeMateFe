@@ -72,7 +72,6 @@ const ImageUpload = () => {
                         let data = {
                             name: item.name,
                             src: convertBufferToBinary(item.image),
-                            // src: item.image,
                             type: 'image/png',
                             id: i + 1
                         }
@@ -153,11 +152,12 @@ const ImageUpload = () => {
 
 
     return (
-        <div>
+        <div style={{display:'flex',flexDirection:'column', alignItems:'center'}}>
              <Context.Provider value={contextValue}>
              {contextHolder}
             <Flex vertical gap={"large"}>
-                <Carousel arrows dotPosition="left" infinite={false}>
+                
+                <Carousel arrows dotPosition="left" infinite={false} style={{alignItems:'center'}}>
                     {srcList.map((item, i) => (
                         <div>
                             <Image src={item.src} style={{ height: "45vh", width: "32vw" }} />

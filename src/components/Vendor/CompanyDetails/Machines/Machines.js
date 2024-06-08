@@ -6,6 +6,7 @@ import { addMachineDetails, getMachineDetails, deleteMachineDetails } from '../.
 import { COMPANY_ID, OPEN_ROUTES } from '../../../../utils/constants';
 import { DeleteTwoTone } from '@ant-design/icons';
 import { notification } from 'antd';
+import ImageUpload from '../../../ImageUpload/ImageUpload';
 const Context = React.createContext({
     name: 'Default',
 });
@@ -31,6 +32,8 @@ const Machines = () => {
         "make": "",
         "bed_Size": {}
     })
+
+    const [imageModal, setImageModal] = useState(false)
 
     let [MachineData, setMachineData] = useState([])
 
@@ -163,7 +166,7 @@ const Machines = () => {
             key: 'image',
             render: (_, record) => (
                 <Space size="large">
-                    <a>View</a>
+                    <a onClick ={() => {setImageModal(true)}}>View</a>
                     {tab ? <Popover content='Delete'>
                         <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
                     </Popover> : ''}
@@ -382,13 +385,6 @@ const Machines = () => {
                                                 onChange={(e) => { handleBedSize("height", e) }}
                                             />
                                         </Form.Item>
-                                        {/* <Form.Item
-                                        label="Upload Image"
-                                        name="image">
-                                        <Upload>
-                                            <Button size='large' icon={<UploadOutlined />}>Click to Upload</Button>
-                                        </Upload>
-                                    </Form.Item> */}
                                     </Col>
                                 </Row>
                             </Form> :
@@ -454,7 +450,6 @@ const Machines = () => {
                                             </Form.Item>
                                             <Form.Item label="Specification (Diameter)" name="diameter">
                                                 <InputNumber
-                                                    // className="custom-input" 
                                                     label="Specification (Diameter)"
                                                     variant="filled"
                                                     id="diameter"
@@ -468,6 +463,20 @@ const Machines = () => {
                                 </Form>}
                         </Modal>
                     </div>
+
+                    <Modal
+                            title="Add Machine"
+                            centered
+                            open={imageModal}
+                            okText="Save"
+                            onOk={form.submit}
+                            onCancel={() => setImageModal(false)}
+                            width={750}
+                        >
+                            <ImageUpload/>
+
+                            </Modal>
+
                 </Context.Provider>
             </ConfigProvider>
         </div>

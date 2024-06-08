@@ -1,8 +1,9 @@
 import React,{useState, useEffect  } from 'react'
-import { COMPANY_ID } from '../../../../../utils/constants';
+import { COMPANY_ID } from '../../../../utils/constants';
 import { Upload, Button, Card } from 'antd';
-import { uploadPlantImages, getPlantImages, deletePlantImages } from '../../../../../apis/Vendor/CompanyDetails';
-import { uploadButton, convertBufferToBinary } from '../../../../../utils/helper';
+import { uploadPlantImages, getPlantImages, deletePlantImages } from '../../../../apis/Vendor/CompanyDetails';
+import { convertBufferToBinary } from '../../../../utils/helper';
+import ImageUpload from '../../../ImageUpload/ImageUpload';
 
 
 const PlantImages = () => {
@@ -17,7 +18,6 @@ const PlantImages = () => {
 
     const fetchPlantImages = async () => {
       const res = await getPlantImages(COMPANY_ID)
-      console.log(res)
       if(res.success)
       setPlantImages(res.data)
     }
@@ -28,9 +28,7 @@ const PlantImages = () => {
     
     if(plantImages!=undefined){
     const files =  plantImages!=undefined && plantImages.company_Images!=undefined? plantImages.company_Images.map( (item) => {
-        console.log(item)
     let url =  convertBufferToBinary(item.image)
-      console.log(url)
     let data = {
       uid: item._id,
       name: item.name,
@@ -43,7 +41,6 @@ const PlantImages = () => {
   }
   }, [plantImages])
 
-  console.log(fileList)
 
     const onChange = ({ fileList: newFileList }) => {
         setFileLsit(newFileList);
@@ -113,18 +110,12 @@ const PlantImages = () => {
       };
     
   return (
-<Card style={{ 
-            height: '50%', 
-            overflow: 'auto', 
-            // overflow:'hidden', 
-            scrollbarWidth: 'none' }}>
+<div>
     <h2>Plant Images</h2>
-    <Button onClick={uploadFiles}>Save</Button>
-    <Button onClick={deleteFiles}>Delete</Button>
-    <Upload {...props}>
-    {fileList && fileList.length>0? null : uploadButton}
-    </Upload>
-    </Card>
+    <ImageUpload />
+    {/* <Button onClick={uploadFiles}>Save</Button>
+    <Button onClick={deleteFiles}>Delete</Button> */}
+    </div>
   )
 }
 

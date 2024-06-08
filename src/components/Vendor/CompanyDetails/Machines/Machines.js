@@ -5,9 +5,7 @@ import { MACHINE_TYPE } from '../../../../utils/helper';
 import { addMachineDetails, getMachineDetails, deleteMachineDetails } from '../../../../apis/Vendor/MachineDetails';
 import { COMPANY_ID, OPEN_ROUTES } from '../../../../utils/constants';
 import { DeleteTwoTone } from '@ant-design/icons';
-import { VENDOR_DRAWER_LIST } from '../../../../utils/constants';
 import { notification } from 'antd';
-import { WindowSharp } from '@mui/icons-material';
 const Context = React.createContext({
     name: 'Default',
 });

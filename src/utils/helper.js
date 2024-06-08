@@ -1,6 +1,7 @@
 // import jwtDecode from 'jwt-decode';
 import { Buffer } from 'buffer';
 import { PlusOutlined } from '@ant-design/icons';
+import mime from 'mime';
 
 export const LOCAL_STORAGE_ITEMS = {
   TOKEN: "token",
@@ -329,8 +330,20 @@ export const ROW_COLUMNS = [
 
 
 export const checkButtonRequired = (current, currentSub, currentInfraSub) => {
-  if ((current === 0 && currentSub === 0) || (current === 1 && (currentInfraSub === 1 || currentInfraSub === 2))) {
+  if ((current === 0 && currentSub === 0) || (current === 1 && (currentInfraSub === 0 || currentInfraSub === 2))) {
     return false
   }
   return true
 }
+
+export const getFileType = (fileName) => {
+  let fileType = null;
+  let fileExtension = null;
+const mimeType = mime.getType(fileName)
+if (mimeType){
+  fileType = mimeType.split('/')[0]
+  fileExtension = mimeType.split('/')[1]
+}
+return {mimeType, fileType, fileExtension}
+};
+

@@ -5,13 +5,7 @@ import { DeleteTwoTone } from '@ant-design/icons';
 import TextArea from 'antd/es/input/TextArea'
 import { addServiceDetails, getServiceDetails } from '../../../../apis/Vendor/ServiceDetails';
 import { COMPANY_ID } from '../../../../utils/constants';
-import {
-  RadiusBottomleftOutlined,
-  RadiusBottomrightOutlined,
-  RadiusUpleftOutlined,
-  RadiusUprightOutlined,
-} from '@ant-design/icons';
-import { Divider, notification } from 'antd';
+import {  notification } from 'antd';
 const Context = React.createContext({
   name: 'Default',
 });
@@ -28,7 +22,6 @@ const SERVICE_NAMES = ROW_COLUMNS.map((item) => {
 const Services = (props) => {
 
   const [inputs, setInputs] = useState([{ service_name: undefined, service_type: undefined, supplier_details: "" }]);
-  const [isLoading, setisLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
 
   const openNotification = (placement) => {

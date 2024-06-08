@@ -22,14 +22,14 @@ import './Dashboard.css';
 import { Link, useNavigate } from "react-router-dom";
 import { Outlet } from 'react-router-dom';
 import { logOut } from '../../../apis/authentication..js';
-import {  useLocation } from 'react-router-dom';
+
 
 const Dashboard = () => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [tab, setTab] = useState(0)
   const navigate = useNavigate();
-  const location = useLocation();
+
 
   useEffect(() => {
     console.log(window.location)
@@ -53,7 +53,7 @@ const Dashboard = () => {
 
   const getLogout = async () => {
     try{
-      const res = await logOut()
+      await logOut()
       navigate(OPEN_ROUTES.PARENT_ROUTE)
     }
     catch(err){
@@ -94,7 +94,7 @@ console.log(tab)
         <Divider />
         <List>
           {VENDOR_DRAWER_LIST.map((item, index) => {
-          return( item.name=="Logout"?
+          return( item.name==="Logout"?
           (<ListItem key={index} disablePadding sx={{ display: 'block' }} onClick={getLogout}>
           <ListItemButton  sx={{ minHeight: 48, justifyContent: open ? 'initial' : 'center', px: 2.5, }} >
             <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center',}}>

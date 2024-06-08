@@ -37,7 +37,7 @@ export enum MESSAGES {
     EDIT='Edit'
 };
 
-export const EMAIL:RegExp =/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+export const EMAIL:RegExp =/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 export const PASSWORD:RegExp=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/
 export const MOBILE:RegExp=/^[0-9]{10}$/
 
@@ -91,6 +91,7 @@ export const STEP_TAB_MAP_INFRA_2 = {
     '1': 0,
     '2': 1,
     '3': 2,
+    '4': 3
 }
 
 export const STEPS_HEADINGS = {

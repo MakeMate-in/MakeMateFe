@@ -1,10 +1,10 @@
 import React from 'react'
 import { Row, Tabs } from 'antd'
-import Certificates from '../CompanyOverview/Certificates/Certificates';
 import { STEP_TAB_MAP } from '../../../../utils/constants';
 import Machines from './Machines';
 import Services from './Services';
 import InfraStructureDetails from './InfraStructureDetails';
+import PlantImages from './PlantImages';
 
 
 const InfraDetails = (props) => {
@@ -12,18 +12,23 @@ const InfraDetails = (props) => {
     const items = [
         {
             key: '1',
-            label: 'Machines',
-            children: <Machines {...props} />,
+            label: 'Infrastructure Details',
+            children: <InfraStructureDetails {...props} />,
         },
         {
             key: '2',
-            label: 'Infrastructure Details',
-            children: <InfraStructureDetails {...props} />,
+            label: 'Machines',
+            children: <Machines {...props} />,
         },
         {
             key: '3',
             label: 'Services',
             children: <Services {...props} />,
+        },
+        {
+            key: '4',
+            label: 'Plant Images',
+            children: <PlantImages  {...props} />,
         },
     ]
 

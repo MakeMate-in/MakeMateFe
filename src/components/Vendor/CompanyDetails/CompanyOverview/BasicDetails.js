@@ -8,7 +8,6 @@ import { convertBufferToBinary, getBase64, uploadButton } from '../../../../util
 
 const BasicDetails = (props) => {
 
-
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [fileList, setFileList] = useState();

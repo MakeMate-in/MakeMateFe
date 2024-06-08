@@ -18,6 +18,7 @@
     "country-state-city": "^3.2.1",
     "fontsource-montez": "^4.0.0",
     "jwt-decode": "^4.0.0",
+    "mime": "^4.0.3",
     "mui-layout": "^1.2.9",
     "otp-input-react": "^0.3.0",
     "polished": "^4.3.1",

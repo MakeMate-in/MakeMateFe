@@ -67,7 +67,7 @@ const DigitalFactory = () => {
     } else if (current === 0 && currentSub === 3) {
       setCurrent(current + 1);
       setCurrentInfraSub(0);
-    } else if (current === 1 && currentInfraSub < 2) {
+    } else if (current === 1 && currentInfraSub < 3) {
       setCurrentInfraSub(currentInfraSub + 1);
     } else {
       setCurrent(current + 1);
@@ -133,14 +133,17 @@ const DigitalFactory = () => {
         onChange={onChangeInfraSub}
         items={[
           {
-            title: 'Machines'
+            title: 'Infrastructure Details'
           },
           {
-            title: 'Infrastructure Details'
+            title: 'Machines'
           },
           {
             title: 'Services'
           },
+          {
+            title: 'Plant Images'
+          }
         ]}
       />
     );

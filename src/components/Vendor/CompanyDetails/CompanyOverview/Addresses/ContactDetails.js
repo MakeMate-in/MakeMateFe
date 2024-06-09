@@ -14,19 +14,27 @@ const Context = React.createContext({
 const ContactDetails = (props) => {
 
     const [contactModalOpen, setContactModalOpen] = useState(false);
-    const [form] = Form.useForm()
+    const [form] = Form.useForm();
     const [contact, setContact] = useState({
         "name": "",
         "designation": "",
         "mobile_no": "",
         "email": ""
     });
-    const empty={
+
+    const initialValues1 = {
         "name": "",
         "designation": "",
         "mobile_no": "",
         "email": ""
-    }
+    };
+
+    let initialValues2 = {
+        "name": "",
+        "designation": "",
+        "mobile_no": "",
+        "email": ""
+    };
     const [updateContact,setUpdateContact] = useState({})
     const [modalHeading,setModalHeading] = useState(MESSAGES.ADD)
 
@@ -163,21 +171,40 @@ const ContactDetails = (props) => {
         catch (err) {
             console.log(err)
         }
-        setContactModalOpen(false)
-    }
+    setContactModalOpen(false)
+}
 
-    const handleEdit = (item,type) => {
-        console.log(item)
-        setModalHeading(type)
-        setUpdateContact(item)
+
+const handleEdit = (item, type) => {
+    if (type === MESSAGES.ADD) {
         setContact({
-            ...contact, 
-            ["name"]:item.name,
-            ["designation"]:item.designation,
-            ["email"]:item.email,
-            ["mobile_no"]: item.mobile_no})
-        setContactModalOpen(true)
+            "name": "",
+            "designation": "",
+            "mobile_no": "",
+            "email": ""
+        });
+        setModalHeading(type);
+        setContactModalOpen(true);
+    } else {
+        setContact({
+            ...contact,
+            ["name"]: item.name,
+            ["designation"]: item.designation,
+            ["email"]: item.email,
+            ["mobile_no"]: item.mobile_no
+        });
+        initialValues2 = {
+            "name": item.name,
+            "designation": item.designation,
+            "email": item.email,
+            "mobile_no": item.mobile_no
+        };
+        setUpdateContact(item);
+        setModalHeading(type);
+        setContactModalOpen(true);
     }
+}
+
     
     return (
         <div>
@@ -212,7 +239,7 @@ const ContactDetails = (props) => {
                     }
                 </div>
 
-                <h3 style={{ margin: 0, cursor: 'pointer', color: 'rgba(22, 119, 255)' }} onClick={() => {handleEdit(empty,MESSAGES.ADD)}}>+ Add New Contact</h3>
+                <h3 style={{ margin: 0, cursor: 'pointer', color: 'rgba(22, 119, 255)' }} onClick={() => {handleEdit(initialValues2,MESSAGES.ADD)}}>+ Add New Contact</h3>
                 <Modal
                     title= {modalHeading==MESSAGES.ADD?"Add New Contact":"Edit Contact"}
                     centered
@@ -230,6 +257,7 @@ const ContactDetails = (props) => {
                       <Form
                             layout="vertical"
                             form={form}
+                            initialValues={modalHeading==MESSAGES.ADD?initialValues1:initialValues2}
                             onFinish={handleFormSubmit}
                         >
                             <Row gutter={16}>
@@ -244,7 +272,7 @@ const ContactDetails = (props) => {
                                             id="name"
                                             onChange={handleChange}
                                             value={contact["name"]}
-                                            defaultValue={empty["name"]}
+                                        
                                             // value={"Vaibhav"}
                                         />
                                     </Form.Item>
@@ -255,7 +283,7 @@ const ContactDetails = (props) => {
                                             id="email"
                                             onChange={handleChange}
                                             value={contact["email"]}
-                                            defaultValue={contact["email"]}
+                                            
                                         />
                                     </Form.Item>
                                 </Col>
@@ -271,7 +299,7 @@ const ContactDetails = (props) => {
                                             id="mobile_no"
                                             onChange={handleChange}
                                             value={contact["mobile_no"]}
-                                            defaultValue={contact["mobile_no"]}
+                                            
                                         />
                                     </Form.Item>
                                     <Form.Item
@@ -285,7 +313,7 @@ const ContactDetails = (props) => {
                                             id="designation"
                                             onChange={handleChange}
                                             value={contact["designation"]}
-                                            defaultValue={contact["designation"]}
+                                            
                                         />
                                     </Form.Item>
                                 </Col>

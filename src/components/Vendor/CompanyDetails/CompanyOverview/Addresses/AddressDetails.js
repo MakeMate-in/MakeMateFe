@@ -233,33 +233,27 @@ const AddressDetails = (props) => {
                                             <Form.Item
                                                 label="Country"
                                                 name="country"
-                                            // rules={[{ required: true, message: 'Field 2 is required' }]}
                                             >
-
-                                                <CountrySelect
-                                                    onChange={(e) => {
-                                                        console.log(e)
-                                                        setAddress({ ...address, ["country"]: e.name })
-                                                        setCountryid(e.id);
-                                                    }}
-                                                    placeHolder="Select Country"
-
-                                                />
+                                            <Input
+                                                className="custom-input"
+                                                variant="filled"
+                                                id="country"
+                                                onChange={handleChange}
+                                                value={address["country"]}
+                                            />
                                             </Form.Item>
                                             <Form.Item
                                                 label="City"
                                                 name="city"
                                             // rules={[{ required: true, message: 'City is required' }]}
                                             >
-                                                <CitySelect
-                                                    countryid={countryid}
-                                                    stateid={stateid}
-                                                    onChange={(e) => {
-                                                        setAddress({ ...address, ["city"]: e.name })
-                                                        console.log(e);
-                                                    }}
-                                                    placeHolder="Select City"
-                                                />
+                                            <Input
+                                                className="custom-input"
+                                                variant="filled"
+                                                id="city"
+                                                onChange={handleChange}
+                                                value={address["city"]}
+                                            />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
@@ -281,14 +275,13 @@ const AddressDetails = (props) => {
                                                 name="state"
                                             // rules={[{ required: true, message: 'State is required' }]}
                                             >
-                                                <StateSelect
-                                                    countryid={countryid}
-                                                    onChange={(e) => {
-                                                        setAddress({ ...address, ["state"]: e.name })
-                                                        setstateid(e.id);
-                                                    }}
-                                                    placeHolder="Select State"
-                                                />
+                                            <Input
+                                                className="custom-input"
+                                                variant="filled"
+                                                id="state"
+                                                onChange={handleChange}
+                                                value={address["state"]}
+                                            />
                                             </Form.Item>
                                             <Form.Item
                                                 label="Pin Code"

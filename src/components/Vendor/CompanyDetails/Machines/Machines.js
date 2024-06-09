@@ -17,7 +17,7 @@ const Machines = () => {
     const [form] = Form.useForm();
     const [isVisible, setIsVisible] = useState(true);
     const [api, contextHolder] = notification.useNotification();
-    const [tab, setTab] = useState(0)
+    const [tab, setTab] = useState(0);          // used to toggle element visibility between Dashboard & Digital-Factory
     const [bedSize, setBedSize] = useState({
         "length": "",
         "height": "",
@@ -108,7 +108,12 @@ const Machines = () => {
                             id: machine._id,
                             type: machine.machine_type,
                             make: machine.make,
-                            bedSize: '800 X 300',
+                            bedSize: <div>
+                                <p style={{margin:'0'}}>l</p>
+                                <p style={{margin:'0'}}>l</p>
+                                <p style={{margin:'0'}}>l</p>
+                                <p style={{margin:'0'}}>l</p>
+                            </div>,
                             rpm: machine.spindle_rpm,
                             axis: machine.no_of_Axis,
                             year: machine.manufacturing_year
@@ -265,7 +270,7 @@ const Machines = () => {
 
     return (
 
-        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '60vh' }}>
+        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: tab?'60vh':'' }}>
             <ConfigProvider
                 theme={{
                     components: {
@@ -278,7 +283,7 @@ const Machines = () => {
                 <Context.Provider value={contextValue}>
                     {contextHolder}
                     <div >
-                        <Table columns={MACHINE_COLUMNS} dataSource={MachineData} scroll={{ y: 265 }} />
+                        <Table columns={MACHINE_COLUMNS} dataSource={MachineData} scroll={{ y: tab?265:200 }} />
                     </div>
                     <div style={{ marginTop: 'auto' }}>
                         <Button type="primary" style={{ display: tab ? 'block' : 'none' }} onClick={() => setModalOpen(true)}>

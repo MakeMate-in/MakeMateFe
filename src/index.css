@@ -15,3 +15,7 @@ code {
 html {
   scrollbar-width: none;
 }
+
+.ant-card {
+  box-shadow: rgba(0, 0, 0, 0.2) 1px 3px 5px
+}

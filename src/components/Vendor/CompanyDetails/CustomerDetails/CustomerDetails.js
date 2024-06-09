@@ -1,18 +1,20 @@
-import React, { useState, useEffect, useMemo} from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Upload, Space, Popover } from 'antd';
-import { COMPANY_ID } from '../../../../utils/constants';
-import { addProductDetails, getProductDetails, deleteProductDetails} from '../../../../apis/Vendor/ProductDetails';
+import { COMPANY_ID, OPEN_ROUTES } from '../../../../utils/constants';
+import { addProductDetails, getProductDetails, deleteProductDetails } from '../../../../apis/Vendor/ProductDetails';
 import { DeleteTwoTone } from '@ant-design/icons';
-import { notification} from 'antd';
+import { notification } from 'antd';
 import ImageUpload from '../../../ImageUpload/ImageUpload';
 
 const Context = React.createContext({
     name: 'Default',
-  });
+});
 
 const CustomerDetails = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [form] = Form.useForm();
+    const [CustomerDetails, setCustomerDetails] = useState()
+    const [tab, setTab] = useState(0);
     const [Customer, setCustomer] = useState({
         "customer_name": "",
         "product_name": "",
@@ -25,7 +27,7 @@ const CustomerDetails = () => {
     })
 
     const [imageModal, setImageModal] = useState(false)
-    const [toolImageModal,settoolImageModal] = useState(false)
+    const [toolImageModal, settoolImageModal] = useState(false)
 
     let [CustomerData, setCustomerData] = useState([]);
 
@@ -33,42 +35,42 @@ const CustomerDetails = () => {
 
     const openNotification = (placement) => {
         api.success({
-        message: `Success`,
-        description: <Context.Consumer>{({ name }) => `Customer Added Successfully`}</Context.Consumer>,
-        placement,
+            message: `Success`,
+            description: <Context.Consumer>{({ name }) => `Customer Added Successfully`}</Context.Consumer>,
+            placement,
         });
     };
     let contextValue = useMemo(
         () => ({
-        name: 'Make Mate',
+            name: 'Make Mate',
         }),
         [],
     );
 
     const openFailedNotification = (placement) => {
         api.error({
-        message: `Something went wrong`,
-        description: <Context.Consumer>{({ name }) => `Unable to add Customer `}</Context.Consumer>,
-        placement,
+            message: `Something went wrong`,
+            description: <Context.Consumer>{({ name }) => `Unable to add Customer `}</Context.Consumer>,
+            placement,
         });
     };
-        contextValue = useMemo(
+    contextValue = useMemo(
         () => ({
-        name: 'Make Mate',
+            name: 'Make Mate',
         }),
         [],
     );
 
     const deleteNotification = (placement) => {
         api.success({
-        message: `Success`,
-        description: <Context.Consumer>{({ name }) => `Customer deleted Successfully`}</Context.Consumer>,
-        placement,
+            message: `Success`,
+            description: <Context.Consumer>{({ name }) => `Customer deleted Successfully`}</Context.Consumer>,
+            placement,
         });
     };
     contextValue = useMemo(
         () => ({
-        name: 'Make Mate',
+            name: 'Make Mate',
         }),
         [],
     );
@@ -81,8 +83,7 @@ const CustomerDetails = () => {
             if (customers) {
                 let data = [];
                 if (customers.count > 0) {
-                    if(customers.data)
-                        {
+                    if (customers.data) {
                         data = customers.data.map((customer, i) => {
                             let customerObj = {
                                 key: i + 1,
@@ -95,13 +96,13 @@ const CustomerDetails = () => {
                                 runner: customer.runner,
                                 tool_tonnage: customer.tool_tonnage,
                                 manufacturing_year: customer.manufacturing_year
-                        }
-                        return customerObj
-                    })
-                }
-                else{
-                    console.log("Errorrrr in fetch")
-                }
+                            }
+                            return customerObj
+                        })
+                    }
+                    else {
+                        console.log("Errorrrr in fetch")
+                    }
                 }
                 setCustomerData([...data]);
             }
@@ -173,7 +174,7 @@ const CustomerDetails = () => {
             key: 'tool_image',
             render: (_, record) => (
                 <Space size="large">
-                    <a onClick ={() => {setImageModal(true)}}>View</a>
+                    <a onClick={() => { setImageModal(true) }}>View</a>
                 </Space>
             ),
         },
@@ -182,14 +183,24 @@ const CustomerDetails = () => {
             key: 'product_image',
             render: (_, record) => (
                 <Space size="large">
-                    <a onClick ={() => {setImageModal(true)}}>View</a>
-                    <Popover content='Delete'>
+                    <a onClick={() => { setImageModal(true) }}>View</a>
+                    {tab ? <Popover content='Delete'>
                         <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
-                    </Popover>
+                    </Popover> : ''}
                 </Space>
             ),
         },
     ];
+
+
+    useEffect(() => {
+        console.log(window.location)
+        if (window.location.pathname == OPEN_ROUTES.DIGITAL_FACTORY) {
+            setTab(1);
+        }
+
+        fetchCustomerDetails()
+    }, [])
 
     useEffect(() => {
         fetchCustomerDetails()
@@ -218,7 +229,7 @@ const CustomerDetails = () => {
             let params = {
                 company_id: COMPANY_ID
             }
-            const res = await addProductDetails(params,Customer)
+            const res = await addProductDetails(params, Customer)
             if (res.success) {
                 fetchCustomerDetails()
                 setCustomer({})
@@ -234,174 +245,172 @@ const CustomerDetails = () => {
         }
     }
 
-        return (
-            <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '60vh' }}>
-                <ConfigProvider
-                    theme={{
-                        components: {
-                            InputNumber: {
-                                controlWidth: 319
-                            }
-                        },
-                    }}
-                >
+    return (
+        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: tab ? '60vh' : '' }}>
+            <ConfigProvider
+                theme={{
+                    components: {
+                        InputNumber: {
+                            controlWidth: 319
+                        }
+                    },
+                }}
+            >
                 <Context.Provider value={contextValue}>
-                {contextHolder}
-            <div >
-                <Table columns={Customer_COLUMNS} dataSource={CustomerData} scroll={{ y: 265 }} />
-            </div>
-            <div style={{ marginTop: 'auto' }}>
-            <Button type="primary" onClick={() => setModalOpen(true)}>
-                + Add Customer
-            </Button>
-            <Modal
-                title="Add Customer Details"
-                centered
-                open={modalOpen}
-                okText="Save"
-                onOk={form.submit}
-                onCancel={() => setModalOpen(false)}
-                width={750}
-            >
-                <Form layout="vertical" onFinish={handleFormSubmit} form={form}>
-                    <Row gutter={16}>
-                        <Col span={12}>
-                            <Form.Item label="Customer Name" name="customer_name" rules={[{ required: true, message: 'Customer Name is required' }]}>
-                                <Input
-                                    className="custom-input"
-                                    variant="filled"
-                                    id="customer_name"
-                                    placeholder='Enter Customer Name'
-                                    value={Customer["customer_name"]}
-                                    onChange={handleChange}
-                                />
-                            </Form.Item>
-                            <Form.Item label="Product Name" name="product_name" rules={[{ required: true, message: 'Product Name is required' }]}>
-                                <Input
-                                    className="custom-input"
-                                    variant="filled"
-                                    id="product_name"
-                                    placeholder='Enter Product Name'
-                                    value={Customer["product_name"]}
-                                    onChange={handleChange}
-                                />
-                            </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                            <Form.Item label="Part Material" name="part_material" rules={[{ required: true, message: 'Material is required' }]}>
-                                <Input
-                                    className="custom-input"
-                                    variant="filled"
-                                    id="part_material"
-                                    placeholder='Enter Part Material'
-                                    value={Customer["part_material"]}
-                                    onChange={handleChange}
-                                />
-                            </Form.Item>
-                            <Form.Item label="Tool Material" name="tool_material" rules={[{ required: true, message: 'Tool Material is required' }]}>
-                                <Input
-                                    className="custom-input"
-                                    variant="filled"
-                                    id="tool_material"
-                                    placeholder='Enter Tool Material'
-                                    value={Customer["tool_material"]}
-                                    onChange={handleChange}
-                                />
-                            </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                            <Form.Item
-                                label="No of Cavity"
-                                name="no_of_cavity"
-                                rules={[{ required: true, message: 'No. of Cavity is required' }]}>
-                                <InputNumber
-                                    min={1}
-                                    size='large'
-                                    variant="filled"
-                                    style={{width: '93%'}}
-                                    placeholder='Enter No of Cavity'
-                                    value={Customer["no_of_cavity"]}
-                                    onChange={(e) => { handleInputNumber("no_of_cavity", e) }}
-                                />
-                            </Form.Item>
-                            <Form.Item label="Runner" name="runner" rules={[{ required: true, message: 'Runner is required' }]}>
-                                <Input
-                                    className="custom-input"
-                                    variant="filled"
-                                    id="runner"
-                                    placeholder='Enter Runner'
-                                    value={Customer["runner"]}
-                                    onChange={handleChange}
-                                />
-                            </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                            <Form.Item
-                                label="Tool Tonnage"
-                                name="tool_tonnage"
-                                rules={[{ required: true, message: 'Tool tonnage is required' }]}>
-                                <InputNumber
-                                    min={1}
-                                    size='large'
-                                    variant="filled"
-                                    style={{width: '93%'}}
-                                    placeholder='Enter Tool Tonnage'
-                                    value={Customer["tool_tonnage"]}
-                                    onChange={(e) => { handleInputNumber("tool_tonnage", e) }}
-                                />
-                            </Form.Item>
-                            <Form.Item
-                                label="Manufacture Year"
-                                name="manufacturing_year"
-                                rules={[{ required: true, message: 'Year is required' }]}>
-                                <DatePicker
-                                    onChange={onChangeYear}
-                                    id="manufacturing_year"
-                                    picker="manufacturing_year"
-                                    placeholder='Select Manufacturing Year'
-                                    size="large"
-                                    variant="filled"
-                                    value={Customer["manufacturing_year"]}
-                                    style={{ width: '93%' }}
-                                />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                </Form> 
-            </Modal>
+                    {contextHolder}
+                    <div >
+                        <Table columns={Customer_COLUMNS} dataSource={CustomerData} scroll={{ y: tab ? 265 : 200 }} />
+                    </div>
+                    {tab ? <div style={{ marginTop: 'auto' }}>
+                        <Button type="primary" onClick={() => setModalOpen(true)}>
+                            + Add Customer
+                        </Button>
+                        <Modal
+                            title="Add Customer Details"
+                            centered
+                            open={modalOpen}
+                            okText="Save"
+                            onOk={form.submit}
+                            onCancel={() => setModalOpen(false)}
+                            width={750}
+                        >
+                            <Form layout="vertical" onFinish={handleFormSubmit} form={form}>
+                                <Row gutter={16}>
+                                    <Col span={12}>
+                                        <Form.Item label="Customer Name" name="customer_name" rules={[{ required: true, message: 'Customer Name is required' }]}>
+                                            <Input
+                                                className="custom-input"
+                                                variant="filled"
+                                                id="customer_name"
+                                                placeholder='Enter Customer Name'
+                                                value={Customer["customer_name"]}
+                                                onChange={handleChange}
+                                            />
+                                        </Form.Item>
+                                        <Form.Item label="Product Name" name="product_name" rules={[{ required: true, message: 'Product Name is required' }]}>
+                                            <Input
+                                                className="custom-input"
+                                                variant="filled"
+                                                id="product_name"
+                                                placeholder='Enter Product Name'
+                                                value={Customer["product_name"]}
+                                                onChange={handleChange}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={12}>
+                                        <Form.Item label="Part Material" name="part_material" rules={[{ required: true, message: 'Material is required' }]}>
+                                            <Input
+                                                className="custom-input"
+                                                variant="filled"
+                                                id="part_material"
+                                                placeholder='Enter Part Material'
+                                                value={Customer["part_material"]}
+                                                onChange={handleChange}
+                                            />
+                                        </Form.Item>
+                                        <Form.Item label="Tool Material" name="tool_material" rules={[{ required: true, message: 'Tool Material is required' }]}>
+                                            <Input
+                                                className="custom-input"
+                                                variant="filled"
+                                                id="tool_material"
+                                                placeholder='Enter Tool Material'
+                                                value={Customer["tool_material"]}
+                                                onChange={handleChange}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={12}>
+                                        <Form.Item
+                                            label="No of Cavity"
+                                            name="no_of_cavity"
+                                            rules={[{ required: true, message: 'No. of Cavity is required' }]}>
+                                            <InputNumber
+                                                min={1}
+                                                size='large'
+                                                variant="filled"
+                                                style={{ width: '93%' }}
+                                                placeholder='Enter No of Cavity'
+                                                value={Customer["no_of_cavity"]}
+                                                onChange={(e) => { handleInputNumber("no_of_cavity", e) }}
+                                            />
+                                        </Form.Item>
+                                        <Form.Item label="Runner" name="runner" rules={[{ required: true, message: 'Runner is required' }]}>
+                                            <Input
+                                                className="custom-input"
+                                                variant="filled"
+                                                id="runner"
+                                                placeholder='Enter Runner'
+                                                value={Customer["runner"]}
+                                                onChange={handleChange}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={12}>
+                                        <Form.Item
+                                            label="Tool Tonnage"
+                                            name="tool_tonnage"
+                                            rules={[{ required: true, message: 'Tool tonnage is required' }]}>
+                                            <InputNumber
+                                                min={1}
+                                                size='large'
+                                                variant="filled"
+                                                style={{ width: '93%' }}
+                                                placeholder='Enter Tool Tonnage'
+                                                value={Customer["tool_tonnage"]}
+                                                onChange={(e) => { handleInputNumber("tool_tonnage", e) }}
+                                            />
+                                        </Form.Item>
+                                        <Form.Item
+                                            label="Manufacture Year"
+                                            name="manufacturing_year"
+                                            rules={[{ required: true, message: 'Year is required' }]}>
+                                            <DatePicker
+                                                onChange={onChangeYear}
+                                                id="manufacturing_year"
+                                                picker="manufacturing_year"
+                                                placeholder='Select Manufacturing Year'
+                                                size="large"
+                                                variant="filled"
+                                                value={Customer["manufacturing_year"]}
+                                                style={{ width: '93%' }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                            </Form>
+                        </Modal>
+                    </div> : ''}
+                    <Modal
+                        title="Product Images"
+                        centered
+                        open={imageModal}
+                        okText="Save"
+                        // onOk={form.submit}
+                        onCancel={() => setImageModal(false)}
+                        width={750}
+                    >
+                        <ImageUpload />
+
+                    </Modal>
+
+                    <Modal
+                        title="Product Images"
+                        centered
+                        open={toolImageModal}
+                        okText="Save"
+                        // onOk={form.submit}
+                        onCancel={() => settoolImageModal(false)}
+                        width={750}
+                    >
+                        <ImageUpload />
+
+                    </Modal>
+
+                </Context.Provider>
+            </ConfigProvider>
         </div>
+    )
+}
 
-
-        <Modal
-                title="Product Images"
-                centered
-                open={imageModal}
-                okText="Save"
-                // onOk={form.submit}
-                onCancel={() => setImageModal(false)}
-                width={750}
-            >
-                <ImageUpload/>
-
-        </Modal>
-
-        <Modal
-                title="Product Images"
-                centered
-                open={toolImageModal}
-                okText="Save"
-                // onOk={form.submit}
-                onCancel={() => settoolImageModal(false)}
-                width={750}
-            >
-                <ImageUpload/>
-
-        </Modal>
-
-        </Context.Provider>
-        </ConfigProvider>
-        </div>
-        )
-    }
-
-    export default CustomerDetails
+export default CustomerDetails

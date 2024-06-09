@@ -106,7 +106,7 @@ const Services = (props) => {
   };
 
   const handleDeleteInput = (index) => {
-    deleteNotification('topRight');
+    // deleteNotification('topRight');
     const newArray = [...inputs];
     newArray.splice(index, 1);
     setInputs(newArray);
@@ -124,7 +124,7 @@ const Services = (props) => {
       }
       if ((res && res.success) || equal) {
         if(!equal){
-        fetchServices()
+        // fetchServices()
         openNotification('topRight');
         }
         

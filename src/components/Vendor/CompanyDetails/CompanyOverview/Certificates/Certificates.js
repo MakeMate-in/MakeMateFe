@@ -1,20 +1,58 @@
 import { Select, Button, Flex, Input } from 'antd';
-import { useState, useEffect } from 'react';
+import React,{ useState, useEffect, useMemo } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { options } from '../../../../../utils/helper';
 import { COMPANY_ID } from '../../../../../utils/constants';
-import { uploadCertificate, getCertificates, deleteCertificates } from '../../../../../apis/Vendor/CompanyDetails';
+import { uploadCertificate, getCertificates } from '../../../../../apis/Vendor/CompanyDetails';
 import { DeleteTwoTone } from '@ant-design/icons';
 import './styles.css'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
+import { notification} from 'antd';
+const Context = React.createContext({
+  name: 'Default',
+});
+
+
 const Certificates = () => {
-  const [certificates, setCertificates] = useState('');
   const [inputs, setInputs] = useState([{ name: undefined, file: undefined }]);
 
   const handleAddInput = () => {
     setInputs([...inputs, { name: undefined, file: undefined }]);
   };
+
+  const [api, contextHolder] = notification.useNotification();
+
+
+  const openNotification = (placement) => {
+    api.success({
+    message: `Success`,
+    description: <Context.Consumer>{({ name }) => `Basic Details Updated Successfully`}</Context.Consumer>,
+    placement,
+    });
+};
+let contextValue = useMemo(
+    () => ({
+    name: 'Make Mate',
+    }),
+    [],
+);
+
+const openFailedNotification = (placement) => {
+    api.error({
+    message: `Something went wrong`,
+    description: <Context.Consumer>{({ name }) => `Unable to add detail `}</Context.Consumer>,
+    placement,
+    });
+};
+    contextValue = useMemo(
+    () => ({
+    name: 'Make Mate',
+    }),
+    [],
+);
+
+
 
   const handleSelectValue = (event, index, id) => {
     let onChangeValue = [...inputs];
@@ -38,8 +76,6 @@ const Certificates = () => {
       setInputs(onChangeValue);
     }
   };
-
-  console.log(inputs)
 
 
   const fetchCertificates = async () => {
@@ -67,19 +103,23 @@ const Certificates = () => {
 
   const uploadFiles = async () => {
     try {
+      console.log(inputs)
       const res = await uploadCertificate(COMPANY_ID, inputs)
       if (res.success) {
         fetchCertificates()
-
-      }
+        openNotification('topRight');
+      } 
       console.log(res)
     }
     catch (err) {
+      openFailedNotification('topRight');
       console.log(err)
     }
   }
 
   return (
+    <Context.Provider value={contextValue}>
+                {contextHolder}
     <div>
       <div style={{
         height: '50%',
@@ -134,6 +174,7 @@ const Certificates = () => {
         {/* <Button onClick={deleteFiles}>Delete</Button> */}
       </div>
     </div>
+    </Context.Provider>
   );
 };
 

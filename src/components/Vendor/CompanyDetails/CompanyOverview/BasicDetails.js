@@ -46,20 +46,6 @@ const BasicDetails = (props) => {
         [],
     );
 
-    const deleteNotification = (placement) => {
-        api.success({
-        message: `Success`,
-        description: <Context.Consumer>{({ name }) => `Detail deleted Successfully`}</Context.Consumer>,
-        placement,
-        });
-    };
-    contextValue = useMemo(
-        () => ({
-        name: 'Make Mate',
-        }),
-        [],
-    );
-
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {

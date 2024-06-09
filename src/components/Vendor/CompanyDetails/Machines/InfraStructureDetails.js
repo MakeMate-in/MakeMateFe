@@ -3,6 +3,7 @@ import { Form, Row, Col, InputNumber, Select, Button, Flex, Card } from 'antd'
 import { DeleteTwoTone } from '@ant-design/icons';
 import { addInfraDetails, getInfraDetails } from '../../../../apis/Vendor/InfrastructureDetails';
 import { COMPANY_ID } from '../../../../utils/constants';
+import { deepEqual } from '../../../../utils/helper';
 
 import { notification } from 'antd';
 const Context = React.createContext({
@@ -67,6 +68,7 @@ const InfraStructureDetails = (props) => {
     "crane_tonnage": "",
     "manpower": []
   })
+  const [allvalues, setallValues] = useState(undefined)
 
   const [inputs, setInputs] = useState([{ designation: undefined, count: "" }]);
   const [isLoading, setisLoading] = useState(false);
@@ -99,13 +101,12 @@ const InfraStructureDetails = (props) => {
     }),
     [],
   );
-  
+
 
 
   const fetchInfraDetails = async () => {
     try {
       const InfraDetails = await getInfraDetails(COMPANY_ID)
-      console.log(InfraDetails)
       if (InfraDetails.success && InfraDetails.count === 1) {
         setInfraStructureDetails({ ...InfraDetails.documents[0] })
         setInputs([...InfraDetails.documents[0].manpower])
@@ -149,15 +150,25 @@ const InfraStructureDetails = (props) => {
     setInfraStructureDetails({ ...InfraStructureDetails, [id]: value })
   }
 
+  const handleValuechange = (changedValues, allValues) => {
+    setallValues(allValues)
+  }
+
   const handleFormSubmit = async () => {
     try {
       let params = {
         company_id: COMPANY_ID
       }
-      const res = await addInfraDetails(params, InfraStructureDetails)
-      if (res.success) {
-        fetchInfraDetails()
-        openNotification('topRight')
+      let equal = deepEqual(allvalues, InfraStructureDetails) || allvalues == undefined
+      let res;
+      if (!equal) {
+        res = await addInfraDetails(params, InfraStructureDetails)
+      }
+      if ((res && res.success) || equal) {
+        if (!equal) {
+          fetchInfraDetails()
+          openNotification('topRight')
+        }
         props.onSaveAndSubmit();
       }
       else {
@@ -174,7 +185,11 @@ const InfraStructureDetails = (props) => {
       {contextHolder}
       <div style={{ overflow: 'auto', scrollbarWidth: 'none' }}>
         {isLoading === true ?
-          <Form layout="vertical" onFinish={handleFormSubmit} >
+          <Form
+            layout="vertical"
+            onFinish={handleFormSubmit}
+            onValuesChange={handleValuechange}
+          >
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item

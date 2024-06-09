@@ -5,6 +5,7 @@ import { DeleteTwoTone } from '@ant-design/icons';
 import TextArea from 'antd/es/input/TextArea'
 import { addServiceDetails, getServiceDetails } from '../../../../apis/Vendor/ServiceDetails';
 import { COMPANY_ID } from '../../../../utils/constants';
+import { deepEqual } from '../../../../utils/helper';
 import {  notification } from 'antd';
 const Context = React.createContext({
   name: 'Default',
@@ -23,11 +24,12 @@ const Services = (props) => {
 
   const [inputs, setInputs] = useState([{ service_name: undefined, service_type: undefined, supplier_details: "" }]);
   const [api, contextHolder] = notification.useNotification();
+  const [allvalues,setallValues] = useState(undefined)
 
   const openNotification = (placement) => {
-    api.info({
-      message: `Data Added`,
-      description: <Context.Consumer>{({ name }) => `Services Added Successfully`}</Context.Consumer>,
+    api.success({
+      message: `Success`,
+      description: <Context.Consumer>{({ name }) => `Services Updated Successfully`}</Context.Consumer>,
       placement,
     });
   };
@@ -39,7 +41,7 @@ const Services = (props) => {
   );
 
   const openFailedNotification = (placement) => {
-    api.info({
+    api.error({
       message: `Something went wrong`,
       description: <Context.Consumer>{({ name }) => `Unable to add Services `}</Context.Consumer>,
       placement,
@@ -66,23 +68,11 @@ const Services = (props) => {
     [],
   );
 
-  const deleteFailedNotification = (placement) => {
-    api.success({
-        message: `Success`,
-        description: <Context.Consumer>{({ name }) => `Unable to delete Services`}</Context.Consumer>,
-        placement,
-    });
-};
-contextValue = useMemo(
-    () => ({
-        name: 'Make Mate',
-    }),
-    [],
-);
 
   const handleAddInput = () => {
     setInputs([...inputs, { service_name: undefined, service_type: undefined, supplier_details: "" }]);
   };
+
 
 
   const fetchServices = async () => {
@@ -91,8 +81,9 @@ contextValue = useMemo(
       let res = await getServiceDetails(COMPANY_ID)
       if (res.success) {
         const services = res.documents[0].services
-        console.log(services)
         setInputs([...services])
+        const deepCopy = JSON.parse(JSON.stringify(services));
+        setallValues([...deepCopy])
       }
       else {
         // handleAddInput()
@@ -115,7 +106,7 @@ contextValue = useMemo(
   };
 
   const handleDeleteInput = (index) => {
-    deleteNotification('topRight');
+    // deleteNotification('topRight');
     const newArray = [...inputs];
     newArray.splice(index, 1);
     setInputs(newArray);
@@ -126,10 +117,17 @@ contextValue = useMemo(
       let params = {
         company_id: COMPANY_ID
       }
-      const res = await addServiceDetails(params, inputs)
-      if (res.success) {
+      let equal = deepEqual(allvalues, inputs) || allvalues == undefined
+      let res;
+      if(!equal){
+       res = await addServiceDetails(params, inputs)
+      }
+      if ((res && res.success) || equal) {
+        if(!equal){
         // fetchServices()
         openNotification('topRight');
+        }
+        
         props.onSaveAndSubmit();
       }
       else {
@@ -140,6 +138,7 @@ contextValue = useMemo(
       console.log(err)
     }
   }
+
 
 
   return (
@@ -215,7 +214,7 @@ contextValue = useMemo(
           </Flex>
         ))}
 
-        <Form.Item style={{ bottom: '-79%', position: 'absolute', right: '-1%' }}>
+        <Form.Item style={{ bottom: '-9%', position: 'absolute', right: '-1%' }}>
           <Button type="primary" htmlType="submit" style={{ fontSize: '18px', fontWeight: '600', height: '40px' }}>
             Save & Continue
           </Button>

@@ -270,3 +270,14 @@ export const deletePlantImages = async (company_id, file) => {
     })
     return res;
 }
+
+export const getAllDetails = async (data) => {
+    try {
+        const url = COMPANY_DETAILS_URLS.GET_ALL_DETAILS;
+        const response = await requestHandler.get(baseAPIUrl+url, data);
+        return response
+    }
+    catch (err) {
+        throw err
+    }
+}

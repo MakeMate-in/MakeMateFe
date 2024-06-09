@@ -18,9 +18,10 @@ export enum COMPANY_DETAILS_URLS{
   UPDATE_COMPANY_DETAILS = '/api/company/update/company-details',
   UPDATE_COMPANY_DETAILS_ARRAY = '/api/company/update/company-details/add',
   UPDATE_COMPANY_DETAILS_ARRAY_ELEMENT = '/api/company/update/company-details/update',
-  GET_COMPANY_DETAILS = '/api/company//get/company-details',
+  GET_COMPANY_DETAILS = '/api/company/get/company-details',
   REMOVE_COMPANY_DETAILS_ARRAY_ELEMENT = '/api/company/delete/company-detail/one',
   UPLOAD_AVATAR = '/api/company/upload-avatar',
+  GET_ALL_DETAILS = '/api/company/get/company-details/all',
 }
 
 export enum CERTIFICATES_URLS{

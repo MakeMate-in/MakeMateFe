@@ -214,7 +214,7 @@ const Services = (props) => {
           </Flex>
         ))}
 
-        <Form.Item style={{ bottom: '0%', position: 'fixed', right: '2.5%' }}>
+        <Form.Item style={{ bottom: '-9%', position: 'absolute', right: '-1%' }}>
           <Button type="primary" htmlType="submit" style={{ fontSize: '18px', fontWeight: '600', height: '40px' }}>
             Save & Continue
           </Button>

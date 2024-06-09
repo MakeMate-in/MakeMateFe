@@ -22,12 +22,6 @@ const ContactDetails = (props) => {
         "email": ""
     });
 
-    const initialValues1 = {
-        "name": "",
-        "designation": "",
-        "mobile_no": "",
-        "email": ""
-    };
 
     let initialValues2 = {
         "name": "",
@@ -202,6 +196,8 @@ const handleEdit = (item, type) => {
         setUpdateContact(item);
         setModalHeading(type);
         setContactModalOpen(true);
+        console.log(initialValues2);
+
     }
 }
 
@@ -257,7 +253,11 @@ const handleEdit = (item, type) => {
                       <Form
                             layout="vertical"
                             form={form}
-                            initialValues={modalHeading==MESSAGES.ADD?initialValues1:initialValues2}
+                            initialValues={{
+                            "name":updateContact["name"] && modalHeading==MESSAGES.EDIT?updateContact["name"]:"",
+                            "designation": "",
+                            "mobile_no": "",
+                            "email": ""}}
                             onFinish={handleFormSubmit}
                         >
                             <Row gutter={16}>

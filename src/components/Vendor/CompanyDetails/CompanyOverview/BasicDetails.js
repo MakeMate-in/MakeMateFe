@@ -21,7 +21,7 @@ const BasicDetails = (props) => {
     const openNotification = (placement) => {
         api.success({
         message: `Success`,
-        description: <Context.Consumer>{({ name }) => `Detail Added Successfully`}</Context.Consumer>,
+        description: <Context.Consumer>{({ name }) => `Basic Details Updated Successfully`}</Context.Consumer>,
         placement,
         });
     };
@@ -119,12 +119,14 @@ const BasicDetails = (props) => {
     }
     if((res && res.success) || equal){
       let updatedData;
-      openNotification('topRight');
       if(!equal){
        updatedData = await getCompanyDetails(params)
       }
       if((updatedData && updatedData.success) || equal){
       props.onSaveAndSubmit();
+      if(!equal){
+        openNotification('topRight');
+      }
       }
       else{
         //Toast

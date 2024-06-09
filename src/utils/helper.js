@@ -200,25 +200,14 @@ export const uploadButton = (
 
 export const options = [
   {
-    value: 'jack',
-    label: 'Jack',
+    value: 'IS0-14001',
+    label: 'IS0-14001',
   },
   {
-    value: 'lucy',
-    label: 'Lucy',
-  },
-  {
-    value: 'Yiminghe',
-    label: 'yiminghe',
-  },
-  {
-    value: 'disabled',
-    label: 'Disabled',
-    disabled: true,
+    value: 'ISO 9001',
+    label: 'ISO 9001',
   }
 ];
-
-
 
 export const MACHINE_TYPE = [
   {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo} from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card, Col, Row, ConfigProvider, Modal, Form, Input, Button, Image, Flex } from 'antd';
 import { CitySelect, CountrySelect, StateSelect } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
@@ -7,10 +7,10 @@ import { USER_ID } from '../../../../../utils/constants';
 import del from './../../../../../assets/del.png'
 import pen from './../../../../../assets/pen.png'
 import ContactDetails from './ContactDetails';
-import { notification} from 'antd';
+import { notification } from 'antd';
 const Context = React.createContext({
     name: 'Default',
-  });
+});
 
 const AddressDetails = (props) => {
 
@@ -33,56 +33,56 @@ const AddressDetails = (props) => {
 
     const openNotification = (placement) => {
         api.success({
-        message: `Success`,
-        description: <Context.Consumer>{({ name }) => `Address Added Successfully`}</Context.Consumer>,
-        placement,
+            message: `Success`,
+            description: <Context.Consumer>{({ name }) => `Address Added Successfully`}</Context.Consumer>,
+            placement,
         });
     };
     let contextValue = useMemo(
         () => ({
-        name: 'Make Mate',
+            name: 'Make Mate',
         }),
         [],
     );
 
     const openFailedNotification = (placement) => {
         api.error({
-        message: `Something went wrong`,
-        description: <Context.Consumer>{({ name }) => `Unable to add Address `}</Context.Consumer>,
-        placement,
+            message: `Something went wrong`,
+            description: <Context.Consumer>{({ name }) => `Unable to add Address `}</Context.Consumer>,
+            placement,
         });
     };
-        contextValue = useMemo(
+    contextValue = useMemo(
         () => ({
-        name: 'Make Mate',
+            name: 'Make Mate',
         }),
         [],
     );
 
     const deleteNotification = (placement) => {
         api.success({
-        message: `Success`,
-        description: <Context.Consumer>{({ name }) => `Address deleted Successfully`}</Context.Consumer>,
-        placement,
+            message: `Success`,
+            description: <Context.Consumer>{({ name }) => `Address deleted Successfully`}</Context.Consumer>,
+            placement,
         });
     };
     contextValue = useMemo(
         () => ({
-        name: 'Make Mate',
+            name: 'Make Mate',
         }),
         [],
     );
 
     const deleteFailedNotification = (placement) => {
         api.error({
-        message: `Success`,
-        description: <Context.Consumer>{({ name }) => `Unable to delete Address`}</Context.Consumer>,
-        placement,
+            message: `Success`,
+            description: <Context.Consumer>{({ name }) => `Unable to delete Address`}</Context.Consumer>,
+            placement,
         });
     };
     contextValue = useMemo(
         () => ({
-        name: 'Make Mate',
+            name: 'Make Mate',
         }),
         [],
     );
@@ -104,27 +104,27 @@ const AddressDetails = (props) => {
     }, [])
 
     const handleDelete = async (item) => {
-        try{
-            let param ={
+        try {
+            let param = {
                 user: USER_ID
             }
             let data = {}
             data.key = "address"
             data.keyId = item._id
-            const res = await deleteElement(param,data)
-            if(res.success){
+            const res = await deleteElement(param, data)
+            if (res.success) {
                 const updatedData = await getCompanyDetails(param)
                 if (updatedData.success) {
                     props.setcompanyDetails(updatedData.data)
                     deleteNotification('topRight');
                 }
             }
-            else{
+            else {
                 deleteFailedNotification('topRight');
             }
-            
+
         }
-        catch(err){
+        catch (err) {
             console.log(err)
         }
     }
@@ -168,150 +168,152 @@ const AddressDetails = (props) => {
             }}
         >
             <div>
-            <Context.Provider value={contextValue}>
-                {contextHolder}
-                <Row gutter={20}>
-                    <Col span={12}>
-                        <Card style={{ height: '25rem', overflow: 'hidden' }}>
-                            <h3 style={{ margin: '0', color: 'rgba(22, 119, 255)' }}>Addresses</h3>
-                            <hr style={{ background: 'rgba(22, 119, 255)', height: '2px' }} />
-                            <div style={{ height: '18rem', overflow: 'auto', scrollbarWidth: 'thin' }}>
-                                {
-                                    props.CompanyDetails.address != undefined ? props.CompanyDetails.address.map((item) => {
-                                        return (
-                                            <div style={{ marginBottom: '20px' }}>
-                                                <Flex justify='space-between' >
-                                                    <p style={{ margin: '0px' }}><b>{item.address_title}</b></p>
-                                                    <Flex gap="small">
-                                                        <div onClick={() => {handleDelete(item)}}>
-                                                        <img src={del} alt="My Icon" style={{ width: '30px', height: '30px' }} />
-                                                        </div>
-                                                        <div>
-                                                        <img src={pen} alt="My Icon" style={{ width: '30px', height: '30px' }} />
-                                                        </div>
-                                                    </Flex>
-                                                </Flex>
-                                                {/* <Image src={del}/> <Image src={pen}/> */}
-                                                <p style={{ margin: '0px' }}>{item.address_line}</p>
-                                                <p style={{ margin: '0px' }}> {item.city}, {item.state}</p>
-                                                <p style={{ margin: '0px' }}>{item.country}, {item.pincode}</p>
-                                            </div>
-                                        )
-                                    }) : ''
-                                }
-                            </div>
+                <Context.Provider value={contextValue}>
+                    {contextHolder}
+                    <Row gutter={20}>
+                        <Col span={12}>
+                            <Card style={{ height: '25rem', overflow: 'hidden' }}>
+                                <h3 style={{ margin: '0', color: 'rgba(22, 119, 255)' }}>Addresses</h3>
+                                <hr style={{ background: 'rgba(22, 119, 255)', height: '2px' }} />
+                                <div style={{ height: '18rem', overflow: 'auto', scrollbarWidth: 'thin' }}>
+                                    {
+                                        props.CompanyDetails.address != undefined ? props.CompanyDetails.address.map((item) => {
+                                            return (
+                                                <div style={{ marginBottom: '20px' }}>
+                                                    <Flex justify='space-between' >
 
-                            <h3 style={{ margin: 0, cursor: 'pointer', color: 'rgba(22, 119, 255)' }} onClick={() => setModalOpen(true)}>+ Add New Address</h3>
-                            <Modal
-                                title="Add New Address"
-                                centered
-                                open={modalOpen}
-                                okText="Save"
-                                onOk={form.submit}
-                                onCancel={() => setModalOpen(false)}
-                                width={700}
-                            >
-                                <Form
-                                    layout="vertical"
-                                    form={form}
-                                    onFinish={handleFormSubmit}
+                                                        <Flex vertical>
+                                                            <p style={{ margin: '0px' }}><b>{item.address_title}</b></p>
+                                                            <p style={{ margin: '0px' }}>{item.address_line}</p>
+                                                            <p style={{ margin: '0px' }}> {item.city}, {item.state}</p>
+                                                            <p style={{ margin: '0px' }}>{item.country}, {item.pincode}</p>
+                                                        </Flex>
+                                                        <div onClick={() => { handleDelete(item) }}>
+                                                            <img src={del} alt="My Icon" style={{ width: '30px', height: '30px' }} />
+                                                        </div>
+                                                        {/* <div>
+                                                        <img src={pen} alt="My Icon" style={{ width: '30px', height: '30px' }} />
+                                                        </div> */}
+                                                    </Flex>
+
+
+                                                </div>
+                                            )
+                                        }) : ''
+                                    }
+                                </div>
+
+                                <h3 style={{ margin: 0, cursor: 'pointer', color: 'rgba(22, 119, 255)' }} onClick={() => setModalOpen(true)}>+ Add New Address</h3>
+                                <Modal
+                                    title="Add New Address"
+                                    centered
+                                    open={modalOpen}
+                                    okText="Save"
+                                    onOk={form.submit}
+                                    onCancel={() => setModalOpen(false)}
+                                    width={700}
                                 >
-                                    <Row gutter={16}>
-                                        <Col span={12}>
-                                            <Form.Item
-                                                label="Address Title"
-                                                name="addressTitle"
-                                            >
-                                                <Input
-                                                    className="custom-input"
-                                                    variant="filled"
-                                                    id="address_title"
-                                                    onChange={handleChange}
-                                                    value={address["address_title"]}
-                                                />
-                                            </Form.Item>
-                                            <Form.Item
-                                                label="Country"
-                                                name="country"
-                                            >
-                                            <Input
-                                                className="custom-input"
-                                                variant="filled"
-                                                id="country"
-                                                onChange={handleChange}
-                                                value={address["country"]}
-                                            />
-                                            </Form.Item>
-                                            <Form.Item
-                                                label="City"
-                                                name="city"
-                                            // rules={[{ required: true, message: 'City is required' }]}
-                                            >
-                                            <Input
-                                                className="custom-input"
-                                                variant="filled"
-                                                id="city"
-                                                onChange={handleChange}
-                                                value={address["city"]}
-                                            />
-                                            </Form.Item>
-                                        </Col>
-                                        <Col span={12}>
-                                            <Form.Item
-                                                label="Address Line"
-                                                name="address_line"
-                                                rules={[{ required: true, message: 'Address Line is required' }]}
-                                            >
-                                                <Input
-                                                    className="custom-input"
-                                                    variant="filled"
-                                                    id="address_line"
-                                                    onChange={handleChange}
-                                                    value={address["address_line"]}
-                                                />
-                                            </Form.Item>
-                                            <Form.Item
-                                                label="State"
-                                                name="state"
-                                            // rules={[{ required: true, message: 'State is required' }]}
-                                            >
-                                            <Input
-                                                className="custom-input"
-                                                variant="filled"
-                                                id="state"
-                                                onChange={handleChange}
-                                                value={address["state"]}
-                                            />
-                                            </Form.Item>
-                                            <Form.Item
-                                                label="Pin Code"
-                                                name="pincode"
-                                                rules={[{ required: true, message: 'Pin Code is required' }]}
-                                            >
-                                                <Input
-                                                    className="custom-input"
-                                                    variant="filled"
-                                                    id="pincode"
-                                                    onChange={handleChange}
-                                                    value={address["pincode"]}
-                                                />
-                                            </Form.Item>
-                                        </Col>
-                                    </Row>
-                                    {/* <Form.Item>
+                                    <Form
+                                        layout="vertical"
+                                        form={form}
+                                        onFinish={handleFormSubmit}
+                                    >
+                                        <Row gutter={16}>
+                                            <Col span={12}>
+                                                <Form.Item
+                                                    label="Address Title"
+                                                    name="addressTitle"
+                                                >
+                                                    <Input
+                                                        className="custom-input"
+                                                        variant="filled"
+                                                        id="address_title"
+                                                        onChange={handleChange}
+                                                        value={address["address_title"]}
+                                                    />
+                                                </Form.Item>
+                                                <Form.Item
+                                                    label="Country"
+                                                    name="country"
+                                                >
+                                                    <Input
+                                                        className="custom-input"
+                                                        variant="filled"
+                                                        id="country"
+                                                        onChange={handleChange}
+                                                        value={address["country"]}
+                                                    />
+                                                </Form.Item>
+                                                <Form.Item
+                                                    label="City"
+                                                    name="city"
+                                                // rules={[{ required: true, message: 'City is required' }]}
+                                                >
+                                                    <Input
+                                                        className="custom-input"
+                                                        variant="filled"
+                                                        id="city"
+                                                        onChange={handleChange}
+                                                        value={address["city"]}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                            <Col span={12}>
+                                                <Form.Item
+                                                    label="Address Line"
+                                                    name="address_line"
+                                                    rules={[{ required: true, message: 'Address Line is required' }]}
+                                                >
+                                                    <Input
+                                                        className="custom-input"
+                                                        variant="filled"
+                                                        id="address_line"
+                                                        onChange={handleChange}
+                                                        value={address["address_line"]}
+                                                    />
+                                                </Form.Item>
+                                                <Form.Item
+                                                    label="State"
+                                                    name="state"
+                                                // rules={[{ required: true, message: 'State is required' }]}
+                                                >
+                                                    <Input
+                                                        className="custom-input"
+                                                        variant="filled"
+                                                        id="state"
+                                                        onChange={handleChange}
+                                                        value={address["state"]}
+                                                    />
+                                                </Form.Item>
+                                                <Form.Item
+                                                    label="Pin Code"
+                                                    name="pincode"
+                                                    rules={[{ required: true, message: 'Pin Code is required' }]}
+                                                >
+                                                    <Input
+                                                        className="custom-input"
+                                                        variant="filled"
+                                                        id="pincode"
+                                                        onChange={handleChange}
+                                                        value={address["pincode"]}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+                                        {/* <Form.Item>
                                         <Button type="primary" htmlType="submit">
                                             Save and Submit
                                         </Button>
                                     </Form.Item> */}
-                                </Form>
-                            </Modal>
-                        </Card>
-                    </Col>
-                    <Col span={12}>
+                                    </Form>
+                                </Modal>
+                            </Card>
+                        </Col>
+                        <Col span={12}>
 
-                        <ContactDetails {...props}/>
-                    </Col>
-                </Row>
+                            <ContactDetails {...props} />
+                        </Col>
+                    </Row>
                 </Context.Provider>
             </div>
 

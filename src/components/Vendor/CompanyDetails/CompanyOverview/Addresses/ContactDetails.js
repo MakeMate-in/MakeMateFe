@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useMemo} from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card, Col, Row, Modal, Form, Input, Flex } from 'antd';
 import "react-country-state-city/dist/react-country-state-city.css";
 import { deleteElement, getCompanyDetails, updateAddressandContacts, updateElement } from './../../../../../apis/Vendor/CompanyDetails';
 import { MESSAGES, USER_ID } from './../../../../../utils/constants';
 import del from './../../../../../assets/del.png'
 import pen from './../../../../../assets/pen.png'
-import { notification} from 'antd';
+import { notification } from 'antd';
 const Context = React.createContext({
     name: 'Default',
-  });
+});
 
 
 const ContactDetails = (props) => {
@@ -29,64 +29,64 @@ const ContactDetails = (props) => {
         "mobile_no": "",
         "email": ""
     };
-    const [updateContact,setUpdateContact] = useState({})
-    const [modalHeading,setModalHeading] = useState(MESSAGES.ADD)
+    const [updateContact, setUpdateContact] = useState({})
+    const [modalHeading, setModalHeading] = useState(MESSAGES.ADD)
 
-    const [loading,setIsLoading] = useState(false)
+    const [loading, setIsLoading] = useState(false)
     const [api, contextHolder] = notification.useNotification();
 
     const openNotification = (placement) => {
         api.success({
-        message: `Success`,
-        description: <Context.Consumer>{({ name }) => `Contact Details Added Successfully`}</Context.Consumer>,
-        placement,
+            message: `Success`,
+            description: <Context.Consumer>{({ name }) => `Contact Details Added Successfully`}</Context.Consumer>,
+            placement,
         });
     };
     let contextValue = useMemo(
         () => ({
-        name: 'Make Mate',
+            name: 'Make Mate',
         }),
         [],
     );
 
     const openFailedNotification = (placement) => {
         api.error({
-        message: `Something went wrong`,
-        description: <Context.Consumer>{({ name }) => `Unable to add Contact Details `}</Context.Consumer>,
-        placement,
+            message: `Something went wrong`,
+            description: <Context.Consumer>{({ name }) => `Unable to add Contact Details `}</Context.Consumer>,
+            placement,
         });
     };
-        contextValue = useMemo(
+    contextValue = useMemo(
         () => ({
-        name: 'Make Mate',
+            name: 'Make Mate',
         }),
         [],
     );
 
     const deleteNotification = (placement) => {
         api.success({
-        message: `Success`,
-        description: <Context.Consumer>{({ name }) => `Contact Details deleted Successfully`}</Context.Consumer>,
-        placement,
+            message: `Success`,
+            description: <Context.Consumer>{({ name }) => `Contact Details deleted Successfully`}</Context.Consumer>,
+            placement,
         });
     };
     contextValue = useMemo(
         () => ({
-        name: 'Make Mate',
+            name: 'Make Mate',
         }),
         [],
     );
 
     const deleteFailedNotification = (placement) => {
         api.error({
-        message: `Success`,
-        description: <Context.Consumer>{({ name }) => `Unable to delete Contact Details`}</Context.Consumer>,
-        placement,
+            message: `Success`,
+            description: <Context.Consumer>{({ name }) => `Unable to delete Contact Details`}</Context.Consumer>,
+            placement,
         });
     };
     contextValue = useMemo(
         () => ({
-        name: 'Make Mate',
+            name: 'Make Mate',
         }),
         [],
     );
@@ -96,40 +96,40 @@ const ContactDetails = (props) => {
     }
 
     const handleDelete = async (item) => {
-        try{
-            let param ={
+        try {
+            let param = {
                 user: USER_ID
             }
             let data = {}
             data.key = "contact_person"
             data.keyId = item._id
-            const res = await deleteElement(param,data)
-            if(res.success){
+            const res = await deleteElement(param, data)
+            if (res.success) {
                 const updatedData = await getCompanyDetails(param)
                 if (updatedData.success) {
                     props.setcompanyDetails(updatedData.data)
                     deleteNotification('topRight');
                 }
             }
-            else{
+            else {
                 deleteFailedNotification('topRight');
             }
-            
+
         }
-        catch(err){
+        catch (err) {
             console.log(err)
         }
     }
 
     useEffect(() => {
-        if(contactModalOpen){
+        if (contactModalOpen) {
             setIsLoading(true)
         }
-        else{
+        else {
             setIsLoading(false)
         }
 
-    },[contactModalOpen])
+    }, [contactModalOpen])
 
     const handleFormSubmit = async () => {
         try {
@@ -139,18 +139,17 @@ const ContactDetails = (props) => {
             let data = {}
             let res
             console.log(modalHeading)
-            if(modalHeading==MESSAGES.ADD)
-{
+            if (modalHeading == MESSAGES.ADD) {
                 data.contact_person = contact
-            res = await updateAddressandContacts(params, data)
+                res = await updateAddressandContacts(params, data)
 
-        }
-        else{
-            data.key="contact_person"
-            data.keyId=updateContact._id
-            data.keyData=contact
-            res = await updateElement(params, data)
-        }
+            }
+            else {
+                data.key = "contact_person"
+                data.keyId = updateContact._id
+                data.keyData = contact
+                res = await updateElement(params, data)
+            }
             if (res.success) {
                 const updatedData = await getCompanyDetails(params)
                 if (updatedData.success) {
@@ -165,164 +164,165 @@ const ContactDetails = (props) => {
         catch (err) {
             console.log(err)
         }
-    setContactModalOpen(false)
-}
+        setContactModalOpen(false)
+    }
 
 
-const handleEdit = (item, type) => {
-    if (type === MESSAGES.ADD) {
-        setContact({
-            "name": "",
+    const handleEdit = (item, type) => {
+        if (type === MESSAGES.ADD) {
+            setContact({
+                "name": "",
+                "designation": "",
+                "mobile_no": "",
+                "email": ""
+            });
+            setModalHeading(type);
+            setContactModalOpen(true);
+        } else {
+            setContact({
+                ...contact,
+                ["name"]: item.name,
+                ["designation"]: item.designation,
+                ["email"]: item.email,
+                ["mobile_no"]: item.mobile_no
+            });
+            setUpdateContact(item);
+            setModalHeading(type);
+            setContactModalOpen(true);
+        }
+    }
+
+    const handleInitialValues = () => {
+        let data = {
+            "name": updateContact && updateContact["name"] && modalHeading == MESSAGES.EDIT ? updateContact["name"] : "",
             "designation": "",
             "mobile_no": "",
             "email": ""
-        });
-        setModalHeading(type);
-        setContactModalOpen(true);
-    } else {
-        setContact({
-            ...contact,
-            ["name"]: item.name,
-            ["designation"]: item.designation,
-            ["email"]: item.email,
-            ["mobile_no"]: item.mobile_no
-        });
-        initialValues2 = {
-            "name": item.name,
-            "designation": item.designation,
-            "email": item.email,
-            "mobile_no": item.mobile_no
-        };
-        setUpdateContact(item);
-        setModalHeading(type);
-        setContactModalOpen(true);
-        console.log(initialValues2);
-
+        }
+        return data
     }
-}
 
-    
+
     return (
         <div>
             <Context.Provider value={contextValue}>
                 {contextHolder}
-            <Card style={{ height: '25rem', overflow: 'hidden' }}>
-                <h3 style={{ margin: '0', color: 'rgba(22, 119, 255)' }}>Contacts</h3>
-                <hr style={{ background: 'rgba(22, 119, 255)', height: '2px' }} />
-                <div style={{ height: '18rem', overflow: 'auto', scrollbarWidth: 'thin' }}>
-                    {
-                        props.CompanyDetails.contact_person != undefined ? props.CompanyDetails.contact_person.map((item) => {
-                            return (
-                                <div style={{ marginBottom: '20px' }}>
-                                    <Flex justify='space-between' >
-                                        <p style={{ margin: '0px' }}><b>{item.name}</b></p>
-                                        <Flex gap="small">
-                                            <div onClick={() => {handleDelete(item)}}>
+                <Card style={{ height: '25rem', overflow: 'hidden' }}>
+                    <h3 style={{ margin: '0', color: 'rgba(22, 119, 255)' }}>Contacts</h3>
+                    <hr style={{ background: 'rgba(22, 119, 255)', height: '2px' }} />
+                    <div style={{ height: '18rem', overflow: 'auto', scrollbarWidth: 'thin' }}>
+                        {
+                            props.CompanyDetails.contact_person != undefined ? props.CompanyDetails.contact_person.map((item) => {
+                                return (
+                                    <div style={{ marginBottom: '20px' }}>
+                                        <Flex justify='space-between' >
+
+                                            <Flex vertical>
+                                                <p style={{ margin: '0px' }}><b>{item.name}</b></p>
+                                                <p style={{ margin: '0px' }}>Designation: {item.designation} </p>
+                                                <p style={{ margin: '0px' }}>Email: {item.email}</p>
+                                                <p style={{ margin: '0px' }}>Phone: {item.mobile_no}</p>
+                                            </Flex>
+                                            <div onClick={() => { handleDelete(item) }}>
                                                 <img src={del} alt="My Icon" style={{ width: '30px', height: '30px' }} />
                                             </div>
-                                            <div onClick = {() => {handleEdit(item,MESSAGES.EDIT)}}>
+                                            {/* <div onClick = {() => {handleEdit(item,MESSAGES.EDIT)}}>
                                                 <img src={pen} alt="My Icon" style={{ width: '30px', height: '30px' }} />
-                                            </div>
+                                            </div> */}
                                         </Flex>
-                                    </Flex>
-                                    {/* <Image src={del}/> <Image src={pen}/> */}
-                                    <p style={{ margin: '0px' }}>Designation: {item.designation} </p>
-                                    <p style={{ margin: '0px' }}>Email: {item.email}</p>
-                                    <p style={{ margin: '0px' }}>Phone: {item.mobile_no}</p>
-                                </div>
-                            )
-                        }) : ''
-                    }
-                </div>
+                                        {/* <Image src={del}/> <Image src={pen}/> */}
 
-                <h3 style={{ margin: 0, cursor: 'pointer', color: 'rgba(22, 119, 255)' }} onClick={() => {handleEdit(initialValues2,MESSAGES.ADD)}}>+ Add New Contact</h3>
-                <Modal
-                    title= {modalHeading==MESSAGES.ADD?"Add New Contact":"Edit Contact"}
-                    centered
-                    open={contactModalOpen}
-                    okText="Save"
-                    onOk={form.submit}
-                    onCancel={() => {
-                        setContactModalOpen(false)
-                    }}
-                    width={700}
-                >
-                    <div>
-
-                      { loading==true?
-                      <Form
-                            layout="vertical"
-                            form={form}
-                            initialValues={{
-                            "name":updateContact["name"] && modalHeading==MESSAGES.EDIT?updateContact["name"]:"",
-                            "designation": "",
-                            "mobile_no": "",
-                            "email": ""}}
-                            onFinish={handleFormSubmit}
-                        >
-                            <Row gutter={16}>
-                                <Col span={12}>
-                                    <Form.Item
-                                        label="Name"
-                                        name="name"
-                                        rules={[{ required: true, message: 'Name is required', warningOnly: modalHeading==MESSAGES.EDIT?true:false }]}>
-                                        <Input
-                                            className="custom-input"
-                                            variant="filled"
-                                            id="name"
-                                            onChange={handleChange}
-                                            value={contact["name"]}
-                                        
-                                            // value={"Vaibhav"}
-                                        />
-                                    </Form.Item>
-                                    <Form.Item label="Email" name="email">
-                                        <Input
-                                            className="custom-input"
-                                            variant="filled"
-                                            id="email"
-                                            onChange={handleChange}
-                                            value={contact["email"]}
-                                            
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item
-                                        label="Mobile No."
-                                        name="mobile_no"
-                                        rules={[{ required: true, message: 'Mobile Number is required',  warningOnly: modalHeading==MESSAGES.EDIT?true:false }]}
-                                    >
-                                        <Input
-                                            className="custom-input"
-                                            variant="filled"
-                                            id="mobile_no"
-                                            onChange={handleChange}
-                                            value={contact["mobile_no"]}
-                                            
-                                        />
-                                    </Form.Item>
-                                    <Form.Item
-                                        label="Designation"
-                                        name="designation"
-                                        rules={[{ required: true, message: 'Designation is required',  warningOnly: modalHeading==MESSAGES.EDIT?true:false }]}
-                                    >
-                                        <Input
-                                            className="custom-input"
-                                            variant="filled"
-                                            id="designation"
-                                            onChange={handleChange}
-                                            value={contact["designation"]}
-                                            
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-
-                        </Form>:''}
+                                    </div>
+                                )
+                            }) : ''
+                        }
                     </div>
-                </Modal>
-            </Card>
+
+                    <h3 style={{ margin: 0, cursor: 'pointer', color: 'rgba(22, 119, 255)' }} onClick={() => { handleEdit(initialValues2, MESSAGES.ADD) }}>+ Add New Contact</h3>
+                    <Modal
+                        title={modalHeading == MESSAGES.ADD ? "Add New Contact" : "Edit Contact"}
+                        centered
+                        open={contactModalOpen}
+                        okText="Save"
+                        onOk={form.submit}
+                        onCancel={() => {
+                            setContactModalOpen(false)
+                            setUpdateContact(undefined);
+                        }}
+                        width={700}
+                    >
+                        <div>
+
+                            {loading == true ?
+                                <Form
+                                    layout="vertical"
+                                    form={form}
+                                    initialValues={handleInitialValues}
+                                    onFinish={handleFormSubmit}
+                                >
+                                    <Row gutter={16}>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                label="Name"
+                                                name="name"
+                                                rules={[{ required: true, message: 'Name is required', warningOnly: modalHeading == MESSAGES.EDIT ? true : false }]}>
+                                                <Input
+                                                    className="custom-input"
+                                                    variant="filled"
+                                                    id="name"
+                                                    onChange={handleChange}
+                                                    value={contact["name"]}
+
+                                                // value={"Vaibhav"}
+                                                />
+                                            </Form.Item>
+                                            <Form.Item label="Email" name="email">
+                                                <Input
+                                                    className="custom-input"
+                                                    variant="filled"
+                                                    id="email"
+                                                    onChange={handleChange}
+                                                    value={contact["email"]}
+
+                                                />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                label="Mobile No."
+                                                name="mobile_no"
+                                                rules={[{ required: true, message: 'Mobile Number is required', warningOnly: modalHeading == MESSAGES.EDIT ? true : false }]}
+                                            >
+                                                <Input
+                                                    className="custom-input"
+                                                    variant="filled"
+                                                    id="mobile_no"
+                                                    onChange={handleChange}
+                                                    value={contact["mobile_no"]}
+
+                                                />
+                                            </Form.Item>
+                                            <Form.Item
+                                                label="Designation"
+                                                name="designation"
+                                                rules={[{ required: true, message: 'Designation is required', warningOnly: modalHeading == MESSAGES.EDIT ? true : false }]}
+                                            >
+                                                <Input
+                                                    className="custom-input"
+                                                    variant="filled"
+                                                    id="designation"
+                                                    onChange={handleChange}
+                                                    value={contact["designation"]}
+
+                                                />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+
+                                </Form> : ''}
+                        </div>
+                    </Modal>
+                </Card>
             </Context.Provider>
         </div>
     )

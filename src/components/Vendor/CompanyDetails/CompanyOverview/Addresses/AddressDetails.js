@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Card, Col, Row, ConfigProvider, Modal, Form, Input, Button, Image, Flex } from 'antd';
-import { CitySelect, CountrySelect, StateSelect } from "react-country-state-city";
+import { Card, Col, Row, ConfigProvider, Modal, Form, Input, Flex } from 'antd';
 import "react-country-state-city/dist/react-country-state-city.css";
 import { getCompanyDetails, updateAddressandContacts, deleteElement } from '../../../../../apis/Vendor/CompanyDetails';
 import { USER_ID } from '../../../../../utils/constants';
@@ -16,8 +15,6 @@ const AddressDetails = (props) => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [form] = Form.useForm()
-    const [countryid, setCountryid] = useState(0);
-    const [stateid, setstateid] = useState(0);
     // const [CompanyDetails, setcompanyDetails] = useState({})
 
     const [address, setAddress] = useState({

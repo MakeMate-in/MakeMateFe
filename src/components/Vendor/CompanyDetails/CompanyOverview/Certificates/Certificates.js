@@ -84,11 +84,16 @@ const openFailedNotification = (placement) => {
         if(res.count>0){
           console.log(res)
           let certificates  = res.data.certificates.map((item) => {
+            const blob = new Blob([item.certificate.data], { type: item.type });
+            const imageUrl = URL.createObjectURL(blob);
             let data = {}
             data.name = item.fileName
+            data.file={}
             data.file = item
+            data.file.certificate = imageUrl
             return data
           })
+          console.log(certificates)
           setInputs([...certificates])
 
         }
@@ -130,7 +135,6 @@ const openFailedNotification = (placement) => {
         <h2 style={{ margin: '0px' }}>Certificates</h2>
         <Flex vertical gap="large">
           {inputs.map((item, index) => {
-            console.log(item)
             return (
               <Flex vertical gap="large">
                 <Flex gap="large">

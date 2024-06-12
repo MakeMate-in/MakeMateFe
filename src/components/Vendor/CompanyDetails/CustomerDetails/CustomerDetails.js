@@ -239,6 +239,7 @@ const CustomerDetails = () => {
                 openFailedNotification('topRight');
             }
             setModalOpen(false)
+            form.resetFields()
         }
         catch (err) {
             console.log(err)

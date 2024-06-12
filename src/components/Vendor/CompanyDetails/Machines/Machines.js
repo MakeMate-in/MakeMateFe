@@ -16,6 +16,7 @@ const Machines = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [form] = Form.useForm();
     const [isVisible, setIsVisible] = useState(true);
+    const [loading,setLoading] =  useState(false)
     const [api, contextHolder] = notification.useNotification();
     const [tab, setTab] = useState(0);          // used to toggle element visibility between Dashboard & Digital-Factory
     const [bedSize, setBedSize] = useState({
@@ -25,7 +26,7 @@ const Machines = () => {
         "diameter": ""
     })
     const [Machine, setMachine] = useState({
-        "machine_type": "",
+        "machine_type": undefined,
         "spindle_rpm": "",
         "no_of_Axis": "",
         "manufacturing_year": "",
@@ -103,21 +104,23 @@ const Machines = () => {
                 let data = []
                 if (machines.count > 0) {
                     data = machines.documents.map((machine, i) => {
+                        // console.log(machine)
                         let machineObj = {
                             key: i + 1,
                             id: machine._id,
                             type: machine.machine_type,
                             make: machine.make,
-                            bedSize: <div>
-                                <p style={{margin:'0'}}>l</p>
-                                <p style={{margin:'0'}}>l</p>
-                                <p style={{margin:'0'}}>l</p>
-                                <p style={{margin:'0'}}>l</p>
-                            </div>,
+                            bedSize: machine.bed_Size?<div>
+                               {machine.bed_Size.length? <p style={{margin:'0'}}><b>Length</b> - {machine.bed_Size.length}</p>:''}
+                               {machine.bed_Size.breadth? <p style={{margin:'0'}}><b>Width</b> - {machine.bed_Size.breadth}</p>:''}
+                               {machine.bed_Size.height?<p style={{margin:'0'}}><b>Height</b> - {machine.bed_Size.height}</p>:''}
+                               {machine.bed_Size.diameter? <p style={{margin:'0'}}><b>Diameter</b> - {machine.bed_Size.diameter}</p>:''}
+                            </div>:'',
                             rpm: machine.spindle_rpm,
                             axis: machine.no_of_Axis,
                             year: machine.manufacturing_year
                         }
+                        console.log(machineObj)
                         return machineObj
                     })
                 }
@@ -198,7 +201,6 @@ const Machines = () => {
     ];
 
     useEffect(() => {
-        console.log(window.location)
         if (window.location.pathname == OPEN_ROUTES.DIGITAL_FACTORY) {
             setTab(1);
         }
@@ -240,6 +242,7 @@ const Machines = () => {
 
     const handleFormSubmit = async () => {
         try {
+            form.resetFields()
             let params = {
                 company_id: COMPANY_ID
             }
@@ -262,6 +265,7 @@ const Machines = () => {
                 openFailedNotification('topRight');
             }
             setModalOpen(false)
+            setLoading(false)
         }
         catch (err) {
             console.log(err)
@@ -286,7 +290,10 @@ const Machines = () => {
                         <Table columns={MACHINE_COLUMNS} dataSource={MachineData} scroll={{ y: tab?265:200 }} />
                     </div>
                     <div style={{ marginTop: 'auto' }}>
-                        <Button type="primary" style={{ display: tab ? 'block' : 'none' }} onClick={() => setModalOpen(true)}>
+                        <Button type="primary" style={{ display: tab ? 'block' : 'none' }} onClick={() => {
+                            setModalOpen(true)
+                            setLoading(true)
+                            }}>
                             + Add Machine
                         </Button>
                         <Modal
@@ -295,10 +302,14 @@ const Machines = () => {
                             open={modalOpen}
                             okText="Save"
                             onOk={form.submit}
-                            onCancel={() => setModalOpen(false)}
+                            onCancel={() => {
+                                setLoading(false)
+                                setModalOpen(false)}}
                             width={750}
                         >
-                            {isVisible ? <Form layout="vertical" onFinish={handleFormSubmit} form={form}>
+            { isVisible ? <Form layout="vertical" 
+                            onFinish={handleFormSubmit} form={form}
+                            >
                                 <Row gutter={16}>
                                     <Col span={12}>
                                         <Form.Item name="type" label="Machine Type" rules={[{ required: true, },]}>
@@ -410,9 +421,6 @@ const Machines = () => {
                                     </Col>
                                 </Row>
                             </Form> :
-
-
-
                                 <Form layout="vertical" onFinish={handleFormSubmit} form={form} >
                                     <Row gutter={16}>
                                         <Col span={12}>

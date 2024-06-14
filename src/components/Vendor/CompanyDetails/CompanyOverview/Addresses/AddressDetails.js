@@ -4,7 +4,6 @@ import "react-country-state-city/dist/react-country-state-city.css";
 import { getCompanyDetails, updateAddressandContacts, deleteElement } from '../../../../../apis/Vendor/CompanyDetails';
 import { USER_ID } from '../../../../../utils/constants';
 import del from './../../../../../assets/del.png'
-import pen from './../../../../../assets/pen.png'
 import ContactDetails from './ContactDetails';
 import { notification } from 'antd';
 const Context = React.createContext({

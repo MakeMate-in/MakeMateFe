@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { Upload, Carousel, Flex, Image, Button } from 'antd';
+import { Upload, Carousel, Flex, Image, Button, Card } from 'antd';
 import { COMPANY_ID } from '../../utils/constants';
 import { getPlantImages, uploadPlantImages } from '../../apis/Vendor/CompanyDetails';
 import { convertBufferToBinary } from '../../utils/helper';
 import { notification } from 'antd';
+import del from './../../assets/del.png'
+
 
 const Context = React.createContext({
     name: 'Default',
@@ -16,8 +18,10 @@ const ImageUpload = () => {
     const [currentImage, setcurrentImage] = useState(null);
     const [api, contextHolder] = notification.useNotification();
 
+    const deleteFile = []
 
-    
+    // const [currentImage, setCurrentImage] = useState
+
     const openNotification = (placement) => {
         api.success({
             message: `Success`,
@@ -70,7 +74,7 @@ const ImageUpload = () => {
                     let newSrcList = [];
                     res.data.company_Images.map(async (item, i) => {
                         let data = {
-                            name: item.name,
+                            name: "Image_"+i,
                             src: convertBufferToBinary(item.image),
                             type: 'image/png',
                             id: i + 1
@@ -100,13 +104,15 @@ const ImageUpload = () => {
 
     const handleImageSrc = () => {
         try {
+
+            console.log(fileList)
             const newSrcList = fileList.map((item) => ({
                 name: item.name,
                 src: URL.createObjectURL(item.originFileObj),
                 type: item.type,
                 id: item.uid,
             }));
-            setSrcList(newSrcList);
+            setSrcList([...srcList,newSrcList]);
             setcurrentImage(srcList[0])
         } catch (error) {
             console.error("Error reading file:", error);
@@ -138,7 +144,7 @@ const ImageUpload = () => {
     const uploadFiles = async () => {
         try {
             const res = await uploadPlantImages(COMPANY_ID, fileList)
-            if(res.success){
+            if (res.success) {
                 openNotification('topRight');
                 fetchImages()
             }
@@ -150,45 +156,97 @@ const ImageUpload = () => {
 
     console.log(fileList)
 
+    const handleCurrentImage = (item) => {
+        setcurrentImage(item)
+    }
+
+    const handleDelete = (item) => {
+        console.log(item)
+
+        const files =  srcList.filter((file) => {
+            if(file.name!=item.name)
+                {
+                    return file
+                }
+        })
+
+        setFileList(files)
+        deleteFile.push(item.name.split('_')[1])
+    }
+
+    
 
     return (
-        <div style={{display:'flex',flexDirection:'column', alignItems:'center'}}>
-             <Context.Provider value={contextValue}>
-             {contextHolder}
-            <Flex vertical gap={"large"}>
-                
-                <Carousel arrows dotPosition="left" infinite={false} style={{alignItems:'center'}}>
-                    {srcList.map((item, i) => (
-                        <div>
-                            <Image src={item.src} style={{ height: "45vh", width: "32vw" }} />
-                        </div>
-                    ))}
-                </Carousel>
+        <div>
+            <Context.Provider value={contextValue}>
+                {contextHolder}
+                <Flex gap={50}>
 
-                <Button onClick={uploadFiles}>Save</Button>
-
-                <Upload.Dragger {...draggerProps}>
                     <div>
-                        <p className="ant-upload-drag-icon">
-                            {/* <UploadOutlined /> */}
-                        </p>
-                        <p className="ant-upload-text">
-                            Click or drag file to this area to upload
-                        </p>
-                        <Button
-                            className="button-submit avatar-button-style"
-                            style={{
-                                color: "white",
-                                backgroundColor: "rgb(29, 155, 240)",
-                            }}
-                        >
-                            <span style={{ color: "white", fontWeight: "bolder" }}>
-                                Select from Computer
-                            </span>
-                        </Button>
+                        <img src={currentImage?currentImage.src:''} style={{ height: "40vh", width: "30vw" }} />
                     </div>
-                </Upload.Dragger>
-            </Flex>
+
+                   
+                    <div 
+              style={{
+                height: '20rem',
+                width:'12rem',
+                overflow: 'auto',
+                // overflow:'hidden', 
+                scrollbarWidth: 'none'
+              }}>
+                 <Flex vertical gap={'large'}>
+                        {srcList.map((item, i) => (
+                            <Card 
+                            key={i} 
+                            onClick={() => { handleCurrentImage(item) }} 
+                            style={{
+                                border: currentImage && currentImage.name && currentImage.name.includes('_') && i==currentImage.name.split('_')[1]?'1px solid green':''}}>
+                                <Flex justify='space-around'>
+                                <p style={{margin:'0px'}}>{item.name}</p> 
+                                {/* <div
+                                 onClick={() => { handleDelete(item) }}
+                                 >
+                                <img src={del} alt="My Icon" style={{ width: '30px', height: '30px' }} />
+                                </div> */}
+                                </Flex>
+                            </Card>
+                        ))}
+                            </Flex>
+
+                        </div>
+                
+                </Flex>
+
+
+                <Flex vertical gap={40} align='center'>
+
+
+
+                    <Button onClick={uploadFiles}>Save</Button>
+
+                    <Upload.Dragger {...draggerProps}>
+                        <div>
+                            <p className="ant-upload-drag-icon">
+                                {/* <UploadOutlined /> */}
+                            </p>
+                            <p className="ant-upload-text">
+                                Click or drag file to this area to upload
+                            </p>
+                            <Button
+                                className="button-submit avatar-button-style"
+                                style={{
+                                    color: "white",
+                                    backgroundColor: "rgb(29, 155, 240)",
+                                }}
+                            >
+                                <span style={{ color: "white", fontWeight: "bolder" }}>
+                                    Select from Computer
+                                </span>
+                            </Button>
+                        </div>
+                    </Upload.Dragger>
+                </Flex>
             </Context.Provider>
         </div>
     )

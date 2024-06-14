@@ -194,7 +194,6 @@ const CustomerDetails = () => {
 
 
     useEffect(() => {
-        console.log(window.location)
         if (window.location.pathname == OPEN_ROUTES.DIGITAL_FACTORY) {
             setTab(1);
         }
@@ -218,11 +217,6 @@ const CustomerDetails = () => {
         setCustomer({ ...Customer, [e.target.id]: e.target.value })
     }
 
-    const handleChangeType = (id, value) => {
-        setCustomer({ ...Customer, [id]: value })
-    };
-
-    console.log(imageModal)
 
     const handleFormSubmit = async () => {
         try {

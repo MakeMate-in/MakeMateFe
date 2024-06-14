@@ -12,12 +12,15 @@ import { Pie, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { rgb } from 'polished';
 import './DashboardPage.css';
+import { convertBufferToBinary } from '../../../utils/helper';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const DashboardPage = () => {
   const [AllDetails, setAllDetails] = useState(undefined);
   const [loading, setLoading] = useState(true);
+
+  const [srcList, setSrcList] = useState([]);
 
   useEffect(() => {
     const getAllDashboardDetails = async () => {
@@ -27,6 +30,19 @@ const DashboardPage = () => {
       const resp = await getAllDetails(param);
       console.log(JSON.stringify(resp.data));
       setAllDetails(resp.data);
+
+      let newSrcList = [];
+      resp.data.plantImages.company_Images.map(async (item, i) => {
+          let data = {
+              name: "Image_"+i,
+              src: convertBufferToBinary(item.image),
+              type: 'image/png',
+              id: i + 1
+          }
+          newSrcList.push(data)
+      })
+      setSrcList(newSrcList);
+
       setLoading(false);
     };
 
@@ -270,18 +286,13 @@ const DashboardPage = () => {
                 <h2 style={{ margin: '0', marginTop: '10px' }}>Plant Images</h2>
                 <Card>
                   <Carousel arrows dotPosition="left">
-                    <div>
-                      <h3 style={carouselStyle}>1</h3>
-                    </div>
-                    <div>
-                      <h3 style={carouselStyle}>2</h3>
-                    </div>
-                    <div>
-                      <h3 style={carouselStyle}>3</h3>
-                    </div>
-                    <div>
-                      <h3 style={carouselStyle}>4</h3>
-                    </div>
+               
+                    {srcList.map((item, i) => (
+                           <div>
+                           <img src={item.src} style={{ height: "40vh", width: "35vw" }} />
+                       </div>
+                        
+                        ))}
                   </Carousel>
                 </Card>
 

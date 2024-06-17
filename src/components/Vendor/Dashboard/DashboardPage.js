@@ -28,7 +28,6 @@ const DashboardPage = () => {
         companyId: COMPANY_ID,
       };
       const resp = await getAllDetails(param);
-      console.log(JSON.stringify(resp.data));
       setAllDetails(resp.data);
 
       let newSrcList = [];

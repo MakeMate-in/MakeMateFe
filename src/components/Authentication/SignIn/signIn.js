@@ -1,10 +1,18 @@
-import { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Flex, Button, Checkbox, Image, Input, Form } from 'antd'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import gojo from './../../images/3.jpg'
 import { useNavigate } from 'react-router-dom'
 import { OPEN_ROUTES } from '../../../utils/constants'
+import { login } from '../../../apis/authentication.'
+
+import { notification } from 'antd';
+import { SESSION_STORAGE_ITEMS, initializeUserValues } from '../../../utils/helper'
+const Context = React.createContext({
+  name: 'Default',
+});
+
 
 
 const SignIn = () => {
@@ -16,6 +24,38 @@ const SignIn = () => {
     isEmail: true
   })
 
+
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = (placement) => {
+    api.success({
+      message: `Success`,
+      description: "Logged In !!",
+      placement,
+    });
+  };
+  let contextValue = useMemo(
+    () => ({
+      name: 'Make Mate',
+    }),
+    [],
+  );
+
+  const openFailedNotification = (placement,msg) => {
+    api.error({
+      message: `Something went wrong`,
+      description: msg,
+      placement,
+    });
+  };
+  contextValue = useMemo(
+    () => ({
+      name: 'Make Mate',
+    }),
+    [],
+  );
+
+
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -26,29 +66,24 @@ const SignIn = () => {
     }))
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log('User data:', user);
     if(!isEmail){
       user.uniqueField = user.uniqueField.substring(2);
     }
-    fetch('http://localhost:5000/api/users/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(user),
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log('Login successful');
-          navigate(OPEN_ROUTES.VENDOR_DASHBOARD)
-        } else {
-          throw new Error('Login failed')
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error)
-      })
+
+    const res = await login(user)
+    console.log(res)
+
+    if (res.success) {
+           sessionStorage.setItem(SESSION_STORAGE_ITEMS.TOKEN, res.token);
+           initializeUserValues(res.token)
+           openNotification('topRight')
+           navigate(OPEN_ROUTES.VENDOR_DASHBOARD)
+          } else {
+            openFailedNotification('topRight', res.msg);
+            // throw new Error('Login failed')
+          }
   }
 
   const handleRememberMeChange = (e) => {
@@ -69,6 +104,8 @@ const SignIn = () => {
   }
 
   return (
+    <Context.Provider value={contextValue}>
+      {contextHolder}
     <div style={{ display: 'flex' }}>
       <div style={{  }}>
         <Image src={gojo} style={{ height: '46rem', width: '30rem' }} />
@@ -125,6 +162,7 @@ const SignIn = () => {
       </Form>
       </div>
     </div>
+    </Context.Provider>
   )
 }
 

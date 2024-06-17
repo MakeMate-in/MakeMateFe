@@ -32,7 +32,6 @@ const Dashboard = () => {
 
 
   useEffect(() => {
-    console.log(window.location)
     const list = VENDOR_DRAWER_LIST.filter((item) => {
       return item.route===window.location.pathname
     })
@@ -60,13 +59,23 @@ const Dashboard = () => {
       console.log(err)
     }
   }
-console.log(tab)
+  
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
+        <Toolbar style={{display:'flex', justifyContent:'center'}}>
+          <Typography variant="h5" noWrap component="div">
+            {tab ? VENDOR_DRAWER_LIST[tab].name : VENDOR_DRAWER_LIST[0].name}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+
+      <Drawer variant="permanent" open={open} elevation="16">
+        <DrawerHeader>
+          {
+          !open? (  <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -77,19 +86,12 @@ console.log(tab)
             }}
           >
             <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            {tab ? VENDOR_DRAWER_LIST[tab].name : VENDOR_DRAWER_LIST[0].name}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-
-
-      <Drawer variant="permanent" open={open} elevation="16">
-        <DrawerHeader>
+          </IconButton>)
+          :
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
+          }
         </DrawerHeader>
         <Divider />
         <List>

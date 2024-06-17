@@ -120,7 +120,6 @@ const Machines = () => {
                             axis: machine.no_of_Axis,
                             year: machine.manufacturing_year
                         }
-                        console.log(machineObj)
                         return machineObj
                     })
                 }

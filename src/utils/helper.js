@@ -1,13 +1,20 @@
-// import jwtDecode from 'jwt-decode';
 import { Buffer } from 'buffer';
 import { PlusOutlined } from '@ant-design/icons';
 import mime from 'mime';
 
-export const LOCAL_STORAGE_ITEMS = {
-  TOKEN: "token",
+export const SESSION_STORAGE_ITEMS = {
+  TOKEN: "jwtToken",
   HANDLE: "handle",
   USER_ID: "user_id",
   IS_MAIL: "isMail"
+};
+
+export const LOCAL_STORAGE_ITEMS = {
+  USER_NAME: "username",
+  USER_EMAIL: "user_email",
+  USER_ID: "user_id",
+  COMPANY_ID: "company_id",
+  ROLE: "role"
 };
 
 export const getUserData = (user, role) => {
@@ -19,7 +26,7 @@ export const getUserData = (user, role) => {
   data.company_name = user.company_name
   data.GST_no = user.GST_no
   data.role = role
-  return data
+  return data 
 }
 
 export const getCustomerData = (user, role) => {
@@ -39,14 +46,18 @@ export const getCustomerData = (user, role) => {
 //   };
 
 export const getToken = () => {
-  let token = localStorage.getItem(LOCAL_STORAGE_ITEMS.TOKEN)
+  let token = sessionStorage.getItem(SESSION_STORAGE_ITEMS.TOKEN)
   return token;
 };
 
-// export const getJWTData = (token) => {
-//     let updatedToken = token.split(' ')[1]
-//     return jwtDecode(updatedToken).User; 
-// };
+export const getJWTData = (token) => {
+  if (!token) {
+    return;
+  }
+  const base64Url = token.split(".")[1];
+  const base64 = base64Url.replace("-", "+").replace("_", "/");
+  return JSON.parse(window.atob(base64));
+};
 
 // export const getFileType = (fileName) => {
 //     let fileType = null;
@@ -59,14 +70,27 @@ export const getToken = () => {
 // 	return {mimeType, fileType, fileExtension}
 // };
 
+export const getUserName = () => localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME);
 
-// export const getUserId = () => localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_ID);
+export const getUserEmail = () => localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_EMAIL);
 
-// export const getUserEmailId = () => localStorage.getItem(LOCAL_STORAGE_ITEMS.UNIQUE_FIELD);
+export const getUserId = () => localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_ID);
+
+export const getCopanyId = () => localStorage.getItem(LOCAL_STORAGE_ITEMS.COMPANY_ID);
+
+export const getRole = () => localStorage.getItem(LOCAL_STORAGE_ITEMS.ROLE);
 
 // export const setJwtToken = (token) => localStorage.setItem(LOCAL_STORAGE_ITEMS.TOKEN, token); 
 
-// export const setIsMail =(isMail)=>localStorage.setItem(LOCAL_STORAGE_ITEMS.IS_MAIL,isMail);
+export const setUserName =(username)=>localStorage.setItem(LOCAL_STORAGE_ITEMS.USER_NAME,username);
+
+export const setUserEmail =(useremail)=>localStorage.setItem(LOCAL_STORAGE_ITEMS.USER_EMAIL,useremail);
+
+export const setUserId =(userId)=>localStorage.setItem(LOCAL_STORAGE_ITEMS.USER_ID,userId);
+
+export const setCopanyId =(companyId)=>localStorage.setItem(LOCAL_STORAGE_ITEMS.COMPANY_ID,companyId);
+
+export const setRole =(role)=>localStorage.setItem(LOCAL_STORAGE_ITEMS.ROLE,role);
 
 // export const setUserdet = (token) => {
 //     const handle = getJWTData(token).handle;
@@ -86,81 +110,20 @@ export const getToken = () => {
 // }
 
 
-// export const initializeUserValues = (token) => {
+export const initializeUserValues = (token) => {
 
-//     if(typeof(token)==="string" && token!=undefined && token!=''){
-//     setUserdet(token);
-//     setUserId(token);
-//     }
-// };
-
-
-// export const timeAgo = (timestamp) => {
-// 	const now = Date.now();
-//     timestamp = Date.parse(timestamp)
-
-// 	const secondsAgo = Math.floor((now - timestamp) / 1000);
-
-// 	if (secondsAgo < 60) {
-// 		return `${secondsAgo}s ago`;
-// 	} else if (secondsAgo < 3600) {
-// 		const minutesAgo = Math.floor(secondsAgo / 60);
-// 		return `${minutesAgo}m ago`;
-// 	} else if (secondsAgo < 86400) {
-// 		const hoursAgo = Math.floor(secondsAgo / 3600);
-// 		return `${hoursAgo}h ago`;
-// 	} else if (secondsAgo < 604800) {
-// 		const daysAgo = Math.floor(secondsAgo / 86400);
-// 		return `${daysAgo}d ago`;
-// 	} else {
-// 		const weeksAgo = Math.floor(secondsAgo / 604800); // 7 days in seconds
-// 		return `${weeksAgo}w ago`;
-// 	}
-// };
-
-
-// export const timewithoutAgo = (timestamp) => {
-// 	const now = Date.now();
-//     timestamp = Date.parse(timestamp)
-
-// 	const secondsAgo = Math.floor((now - timestamp) / 1000);
-
-// 	if (secondsAgo < 60) {
-// 		return `${secondsAgo}s`;
-// 	} else if (secondsAgo < 3600) {
-// 		const minutesAgo = Math.floor(secondsAgo / 60);
-// 		return `${minutesAgo}m`;
-// 	} else if (secondsAgo < 86400) {
-// 		const hoursAgo = Math.floor(secondsAgo / 3600);
-// 		return `${hoursAgo}h`;
-// 	} else if (secondsAgo < 604800) {
-// 		const daysAgo = Math.floor(secondsAgo / 86400);
-// 		return `${daysAgo}d`;
-// 	} else {
-// 		const weeksAgo = Math.floor(secondsAgo / 604800); // 7 days in seconds
-// 		return `${weeksAgo}w`;
-// 	}
-// };
-
-
-// export const getisFollower = (async (visitingAnotherProfileAndAuth, user_follower, user_following) => {
-// 	if(visitingAnotherProfileAndAuth){
-// 		let data = {}
-// 		data.follower = user_follower
-// 		data.following = user_following
-// 		try{
-// 		const response = await isFollower(data)
-// 		return response.isFollower
-// 		}
-// 		catch(err){
-// 			console.log(err)
-// 			return err
-// 		}
-// 	}
-// 	else{
-// 		return false
-// 	}
-// })
+    if(typeof(token)==="string" && token!=undefined && token!=''){
+      const details  = getJWTData(token).User
+      setUserEmail(details.email)
+      setUserId(details.id)
+      setCopanyId(details.company)
+      setUserName(details.name)
+      setRole(details.role)
+    }
+    else{
+      return Error
+    }
+};
 
 
 export const convertBufferToBinary = (buffer) => {

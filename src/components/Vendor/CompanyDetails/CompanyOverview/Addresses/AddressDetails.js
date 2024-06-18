@@ -86,7 +86,6 @@ const AddressDetails = (props) => {
     const handleChange = (event) => {
         setAddress({ ...address, [event.target.id]: event.target.value })
     }
-    console.log(props.CompanyDetails)
     useEffect(() => {
         const getCompany = async () => {
             let param = {

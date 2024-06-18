@@ -159,7 +159,7 @@ const InfraStructureDetails = (props) => {
       let params = {
         company_id: COMPANY_ID
       }
-      let equal = deepEqual(allvalues, InfraStructureDetails) || allvalues == undefined
+      let equal = deepEqual(allvalues, InfraStructureDetails) 
       let res;
       if (!equal) {
         res = await addInfraDetails(params, InfraStructureDetails)

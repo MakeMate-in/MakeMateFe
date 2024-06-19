@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Card, Col, Row, Steps, Button, Progress, Flex, Collapse, ConfigProvider } from 'antd';
+import { COMPANY_ID } from './../../../utils/constants';
 import './../Dashboard/Dashboard.css';
 import './DigitalFactory.css'
 import InfraDetails from '../CompanyDetails/Machines';
-import { STEP_TAB_MAP_2, STEP_TAB_MAP_INFRA_2, STEPS_HEADINGS, USER_ID, PER_COUNT } from './../../../utils/constants';
+import { STEP_TAB_MAP_2, STEP_TAB_MAP_INFRA_2, STEPS_HEADINGS, USER_ID, PER_COUNT,PER_INFRA_COUNT, PER_MACHINE_COUNT } from './../../../utils/constants';
 import CompanyDetailsComp from '../CompanyDetails/CompanyOverview/CompanyDetails';
-import { getCompanyDetails } from '../../../apis/Vendor/CompanyDetails';
+import {getAllDetails, getCompanyDetails } from '../../../apis/Vendor/CompanyDetails';
 import CustomerDetails from '../CompanyDetails/CustomerDetails/CustomerDetails';
 import { checkButtonRequired } from '../../../utils/helper';
 import { LeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom'
 import { OPEN_ROUTES } from '../../../utils/constants'
+import { useOutletContext } from "react-router-dom";
 
 
 const { Step } = Steps;
@@ -21,6 +23,7 @@ const DigitalFactory = () => {
   const [currentSub, setCurrentSub] = useState(0);
   const [currentInfraSub, setCurrentInfraSub] = useState(0);
   const [CompanyDetails, setcompanyDetails] = useState({})
+  const [AllDetails, setAllDetails] = useState(undefined);
   const [percent, setPercent] = useState(0)
   const navigate = useNavigate()
 
@@ -33,32 +36,84 @@ const DigitalFactory = () => {
       let param = {
         user: USER_ID
       }
-      const resp = await getCompanyDetails(param)
+      const resp = await getCompanyDetails(param);
+      const respAll = await getAllDetails(param);
       setcompanyDetails(resp.data)
+      setAllDetails(respAll.data);
     }
+     getCompany()
+  }, [CompanyDetails])
 
-    getCompany()
-  }, [])
+
+//   useEffect(() => {
+//   const getAllDashboardDetails = async () => {
+//     try {
+//       let param = {
+//         companyId: COMPANY_ID,
+//       };
+//       const resp = await getAllDetails(param);
+//       console.log(resp.data);
+//       setAllDetails(resp.data);
+//       setcompanyDetails(AllDetails?.companyDetails);
+//       console.log("Digital Factory:-",resp.data);
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   };
+
+//   getAllDashboardDetails();
+// }, []);
 
   useEffect(() => {
     const CalculatePercentage = async () => {
       let per = 0;
-      if (CompanyDetails.company_name !== undefined && CompanyDetails.company_name !== '') per = per + PER_COUNT
+      if(AllDetails?.companyDetails?.company_name !== undefined && AllDetails?.companyDetails?.company_name !== '') per = per + PER_COUNT
 
-      if (CompanyDetails.address !== undefined && CompanyDetails.address.length > 0) per = per + PER_COUNT
+      if(AllDetails?.companyDetails?.address !== undefined && AllDetails?.companyDetails.address?.length > 0) per = per + PER_COUNT
 
-      if (CompanyDetails.contact_person !== undefined && CompanyDetails.contact_person.length > 0) per = per + PER_COUNT
+      if(AllDetails?.companyDetails?.contact_person !== undefined && AllDetails?.companyDetails?.contact_person.length > 0) per = per + PER_COUNT
 
-      if (CompanyDetails.customer_details !== undefined && CompanyDetails.customer_details.length > 0) per = per + PER_COUNT
+      if(AllDetails?.companyDetails?.customer_details !== undefined && AllDetails?.companyDetails?.customer_details.length > 0) per = per + PER_COUNT
 
-      if (CompanyDetails.product_details !== undefined && CompanyDetails.product_details.length > 0) per = per + PER_COUNT
+      if(AllDetails?.companyDetails?.product_details !== undefined &&AllDetails?.companyDetails?.product_details.length > 0) per = per + PER_COUNT
 
+      if(AllDetails?.infrastructureDetails?.assembly_area !== undefined && AllDetails?.infrastructureDetails?.assembly_area !=='') per = per + PER_INFRA_COUNT
+
+      if(AllDetails?.infrastructureDetails?.assembly_table !== undefined && AllDetails?.infrastructureDetails?.assembly_table !=='') per = per + PER_INFRA_COUNT
+
+      if(AllDetails?.infrastructureDetails?.designation !== undefined && AllDetails?.infrastructureDetails?.designation !=='') per = per + PER_INFRA_COUNT
+
+      if(AllDetails?.infrastructureDetails?.count !== undefined && AllDetails?.infrastructureDetails?.count > 0) per = per + PER_INFRA_COUNT
+
+      if(AllDetails?.infrastructureDetails?.design_softwares !== undefined && AllDetails?.infrastructureDetails?.design_softwares !=='') per = per + PER_INFRA_COUNT
+
+      if(AllDetails?.infrastructureDetails?.surface_table !== undefined && AllDetails?.infrastructureDetails?.surface_table !=='') per = per + PER_INFRA_COUNT
+
+      if(AllDetails?.infrastructureDetails?.CMM !== undefined && AllDetails?.infrastructureDetails?.CMM !=='') per = per + PER_INFRA_COUNT
+
+      if(AllDetails?.infrastructureDetails?.crane_tonnage !== undefined && AllDetails?.infrastructureDetails?.crane_tonnage > 0) per = per + PER_INFRA_COUNT
+
+      if(AllDetails?.infrastructureDetails?.plant_area !== undefined && AllDetails?.infrastructureDetails?.plant_area !=='') per = per + 2
+
+      if(AllDetails?.machineDetails?.make !== undefined && AllDetails?.machineDetails?.make !=='') per = per + PER_MACHINE_COUNT
+
+      if(AllDetails?.machineDetails?.bed_size !== undefined && AllDetails?.machineDetails?.bed_size > 0) per = per + PER_MACHINE_COUNT
+
+      if(AllDetails?.machineDetails?.spindle_rpm !== undefined && AllDetails?.machineDetails?.spindle_rpm > 0) per = per + PER_MACHINE_COUNT
+
+      if(AllDetails?.machineDetails?.no_of_Axis !== undefined && AllDetails?.machineDetails?.no_of_Axis > 0) per = per + PER_MACHINE_COUNT
+
+      if(AllDetails?.machineDetails?.manufacturing_year !== undefined && AllDetails?.machineDetails?.manufacturing_year > 0) per = per + PER_MACHINE_COUNT
+
+      if(AllDetails?.machineDetails?.machine_type !== undefined && AllDetails?.machineDetails?.machine_type !=='') per = per + 3
+
+      if(AllDetails?.machineDetails?.machine_name !== undefined && AllDetails?.machineDetails?.machine_name !=='') per = per + 2
       setPercent(per)
     }
 
     CalculatePercentage()
 
-  }, [CompanyDetails])
+  }, [])
 
   const onSaveAndSubmit = () => {
 

@@ -10,6 +10,7 @@ import CustomerDetails from '../CompanyDetails/CustomerDetails/CustomerDetails';
 import { getAllDetails } from '../../../apis/Vendor/CompanyDetails';
 import { Pie, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { useOutletContext } from "react-router-dom";
 import { rgb } from 'polished';
 import './DashboardPage.css';
 import { convertBufferToBinary } from '../../../utils/helper';
@@ -54,13 +55,13 @@ const DashboardPage = () => {
 
   const pieChartColors = ['#9e0142', '#3288bd', '#5e4fa2', '#f46d43', '#d53e4f', '#fdae61', '#fee08b', '#e6f598', '#abdda4', '#66c2a5']
   const pieData = AllDetails ? {
-    labels: AllDetails.infrastructureDetails.manpower.map(m => m.designation),
+    labels: AllDetails?.infrastructureDetails?.manpower.map(m => m.designation),
     datasets: [
       {
         label: 'Manpower',
-        data: AllDetails.infrastructureDetails.manpower.map(m => m.count),
-        backgroundColor: pieChartColors.slice(0, AllDetails.infrastructureDetails.manpower.length),
-        hoverBackgroundColor: pieChartColors.slice(0, AllDetails.infrastructureDetails.manpower.length),
+        data: AllDetails?.infrastructureDetails?.manpower.map(m => m.count),
+        backgroundColor: pieChartColors.slice(0, AllDetails?.infrastructureDetails?.manpower.length),
+        hoverBackgroundColor: pieChartColors.slice(0, AllDetails?.infrastructureDetails?.manpower.length),
       },
     ],
   } : {
@@ -80,7 +81,7 @@ const DashboardPage = () => {
     maintainAspectRatio: false,
   };
 
-  const totalManpower = AllDetails ? AllDetails.infrastructureDetails.manpower.reduce((total, m) => total + m.count, 0) : 0;
+  const totalManpower = AllDetails ? AllDetails?.infrastructureDetails?.manpower.reduce((total, m) => total + m.count, 0) : 0;
 
   // Function to get a random color for Services Tags
   const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
@@ -97,7 +98,7 @@ const DashboardPage = () => {
 
   return (
     <div style={{ overflow: 'auto', scrollbarWidth: 'none' }}>
-      {loading ? (
+      {AllDetails==undefined ? (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '84vh' }}>
           <div class="spinner-square">
             <div class="square-1 square"></div>
@@ -120,20 +121,25 @@ const DashboardPage = () => {
               <Card>
                 <Row>
                   <Col span={14}>
-                    <h1 style={{ fontFamily: 'Cambria', marginBottom: '0' }}>Welcome, {AllDetails.companyDetails.company_name}</h1>
-                    <p>{AllDetails.companyDetails.description}</p>
-                    <p><strong>GSTN: </strong>{AllDetails.companyDetails.GST_no}</p>
+                    <h1 style={{ fontFamily: 'Cambria', marginBottom: '0' }}>Welcome, {AllDetails?.companyDetails?.company_name}</h1>
+                    <p>{AllDetails?.companyDetails?.description}</p>
+                    <p><strong>GSTN: </strong>{AllDetails?.companyDetails?.GST_no}</p>
+                    {AllDetails?.companyDetails?.address && AllDetails?.companyDetails?.address.length > 0 && (
                     <Flex>
                       <p><strong>Address: </strong><p style={{ margin: '0px' }}><b>{AllDetails.companyDetails.address[0].address_title}</b></p>
                         <p style={{ margin: '0px' }}>{AllDetails.companyDetails.address[0].address_line}</p>
                         <p style={{ margin: '0px' }}> {AllDetails.companyDetails.address[0].city}, {AllDetails.companyDetails.address[0].state}</p>
                         <p style={{ margin: '0px' }}>{AllDetails.companyDetails.address[0].country}, {AllDetails.companyDetails.address[0].pincode}</p></p>
-
+                        </Flex>
+                        )}
+                        {AllDetails?.companyDetails?.contact_person && AllDetails?.companyDetails?.contact_person.length > 0 && (
+                          <Flex>
                       <p><strong>Contact: </strong> <p style={{ margin: '0px' }}><b>{AllDetails.companyDetails.contact_person[0].name}</b></p>
                         <p style={{ margin: '0px' }}>Designation: {AllDetails.companyDetails.contact_person[0].designation} </p>
                         <p style={{ margin: '0px' }}>Email: {AllDetails.companyDetails.contact_person[0].email}</p>
                         <p style={{ margin: '0px' }}>Phone: {AllDetails.companyDetails.contact_person[0].mobile_no}</p></p>
                     </Flex>
+                        )}
                   </Col>
                   <Col span={10}>
                     <img src={business_plan} alt="" style={{ float: 'right' }} />
@@ -147,7 +153,7 @@ const DashboardPage = () => {
                       <Col span={16}>
                         <Statistic
                           title="Total Experience"
-                          value={AllDetails.companyDetails.experience}
+                          value={AllDetails?.companyDetails?.experience}
                           valueStyle={{
                             color: '#3f8600',
                             fontWeight: 600,
@@ -168,7 +174,7 @@ const DashboardPage = () => {
                       <Col span={16}>
                         <Statistic
                           title="No. of Projects"
-                          value={AllDetails.companyDetails.current_projects_no}
+                          value={AllDetails?.companyDetails?.current_projects_no}
                           valueStyle={{
                             color: '#3f8600',
                             fontWeight: 600,
@@ -188,7 +194,7 @@ const DashboardPage = () => {
                       <Col span={16}>
                         <Statistic
                           title="Customer Details"
-                          value={AllDetails.companyDetails.customer_details.length}
+                          value={AllDetails?.companyDetails?.customer_details.length}
                           valueStyle={{
                             color: '#3f8600',
                             fontWeight: 600,

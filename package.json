@@ -15,6 +15,7 @@
     "antd": "^5.18.2",
     "axios": "^1.6.8",
     "buffer": "^6.0.3",
+    "chart": "^0.1.2",
     "chart.js": "^4.4.3",
     "country-state-city": "^3.2.1",
     "fontsource-montez": "^4.0.0",

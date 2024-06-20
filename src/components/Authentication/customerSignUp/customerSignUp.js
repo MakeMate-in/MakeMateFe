@@ -130,7 +130,7 @@ const CustomerSignUp = () => {
         let user_created = await customerSignUp(user,ROLE.CUSTOMER)
         console.log(user_created)
        
-        navigate(OPEN_ROUTES.MAIN_PAGE)
+        navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD)
         }
         catch(err){
           console.log(err)
@@ -271,7 +271,7 @@ const CustomerSignUp = () => {
             </Button>
             <Flex>
               <p style={{ margin: '0px' }}>Already have an account ?   </p>
-              <span onClick={() => { navigate(OPEN_ROUTES.LOGIN) }} style={{ color: 'rgb(29, 155, 240)' }}>
+              <span onClick={() => { navigate(OPEN_ROUTES.CUSTOMER_LOGIN) }} style={{ color: 'rgb(29, 155, 240)' }}>
                 Log In
               </span>
             </Flex>

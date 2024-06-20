@@ -15,14 +15,14 @@ const Context = React.createContext({
 
 
 
-const SignIn = () => {
+const CustomerSignIn = () => {
   const [isEmail, setIsEmail] = useState(true)
   const [rememberMe, setRememberMe] = useState(false)
   const [user, setUser] = useState({
     uniqueField: '',
     password: '',
     isEmail: true,
-    role: ROLE.VENDOR
+    role: ROLE.CUSTOMER
   })
 
 
@@ -80,7 +80,7 @@ const SignIn = () => {
            sessionStorage.setItem(SESSION_STORAGE_ITEMS.TOKEN, res.token);
            initializeUserValues(res.token)
            openNotification('topRight')
-           navigate(OPEN_ROUTES.VENDOR_DASHBOARD)
+           navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD)
           } else {
             openFailedNotification('topRight', res.msg);
             // throw new Error('Login failed')
@@ -145,7 +145,7 @@ const SignIn = () => {
           <Input.Password placeholder="Password" variant="filled" onChange={handleChange} autoComplete='off' id={'password'} value={user['password']} />
           </Form.Item>
           <Form.Item>
-          <Checkbox onChange={handleRememberMeChange} style={{float: 'left'}}>Remember me</Checkbox>
+          <Checkbox onChange={handleRememberMeChange} style={{float: 'left'}}>Remember</Checkbox>
           <a href="#" onClick={handleForgotPasswordClick} style={{float: 'right'}}>Forgot password?</a>
         </Form.Item>
         <Form.Item>
@@ -157,7 +157,7 @@ const SignIn = () => {
         <Form.Item>
           <Flex style={{alignItems:'center', justifyContent:'center'}}>
           <p style={{ margin: '0px' }}>Don't have an account?&nbsp;</p>
-          <a onClick={() => { navigate(OPEN_ROUTES.SIGNUP) }}>Sign Up</a>
+          <a onClick={() => { navigate(OPEN_ROUTES.CUSTOMER_SIGNUP) }}>Sign Up</a>
           </Flex>
         </Form.Item>
       </Form>
@@ -167,5 +167,5 @@ const SignIn = () => {
   )
 }
 
-export default SignIn
+export default CustomerSignIn
 

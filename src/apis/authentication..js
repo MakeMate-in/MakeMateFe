@@ -78,7 +78,7 @@ export const customerSignUp = async (userData,role) => {
         let data = {}
         data = getCustomerData(userData, role)
         console.log(data)
-        const url = AUTHEN_URLS.CUSTOMERSIGNUP
+        const url = AUTHEN_URLS.CUSTOMER_SIGNUP
         const user = await requestHandler.post(url, data)
         return user
     }

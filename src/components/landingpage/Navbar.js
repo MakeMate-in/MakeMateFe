@@ -53,7 +53,7 @@ const Navbar = () => {
         <StyledButton onClick={() => {
             navigate(OPEN_ROUTES.SIGNUP)
           }}>Supplier Login</StyledButton>
-        <StyledButton onClick={() => { navigate(OPEN_ROUTES.LOGIN) }}>
+        <StyledButton onClick={() => { navigate(OPEN_ROUTES.CUSTOMER_SIGNUP) }}>
           Customer Login </StyledButton>
         
       </div>

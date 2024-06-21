@@ -36,13 +36,18 @@ const DigitalFactory = () => {
       let param = {
         user: USER_ID
       }
+
+      let param_1 = {
+        companyId: COMPANY_ID
+           }
+
       const resp = await getCompanyDetails(param);
-      const respAll = await getAllDetails(param);
+      const respAll = await getAllDetails(param_1);
       setcompanyDetails(resp.data)
       setAllDetails(respAll.data);
     }
      getCompany()
-  }, [CompanyDetails])
+  }, [])
 
 
 //   useEffect(() => {
@@ -63,10 +68,13 @@ const DigitalFactory = () => {
 
 //   getAllDashboardDetails();
 // }, []);
+console.log(percent)
 
   useEffect(() => {
+   
     const CalculatePercentage = async () => {
       let per = 0;
+      console.log(AllDetails)
       if(AllDetails?.companyDetails?.company_name !== undefined && AllDetails?.companyDetails?.company_name !== '') per = per + PER_COUNT
 
       if(AllDetails?.companyDetails?.address !== undefined && AllDetails?.companyDetails.address?.length > 0) per = per + PER_COUNT
@@ -108,6 +116,7 @@ const DigitalFactory = () => {
       if(AllDetails?.machineDetails?.machine_type !== undefined && AllDetails?.machineDetails?.machine_type !=='') per = per + 3
 
       if(AllDetails?.machineDetails?.machine_name !== undefined && AllDetails?.machineDetails?.machine_name !=='') per = per + 2
+     
       setPercent(per)
     }
 

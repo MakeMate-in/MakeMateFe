@@ -100,6 +100,7 @@ export const checkUser=async (user, id)=>{
         console.log(res)
         return res.data;
       })
+      
       .catch(err=>console.log(err))
      
       return isUser

@@ -49,6 +49,19 @@ const DigitalFactory = () => {
      getCompany()
   }, [])
 
+  useEffect(() => {
+
+    const getCompany = async () => {
+      let param_1 = {
+        companyId: COMPANY_ID
+           }
+      const respAll = await getAllDetails(param_1);
+      setAllDetails(respAll.data);
+    }
+     getCompany()
+
+  }, [CompanyDetails])
+
 
 //   useEffect(() => {
 //   const getAllDashboardDetails = async () => {
@@ -122,7 +135,7 @@ console.log(percent)
 
     CalculatePercentage()
 
-  }, [])
+  }, [AllDetails])
 
   const onSaveAndSubmit = () => {
 

@@ -73,3 +73,61 @@ export const deleteProductDetails = async (params) => {
     }
 
 }
+
+
+
+export const uploadToolImages = async (id, file) => {
+    const url = PRODUCT_DETAILS_URL.UPLOAD_TOOL_IMAGE;
+    // const authToken = getAccessToken();
+    const headers = {
+        // 'Authorization': authToken,
+        'Content-Type':' multipart/form-data;',
+      }
+    const params={
+        product_id:id
+    }
+    let data={}
+    data.file=file;
+    let res = await axios.post(
+        baseAPIUrl+url,data,
+        {
+            headers:headers,
+            params:params
+        
+        }).then((response) => {
+        return response.data;
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    return res;
+}
+
+
+
+export const uploadProductImages = async (id, file) => {
+    const url = PRODUCT_DETAILS_URL.UPLOAD_PRODUCT_IMAGE;
+    // const authToken = getAccessToken();
+    const headers = {
+        // 'Authorization': authToken,
+        'Content-Type':' multipart/form-data;',
+      }
+    const params={
+        product_id:id
+    }
+    let data={}
+    data.file=file;
+    let res = await axios.post(
+        baseAPIUrl+url,data,
+        {
+            headers:headers,
+            params:params
+        
+        }).then((response) => {
+        return response.data;
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    return res;
+}

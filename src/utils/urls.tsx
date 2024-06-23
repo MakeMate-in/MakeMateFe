@@ -42,6 +42,7 @@ export enum MACHINE_DETAILS_URL{
     UPDATE_MACHINE_DETAILS = '/api/company/machine-details/update',
     GET_MACHINE_DETAILS = '/api/company/machine-details/get',
     DELETE_MACHINE_DETAILS = '/api/company/machine-details/delete',
+    UPLOAD_MACHINE_IMAGE = '/api/company/machine-details/upload-image'
 }
 
 export enum INFRA_DETAILS_URL{
@@ -67,5 +68,7 @@ CREATE_PRODUCT = '/api/company/create-product',
 UPDATE_PRODUCT = '/api/company/update-product',
 GET_PRODUCT_DETAILS = '/api/company/get-products',
 DELETE_SINGLE_PRODUCT = '/api/company/delete-product',
-DELETE_ALL_PRODUCTS = '/api/company/delete-all-product'
+DELETE_ALL_PRODUCTS = '/api/company/delete-all-product',
+UPLOAD_TOOL_IMAGE = '/api/company/upload-tool-images',
+UPLOAD_PRODUCT_IMAGE = '/api/company/upload-product-images'
 }

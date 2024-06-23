@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Upload, Image } from 'antd';
 import { COMPANY_ID } from '../../utils/constants';
-import { getPlantImages, uploadPlantImages } from '../../apis/Vendor/CompanyDetails';
 import { convertBufferToBinary } from '../../utils/helper';
 import { notification } from 'antd';
 
@@ -57,23 +56,9 @@ const ImageUpload = (props) => {
 
     const fetchImages = async () => {
         try {
-            const res = await props.getImages(COMPANY_ID)
-            if (res.success) {
-                if (res.count > 0) {
-
-                    let newSrcList = [];
-                    res.data.company_Images.map(async (item, i) => {
-                        let data = {
-                            uid: item._id,
-                            name: item.name,
-                            status: 'done',
-                            url: convertBufferToBinary(item.image),
-                        }
-                        newSrcList.push(data)
-                    })
-                    setFileList(newSrcList);
-                }
-            }
+            const newSrcList = await props.getImages(COMPANY_ID)
+            
+            setFileList(newSrcList);
         }
         catch (err) {
             openFailedNotification('topRight', MESSAGES.FETCH_IMAGE_ERROR)
@@ -95,7 +80,7 @@ const ImageUpload = (props) => {
 
     const uploadImage = async options => {
 
-        const { onSuccess, onError, file, onProgress } = options;
+        const { onSuccess } = options;
         try {
             const res = await props.uploadImages(COMPANY_ID, fileList)
             console.log(res)

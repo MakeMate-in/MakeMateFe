@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Upload, Space, Popover } from 'antd';
 import { COMPANY_ID, OPEN_ROUTES } from '../../../../utils/constants';
-import { addProductDetails, getProductDetails, deleteProductDetails } from '../../../../apis/Vendor/ProductDetails';
+import { addProductDetails, getProductDetails, deleteProductDetails, uploadToolImages, uploadProductImages } from '../../../../apis/Vendor/ProductDetails';
 import { DeleteTwoTone } from '@ant-design/icons';
 import { notification } from 'antd';
 import ImageUpload from '../../../ImageUpload/ImageUpload';
+import { convertBufferToBinary } from '../../../../utils/helper';
 
 const Context = React.createContext({
     name: 'Default',
@@ -28,6 +29,7 @@ const CustomerDetails = () => {
 
     const [imageModal, setImageModal] = useState(false)
     const [toolImageModal, settoolImageModal] = useState(false)
+    const [modalProduct, setmodalProduct] = useState(undefined)
 
     let [CustomerData, setCustomerData] = useState([]);
 
@@ -95,6 +97,7 @@ const CustomerDetails = () => {
                                 no_of_cavity: customer.no_of_cavity,
                                 runner: customer.runner,
                                 tool_tonnage: customer.tool_tonnage,
+                                tool_image: customer.tool_image,
                                 manufacturing_year: customer.manufacturing_year
                             }
                             return customerObj
@@ -115,7 +118,6 @@ const CustomerDetails = () => {
             let params = {
                 product_id: record.id
             }
-            console.log(record.id);
             const res = await deleteProductDetails(params)
             if (res.success) {
                 fetchCustomerDetails()
@@ -174,7 +176,10 @@ const CustomerDetails = () => {
             key: 'tool_image',
             render: (_, record) => (
                 <Space size="large">
-                    <a onClick={() => { setImageModal(true) }}>View</a>
+                    <a onClick={() => {
+                        settoolImageModal(true)
+                        setmodalProduct(record)
+                    }}>View</a>
                 </Space>
             ),
         },
@@ -183,7 +188,10 @@ const CustomerDetails = () => {
             key: 'product_image',
             render: (_, record) => (
                 <Space size="large">
-                    <a onClick={() => { setImageModal(true) }}>View</a>
+                    <a onClick={() => { 
+                        setImageModal(true)
+                        setmodalProduct(record)
+                        }}>View</a>
                     {tab ? <Popover content='Delete'>
                         <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
                     </Popover> : ''}
@@ -191,6 +199,92 @@ const CustomerDetails = () => {
             ),
         },
     ];
+
+
+    const uploadToolImage = async (COMPANY_ID, files) => {
+        try {
+            if (modalProduct) {
+                const res = await uploadToolImages(modalProduct.id, files)
+                return res;
+            }
+            else {
+                return { success: false }
+            }
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+
+    const getToolImage = async (COMPANY_ID) => {
+        try {
+            let params = { company_id: COMPANY_ID, product_id: modalProduct.id }
+            const customers = await getProductDetails(params)
+            if (customers.success) {
+                let newSrcList = [];
+                customers.data.tool_image.map(async (item, i) => {
+                    let data = {
+                        uid: item._id,
+                        name: item.name,
+                        status: 'done',
+                        url: convertBufferToBinary(item.image),
+                    }
+                    newSrcList.push(data)
+
+                })
+                return newSrcList;
+            }
+
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+
+
+    const uploadProductImage = async (COMPANY_ID, files) => {
+        try {
+            if (modalProduct) {
+                const res = await uploadProductImages(modalProduct.id, files)
+                return res;
+            }
+            else {
+                return { success: false }
+            }
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+
+    const getProductImage = async (COMPANY_ID) => {
+        try {
+            let params = { company_id: COMPANY_ID, product_id: modalProduct.id }
+            const customers = await getProductDetails(params)
+            if (customers.success) {
+                let newSrcList = [];
+                customers.data.product_images.map(async (item, i) => {
+                    let data = {
+                        uid: item._id,
+                        name: item.name,
+                        status: 'done',
+                        url: convertBufferToBinary(item.image),
+                    }
+                    newSrcList.push(data)
+
+                })
+                return newSrcList;
+            }
+
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
 
 
     useEffect(() => {
@@ -379,26 +473,43 @@ const CustomerDetails = () => {
                     <Modal
                         title="Product Images"
                         centered
-                        open={imageModal}
+                        open={toolImageModal}
+
                         okText="Save"
-                        // onOk={form.submit}
-                        onCancel={() => setImageModal(false)}
+                        onOk={() => {
+                            settoolImageModal(false)
+                            setmodalProduct(undefined)
+                        }
+                    }
+                        onCancel={() => {
+                            settoolImageModal(false)
+                            setmodalProduct(undefined)
+                        }}
+
                         width={750}
                     >
-                        <ImageUpload />
+                        <ImageUpload uploadImages={uploadToolImage} getImages={getToolImage} />
 
                     </Modal>
 
                     <Modal
                         title="Product Images"
                         centered
-                        open={toolImageModal}
+                        open={imageModal}
                         okText="Save"
-                        // onOk={form.submit}
-                        onCancel={() => settoolImageModal(false)}
+                        onOk={() => {
+                            setImageModal(false)
+                            setmodalProduct(undefined)
+                        }
+                        
+                        }
+                        onCancel={() =>  {
+                            setImageModal(false)
+                            setmodalProduct(undefined)
+                        }}
                         width={750}
                     >
-                        <ImageUpload />
+                        <ImageUpload   uploadImages={uploadProductImage} getImages={getProductImage}/>
 
                     </Modal>
 

@@ -70,3 +70,32 @@ export const deleteMachineDetails = async (params,data) => {
     }
 
 }
+
+
+
+export const uploadMachineImages = async (id, file) => {
+    const url = MACHINE_DETAILS_URL.UPLOAD_MACHINE_IMAGE;
+    // const authToken = getAccessToken();
+    const headers = {
+        // 'Authorization': authToken,
+        'Content-Type':' multipart/form-data;',
+      }
+    const params={
+        machine_id:id
+    }
+    let data={}
+    data.file=file;
+    let res = await axios.post(
+        baseAPIUrl+url,data,
+        {
+            headers:headers,
+            params:params
+        
+        }).then((response) => {
+        return response.data;
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    return res;
+}

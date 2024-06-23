@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Upload, Space, Popover } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { MACHINE_TYPE } from '../../../../utils/helper';
-import { addMachineDetails, getMachineDetails, deleteMachineDetails } from '../../../../apis/Vendor/MachineDetails';
+import { MACHINE_TYPE, convertBufferToBinary } from '../../../../utils/helper';
+import { addMachineDetails, getMachineDetails, deleteMachineDetails, uploadMachineImages } from '../../../../apis/Vendor/MachineDetails';
 import { COMPANY_ID, OPEN_ROUTES } from '../../../../utils/constants';
 import { DeleteTwoTone } from '@ant-design/icons';
 import { notification } from 'antd';
@@ -16,7 +16,7 @@ const Machines = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [form] = Form.useForm();
     const [isVisible, setIsVisible] = useState(true);
-    const [loading,setLoading] =  useState(false)
+    const [loading, setLoading] = useState(false)
     const [api, contextHolder] = notification.useNotification();
     const [tab, setTab] = useState(0);          // used to toggle element visibility between Dashboard & Digital-Factory
     const [bedSize, setBedSize] = useState({
@@ -35,8 +35,8 @@ const Machines = () => {
     })
 
     const [imageModal, setImageModal] = useState(false)
-
     let [MachineData, setMachineData] = useState([])
+    const [modalMachine, setmodalMachine] = useState(undefined)
 
 
     const openNotification = (placement) => {
@@ -110,12 +110,12 @@ const Machines = () => {
                             id: machine._id,
                             type: machine.machine_type,
                             make: machine.make,
-                            bedSize: machine.bed_Size?<div>
-                               {machine.bed_Size.length? <p style={{margin:'0'}}><b>Length</b> - {machine.bed_Size.length}</p>:''}
-                               {machine.bed_Size.breadth? <p style={{margin:'0'}}><b>Width</b> - {machine.bed_Size.breadth}</p>:''}
-                               {machine.bed_Size.height?<p style={{margin:'0'}}><b>Height</b> - {machine.bed_Size.height}</p>:''}
-                               {machine.bed_Size.diameter? <p style={{margin:'0'}}><b>Diameter</b> - {machine.bed_Size.diameter}</p>:''}
-                            </div>:'',
+                            bedSize: machine.bed_Size ? <div>
+                                {machine.bed_Size.length ? <p style={{ margin: '0' }}><b>Length</b> - {machine.bed_Size.length}</p> : ''}
+                                {machine.bed_Size.breadth ? <p style={{ margin: '0' }}><b>Width</b> - {machine.bed_Size.breadth}</p> : ''}
+                                {machine.bed_Size.height ? <p style={{ margin: '0' }}><b>Height</b> - {machine.bed_Size.height}</p> : ''}
+                                {machine.bed_Size.diameter ? <p style={{ margin: '0' }}><b>Diameter</b> - {machine.bed_Size.diameter}</p> : ''}
+                            </div> : '',
                             rpm: machine.spindle_rpm,
                             axis: machine.no_of_Axis,
                             year: machine.manufacturing_year
@@ -139,7 +139,7 @@ const Machines = () => {
                 deleteNotification('topRight');
                 fetchMachineDetails()
             }
-            else{
+            else {
                 deleteFailedNotification('topRight')
             }
         }
@@ -190,7 +190,10 @@ const Machines = () => {
             key: 'image',
             render: (_, record) => (
                 <Space size="large">
-                    <a onClick ={() => {setImageModal(true)}}>View</a>
+                    <a onClick={() => {
+                        setImageModal(true)
+                        setmodalMachine(record)
+                    }}>View</a>
                     {tab ? <Popover content='Delete'>
                         <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
                     </Popover> : ''}
@@ -198,6 +201,49 @@ const Machines = () => {
             ),
         },
     ];
+
+
+    const uploadMachineImage = async (COMPANY_ID, files) => {
+        try {
+            if (modalMachine) {
+                const res = await uploadMachineImages(modalMachine.id, files)
+                return res;
+            }
+            else {
+                return { success: false }
+            }
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+
+    const getMachineImage = async (COMPANY_ID) => {
+        try {
+            let params = { company_id: COMPANY_ID, machine_id: modalMachine.id }
+            const machines = await getMachineDetails(params)
+            if (machines.success) {
+                let newSrcList = [];
+                machines.documents.image.map(async (item, i) => {
+                    let data = {
+                        uid: item._id,
+                        name: item.name,
+                        status: 'done',
+                        url: convertBufferToBinary(item.image),
+                    }
+                    newSrcList.push(data)
+
+                })
+                return newSrcList;
+            }
+
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
 
     useEffect(() => {
         if (window.location.pathname == OPEN_ROUTES.DIGITAL_FACTORY) {
@@ -273,7 +319,7 @@ const Machines = () => {
 
     return (
 
-        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: tab?'60vh':'' }}>
+        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: tab ? '60vh' : '' }}>
             <ConfigProvider
                 theme={{
                     components: {
@@ -286,13 +332,13 @@ const Machines = () => {
                 <Context.Provider value={contextValue}>
                     {contextHolder}
                     <div >
-                        <Table columns={MACHINE_COLUMNS} dataSource={MachineData} scroll={{ y: tab?265:200 }} />
+                        <Table columns={MACHINE_COLUMNS} dataSource={MachineData} scroll={{ y: tab ? 265 : 200 }} />
                     </div>
                     <div style={{ marginTop: 'auto' }}>
                         <Button type="primary" style={{ display: tab ? 'block' : 'none' }} onClick={() => {
                             setModalOpen(true)
                             setLoading(true)
-                            }}>
+                        }}>
                             + Add Machine
                         </Button>
                         <Modal
@@ -303,11 +349,12 @@ const Machines = () => {
                             onOk={form.submit}
                             onCancel={() => {
                                 setLoading(false)
-                                setModalOpen(false)}}
+                                setModalOpen(false)
+                            }}
                             width={750}
                         >
-            { isVisible ? <Form layout="vertical" 
-                            onFinish={handleFormSubmit} form={form}
+                            {isVisible ? <Form layout="vertical"
+                                onFinish={handleFormSubmit} form={form}
                             >
                                 <Row gutter={16}>
                                     <Col span={12}>
@@ -494,17 +541,17 @@ const Machines = () => {
                     </div>
 
                     <Modal
-                            title="Add Machine"
-                            centered
-                            open={imageModal}
-                            okText="Save"
-                            onOk={form.submit}
-                            onCancel={() => setImageModal(false)}
-                            width={750}
-                        >
-                            <ImageUpload/>
+                        title="Add Machine"
+                        centered
+                        open={imageModal}
+                        okText="Save"
+                        onOk={form.submit}
+                        onCancel={() => setImageModal(false)}
+                        width={750}
+                    >
+                        <ImageUpload uploadImages={uploadMachineImage} getImages={getMachineImage} />
 
-                            </Modal>
+                    </Modal>
 
                 </Context.Provider>
             </ConfigProvider>

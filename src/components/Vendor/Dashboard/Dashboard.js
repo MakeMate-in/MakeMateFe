@@ -25,6 +25,8 @@ import './Dashboard.css';
 import { Link, useNavigate } from "react-router-dom";
 import { Outlet } from 'react-router-dom';
 import { logOut } from '../../../apis/authentication..js';
+import { LOCAL_STORAGE_ITEMS } from '../../../utils/helper.js';
+import { Popover } from 'antd';
 
 
 const Dashboard = () => {
@@ -77,10 +79,19 @@ const Dashboard = () => {
   }
 
   const user = {
-    name: "Saatvik",
-    email: "saatvikrawat@gmail.com"
+    name: localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME)?localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME):"",
+    email: localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_EMAIL)?localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_EMAIL):"",
   };
   
+  const content = (
+    <div>
+      <p><strong>{localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME)?localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME):""}</strong></p>
+      <p>Email: {localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_EMAIL)?localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_EMAIL):""}</p>
+      <p>Role:  {localStorage.getItem(LOCAL_STORAGE_ITEMS.ROLE)?localStorage.getItem(LOCAL_STORAGE_ITEMS.ROLE):""}</p>
+    </div>
+  );
+
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -92,22 +103,21 @@ const Dashboard = () => {
           </Typography>
         </Box>
         <Box style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
+          <Popover content={content} trigger="click">
           <Avatar
             alt="User"
-            src='https://i.pinimg.com/736x/dd/40/5b/dd405b37a0e8c5c89d075f04821b4143.jpg'
             onClick={handleAvatarClick}
             style={{ cursor: 'pointer' }}
-          />
-          <Box style={{ marginLeft: getMarginLeft(user.name), cursor: 'pointer' }}>
+          >
+            
+            {user.name.substring(0,1)}
+          </Avatar>
+          </Popover>
+          {/* <Box style={{cursor: 'pointer' }}>
             <Typography variant="body1">
               {user.name}
             </Typography>
-            {showEmail && (
-              <Typography variant="body2" color="textSecondary">
-                {user.email}
-              </Typography>
-            )}
-          </Box>
+          </Box> */}
         </Box>
       </Toolbar>
     </AppBar>

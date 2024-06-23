@@ -13,7 +13,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { useOutletContext } from "react-router-dom";
 import { rgb } from 'polished';
 import './DashboardPage.css';
-import { convertBufferToBinary } from '../../../utils/helper';
+import { LOCAL_STORAGE_ITEMS, convertBufferToBinary } from '../../../utils/helper';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -121,8 +121,9 @@ const DashboardPage = () => {
               <Card>
                 <Row>
                   <Col span={14}>
-                    <h1 style={{ fontFamily: 'Cambria', marginBottom: '0' }}>Welcome, {AllDetails?.companyDetails?.company_name}</h1>
-                    <p>{AllDetails?.companyDetails?.description}</p>
+                    <h1 style={{ fontFamily: 'Cambria', marginBottom: '0' }}>Welcome, {localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME)?localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME):''}</h1>
+                    <h4 style={{ fontFamily: 'Cambria', marginBottom: '0' }}>Company Name: {AllDetails?.companyDetails?.company_name}</h4>
+                    <p><b>About:</b> {AllDetails?.companyDetails?.description}</p>
                     <p><strong>GSTN: </strong>{AllDetails?.companyDetails?.GST_no}</p>
                     {AllDetails?.companyDetails?.address && AllDetails?.companyDetails?.address.length > 0 && (
                     <Flex>

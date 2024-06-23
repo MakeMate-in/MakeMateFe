@@ -18,9 +18,7 @@ const getBase64 = (file) =>
     });
 
 
-
-
-const ImageUpload = () => {
+const ImageUpload = (props) => {
 
     const [fileList, setFileList] = useState([]);
     const [api] = notification.useNotification();
@@ -30,10 +28,10 @@ const ImageUpload = () => {
     const [previewImage, setPreviewImage] = useState('');
 
 
-    const openNotification = (placement, message) => {
+    const openNotification = (placement) => {
         api.success({
             message: `Success`,
-            description: message,
+            description: MESSAGES.UPLOAD_PLANT_IMAGES,
             placement,
         });
     };
@@ -59,7 +57,7 @@ const ImageUpload = () => {
 
     const fetchImages = async () => {
         try {
-            const res = await getPlantImages(COMPANY_ID)
+            const res = await props.getImages(COMPANY_ID)
             if (res.success) {
                 if (res.count > 0) {
 
@@ -99,9 +97,10 @@ const ImageUpload = () => {
 
         const { onSuccess, onError, file, onProgress } = options;
         try {
-            const res = await uploadPlantImages(COMPANY_ID, fileList)
+            const res = await props.uploadImages(COMPANY_ID, fileList)
+            console.log(res)
             if (res.success) {
-                openNotification('topRight', MESSAGES.UPLOAD_PLANT_IMAGES);
+                openNotification('topRight');
                 fetchImages()
             }
             onSuccess("Ok");
@@ -120,7 +119,7 @@ const ImageUpload = () => {
         })
 
         try {
-            const res = await uploadPlantImages(COMPANY_ID, filesList)
+            const res = await props.uploadImages(COMPANY_ID, filesList)
             if (res.success) {
                 deleteNotification('topRight', MESSAGES.DELETE_PLANT_IMAGES);
                 fetchImages()

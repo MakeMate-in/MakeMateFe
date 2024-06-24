@@ -107,6 +107,7 @@ const BasicDetails = (props) => {
       let updatedData;
       if(!equal){
        updatedData = await getCompanyDetails(params)
+       props.setcompanyDetails(updatedData.data)
       }
       if((updatedData && updatedData.success) || equal){
       props.onSaveAndSubmit();

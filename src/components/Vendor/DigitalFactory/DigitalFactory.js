@@ -78,9 +78,12 @@ const DigitalFactory = () => {
     const CalculatePercentage = async () => {
       let per = 0;
 
+      console.log(CompanyDetails)
       
 
-      if (AllDetails?.companyDetails?.company_name !== undefined && AllDetails?.companyDetails?.company_name !== '') per = per + PER_COUNT
+      if (AllDetails?.companyDetails?.company_name !== undefined && AllDetails?.companyDetails?.company_name !== '') per = per + 5
+
+      if (CompanyDetails.description !== undefined && CompanyDetails.description !== '') per = per + 5
 
       if (AllDetails?.companyDetails?.address !== undefined && AllDetails?.companyDetails.address?.length > 0) per = per + PER_COUNT
 
@@ -118,7 +121,7 @@ const DigitalFactory = () => {
 
     CalculatePercentage()
 
-  }, [InfrastructureDetails,MachineDetails, plantImagesCount, customerDetails])
+  }, [InfrastructureDetails,MachineDetails, plantImagesCount, customerDetails, AllDetails])
 
   const onSaveAndSubmit = () => {
 

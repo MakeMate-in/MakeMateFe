@@ -83,13 +83,12 @@ const ImageUpload = (props) => {
         const { onSuccess } = options;
         try {
             const res = await props.uploadImages(COMPANY_ID, fileList)
-            console.log(res)
             if (res.success) {
                 openNotification('topRight');
                 fetchImages()
             }
             onSuccess("Ok");
-            console.log("server res: ", res);
+            // console.log("server res: ", res);
         } catch (err) {
             openFailedNotification('topRight', MESSAGES.UPLOAD_IMAGE_ERROR)
             console.log("Eroor: ", err);
@@ -108,8 +107,9 @@ const ImageUpload = (props) => {
             if (res.success) {
                 deleteNotification('topRight', MESSAGES.DELETE_PLANT_IMAGES);
                 fetchImages()
+                // fetchImages()
             }
-            console.log("server res: ", res);
+            // console.log("server res: ", res);
         } catch (err) {
             console.log("Eroor: ", err);
             const error = new Error("Some error");
@@ -123,7 +123,6 @@ const ImageUpload = (props) => {
         setPreviewImage(file.url || (file.preview));
         setPreviewOpen(true);
     };
-
 
     const uploadButton = (
         <button
@@ -155,7 +154,7 @@ const ImageUpload = (props) => {
                     handleDelete(file)
                 }}
             >
-                {fileList.length >= 8 ? null : uploadButton}
+                {fileList && fileList.length >= 8  ? null : uploadButton}
             </Upload>
             {previewImage && (
                 <Image

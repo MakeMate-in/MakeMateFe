@@ -105,9 +105,12 @@ const InfraStructureDetails = (props) => {
 
 
   const fetchInfraDetails = async () => {
+    console.log(1)
     try {
       const InfraDetails = await getInfraDetails(COMPANY_ID)
       if (InfraDetails.success && InfraDetails.count === 1) {
+        console.log(InfraDetails)
+        props.setInfrastructureDetails(InfraDetails.documents[0])
         setInfraStructureDetails({ ...InfraDetails.documents[0] })
         setInputs([...InfraDetails.documents[0].manpower])
       }

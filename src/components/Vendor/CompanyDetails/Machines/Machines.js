@@ -11,7 +11,7 @@ const Context = React.createContext({
     name: 'Default',
 });
 
-const Machines = () => {
+const Machines = (props) => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [form] = Form.useForm();
@@ -104,7 +104,6 @@ const Machines = () => {
                 let data = []
                 if (machines.count > 0) {
                     data = machines.documents.map((machine, i) => {
-                        // console.log(machine)
                         let machineObj = {
                             key: i + 1,
                             id: machine._id,
@@ -122,6 +121,9 @@ const Machines = () => {
                         }
                         return machineObj
                     })
+                }
+                if(Object.keys(props).length>0) {
+                    props.setMachineDetails(data)
                 }
                 setMachineData([...data]);
             }
@@ -549,7 +551,7 @@ const Machines = () => {
                         onCancel={() => setImageModal(false)}
                         width={750}
                     >
-                        <ImageUpload uploadImages={uploadMachineImage} getImages={getMachineImage} />
+                        <ImageUpload uploadImages={uploadMachineImage} getImages={getMachineImage} tab={tab} />
 
                     </Modal>
 

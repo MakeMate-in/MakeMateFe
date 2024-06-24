@@ -11,10 +11,10 @@ const Context = React.createContext({
     name: 'Default',
 });
 
-const CustomerDetails = () => {
+const CustomerDetails = (props) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [form] = Form.useForm();
-    const [CustomerDetails, setCustomerDetails] = useState()
+    // const [CustomerDetails, setCustomerDetails] = useState()
     const [tab, setTab] = useState(0);
     const [Customer, setCustomer] = useState({
         "customer_name": "",
@@ -106,6 +106,9 @@ const CustomerDetails = () => {
                     else {
                         console.log("Errorrrr in fetch")
                     }
+                }
+                if(Object.keys(props).length>0){
+                props.setCustomerDetails(data)
                 }
                 setCustomerData([...data]);
             }

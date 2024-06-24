@@ -4,9 +4,9 @@ import { COMPANY_ID } from './../../../utils/constants';
 import './../Dashboard/Dashboard.css';
 import './DigitalFactory.css'
 import InfraDetails from '../CompanyDetails/Machines';
-import { STEP_TAB_MAP_2, STEP_TAB_MAP_INFRA_2, STEPS_HEADINGS, USER_ID, PER_COUNT,PER_INFRA_COUNT, PER_MACHINE_COUNT } from './../../../utils/constants';
+import { STEP_TAB_MAP_2, STEP_TAB_MAP_INFRA_2, STEPS_HEADINGS, USER_ID, PER_COUNT, PER_INFRA_COUNT, PER_MACHINE_COUNT } from './../../../utils/constants';
 import CompanyDetailsComp from '../CompanyDetails/CompanyOverview/CompanyDetails';
-import {getAllDetails, getCompanyDetails } from '../../../apis/Vendor/CompanyDetails';
+import { getAllDetails, getCompanyDetails } from '../../../apis/Vendor/CompanyDetails';
 import CustomerDetails from '../CompanyDetails/CustomerDetails/CustomerDetails';
 import { checkButtonRequired } from '../../../utils/helper';
 import { LeftOutlined } from '@ant-design/icons';
@@ -23,8 +23,12 @@ const DigitalFactory = () => {
   const [currentSub, setCurrentSub] = useState(0);
   const [currentInfraSub, setCurrentInfraSub] = useState(0);
   const [CompanyDetails, setcompanyDetails] = useState({})
+  const [MachineDetails, setMachineDetails] = useState({})
+  const [InfrastructureDetails, setInfrastructureDetails] = useState({})
+  const [customerDetails, setCustomerDetails] = useState({})
   const [AllDetails, setAllDetails] = useState(undefined);
   const [percent, setPercent] = useState(0)
+  const [plantImagesCount, setPlantImagesCount] = useState(0)
   const navigate = useNavigate()
 
   const backToDashboard = () => {
@@ -39,14 +43,20 @@ const DigitalFactory = () => {
 
       let param_1 = {
         companyId: COMPANY_ID
-           }
+      }
 
       const resp = await getCompanyDetails(param);
       const respAll = await getAllDetails(param_1);
+
+
+      setPlantImagesCount(respAll.data.plantImages.company_Images.length)
+      setCustomerDetails(respAll.data.productDetails)
+      setMachineDetails(respAll.data.machineDetails)
+      setInfrastructureDetails(respAll.data.infrastructureDetails)
       setcompanyDetails(resp.data)
       setAllDetails(respAll.data);
     }
-     getCompany()
+    getCompany()
   }, [])
 
   useEffect(() => {
@@ -54,88 +64,61 @@ const DigitalFactory = () => {
     const getCompany = async () => {
       let param_1 = {
         companyId: COMPANY_ID
-           }
+      }
       const respAll = await getAllDetails(param_1);
       setAllDetails(respAll.data);
     }
-     getCompany()
+    getCompany()
 
   }, [CompanyDetails])
 
 
-//   useEffect(() => {
-//   const getAllDashboardDetails = async () => {
-//     try {
-//       let param = {
-//         companyId: COMPANY_ID,
-//       };
-//       const resp = await getAllDetails(param);
-//       console.log(resp.data);
-//       setAllDetails(resp.data);
-//       setcompanyDetails(AllDetails?.companyDetails);
-//       console.log("Digital Factory:-",resp.data);
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   };
-
-//   getAllDashboardDetails();
-// }, []);
-console.log(percent)
-
   useEffect(() => {
-   
+
     const CalculatePercentage = async () => {
       let per = 0;
-      console.log(AllDetails)
-      if(AllDetails?.companyDetails?.company_name !== undefined && AllDetails?.companyDetails?.company_name !== '') per = per + PER_COUNT
 
-      if(AllDetails?.companyDetails?.address !== undefined && AllDetails?.companyDetails.address?.length > 0) per = per + PER_COUNT
+      
 
-      if(AllDetails?.companyDetails?.contact_person !== undefined && AllDetails?.companyDetails?.contact_person.length > 0) per = per + PER_COUNT
+      if (AllDetails?.companyDetails?.company_name !== undefined && AllDetails?.companyDetails?.company_name !== '') per = per + PER_COUNT
 
-      if(AllDetails?.companyDetails?.customer_details !== undefined && AllDetails?.companyDetails?.customer_details.length > 0) per = per + PER_COUNT
+      if (AllDetails?.companyDetails?.address !== undefined && AllDetails?.companyDetails.address?.length > 0) per = per + PER_COUNT
 
-      if(AllDetails?.companyDetails?.product_details !== undefined &&AllDetails?.companyDetails?.product_details.length > 0) per = per + PER_COUNT
+      if (AllDetails?.companyDetails?.contact_person !== undefined && AllDetails?.companyDetails?.contact_person.length > 0) per = per + PER_COUNT
 
-      if(AllDetails?.infrastructureDetails?.assembly_area !== undefined && AllDetails?.infrastructureDetails?.assembly_area !=='') per = per + PER_INFRA_COUNT
+      if (AllDetails?.companyDetails?.customer_details !== undefined && AllDetails?.companyDetails?.customer_details.length > 0) per = per + PER_COUNT
 
-      if(AllDetails?.infrastructureDetails?.assembly_table !== undefined && AllDetails?.infrastructureDetails?.assembly_table !=='') per = per + PER_INFRA_COUNT
+      if (AllDetails?.companyDetails?.product_details !== undefined && AllDetails?.companyDetails?.product_details.length > 0) per = per + PER_COUNT
 
-      if(AllDetails?.infrastructureDetails?.designation !== undefined && AllDetails?.infrastructureDetails?.designation !=='') per = per + PER_INFRA_COUNT
+      if (AllDetails?.certificates?.certificates !== undefined && AllDetails?.certificates?.certificates.length > 0) per = per + 6
 
-      if(AllDetails?.infrastructureDetails?.count !== undefined && AllDetails?.infrastructureDetails?.count > 0) per = per + PER_INFRA_COUNT
+      if ( (InfrastructureDetails.assembly_area !== undefined && InfrastructureDetails.assembly_area !== null) && InfrastructureDetails?.assembly_area !== '') per = per + PER_INFRA_COUNT
 
-      if(AllDetails?.infrastructureDetails?.design_softwares !== undefined && AllDetails?.infrastructureDetails?.design_softwares !=='') per = per + PER_INFRA_COUNT
+      if ((InfrastructureDetails.assembly_table !== undefined && InfrastructureDetails.assembly_table !== null) && InfrastructureDetails?.assembly_table !== '') per = per + PER_INFRA_COUNT
 
-      if(AllDetails?.infrastructureDetails?.surface_table !== undefined && AllDetails?.infrastructureDetails?.surface_table !=='') per = per + PER_INFRA_COUNT
+      if ( (InfrastructureDetails.design_softwares !== undefined && InfrastructureDetails.design_softwares !== null) && InfrastructureDetails?.design_softwares !== '') per = per + PER_INFRA_COUNT
 
-      if(AllDetails?.infrastructureDetails?.CMM !== undefined && AllDetails?.infrastructureDetails?.CMM !=='') per = per + PER_INFRA_COUNT
+      if ( (InfrastructureDetails.surface_table !== undefined && InfrastructureDetails.surface_table !== null) && InfrastructureDetails?.surface_table !== '') per = per + PER_INFRA_COUNT
 
-      if(AllDetails?.infrastructureDetails?.crane_tonnage !== undefined && AllDetails?.infrastructureDetails?.crane_tonnage > 0) per = per + PER_INFRA_COUNT
+      if ( (InfrastructureDetails.CMM !== undefined && InfrastructureDetails.CMM !== null) && InfrastructureDetails?.CMM !== '') per = per + PER_INFRA_COUNT
 
-      if(AllDetails?.infrastructureDetails?.plant_area !== undefined && AllDetails?.infrastructureDetails?.plant_area !=='') per = per + 2
+      if ( (InfrastructureDetails.crane_tonnage !== undefined && InfrastructureDetails.crane_tonnage !== null) && InfrastructureDetails?.crane_tonnage > 0) per = per + PER_INFRA_COUNT
 
-      if(AllDetails?.machineDetails?.make !== undefined && AllDetails?.machineDetails?.make !=='') per = per + PER_MACHINE_COUNT
+      if ( (InfrastructureDetails.plant_area !== undefined && InfrastructureDetails.plant_area !== null) && InfrastructureDetails?.plant_area !== '') per = per + PER_INFRA_COUNT
 
-      if(AllDetails?.machineDetails?.bed_size !== undefined && AllDetails?.machineDetails?.bed_size > 0) per = per + PER_MACHINE_COUNT
+      if (MachineDetails !== undefined && MachineDetails.length>0) per = per + PER_COUNT
 
-      if(AllDetails?.machineDetails?.spindle_rpm !== undefined && AllDetails?.machineDetails?.spindle_rpm > 0) per = per + PER_MACHINE_COUNT
+      if (customerDetails !== undefined && customerDetails.length>0) per = per + PER_COUNT
 
-      if(AllDetails?.machineDetails?.no_of_Axis !== undefined && AllDetails?.machineDetails?.no_of_Axis > 0) per = per + PER_MACHINE_COUNT
+      if (plantImagesCount>0) per = per + PER_COUNT
 
-      if(AllDetails?.machineDetails?.manufacturing_year !== undefined && AllDetails?.machineDetails?.manufacturing_year > 0) per = per + PER_MACHINE_COUNT
 
-      if(AllDetails?.machineDetails?.machine_type !== undefined && AllDetails?.machineDetails?.machine_type !=='') per = per + 3
-
-      if(AllDetails?.machineDetails?.machine_name !== undefined && AllDetails?.machineDetails?.machine_name !=='') per = per + 2
-     
       setPercent(per)
     }
 
     CalculatePercentage()
 
-  }, [AllDetails])
+  }, [InfrastructureDetails,MachineDetails, plantImagesCount, customerDetails])
 
   const onSaveAndSubmit = () => {
 
@@ -153,17 +136,14 @@ console.log(percent)
 
 
   const onChange = (value) => {
-    console.log('onChange:', value);
     setCurrent(value);
   };
 
   const onChangeSub = (value) => {
-    console.log('onChangeSub:', value);
     setCurrentSub(value);
   };
 
   const onChangeInfraSub = (value) => {
-    console.log('onChangeSub:', value);
     setCurrentInfraSub(value);
   };
 
@@ -279,8 +259,8 @@ console.log(percent)
                 <h2 style={{ marginTop: '0' }}>{STEPS_HEADINGS[current]}</h2>
                 <hr />
                 {current === 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails} /> : ''}
-                {current === 1 ? <InfraDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} /> : ''}
-                {current === 2 ? <CustomerDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} /> : ''}
+                {current === 1 ? <InfraDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} MachineDetails={MachineDetails} setMachineDetails={setMachineDetails} InfrastructureDetails={InfrastructureDetails} setInfrastructureDetails={setInfrastructureDetails} setPlantImagesCount={setPlantImagesCount} /> : ''}
+                {current === 2 ? <CustomerDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} customerDetails={customerDetails} setCustomerDetails={setCustomerDetails} /> : ''}
               </div>
 
             </Card>

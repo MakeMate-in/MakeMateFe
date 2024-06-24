@@ -5,7 +5,7 @@ import { getPlantImages, uploadPlantImages } from '../../../../apis/Vendor/Compa
 import { convertBufferToBinary } from '../../../../utils/helper';
 
 
-const PlantImages = () => {
+const PlantImages = (props) => {
 
 
   const uploadImages = async (COMPANY_ID,files) => {
@@ -22,7 +22,9 @@ const PlantImages = () => {
     try{
       const res = await getPlantImages(COMPANY_ID)
       if (res.success) {
+        props.setPlantImagesCount(res.count)
         if (res.count > 0) {
+        
           let newSrcList = [];
           res.data.company_Images.map(async (item, i) => {
               let data = {

@@ -111,7 +111,7 @@ export const COMPANY_ID = "66379ae26a6866cccf8b3bfe"
 // export const COMPANY_ID = getCopanyId()
 
 export const PER_COUNT=10
-export const PER_INFRA_COUNT=1
+export const PER_INFRA_COUNT=2
 export const PER_MACHINE_COUNT=1
 
 // export const HANDLE_REGEX:RegExp = /^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?/~\\-]+$/;

@@ -158,7 +158,7 @@ const Machines = (props) => {
             render: (text) => <a>{text}</a>,
         },
         {
-            title: 'Company Name',
+            title: 'Machine Name',
             dataIndex: 'type',
             key: 'type',
         },

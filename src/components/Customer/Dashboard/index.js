@@ -1,26 +1,35 @@
 import React from 'react'
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Breadcrumb, Button, Layout, Menu, theme } from 'antd';
+import { useNavigate } from 'react-router-dom'
+import { OPEN_ROUTES } from '../../../utils/constants'
+
+
 const { Header, Content, Sider } = Layout;
-const items1 = ['1', '2', '3'].map((key) => ({
-  key,
-  label: `Customer Login ${key}`,
-}));
 
 const CustomerDashboard = () => {
+
+  const navigate = useNavigate()
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
+  const login = () => {
+    navigate(OPEN_ROUTES.LOGIN)
+  }
+
+
   return (
     <Layout style={{height: '100vh'}}>
       <Header
         style={{
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'space-between'
         }}
       >
-        <div className="demo-logo" />
-        <Menu
+        <div className="demo-logo" style={{color:'#fff', fontWeight:'700', fontSize:'1.5rem'}}>MAKERS MATE</div>
+        {/* <Menu
           theme="dark"
           mode="horizontal"
           items={items1}
@@ -28,7 +37,8 @@ const CustomerDashboard = () => {
             flex: 1,
             minWidth: 0,
           }}
-        />
+        /> */}
+        <Button onClick={login} size='large' style={{ marginLeft: 'auto' }}>Sign Up/Login</Button>
       </Header>
       <Layout>
         <Sider

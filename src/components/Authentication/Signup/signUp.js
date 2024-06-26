@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import {
   Card,
   Input,
@@ -19,15 +19,17 @@ import { OPEN_ROUTES, ROLE } from '../../../utils/constants'
 import { useNavigate } from 'react-router-dom';
 import { validateForm } from '../../../utils/commons/validators'
 import { EMAIL, MESSAGES } from '../../../utils/constants'
-import { checkUser, getOtp } from '../../../apis/authentication.'
+import { checkUser, customerSignUp, getOtp } from '../../../apis/authentication.'
 import { sendOTP } from '../../../apis/commonFunctions'
 import OtpModal from '../OTP/otpModal'
 import { signUp, verifyOtp } from '../../../apis/authentication.'
+import { SESSION_STORAGE_ITEMS, getRole, initializeUserValues } from '../../../utils/helper'
 
 
 
 const SignUp = () => {
   const navigate = useNavigate();
+
 
   const [api, contextHolder] = notification.useNotification();
   const [user, setUser] = useState({
@@ -44,19 +46,37 @@ const SignUp = () => {
   const [checked, setChecked] = useState(false);
   const [errors, setErrors] = useState({});
   const [otpResponse, setotpResponse] = useState({})
+  const [role, setRole] = useState(ROLE.VENDOR)
 
-  const openNotification = () => {
-    console.log(1)
-    api.open({
-      message: 'Notification Title',
-      description:
-        'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-      className: 'custom-class',
-      style: {
-        width: 600,
-      },
+
+
+  const openNotification = (placement, message) => {
+    api.success({
+    message: `Success`,
+    description: message,
+    placement,
     });
-  };
+};
+let contextValue = useMemo(
+    () => ({
+    name: 'Make Mate',
+    }),
+    [],
+);
+
+const openFailedNotification = (placement, message) => {
+    api.error({
+    message: `Something went wrong`,
+    description: message,
+    placement,
+    });
+};
+    contextValue = useMemo(
+    () => ({
+    name: 'Make Mate',
+    }),
+    [],
+);
 
   const onChange = (e) => {
     setChecked(e.target.checked);
@@ -77,260 +97,444 @@ const SignUp = () => {
   const formRef = React.createRef();
 
   const handleSubmit = async () => {
-    console.log(user)
-    if (validateForm(user, setUser, setErrors, checked, checkPassword)) {
+    if (validateForm(user, setUser, setErrors, checked, checkPassword, role)) {
       let errors = {}
       // Form is valid, submit the data or perform further actions
 
       try {
         let isUser = await checkUser(user, 1)
-        if (isUser.Status == 400) {
+        if (isUser.Status == "ERROR") {
           if (isUser.msg.email != undefined) {
             errors.email = isUser.msg.email
+            openFailedNotification('topRight',errors.email)
           }
           if (isUser.msg.mobile_no != undefined) {
             errors.mobile_no = isUser.msg.mobile_no
+            openFailedNotification('topRight',errors.mobile_no)
           }
           if (isUser.msg.GST_no != undefined) {
             errors.GST_no = isUser.msg.GST_no
+            openFailedNotification('topRight',errors.GST_no)
           }
           setErrors(errors);
 
         }
         else {
           try {
-            const otpRes = await sendOTP(user["email"],true)
-            console.log(otpRes)
+            const otpRes = await sendOTP(user["email"], true)
             setotpResponse(otpRes)
           }
           catch (err) {
-            throw err
+            console.log(err)
+            openFailedNotification('topRight','Unable to Signup')
+            // throw err
           }
         }
 
       }
       catch (err) {
-        throw err
+        console.log(err)
+        openFailedNotification('topRight','Unable to Signup')
+        // throw err
       }
     } else {
       // Form is invalid, handle errors or display error messages
-      console.log(errors)
-      console.log('Form validation failed');
-      openNotification(errors)
+      Object.keys(errors).map((item) => {
+        openFailedNotification('topRight',errors[item])
+      })
+  
     }
 
   }
 
 
   const submitOTP = async (otp) => {
-    let data={}
+    let data = {}
     data.check = user["email"]
     data.otp = otp
     data.verification_key = otpResponse.response
-    const res = await verifyOtp(data,true)
+    const res = await verifyOtp(data, true)
     if (res.Status === MESSAGES.SUCCESS) {
-      console.log(user)
-        try{
-        let user_created = await signUp(user,ROLE.VENDOR)
-        console.log(user_created)
-       
-        navigate(OPEN_ROUTES.VENDOR_DASHBOARD)
+      try {
+        let res; 
+        if(role==ROLE.VENDOR){
+        res = await signUp(user, role)
         }
-        catch(err){
-          console.log(err)
-          return err
+        else{
+        res = await customerSignUp(user,role)
         }
+
+        if (res.success) {
+        sessionStorage.setItem(SESSION_STORAGE_ITEMS.TOKEN, res.token);
+        initializeUserValues(res.token)
+        openNotification('topRight', "User is Signed Up ")
+        getRole()==ROLE.VENDOR? navigate(OPEN_ROUTES.VENDOR_DASHBOARD): navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD)
+         } else {
+           openFailedNotification('topRight', res.msg);
+           // throw new Error('Login failed')
+         }
+        
       }
-      else {
-        errors.otp = res.msg
-        setErrors(errors)
+      catch (err) {
+        console.log(err)
+        openFailedNotification('topRight','Unable to Signup')
+        // return err
       }
+    }
+    else {
+      errors.otp = res.msg
+      setErrors(errors)
+    }
     setotpResponse({})
 
-}
+  }
+
+  const changeRole = (role) => {
+    setRole(role)
+  }
 
   return (
     <div style={{ background: '' }}>
-       {contextHolder}
+      {contextHolder}
       <Flex>
         <Image src={gojo} style={{ height: '46rem', width: '30rem' }} />
-        <Form
-          ref={formRef}
-          onFinish={handleSubmit}
-          style={{ transform: 'translate(0%,5%)' }}
-        >
+
+        <Flex vertical>
           <h1 style={{ transform: 'translate(52%,5%)' }}>Create your Account</h1>
-          <Flex vertical={true} gap={"large"} style={{ transform: 'translate(25%,5%)' }}>
-            <Row>
-              <Col span={12}>
-                <Row>
-                  <span>First Name <span style={{ color: 'red' }}>*</span></span>
-                </Row>
-                <Row>
-                  <Input
-                    label="First Name"
-                    className=" input-style input  input-extras"
-                    placeholder="First Name"
-                    onChange={handleChange}
-                    variant="filled"
-                    id={"first_name"}
-                    autoComplete='off'
-                    value={user["first_name"]}
-                  />
 
-                </Row>
-              </Col>
-              <Col span={12}>
-                <Row>
-                  <span>Last Name <span style={{ color: 'red' }}>*</span></span>
-                </Row>
-                <Row>
-                  <Input
-                    className=" input-style input  input-extras"
-                    placeholder="Last Name"
-                    onChange={handleChange}
-                    variant="filled"
-                    id={"last_name"}
-                    autoComplete='off'
-                    value={user["last_name"]}
-                  />
-                </Row>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={12}>
-                <Row>
-                  <span>Email <span style={{ color: 'red' }}>*</span></span>
-                </Row>
-                <Row>
-                  <Input
-                    className=" input-style input  input-extras"
-                    placeholder="Email"
-                    onChange={handleChange}
-                    id={"email"}
-                    variant="filled"
-                    autoComplete='off'
-                    value={user["email"]}
-                  />
-                </Row>
-              </Col>
-              <Col span={12}>
-                <Row>
-                  <span>Mobile No. <span style={{ color: 'red' }}>*</span></span>
-
-                </Row>
-                <Row>
-                  <PhoneInput
-                    country='in'
-                    regions={'asia'}
-                    id="mobile_no"
-                    onChange={handlePhone}
-                  />
-                </Row>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={12}>
-                <Row>
-                  <span>Company Name <span style={{ color: 'red' }}>*</span></span>
-                </Row>
-                <Row>
-                  <Input
-                    className=" input-style input  input-extras"
-                    placeholder="Company Name"
-                    onChange={handleChange}
-                    variant="filled"
-                    id={"company_name"}
-                    autoComplete='off'
-                    value={user["company_name"]}
-                  />
-                </Row>
-              </Col>
-              <Col span={12}>
-                <Row>
-                  <span>GST Number <span style={{ color: 'red' }}>*</span></span>
-                </Row>
-                <Row>
-                  <Input
-                    className=" input-style input  input-extras"
-                    placeholder="GST Number"
-                    onChange={handleChange}
-                    variant="filled"
-                    id={"GST_no"}
-                    autoComplete='off'
-                    value={user["GST_no"]}
-                    disabled={checked}
-                  />
-                </Row>
-                <Row>
-                  <Checkbox
-                    checked={checked}
-                    disabled={disabled}
-                    onChange={onChange}
-                    style={{ marginRight: '5px' }}
-                  >
-                    I do not have a GST Number
-                  </Checkbox>
-                </Row>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={12}>
-                <Row>
-                  <span>Password <span style={{ color: 'red' }}>*</span></span>
-                </Row>
-                <Row>
-
-                  <Input.Password
-                    className="input black input-style"
-                    placeholder="Password"
-                    onChange={handleChange}
-                    id={"password"}
-                    variant="filled"
-                    value={user["password"]}
-                    autoComplete='off'
-                  />
-                </Row>
-              </Col>
-              <Col span={12}>
-                <Row>
-                  <span>Confirm Password <span style={{ color: 'red' }}>*</span></span>
-                </Row>
-                <Row>
-                  <Input.Password
-                    className="input black input-style"
-                    placeholder="Confirm Password"
-                    onChange={(e) => { setCheckPassword(e.target.value) }}
-                    id={"password"}
-                    variant="filled"
-                    value={checkPassword}
-                    autoComplete='off'
-                  />
-                </Row>
-              </Col>
-            </Row>
-            <Button
-
-              type="primary"
-              htmlType="submit"
-              className="button-submit button-style"
-            // disabled={user["name"].length === 0 || user["uniqueField"].length === 0 || user["password"].length === 0 || user["handle"].length === 0 || !checked}
-            >
-              <span style={{ color: 'black', fontWeight: 'bolder' }}>Sign Up</span>
-            </Button>
-            <Flex>
-              <p style={{ margin: '0px' }}>Already have an account ?   </p>
-              <span onClick={() => { navigate(OPEN_ROUTES.LOGIN) }} style={{ color: 'rgb(29, 155, 240)' }}>
-                Log In
-              </span>
-            </Flex>
+          <Flex gap="large" justify='center'>
+            <Card style={{ border: role == ROLE.VENDOR ? '2px solid green' : '', cursor: 'pointer' }} onClick={() => { changeRole(ROLE.VENDOR) }}>
+              Vendor Signup
+            </Card>
+            <Card style={{ border: role == ROLE.CUSTOMER ? '2px solid green' : '', cursor: 'pointer' }} onClick={() => { changeRole(ROLE.CUSTOMER) }}>
+              Customer Signup
+            </Card>
           </Flex>
-        </Form>
-        {
-          otpResponse.Status == MESSAGES.SUCCESS &&
-           <OtpModal otpRes={otpResponse} user={user} submitOTP={submitOTP}  handleOtpResponse={handleOtpResponse} />
-        }
 
+          {ROLE.VENDOR == role ?
+
+            //Vendor
+
+            <Form
+              layout="vertical"
+              ref={formRef}
+              onFinish={handleSubmit}
+              style={{ transform: 'translate(0%,5%)' }}
+            >
+
+              <Flex vertical={true} gap={"large"} style={{ transform: 'translate(25%,5%)' }}>
+                <Row span={4}>
+                  <Col span={12}>
+                    <Form.Item
+                     label="First Name"
+                     name="first_name"
+                     rules={[{ required: true, message: 'First Name is required' }]}
+                    >
+                      <Input
+                        label="First Name"
+                        className=" input-style input  input-extras"
+                        placeholder="First Name"
+                        onChange={handleChange}
+                        variant="filled"
+                        id={"first_name"}
+                        autoComplete='off'
+                        value={user["first_name"]}
+                      />
+                      </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                  <Form.Item
+                     label="Last Name"
+                     name="last_name"
+                     rules={[{ required: true, message: 'Last Name is required' }]}
+                    >
+                      <Input
+                        className=" input-style input  input-extras"
+                        placeholder="Last Name"
+                        onChange={handleChange}
+                        variant="filled"
+                        id={"last_name"}
+                        autoComplete='off'
+                        value={user["last_name"]}
+                      />
+                   </Form.Item>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={12}>
+                  <Form.Item
+                     label="Email"
+                     name="email"
+                     rules={[{ required: true, message: 'Email is required' }]}
+                    >
+                      <Input
+                        className=" input-style input  input-extras"
+                        placeholder="Email"
+                        onChange={handleChange}
+                        id={"email"}
+                        variant="filled"
+                        autoComplete='off'
+                        value={user["email"]}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                  <Form.Item
+                     label="Mobile No."
+                     name="mobile_no"
+                     rules={[{ required: true, message: 'Mobile No. is required' }]}
+                    >
+                      <PhoneInput
+                        country='in'
+                        regions={'asia'}
+                        id="mobile_no"
+                        onChange={handlePhone}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={12}>
+                  <Form.Item
+                     label="Company Name"
+                     name="comapny_name"
+                     rules={[{ required: true, message: 'Company Name is required' }]}
+                    >
+                      <Input
+                        className=" input-style input  input-extras"
+                        placeholder="Company Name"
+                        onChange={handleChange}
+                        variant="filled"
+                        id={"company_name"}
+                        autoComplete='off'
+                        value={user["company_name"]}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                  <Form.Item
+                     label="GST Number"
+                     name="GST_no"
+                    //  rules={[{ required: true, message: 'GST Number is required' }]}
+                    >
+                      <Input
+                        className=" input-style input  input-extras"
+                        placeholder="GST Number"
+                        onChange={handleChange}
+                        variant="filled"
+                        id={"GST_no"}
+                        autoComplete='off'
+                        value={user["GST_no"]}
+                        disabled={checked}
+                      />
+                    </Form.Item>
+                    <Row>
+                      <Checkbox
+                        checked={checked}
+                        disabled={disabled}
+                        onChange={onChange}
+                        style={{ marginRight: '5px' }}
+                      >
+                        I do not have a GST Number
+                      </Checkbox>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={12}>
+                  <Form.Item
+                     label="Password"
+                     name="password"
+                     rules={[{ required: true, message: 'Password is required' }]}
+                    >
+                      <Input.Password
+                        className="input black input-style"
+                        placeholder="Password"
+                        onChange={handleChange}
+                        id={"password"}
+                        variant="filled"
+                        value={user["password"]}
+                        autoComplete='off'
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                  <Form.Item
+                     label="Confirm Password"
+                     name="checkPassword"
+                     rules={[{ required: true, message: 'Confirm Password is required' }]}
+                    >
+                      <Input.Password
+                        className="input black input-style"
+                        placeholder="Confirm Password"
+                        onChange={(e) => { setCheckPassword(e.target.value) }}
+                        id={"password"}
+                        variant="filled"
+                        value={checkPassword}
+                        autoComplete='off'
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="button-submit button-style"
+                >
+                  <span style={{ color: 'black', fontWeight: 'bolder' }}>Sign Up</span>
+                </Button>
+                <Flex>
+                  <p style={{ margin: '0px' }}>Already have an account ?   </p>
+                  <span onClick={() => { navigate(OPEN_ROUTES.LOGIN) }} style={{ color: 'rgb(29, 155, 240)' }}>
+                    Log In
+                  </span>
+                </Flex>
+              </Flex>
+            </Form> :
+
+            //  Customer
+            <Form
+              layout='vertical'
+              ref={formRef}
+              onFinish={handleSubmit}
+              style={{ transform: 'translate(0%,5%)' }}
+            >
+              <Flex vertical={true} gap={"large"} style={{ transform: 'translate(25%,5%)' }}>
+                <Row>
+                  <Col span={12}>
+                  <Form.Item
+                     label="First Name"
+                     name="first_name"
+                     rules={[{ required: true, message: 'First Name is required' }]}
+                    >
+                      <Input
+                        label="First Name"
+                        className=" input-style input  input-extras"
+                        placeholder="First Name"
+                        onChange={handleChange}
+                        variant="filled"
+                        id={"first_name"}
+                        autoComplete='off'
+                        value={user["first_name"]}
+                      />
+
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                  <Form.Item
+                     label="Last Name"
+                     name="kast_name"
+                     rules={[{ required: true, message: 'Last Name is required' }]}
+                    >
+                      <Input
+                        className=" input-style input  input-extras"
+                        placeholder="Last Name"
+                        onChange={handleChange}
+                        variant="filled"
+                        id={"last_name"}
+                        autoComplete='off'
+                        value={user["last_name"]}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={12}>
+                  <Form.Item
+                     label="Email"
+                     name="email"
+                     rules={[{ required: true, message: 'Email is required' }]}
+                    >
+                      <Input
+                        className=" input-style input  input-extras"
+                        placeholder="Email"
+                        onChange={handleChange}
+                        id={"email"}
+                        variant="filled"
+                        autoComplete='off'
+                        value={user["email"]}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                  <Form.Item
+                     label="Mobile No."
+                     name="mobile_no"
+                     rules={[{ required: true, message: 'Mobile No. is required' }]}
+                    >
+                      <PhoneInput
+                        country='in'
+                        regions={'asia'}
+                        id="mobile_no"
+                        onChange={handlePhone}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={12}>
+                  <Form.Item
+                     label="Password"
+                     name="password"
+                     rules={[{ required: true, message: 'Password is required' }]}
+                    >
+
+                      <Input.Password
+                        className="input black input-style"
+                        placeholder="Password"
+                        onChange={handleChange}
+                        id={"password"}
+                        variant="filled"
+                        value={user["password"]}
+                        autoComplete='off'
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                  <Form.Item
+                     label="Cofirm Password"
+                     name="checkPassword"
+                     rules={[{ required: true, message: 'Confirm Password is required' }]}
+                    >
+                      <Input.Password
+                        className="input black input-style"
+                        placeholder="Confirm Password"
+                        onChange={(e) => { setCheckPassword(e.target.value) }}
+                        id={"password"}
+                        variant="filled"
+                        value={checkPassword}
+                        autoComplete='off'
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Button
+
+                  type="primary"
+                  htmlType="submit"
+                  className="button-submit button-style"
+                // disabled={user["name"].length === 0 || user["uniqueField"].length === 0 || user["password"].length === 0 || user["handle"].length === 0 || !checked}
+                >
+                  <span style={{ color: 'black', fontWeight: 'bolder' }}>Sign Up</span>
+                </Button>
+                <Flex>
+                  <p style={{ margin: '0px' }}>Already have an account ?   </p>
+                  <span onClick={() => { navigate(OPEN_ROUTES.LOGIN) }} style={{ color: 'rgb(29, 155, 240)' }}>
+                    Log In
+                  </span>
+                </Flex>
+              </Flex>
+            </Form>
+          }
+
+
+
+          {
+            otpResponse.Status == MESSAGES.SUCCESS &&
+            <OtpModal otpRes={otpResponse} user={user} submitOTP={submitOTP} handleOtpResponse={handleOtpResponse} />
+          }
+
+        </Flex>
       </Flex>
     </div>
   )

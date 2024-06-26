@@ -1,9 +1,11 @@
-import { EMAIL, MOBILE, PASSWORD } from './../../utils/constants';
+import { EMAIL, MOBILE, PASSWORD, ROLE } from './../../utils/constants';
 
 
-export const  validateForm = (user,setUser,setErrors,checked,checkPassword) => {
+export const  validateForm = (user,setUser,setErrors,checked,checkPassword, role) => {
     let errors = {};
 
+    let isRequired = role==ROLE.VENDOR?1:0
+    
     if (user["first_name"].length===0) {
       errors.first_name = 'First Name is Required';
     }
@@ -27,11 +29,11 @@ export const  validateForm = (user,setUser,setErrors,checked,checkPassword) => {
     }
 
 
-    if (user["company_name"]!=undefined && user["company_name"].length===0) {
+    if (isRequired && user["company_name"]!=undefined && user["company_name"].length===0) {
       errors.company_name = 'Company Name is Required';
     }
 
-    if (user["GST_no"]!=undefined  && user["GST_no"].length<1 && checked==false) {
+    if (isRequired &&  user["GST_no"]!=undefined  && user["GST_no"].length<1 && checked==false) {
       errors.GST_no = 'GST_no is Required';
     }
 
@@ -47,8 +49,6 @@ export const  validateForm = (user,setUser,setErrors,checked,checkPassword) => {
     else if (user["password"]!==checkPassword) {
       errors.password = "Password and Confirm Password doesn't match";
     }
-
-    console.log(errors)
     
     setErrors(errors);
     return Object.keys(errors).length === 0;

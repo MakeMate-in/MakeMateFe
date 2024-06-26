@@ -21,7 +21,7 @@ export enum API_METHODS {
 
 export enum OPEN_ROUTES {
     PARENT_ROUTE = '/', 
-    LOGIN = '/supplier/login',
+    LOGIN = '/login',
     CUSTOMER_LOGIN = '/customer/login',
     SIGNUP = '/signup',
     FORGOTPASSWORD = '/forgotpassword',

@@ -4,9 +4,12 @@ import mime from 'mime';
 
 export const SESSION_STORAGE_ITEMS = {
   TOKEN: "jwtToken",
-  HANDLE: "handle",
+  USER_NAME: "username",
+  USER_EMAIL: "user_email",
   USER_ID: "user_id",
-  IS_MAIL: "isMail"
+  COMPANY_ID: "company_id",
+  ROLE: "role"
+
 };
 
 export const LOCAL_STORAGE_ITEMS = {
@@ -70,45 +73,25 @@ export const getJWTData = (token) => {
 // 	return {mimeType, fileType, fileExtension}
 // };
 
-export const getUserName = () => localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME);
+export const getUserName = () => sessionStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME);
 
-export const getUserEmail = () => localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_EMAIL);
+export const getUserEmail = () => sessionStorage.getItem(LOCAL_STORAGE_ITEMS.USER_EMAIL);
 
-export const getUserId = () => localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_ID);
+export const getUserId = () => sessionStorage.getItem(LOCAL_STORAGE_ITEMS.USER_ID);
 
-export const getCopanyId = () => localStorage.getItem(LOCAL_STORAGE_ITEMS.COMPANY_ID);
+export const getCopanyId = () => sessionStorage.getItem(LOCAL_STORAGE_ITEMS.COMPANY_ID);
 
-export const getRole = () => localStorage.getItem(LOCAL_STORAGE_ITEMS.ROLE);
+export const getRole = () => sessionStorage.getItem(LOCAL_STORAGE_ITEMS.ROLE);
 
-// export const setJwtToken = (token) => localStorage.setItem(LOCAL_STORAGE_ITEMS.TOKEN, token); 
+export const setUserName =(username)=>sessionStorage.setItem(LOCAL_STORAGE_ITEMS.USER_NAME,username);
 
-export const setUserName =(username)=>localStorage.setItem(LOCAL_STORAGE_ITEMS.USER_NAME,username);
+export const setUserEmail =(useremail)=>sessionStorage.setItem(LOCAL_STORAGE_ITEMS.USER_EMAIL,useremail);
 
-export const setUserEmail =(useremail)=>localStorage.setItem(LOCAL_STORAGE_ITEMS.USER_EMAIL,useremail);
+export const setUserId =(userId)=>sessionStorage.setItem(LOCAL_STORAGE_ITEMS.USER_ID,userId);
 
-export const setUserId =(userId)=>localStorage.setItem(LOCAL_STORAGE_ITEMS.USER_ID,userId);
+export const setCopanyId =(companyId)=>sessionStorage.setItem(LOCAL_STORAGE_ITEMS.COMPANY_ID,companyId);
 
-export const setCopanyId =(companyId)=>localStorage.setItem(LOCAL_STORAGE_ITEMS.COMPANY_ID,companyId);
-
-export const setRole =(role)=>localStorage.setItem(LOCAL_STORAGE_ITEMS.ROLE,role);
-
-// export const setUserdet = (token) => {
-//     const handle = getJWTData(token).handle;
-//     localStorage.setItem(LOCAL_STORAGE_ITEMS.HANDLE, handle);
-// };
-
-// export const setUserId = (token) => {
-//     const userId = getJWTData(token).id;
-//     localStorage.setItem(LOCAL_STORAGE_ITEMS.USER_ID, userId);
-// };
-
-// export const getHandleFromToken = (token) => {
-//     if(typeof(token)=="string" && token!=undefined && token!=''){
-//     const handle = getJWTData(token).handle;
-//     return handle
-//     }
-// }
-
+export const setRole =(role)=>sessionStorage.setItem(LOCAL_STORAGE_ITEMS.ROLE,role);
 
 export const initializeUserValues = (token) => {
 

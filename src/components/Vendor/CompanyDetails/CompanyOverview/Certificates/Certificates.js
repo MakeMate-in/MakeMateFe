@@ -1,4 +1,4 @@
-import { Select, Button, Flex, Input } from 'antd';
+import { Select, Button, Flex, Input, DatePicker } from 'antd';
 import React,{ useState, useEffect, useMemo } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { options } from '../../../../../utils/helper';
@@ -15,10 +15,10 @@ const Context = React.createContext({
 
 
 const Certificates = () => {
-  const [inputs, setInputs] = useState([{ name: undefined, file: undefined }]);
+  const [inputs, setInputs] = useState([{ name: undefined,exp: undefined, file: undefined }]);
 
   const handleAddInput = () => {
-    setInputs([...inputs, { name: undefined, file: undefined }]);
+    setInputs([...inputs, { name: undefined,exp: undefined, file: undefined }]);
   };
 
   const [api, contextHolder] = notification.useNotification();
@@ -122,6 +122,14 @@ const openFailedNotification = (placement) => {
     }
   }
 
+  const onChangeYear = (dateString,index) => {
+    // setMachine({ ...Machine, ["manufacturing_year"]: dateString.$y })
+
+    let onChangeValue = [...inputs];
+    onChangeValue[index]["exp"] = dateString.$y;
+    setInputs(onChangeValue);
+};
+
   return (
     <Context.Provider value={contextValue}>
                 {contextHolder}
@@ -148,6 +156,18 @@ const openFailedNotification = (placement) => {
                     options={options}
                   />
 
+                                            <DatePicker
+                                                onChange={(e) => {onChangeYear(e,index)}}
+                                                
+                                                id="year"
+                                                picker="year"
+                                                placeholder='Select Expiration Year'
+                                                size="large"
+                                                variant="filled"
+                                                value={item.exp}
+                                                style={{ width: '40%' }}
+                                            />
+                  
                   <Input type="file"
                     id={index}
                     style={{ display: 'none' }}
@@ -160,7 +180,7 @@ const openFailedNotification = (placement) => {
                     Upload Certificate</Button>
                   {item.file && <span style={{ marginLeft: '10px' }}><AttachFileIcon /> {item.file.name}</span>}
 
-                  {inputs.length > 1 && (
+                  {inputs.length == 1 && (
                     <DeleteTwoTone onClick={() => handleDeleteInput(index)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
                   )}
 

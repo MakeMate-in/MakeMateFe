@@ -5,5 +5,6 @@ export const MESSAGES = {
     DELETE_PLANT_IMAGES: 'Images deleted Successfully',
     UPLOAD_PLANT_IMAGES: 'Images Uploaded Successfully',
     UPLOAD_IMAGE_ERROR: 'Unable to Upload Image',
-    FETCH_IMAGE_ERROR: 'Unable to Fetch Image'
+    FETCH_IMAGE_ERROR: 'Unable to Fetch Image',
+    SIGNUP_ERROR: 'Unable to Signup! Please try Layer '
 }

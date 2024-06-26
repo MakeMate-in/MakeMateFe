@@ -502,13 +502,13 @@ const Machines = (props) => {
                                                 />
                                             </Form.Item>
 
-                                            <Form.Item
+                                            {/* <Form.Item
                                                 label="Upload Image"
                                                 name="image">
                                                 <Upload>
                                                     <Button size='large' icon={<UploadOutlined />}>Click to Upload</Button>
                                                 </Upload>
-                                            </Form.Item>
+                                            </Form.Item> */}
                                         </Col>
                                         <Col span={12}>
                                             <Form.Item label="Machine Name" name="machineName" rules={[{ required: true, message: 'Machine Name is required' }]}>

@@ -94,7 +94,6 @@ const BasicDetails = (props) => {
 
     try{
     let params = {
-      // user: localStorage.get(USER_ID)
       user: USER_ID
     }
     let equal = deepEqual(allvalues,initialValues) || allvalues==undefined

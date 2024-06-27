@@ -1,6 +1,7 @@
 export enum AUTHEN_URLS{
     LOGIN='/api/users/login',
     SIGNUP='/api/users/signup',
+    FORGOTPASSWORD='/api/users/forgotpassword',
     CUSTOMER_SIGNUP='/api/users/customersignup',
     GET_MOBILE_OTP='/api/users/getOtp',
     VERIFY_MOBILE_OTP='/api/users/verifyOtp',

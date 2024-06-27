@@ -72,6 +72,18 @@ export const login =async (data)=>{
     }
 }
 
+export const forgotpassword =async (data)=>{
+    
+    try{
+       const url=AUTHEN_URLS.FORGOTPASSWORD;
+       const user = await requestHandler.patch(url,data);
+       return user
+    }
+    catch(err){
+        throw (err)
+    }
+}
+
 export const customerSignUp = async (userData,role) => {
 
     try {

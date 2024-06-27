@@ -8,7 +8,7 @@ import { OPEN_ROUTES, ROLE } from '../../../utils/constants'
 import { login } from '../../../apis/authentication.'
 
 import { notification } from 'antd';
-import { SESSION_STORAGE_ITEMS, initializeUserValues } from '../../../utils/helper'
+import { SESSION_STORAGE_ITEMS, getRole, initializeUserValues } from '../../../utils/helper'
 const Context = React.createContext({
   name: 'Default',
 });
@@ -44,7 +44,7 @@ const SignIn = () => {
 
   const openFailedNotification = (placement,msg) => {
     api.error({
-      message: `Something went wrong`,
+      message: `Something went wrong! Try Again`,
       description: msg,
       placement,
     });
@@ -73,14 +73,19 @@ const SignIn = () => {
       user.uniqueField = user.uniqueField.substring(2);
     }
 
+    
     const res = await login(user)
-    console.log(res)
 
     if (res.success) {
            sessionStorage.setItem(SESSION_STORAGE_ITEMS.TOKEN, res.token);
            initializeUserValues(res.token)
            openNotification('topRight')
+           if(getRole()==ROLE.VENDOR){
            navigate(OPEN_ROUTES.VENDOR_DASHBOARD)
+           }
+           else{
+           navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD)
+           }
           } else {
             openFailedNotification('topRight', res.msg);
             // throw new Error('Login failed')

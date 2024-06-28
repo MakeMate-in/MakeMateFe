@@ -165,6 +165,7 @@ const openFailedNotification = (placement, message) => {
         }
 
         if (res.success) {
+        setotpResponse({})
         sessionStorage.setItem(SESSION_STORAGE_ITEMS.TOKEN, res.token);
         initializeUserValues(res.token)
         openNotification('topRight', "User is Signed Up ")
@@ -185,7 +186,7 @@ const openFailedNotification = (placement, message) => {
       errors.otp = res.msg
       setErrors(errors)
     }
-    setotpResponse({})
+  
 
   }
 

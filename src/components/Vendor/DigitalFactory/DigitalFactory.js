@@ -4,7 +4,7 @@ import { COMPANY_ID } from './../../../utils/constants';
 import './../Dashboard/Dashboard.css';
 import './DigitalFactory.css'
 import InfraDetails from '../CompanyDetails/Machines';
-import { STEP_TAB_MAP_2, STEP_TAB_MAP_INFRA_2, STEPS_HEADINGS, USER_ID, PER_COUNT, PER_INFRA_COUNT, PER_MACHINE_COUNT } from './../../../utils/constants';
+import { STEP_TAB_MAP_2, STEP_TAB_MAP_INFRA_2, STEPS_HEADINGS, USER_ID, PER_COUNT, PER_INFRA_COUNT } from './../../../utils/constants';
 import CompanyDetailsComp from '../CompanyDetails/CompanyOverview/CompanyDetails';
 import { getAllDetails, getCompanyDetails } from '../../../apis/Vendor/CompanyDetails';
 import CustomerDetails from '../CompanyDetails/CustomerDetails/CustomerDetails';
@@ -12,7 +12,6 @@ import { checkButtonRequired } from '../../../utils/helper';
 import { LeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom'
 import { OPEN_ROUTES } from '../../../utils/constants'
-import { useOutletContext } from "react-router-dom";
 
 
 const { Step } = Steps;
@@ -45,16 +44,23 @@ const DigitalFactory = () => {
         companyId: COMPANY_ID
       }
 
+      try{
       const resp = await getCompanyDetails(param);
       const respAll = await getAllDetails(param_1);
 
 
+      if(respAll.data.plantImages){
       setPlantImagesCount(respAll.data.plantImages.company_Images.length)
+      }
       setCustomerDetails(respAll.data.productDetails)
       setMachineDetails(respAll.data.machineDetails)
       setInfrastructureDetails(respAll.data.infrastructureDetails)
       setcompanyDetails(resp.data)
       setAllDetails(respAll.data);
+    }
+    catch(err){
+      //Toast
+    }
     }
     getCompany()
   }, [])
@@ -62,11 +68,18 @@ const DigitalFactory = () => {
   useEffect(() => {
 
     const getCompany = async () => {
+
+      try{
+
       let param_1 = {
         companyId: COMPANY_ID
       }
       const respAll = await getAllDetails(param_1);
       setAllDetails(respAll.data);
+    }
+    catch(err){
+      //Toast
+    }
     }
     getCompany()
 
@@ -77,9 +90,6 @@ const DigitalFactory = () => {
 
     const CalculatePercentage = async () => {
       let per = 0;
-
-      console.log(CompanyDetails)
-      
 
       if (AllDetails?.companyDetails?.company_name !== undefined && AllDetails?.companyDetails?.company_name !== '') per = per + 5
 
@@ -95,19 +105,19 @@ const DigitalFactory = () => {
 
       if (AllDetails?.certificates?.certificates !== undefined && AllDetails?.certificates?.certificates.length > 0) per = per + 6
 
-      if ( (InfrastructureDetails.assembly_area !== undefined && InfrastructureDetails.assembly_area !== null) && InfrastructureDetails?.assembly_area !== '') per = per + PER_INFRA_COUNT
+      if ( (InfrastructureDetails && InfrastructureDetails.assembly_area !== undefined && InfrastructureDetails.assembly_area !== null) && InfrastructureDetails?.assembly_area !== '') per = per + PER_INFRA_COUNT
 
-      if ((InfrastructureDetails.assembly_table !== undefined && InfrastructureDetails.assembly_table !== null) && InfrastructureDetails?.assembly_table !== '') per = per + PER_INFRA_COUNT
+      if ((InfrastructureDetails && InfrastructureDetails.assembly_table !== undefined && InfrastructureDetails.assembly_table !== null) && InfrastructureDetails?.assembly_table !== '') per = per + PER_INFRA_COUNT
 
-      if ( (InfrastructureDetails.design_softwares !== undefined && InfrastructureDetails.design_softwares !== null) && InfrastructureDetails?.design_softwares !== '') per = per + PER_INFRA_COUNT
+      if ( (InfrastructureDetails && InfrastructureDetails.design_softwares !== undefined && InfrastructureDetails.design_softwares !== null) && InfrastructureDetails?.design_softwares !== '') per = per + PER_INFRA_COUNT
 
-      if ( (InfrastructureDetails.surface_table !== undefined && InfrastructureDetails.surface_table !== null) && InfrastructureDetails?.surface_table !== '') per = per + PER_INFRA_COUNT
+      if ( (InfrastructureDetails && InfrastructureDetails.surface_table !== undefined && InfrastructureDetails.surface_table !== null) && InfrastructureDetails?.surface_table !== '') per = per + PER_INFRA_COUNT
 
-      if ( (InfrastructureDetails.CMM !== undefined && InfrastructureDetails.CMM !== null) && InfrastructureDetails?.CMM !== '') per = per + PER_INFRA_COUNT
+      if ( (InfrastructureDetails && InfrastructureDetails.CMM !== undefined && InfrastructureDetails.CMM !== null) && InfrastructureDetails?.CMM !== '') per = per + PER_INFRA_COUNT
 
-      if ( (InfrastructureDetails.crane_tonnage !== undefined && InfrastructureDetails.crane_tonnage !== null) && InfrastructureDetails?.crane_tonnage > 0) per = per + PER_INFRA_COUNT
+      if ( (InfrastructureDetails && InfrastructureDetails.crane_tonnage !== undefined && InfrastructureDetails.crane_tonnage !== null) && InfrastructureDetails?.crane_tonnage > 0) per = per + PER_INFRA_COUNT
 
-      if ( (InfrastructureDetails.plant_area !== undefined && InfrastructureDetails.plant_area !== null) && InfrastructureDetails?.plant_area !== '') per = per + PER_INFRA_COUNT
+      if ( (InfrastructureDetails && InfrastructureDetails.plant_area !== undefined && InfrastructureDetails.plant_area !== null) && InfrastructureDetails?.plant_area !== '') per = per + PER_INFRA_COUNT
 
       if (MachineDetails !== undefined && MachineDetails.length>0) per = per + PER_COUNT
 
@@ -227,12 +237,9 @@ const DigitalFactory = () => {
               style={{
                 height: '39rem',
                 overflow: 'auto',
-                // overflow:'hidden', 
                 scrollbarWidth: 'none'
               }}>
-              <Flex vertical
-              //  style={{ alignItems: 'center' }}
-              >
+              <Flex vertical>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4 onClick={backToDashboard}><LeftOutlined /> Return to Dashboard</h4>
                   <Progress strokeWidth={13} type="dashboard" percent={percent} size={150} gapDegree={150} />

@@ -12,7 +12,7 @@ export enum AUTHEN_URLS{
     GOOGLE_AUTHENTICATION = '/api/users/google_authentication',
     GET_TOKEN = '/api/users/verifyToken',
     REFRESH_TOKEN = '/api/auth/refresh',
-    LOGOUT = '/api/auth/logout'
+    LOGOUT = '/api/users/logout'
 }
 
 export enum COMPANY_DETAILS_URLS{

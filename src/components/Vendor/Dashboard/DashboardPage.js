@@ -10,7 +10,6 @@ import CustomerDetails from '../CompanyDetails/CustomerDetails/CustomerDetails';
 import { getAllDetails } from '../../../apis/Vendor/CompanyDetails';
 import { Pie, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { useOutletContext } from "react-router-dom";
 import { rgb } from 'polished';
 import './DashboardPage.css';
 import { LOCAL_STORAGE_ITEMS, convertBufferToBinary } from '../../../utils/helper';
@@ -28,10 +27,12 @@ const DashboardPage = () => {
       let param = {
         companyId: COMPANY_ID,
       };
+      try{
       const resp = await getAllDetails(param);
       setAllDetails(resp.data);
 
       let newSrcList = [];
+      if(resp.data.plantImages){
       resp.data.plantImages.company_Images.map(async (item, i) => {
           let data = {
               name: "Image_"+i,
@@ -42,8 +43,12 @@ const DashboardPage = () => {
           newSrcList.push(data)
       })
       setSrcList(newSrcList);
-
+    }
       setLoading(false);
+  }
+  catch(err){
+    //Toast 
+  }
     };
 
     getAllDashboardDetails();
@@ -86,16 +91,6 @@ const DashboardPage = () => {
   // Function to get a random color for Services Tags
   const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
 
-  const carouselStyle = {
-    margin: 0,
-    height: '160px',
-    color: '#fff',
-    lineHeight: '160px',
-    textAlign: 'center',
-    background: '#364d79',
-  };
-
-
   return (
     <div style={{ overflow: 'auto', scrollbarWidth: 'none' }}>
       {AllDetails==undefined ? (
@@ -121,7 +116,7 @@ const DashboardPage = () => {
               <Card>
                 <Row>
                   <Col span={14}>
-                    <h1 style={{ fontFamily: 'Cambria', marginBottom: '0' }}>Welcome, {localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME)?localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME):''}</h1>
+                    <h1 style={{ fontFamily: 'Cambria', marginBottom: '0' }}>Welcome, {sessionStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME)?sessionStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME):''}</h1>
                     <h4 style={{ fontFamily: 'Cambria', marginBottom: '0' }}>Company Name: {AllDetails?.companyDetails?.company_name}</h4>
                     <p><b>About:</b> {AllDetails?.companyDetails?.description}</p>
                     <p><strong>GSTN: </strong>{AllDetails?.companyDetails?.GST_no}</p>
@@ -230,7 +225,7 @@ const DashboardPage = () => {
                     <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px' }}>
                       <Statistic
                         title="Plant Area"
-                        value={AllDetails.infrastructureDetails.plant_area}
+                        value={AllDetails.infrastructureDetails?AllDetails.infrastructureDetails.plant_area:0}
                         precision={2}
                         valueStyle={{
                           color: '#3f8600',
@@ -241,7 +236,7 @@ const DashboardPage = () => {
                     <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px' }}>
                       <Statistic
                         title="Assembly Area"
-                        value={AllDetails.infrastructureDetails.assembly_area}
+                        value={AllDetails.infrastructureDetails?AllDetails.infrastructureDetails.assembly_area:0}
                         precision={2}
                         valueStyle={{
                           color: '#3f8600',
@@ -254,7 +249,7 @@ const DashboardPage = () => {
                     <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px' }}>
                       <Statistic
                         title="Crane Tonnage"
-                        value={AllDetails.infrastructureDetails.crane_tonnage}
+                        value={AllDetails.infrastructureDetails?AllDetails.infrastructureDetails.crane_tonnage:0}
                         precision={2}
                         valueStyle={{
                           color: '#3f8600',
@@ -264,7 +259,7 @@ const DashboardPage = () => {
                     <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px' }}>
                       <Statistic
                         title="Assembly Table"
-                        value={AllDetails.infrastructureDetails.assembly_table}
+                        value={AllDetails.infrastructureDetails?AllDetails.infrastructureDetails.assembly_table:0}
                         valueStyle={{
                           color: '#3f8600',
                         }}
@@ -281,11 +276,11 @@ const DashboardPage = () => {
                 <h2 style={{ margin: '0', marginTop: '10px' }}>Services</h2>
                 <Card>
                   <Flex gap="5px 2px" wrap>
-                    {AllDetails.services.services.map((service, index) => (
+                    {AllDetails.services?AllDetails.services.services.map((service, index) => (
                       <Tag size='large' key={index} style={{ fontSize: '18px', fontFamily: 'none' }} color={getRandomColor()}>
                         {service.service_name}
                       </Tag>
-                    ))}
+                    )):''}
                   </Flex>
                 </Card>
 

@@ -1,12 +1,10 @@
 import React, { useState,useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 import {
-  Avatar,
   Box,
   Toolbar,
   List,
   CssBaseline,
-  Tooltip,
   Typography,
   Divider,
   IconButton,
@@ -20,34 +18,17 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { AppBar, Drawer, DrawerHeader } from './Drawer.tsx';
 import { OPEN_ROUTES, VENDOR_DRAWER_LIST } from '../../../utils/constants';
-import { COMPANY_ID } from './../../../utils/constants';
 import './Dashboard.css';
 import { Link, useNavigate } from "react-router-dom";
 import { Outlet } from 'react-router-dom';
 import { logOut } from '../../../apis/authentication..js';
-import { LOCAL_STORAGE_ITEMS } from '../../../utils/helper.js';
-import { Popover } from 'antd';
-
+import Profile from '../Profile/Profile.js';
 
 const Dashboard = () => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [tab, setTab] = useState(0)
   const navigate = useNavigate();
-
-  const getMarginLeft = (name) => {
-    const baseMargin = 6;
-    const extraMargin = Math.min(name.length * 2, 32);
-    return baseMargin + extraMargin;
-  };
-
-  const [showEmail, setShowEmail] = useState(false);
-
-
-  const handleAvatarClick = () => {
-    setShowEmail(!showEmail);
-  };
-
 
   useEffect(() => {
     const list = VENDOR_DRAWER_LIST.filter((item) => {
@@ -78,19 +59,6 @@ const Dashboard = () => {
     }
   }
 
-  const user = {
-    name: localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME)?localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME):"",
-    email: localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_EMAIL)?localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_EMAIL):"",
-  };
-  
-  const content = (
-    <div>
-      <p><strong>{localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME)?localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME):""}</strong></p>
-      <p>Email: {localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_EMAIL)?localStorage.getItem(LOCAL_STORAGE_ITEMS.USER_EMAIL):""}</p>
-      <p>Role:  {localStorage.getItem(LOCAL_STORAGE_ITEMS.ROLE)?localStorage.getItem(LOCAL_STORAGE_ITEMS.ROLE):""}</p>
-    </div>
-  );
-
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -103,21 +71,7 @@ const Dashboard = () => {
           </Typography>
         </Box>
         <Box style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
-          <Popover content={content} trigger="click">
-          <Avatar
-            alt="User"
-            onClick={handleAvatarClick}
-            style={{ cursor: 'pointer' }}
-          >
-            
-            {user.name.substring(0,1)}
-          </Avatar>
-          </Popover>
-          {/* <Box style={{cursor: 'pointer' }}>
-            <Typography variant="body1">
-              {user.name}
-            </Typography>
-          </Box> */}
+         <Profile />
         </Box>
       </Toolbar>
     </AppBar>

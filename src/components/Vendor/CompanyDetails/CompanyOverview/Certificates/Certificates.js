@@ -150,7 +150,7 @@ const openFailedNotification = (placement,msg) => {
         overflow: 'auto',
         scrollbarWidth: 'none'
       }}>
-        <h2 style={{ margin: '0px' }}>Certificates</h2>
+        <h2 style={{ marginTop:'0px'}}>Certificates</h2>
         <Flex vertical gap="large">
           {inputs.map((item, index) => {
             return (
@@ -194,7 +194,7 @@ const openFailedNotification = (placement,msg) => {
                   )}
 
                 </Flex>
-                {inputs.length >= 0 && (
+                {index === inputs.length-1 && (
                   <a onClick={() => handleAddInput()} style={{ fontSize: '16px' }}>+ Add Certificate</a>
                 )}
               </Flex>

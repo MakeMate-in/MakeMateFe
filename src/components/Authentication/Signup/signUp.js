@@ -200,7 +200,7 @@ const SignUp = () => {
       <Flex>
         <Image src={gojo} style={{ height: '46rem', width: '30rem' }} />
 
-        <Flex vertical align='center'>
+        <Flex vertical align='center' justify='center'>
           <h1 
           // style={{ transform: 'translate(52%,5%)' }}
           >Create your Account</h1>
@@ -225,8 +225,8 @@ const SignUp = () => {
               style={{ transform: 'translate(0%,5%)' }}
             >
 
-              <Flex vertical={true} style={{ transform: 'translate(25%,5%)' }}>
-                <Row gutter={[4, 4]}>
+              <Flex vertical style={{ transform: 'translate(25%,5%)' }}>
+                <Row>
                   <Col span={12}>
                     <Form.Item
                       label="First Name"
@@ -400,7 +400,7 @@ const SignUp = () => {
               onFinish={handleSubmit}
               style={{ transform: 'translate(0%,5%)' }}
             >
-              <Flex vertical={true} gap={"large"} style={{ transform: 'translate(25%,5%)' }}>
+              <Flex vertical={true} style={{ transform: 'translate(25%,5%)' }}>
                 <Row>
                   <Col span={12}>
                     <Form.Item

@@ -1,10 +1,15 @@
 import React from 'react'
 import {Card, Row, Col, Flex} from 'antd'
-import { USER_DETAIL } from '../../../../../utils/constants'
 import business_plan from './../../../../../assets/business_plan.svg';
+import { getRole, getUserEmail, getUserName } from '../../../../../utils/helper';
 
 
 const BasicCompanyDetails = (props) => {
+   const USER_DETAIL = {
+    name: getUserName()?getUserName():"",
+    email: getUserEmail()?getUserEmail():"",
+    role: getRole()?getRole():""
+  };
     let AllDetails = props.AllDetails
   return (
     <Card>

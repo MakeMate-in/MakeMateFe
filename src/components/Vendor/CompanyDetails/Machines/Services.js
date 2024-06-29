@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { ROW_COLUMNS } from '../../../../utils/helper'
+import { ROW_COLUMNS, getCopanyId } from '../../../../utils/helper'
 import { Flex, Form, Row, Col, Button, Radio, Space } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import { addServiceDetails, getServiceDetails } from '../../../../apis/Vendor/ServiceDetails';
-import { COMPANY_ID } from '../../../../utils/constants';
 import {  notification } from 'antd';
 import { deepEqual } from '../../../../utils/helper';
 import { MESSAGES } from '../../../../utils/locale';
@@ -62,7 +61,7 @@ const Services = (props) => {
 
   const fetchServices = async () => {
     try {
-
+      const  COMPANY_ID = getCopanyId()
       let res = await getServiceDetails(COMPANY_ID)
       if (res.success) {
         const services = res.documents[0].services
@@ -92,6 +91,7 @@ const Services = (props) => {
 
   const handleFormSubmit = async () => {
     try {
+      const  COMPANY_ID = getCopanyId()
       let params = {
         company_id: COMPANY_ID
       }

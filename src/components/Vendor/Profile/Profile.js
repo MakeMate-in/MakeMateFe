@@ -1,9 +1,16 @@
 import React from 'react'
 import { Popover, Avatar, Flex } from 'antd';
-import { USER_DETAIL } from '../../../utils/constants';
+import { getRole, getUserEmail, getUserName } from '../../../utils/helper';
 
 const Profile = () => {
 
+  const USER_DETAIL = {
+    name: getUserName()?getUserName():"",
+    email: getUserEmail()?getUserEmail():"",
+    role: getRole()?getRole():""
+  };
+
+  
   const ColorList = ['#f56a00', '#7265e6',  '#00a2ae'];
 
   const nameParts = USER_DETAIL.name.split(" ");

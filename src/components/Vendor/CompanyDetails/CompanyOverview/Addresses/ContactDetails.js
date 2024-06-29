@@ -2,10 +2,11 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Card, Col, Row, Modal, Form, Input, Flex } from 'antd';
 import "react-country-state-city/dist/react-country-state-city.css";
 import { deleteElement, getCompanyDetails, updateAddressandContacts, updateElement } from './../../../../../apis/Vendor/CompanyDetails';
-import { MESSAGES, USER_ID } from './../../../../../utils/constants';
+import { MESSAGES } from './../../../../../utils/constants';
 import del from './../../../../../assets/del.png'
 import pen from './../../../../../assets/pen.png'
 import { notification } from 'antd';
+import { getUserId } from '../../../../../utils/helper';
 const Context = React.createContext({
     name: 'Default',
 });
@@ -97,6 +98,7 @@ const ContactDetails = (props) => {
 
     const handleDelete = async (item) => {
         try {
+            const USER_ID = getUserId()
             let param = {
                 user: USER_ID
             }
@@ -133,6 +135,7 @@ const ContactDetails = (props) => {
 
     const handleFormSubmit = async () => {
         try {
+            const USER_ID = getUserId()
             let params = {
                 user: USER_ID
             }

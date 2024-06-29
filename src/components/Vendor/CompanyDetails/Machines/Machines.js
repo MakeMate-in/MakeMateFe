@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Space, Popover } from 'antd';
-import { MACHINE_TYPE, convertBufferToBinary } from '../../../../utils/helper';
+import { MACHINE_TYPE, convertBufferToBinary, getCopanyId } from '../../../../utils/helper';
 import { addMachineDetails, getMachineDetails, deleteMachineDetails, uploadMachineImages } from '../../../../apis/Vendor/MachineDetails';
-import { COMPANY_ID, OPEN_ROUTES } from '../../../../utils/constants';
 import { DeleteTwoTone } from '@ant-design/icons';
 import { notification } from 'antd';
+import { OPEN_ROUTES } from '../../../../utils/constants';
 import ImageUpload from '../../../ImageUpload/ImageUpload';
 const Context = React.createContext({
     name: 'Default',
@@ -100,6 +100,7 @@ const Machines = (props) => {
 
     const fetchMachineDetails = async () => {
         try{
+            const  COMPANY_ID = getCopanyId()
         let params = { company_id: COMPANY_ID }
         const machines = await getMachineDetails(params)
         if (machines.success) {
@@ -219,7 +220,7 @@ const Machines = (props) => {
     console.log(modalMachine)
 
 
-    const uploadMachineImage = async (COMPANY_ID, files) => {
+    const uploadMachineImage = async (files) => {
         try {
             if (modalMachine) {
                 const res = await uploadMachineImages(modalMachine.id, files)
@@ -235,8 +236,9 @@ const Machines = (props) => {
     }
 
 
-    const getMachineImage = async (COMPANY_ID) => {
+    const getMachineImage = async () => {
         try {
+            const  COMPANY_ID = getCopanyId()
             let params = { company_id: COMPANY_ID, machine_id: modalMachine.id }
             const machines = await getMachineDetails(params)
             if (machines.success) {
@@ -327,6 +329,7 @@ const Machines = (props) => {
 
     const handleFormSubmit = async () => {
         try {
+            const  COMPANY_ID = getCopanyId()
             form.resetFields()
             let params = {
                 company_id: COMPANY_ID

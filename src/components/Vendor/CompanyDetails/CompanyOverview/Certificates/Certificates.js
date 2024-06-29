@@ -1,8 +1,7 @@
 import { Select, Button, Flex, Input, DatePicker } from 'antd';
 import React,{ useState, useEffect, useMemo } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
-import { options } from '../../../../../utils/helper';
-import { COMPANY_ID } from '../../../../../utils/constants';
+import { getCopanyId, options } from '../../../../../utils/helper';
 import { uploadCertificate, getCertificates } from '../../../../../apis/Vendor/CompanyDetails';
 import { DeleteTwoTone } from '@ant-design/icons';
 import './styles.css'
@@ -87,6 +86,7 @@ const openFailedNotification = (placement,msg) => {
 
   const fetchCertificates = async () => {
     try{
+    const  COMPANY_ID = getCopanyId()
     const res = await getCertificates(COMPANY_ID)
     if (res.success){
         if(res.count>0){
@@ -122,6 +122,7 @@ const openFailedNotification = (placement,msg) => {
 
   const uploadFiles = async () => {
     try {
+      const  COMPANY_ID = getCopanyId()
       const res = await uploadCertificate(COMPANY_ID, inputs)
       if (res.success) {
         fetchCertificates()

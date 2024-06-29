@@ -2,10 +2,10 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Card, Col, Row, ConfigProvider, Modal, Form, Input, Flex } from 'antd';
 import "react-country-state-city/dist/react-country-state-city.css";
 import { getCompanyDetails, updateAddressandContacts, deleteElement } from '../../../../../apis/Vendor/CompanyDetails';
-import { USER_ID } from '../../../../../utils/constants';
 import del from './../../../../../assets/del.png'
 import ContactDetails from './ContactDetails';
 import { notification } from 'antd';
+import { getUserId } from '../../../../../utils/helper';
 const Context = React.createContext({
     name: 'Default',
 });
@@ -88,6 +88,7 @@ const AddressDetails = (props) => {
     }
     useEffect(() => {
         const getCompany = async () => {
+            const USER_ID = getUserId()
             let param = {
                 user: USER_ID
             }
@@ -105,6 +106,7 @@ const AddressDetails = (props) => {
 
     const handleDelete = async (item) => {
         try {
+            const USER_ID = getUserId()
             let param = {
                 user: USER_ID
             }
@@ -132,6 +134,7 @@ const AddressDetails = (props) => {
 
     const handleFormSubmit = async () => {
         try {
+            const USER_ID = getUserId()
             let params = {
                 user: USER_ID
             }

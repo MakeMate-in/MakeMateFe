@@ -52,6 +52,7 @@ const Dashboard = () => {
   const getLogout = async () => {
     try{
       await logOut()
+      sessionStorage.clear();
       navigate(OPEN_ROUTES.PARENT_ROUTE)
     }
     catch(err){

@@ -108,17 +108,17 @@ export const STEPS_HEADINGS = {
 // export const USER_ID = "66379ae26a6866cccf8b3bfd"
 // export const COMPANY_ID = "66379ae26a6866cccf8b3bfe"
 
-export const USER_ID = getUserId()
-export const COMPANY_ID = getCopanyId()
+// export const USER_ID = getUserId()
+// export const COMPANY_ID = getCopanyId()
 
 export const PER_COUNT=10
 export const PER_INFRA_COUNT=2
 export const PER_MACHINE_COUNT=1
 
-export const USER_DETAIL = {
-    name: getUserName()?getUserName():"",
-    email: getUserEmail()?getUserEmail():"",
-    role: getRole()?getRole():""
-  };
+// export const USER_DETAIL = {
+//     name: getUserName()?getUserName():"",
+//     email: getUserEmail()?getUserEmail():"",
+//     role: getRole()?getRole():""
+//   };
 
 // export const HANDLE_REGEX:RegExp = /^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?/~\\-]+$/;

@@ -2,8 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { Form, Row, Col, InputNumber, Select, Button, Flex, Card } from 'antd'
 import { DeleteTwoTone } from '@ant-design/icons';
 import { addInfraDetails, getInfraDetails } from '../../../../apis/Vendor/InfrastructureDetails';
-import { COMPANY_ID } from '../../../../utils/constants';
-import { deepEqual } from '../../../../utils/helper';
+import { deepEqual, getCopanyId } from '../../../../utils/helper';
 
 import { notification } from 'antd';
 const Context = React.createContext({
@@ -105,8 +104,8 @@ const InfraStructureDetails = (props) => {
 
 
   const fetchInfraDetails = async () => {
-    console.log(1)
     try {
+      const  COMPANY_ID = getCopanyId()
       const InfraDetails = await getInfraDetails(COMPANY_ID)
       if (InfraDetails.success && InfraDetails.count === 1) {
         props.setInfrastructureDetails(InfraDetails.documents[0])
@@ -158,6 +157,7 @@ const InfraStructureDetails = (props) => {
 
   const handleFormSubmit = async () => {
     try {
+      const  COMPANY_ID = getCopanyId()
       let params = {
         company_id: COMPANY_ID
       }

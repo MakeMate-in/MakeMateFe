@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { CitySelect, CountrySelect, StateSelect } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
 import { getCompanyDetails, updateAddressandContacts, deleteElement } from '../../../../apis/Vendor/CompanyDetails';
-import { USER_ID } from './../../../../../utils/constants';
 import del from './../../../../../assets/del.png'
 import pen from './../../../../../assets/pen.png'
 import ContactDetails from './Addresses/ContactDetails';
@@ -31,6 +30,7 @@ const AddressDetails = (props) => {
 
     useEffect(() => {
         const getCompany = async () => {
+            const USER_ID = getUserId()
             let param = {
                 user: USER_ID
             }
@@ -43,6 +43,7 @@ const AddressDetails = (props) => {
 
     const handleDelete = async (item) => {
         try{
+            const USER_ID = getUserId()
             let param ={
                 user: USER_ID
             }
@@ -69,6 +70,7 @@ const AddressDetails = (props) => {
 
     const handleFormSubmit = async () => {
         try {
+            const USER_ID = getUserId()
             let params = {
                 user: USER_ID
             }

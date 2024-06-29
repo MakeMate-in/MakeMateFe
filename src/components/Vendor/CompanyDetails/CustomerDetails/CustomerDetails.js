@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Upload, Space, Popover } from 'antd';
-import { COMPANY_ID, OPEN_ROUTES } from '../../../../utils/constants';
+import { OPEN_ROUTES } from '../../../../utils/constants';
 import { addProductDetails, getProductDetails, deleteProductDetails, uploadToolImages, uploadProductImages } from '../../../../apis/Vendor/ProductDetails';
 import { DeleteTwoTone } from '@ant-design/icons';
 import { notification } from 'antd';
 import ImageUpload from '../../../ImageUpload/ImageUpload';
 import { convertBufferToBinary } from '../../../../utils/helper';
+import { getCopanyId } from '../../../../utils/helper';
 
 const Context = React.createContext({
     name: 'Default',
@@ -79,6 +80,7 @@ const CustomerDetails = (props) => {
 
 
     const fetchCustomerDetails = async () => {
+        const  COMPANY_ID = getCopanyId()
         let params = { company_id: COMPANY_ID }
         const customers = await getProductDetails(params)
         if (customers.success) {
@@ -204,7 +206,7 @@ const CustomerDetails = (props) => {
     ];
 
 
-    const uploadToolImage = async (COMPANY_ID, files) => {
+    const uploadToolImage = async (files) => {
         try {
             if (modalProduct) {
                 const res = await uploadToolImages(modalProduct.id, files)
@@ -220,8 +222,9 @@ const CustomerDetails = (props) => {
     }
 
 
-    const getToolImage = async (COMPANY_ID) => {
+    const getToolImage = async () => {
         try {
+            const  COMPANY_ID = getCopanyId()
             let params = { company_id: COMPANY_ID, product_id: modalProduct.id }
             const customers = await getProductDetails(params)
             if (customers.success) {
@@ -247,7 +250,7 @@ const CustomerDetails = (props) => {
 
 
 
-    const uploadProductImage = async (COMPANY_ID, files) => {
+    const uploadProductImage = async (files) => {
         try {
             if (modalProduct) {
                 const res = await uploadProductImages(modalProduct.id, files)
@@ -263,8 +266,9 @@ const CustomerDetails = (props) => {
     }
 
 
-    const getProductImage = async (COMPANY_ID) => {
+    const getProductImage = async () => {
         try {
+            const  COMPANY_ID = getCopanyId()
             let params = { company_id: COMPANY_ID, product_id: modalProduct.id }
             const customers = await getProductDetails(params)
             if (customers.success) {
@@ -317,6 +321,7 @@ const CustomerDetails = (props) => {
 
     const handleFormSubmit = async () => {
         try {
+            const  COMPANY_ID = getCopanyId()
             let params = {
                 company_id: COMPANY_ID
             }

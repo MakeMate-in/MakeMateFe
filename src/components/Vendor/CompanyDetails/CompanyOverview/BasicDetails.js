@@ -2,8 +2,7 @@ import React, { useState, useEffect, useMemo} from 'react';
 import { Col, Row, Form, Input, Button, Image, Upload } from 'antd';
 import './../../Dashboard/Dashboard.css'
 import { getCompanyDetails, updateCompanyDetails, uploadAvatar } from '../../../../apis/Vendor/CompanyDetails';
-import { USER_ID } from '../../../../utils/constants';
-import { convertBufferToBinary, deepEqual, getBase64, uploadButton } from '../../../../utils/helper';
+import { convertBufferToBinary, deepEqual, getBase64, getUserId, uploadButton } from '../../../../utils/helper';
 import { notification} from 'antd';
 const Context = React.createContext({
   name: 'Default',
@@ -93,6 +92,7 @@ const BasicDetails = (props) => {
   const handleFormSubmit = async() => {
 
     try{
+      const USER_ID = getUserId()
     let params = {
       user: USER_ID
     }
@@ -132,6 +132,7 @@ const BasicDetails = (props) => {
   const uploadImage = async options => {
     const { onSuccess, onError, file, onProgress } = options;
     try {
+      const USER_ID = getUserId()
       const res = await uploadAvatar(file,USER_ID) 
       onSuccess("Ok");
       console.log("server res: ", res);

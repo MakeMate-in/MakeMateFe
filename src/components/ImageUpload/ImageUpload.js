@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Upload, Image } from 'antd';
-import { COMPANY_ID } from '../../utils/constants';
-import { convertBufferToBinary } from '../../utils/helper';
+import { Upload, Carousel } from 'antd';
 import { notification } from 'antd';
 
 import { PlusOutlined } from '@ant-design/icons';
@@ -56,7 +54,7 @@ const ImageUpload = (props) => {
 
     const fetchImages = async () => {
         try {
-            const newSrcList = await props.getImages(COMPANY_ID)
+            const newSrcList = await props.getImages()
             
             setFileList(newSrcList);
         }
@@ -82,7 +80,7 @@ const ImageUpload = (props) => {
 
         const { onSuccess } = options;
         try {
-            const res = await props.uploadImages(COMPANY_ID, fileList)
+            const res = await props.uploadImages(fileList)
             if (res.success) {
                 openNotification('topRight');
                 fetchImages()
@@ -103,13 +101,13 @@ const ImageUpload = (props) => {
         })
 
         try {
-            const res = await props.uploadImages(COMPANY_ID, filesList)
+            const res = await props.uploadImages(filesList)
             if (res.success) {
                 deleteNotification('topRight', MESSAGES.DELETE_PLANT_IMAGES);
                 fetchImages()
-                // fetchImages()
+
             }
-            // console.log("server res: ", res);
+
         } catch (err) {
             console.log("Eroor: ", err);
             const error = new Error("Some error");
@@ -142,8 +140,19 @@ const ImageUpload = (props) => {
             </div>
         </button>
     );
+
+    
     return (
         <div>
+             <Carousel arrows autoplay fade dotPosition="left" style={{marginBottom:'10px'}}>
+               
+               {fileList.map((item, i) => (
+                      <div>
+                      <img src={item.url} style={{ height: "40vh", width: "35vw" }} />
+                  </div>
+                   
+                   ))}
+             </Carousel>
             <Upload
                 listType="picture-card"
                 fileList={fileList}
@@ -156,7 +165,7 @@ const ImageUpload = (props) => {
             >
                 {fileList && fileList.length >= 8  ? null : uploadButton}
             </Upload>
-            {previewImage && (
+            {/* {previewImage && (
                 <Image
                     wrapperStyle={{ display: 'none' }}
                     preview={{
@@ -166,7 +175,7 @@ const ImageUpload = (props) => {
                     }}
                     src={previewImage}
                 />
-            )}
+            )} */}
 
         </div>
     )

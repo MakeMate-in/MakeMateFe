@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo} from 'react';
 import { Button, Flex, Modal, Form, Input, Avatar } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { USER_ID } from '../../../../../utils/constants';
 import { updateAddressandContacts,getCompanyDetails } from '../../../../../apis/Vendor/CompanyDetails'
 import randomColor from 'randomcolor'
 import { notification} from 'antd';
+import { getUserId } from '../../../../../utils/helper';
 const Context = React.createContext({
     name: 'Default',
   });
@@ -91,6 +91,7 @@ const Projects = (props) => {
 
     const handleFormSubmit = async () => {
         try {
+            const USER_ID = getUserId()
             let params = {
                 user: USER_ID
             }

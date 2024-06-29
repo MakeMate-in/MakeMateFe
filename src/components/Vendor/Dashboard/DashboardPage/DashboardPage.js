@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Card, Col, Statistic, Row, Flex, Tag, Carousel, ConfigProvider } from 'antd';
-import { COMPANY_ID } from '../../../../utils/constants';
 import Machines from '../../CompanyDetails/Machines/Machines';
 import business_plan from './../../../../assets/business_plan.svg';
 import svg_experience from './../../../../assets/svg_experience.svg';
@@ -12,7 +11,7 @@ import { Pie, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { rgb } from 'polished';
 import './DashboardPage.css';
-import { LOCAL_STORAGE_ITEMS, convertBufferToBinary } from '../../../../utils/helper';
+import { LOCAL_STORAGE_ITEMS, convertBufferToBinary, getCopanyId } from '../../../../utils/helper';
 import BasicCompanyDetails from './Components/BasicCompanyDetails';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -25,6 +24,7 @@ const DashboardPage = () => {
 
   useEffect(() => {
     const getAllDashboardDetails = async () => {
+      const  COMPANY_ID = getCopanyId()
       let param = {
         companyId: COMPANY_ID,
       };

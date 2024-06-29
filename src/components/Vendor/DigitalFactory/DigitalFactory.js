@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Card, Col, Row, Steps, Button, Progress, Flex, Collapse, ConfigProvider } from 'antd';
-import { COMPANY_ID } from './../../../utils/constants';
 import './../Dashboard/Dashboard.css';
 import './DigitalFactory.css'
 import InfraDetails from '../CompanyDetails/Machines';
-import { STEP_TAB_MAP_2, STEP_TAB_MAP_INFRA_2, STEPS_HEADINGS, USER_ID, PER_COUNT, PER_INFRA_COUNT } from './../../../utils/constants';
+import { STEP_TAB_MAP_2, STEP_TAB_MAP_INFRA_2, STEPS_HEADINGS, PER_COUNT, PER_INFRA_COUNT } from './../../../utils/constants';
 import CompanyDetailsComp from '../CompanyDetails/CompanyOverview/CompanyDetails';
 import { getAllDetails, getCompanyDetails } from '../../../apis/Vendor/CompanyDetails';
 import CustomerDetails from '../CompanyDetails/CustomerDetails/CustomerDetails';
-import { checkButtonRequired } from '../../../utils/helper';
+import { checkButtonRequired, getCopanyId, getUserId } from '../../../utils/helper';
 import { LeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom'
 import { OPEN_ROUTES } from '../../../utils/constants'
@@ -36,10 +35,11 @@ const DigitalFactory = () => {
 
   useEffect(() => {
     const getCompany = async () => {
+      const USER_ID = getUserId()
       let param = {
         user: USER_ID
       }
-
+      const  COMPANY_ID = getCopanyId()
       let param_1 = {
         companyId: COMPANY_ID
       }
@@ -70,7 +70,7 @@ const DigitalFactory = () => {
     const getCompany = async () => {
 
       try{
-
+        const  COMPANY_ID = getCopanyId()
       let param_1 = {
         companyId: COMPANY_ID
       }

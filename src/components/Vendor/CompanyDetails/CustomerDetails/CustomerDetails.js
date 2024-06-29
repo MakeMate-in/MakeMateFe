@@ -473,7 +473,7 @@ const CustomerDetails = (props) => {
                             </Form>
                         </Modal>
                     </div> : ''}
-                    <Modal
+                  {toolImageModal &&  <Modal
                         title="Product Images"
                         centered
                         open={toolImageModal}
@@ -493,9 +493,9 @@ const CustomerDetails = (props) => {
                     >
                         <ImageUpload uploadImages={uploadToolImage} getImages={getToolImage} />
 
-                    </Modal>
+                    </Modal>}
 
-                    <Modal
+                  {imageModal &&  <Modal
                         title="Product Images"
                         centered
                         open={imageModal}
@@ -514,7 +514,7 @@ const CustomerDetails = (props) => {
                     >
                         <ImageUpload   uploadImages={uploadProductImage} getImages={getProductImage}/>
 
-                    </Modal>
+                    </Modal>}
 
                 </Context.Provider>
             </ConfigProvider>

@@ -204,7 +204,7 @@ const Machines = (props) => {
             render: (_, record) => (
                 <Space size="large">
                     <a onClick={() => {
-                        setImageModal(true)
+                        setImageModal(true )
                         setmodalMachine(record)
                     }}>View</a>
                     {tab ? <Popover content='Delete'>
@@ -214,6 +214,9 @@ const Machines = (props) => {
             ),
         },
     ];
+
+
+    console.log(modalMachine)
 
 
     const uploadMachineImage = async (COMPANY_ID, files) => {
@@ -258,6 +261,12 @@ const Machines = (props) => {
             console.log(err)
         }
     }
+
+    // useEffect(() => {
+        
+    //     console.log("modalChange")
+    //     // getMachineImage()
+    // },[modalMachine])
 
     useEffect(() => {
         fetchMachineDetails()
@@ -335,7 +344,6 @@ const Machines = (props) => {
                     "bed_Size": {}
                 })
                 setBedSize({})
-                //Add Toast
             }
             else {
             openFailedNotification('topRight', `Unable to Add Machine Details`);
@@ -349,7 +357,6 @@ const Machines = (props) => {
         }
     }
 
-    console.log(Machine['machine_name'])
     
     return (
 
@@ -592,18 +599,18 @@ const Machines = (props) => {
                         </Modal>
                     </div>
 
-                    <Modal
+                {imageModal &&  <Modal
                         title="Add Machine"
                         centered
                         open={imageModal}
                         okText="Save"
-                        onOk={form.submit}
+                        onOk={() => setImageModal(false)}
                         onCancel={() => setImageModal(false)}
                         width={750}
                     >
                         <ImageUpload uploadImages={uploadMachineImage} getImages={getMachineImage} tab={tab} />
 
-                    </Modal>
+                    </Modal>}
 
                 </Context.Provider>
             </ConfigProvider>

@@ -52,31 +52,31 @@ const SignUp = () => {
 
   const openNotification = (placement, message) => {
     api.success({
-    message: `Success`,
-    description: message,
-    placement,
+      message: `Success`,
+      description: message,
+      placement,
     });
-};
-let contextValue = useMemo(
+  };
+  let contextValue = useMemo(
     () => ({
-    name: 'Make Mate',
+      name: 'Make Mate',
     }),
     [],
-);
+  );
 
-const openFailedNotification = (placement, message) => {
+  const openFailedNotification = (placement, message) => {
     api.error({
-    message: `Something went wrong`,
-    description: message,
-    placement,
+      message: `Something went wrong`,
+      description: message,
+      placement,
     });
-};
-    contextValue = useMemo(
+  };
+  contextValue = useMemo(
     () => ({
-    name: 'Make Mate',
+      name: 'Make Mate',
     }),
     [],
-);
+  );
 
   const onChange = (e) => {
     setChecked(e.target.checked);
@@ -106,15 +106,15 @@ const openFailedNotification = (placement, message) => {
         if (isUser.Status == "ERROR") {
           if (isUser.msg.email != undefined) {
             errors.email = isUser.msg.email
-            openFailedNotification('topRight',errors.email)
+            openFailedNotification('topRight', errors.email)
           }
           if (isUser.msg.mobile_no != undefined) {
             errors.mobile_no = isUser.msg.mobile_no
-            openFailedNotification('topRight',errors.mobile_no)
+            openFailedNotification('topRight', errors.mobile_no)
           }
           if (isUser.msg.GST_no != undefined) {
             errors.GST_no = isUser.msg.GST_no
-            openFailedNotification('topRight',errors.GST_no)
+            openFailedNotification('topRight', errors.GST_no)
           }
           setErrors(errors);
 
@@ -126,7 +126,7 @@ const openFailedNotification = (placement, message) => {
           }
           catch (err) {
             console.log(err)
-            openFailedNotification('topRight','Unable to Signup')
+            openFailedNotification('topRight', 'Unable to Signup')
             // throw err
           }
         }
@@ -134,15 +134,15 @@ const openFailedNotification = (placement, message) => {
       }
       catch (err) {
         console.log(err)
-        openFailedNotification('topRight','Unable to Signup')
+        openFailedNotification('topRight', 'Unable to Signup')
         // throw err
       }
     } else {
       // Form is invalid, handle errors or display error messages
       Object.keys(errors).map((item) => {
-        openFailedNotification('topRight',errors[item])
+        openFailedNotification('topRight', errors[item])
       })
-  
+
     }
 
   }
@@ -156,29 +156,29 @@ const openFailedNotification = (placement, message) => {
     const res = await verifyOtp(data, true)
     if (res.Status === MESSAGES.SUCCESS) {
       try {
-        let res; 
-        if(role==ROLE.VENDOR){
-        res = await signUp(user, role)
+        let res;
+        if (role == ROLE.VENDOR) {
+          res = await signUp(user, role)
         }
-        else{
-        res = await customerSignUp(user,role)
+        else {
+          res = await customerSignUp(user, role)
         }
 
         if (res.success) {
-        setotpResponse({})
-        sessionStorage.setItem(SESSION_STORAGE_ITEMS.TOKEN, res.token);
-        initializeUserValues(res.token)
-        openNotification('topRight', "User is Signed Up ")
-        getRole()==ROLE.VENDOR? navigate(OPEN_ROUTES.VENDOR_DASHBOARD): navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD)
-         } else {
-           openFailedNotification('topRight', res.msg);
-           // throw new Error('Login failed')
-         }
-        
+          setotpResponse({})
+          sessionStorage.setItem(SESSION_STORAGE_ITEMS.TOKEN, res.token);
+          initializeUserValues(res.token)
+          openNotification('topRight', "User is Signed Up ")
+          getRole() == ROLE.VENDOR ? navigate(OPEN_ROUTES.VENDOR_DASHBOARD) : navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD)
+        } else {
+          openFailedNotification('topRight', res.msg);
+          // throw new Error('Login failed')
+        }
+
       }
       catch (err) {
         console.log(err)
-        openFailedNotification('topRight','Unable to Signup')
+        openFailedNotification('topRight', 'Unable to Signup')
         // return err
       }
     }
@@ -186,7 +186,7 @@ const openFailedNotification = (placement, message) => {
       errors.otp = res.msg
       setErrors(errors)
     }
-  
+
 
   }
 
@@ -200,10 +200,12 @@ const openFailedNotification = (placement, message) => {
       <Flex>
         <Image src={gojo} style={{ height: '46rem', width: '30rem' }} />
 
-        <Flex vertical>
-          <h1 style={{ transform: 'translate(52%,5%)' }}>Create your Account</h1>
+        <Flex vertical align='center'>
+          <h1 
+          // style={{ transform: 'translate(52%,5%)' }}
+          >Create your Account</h1>
 
-          <Flex gap="large" justify='center'>
+          <Flex gap="large" justify='center' align='flex-end' >
             <Card style={{ border: role == ROLE.VENDOR ? '2px solid green' : '', cursor: 'pointer' }} onClick={() => { changeRole(ROLE.VENDOR) }}>
               Vendor Signup
             </Card>
@@ -223,13 +225,13 @@ const openFailedNotification = (placement, message) => {
               style={{ transform: 'translate(0%,5%)' }}
             >
 
-              <Flex vertical={true} gap={"large"} style={{ transform: 'translate(25%,5%)' }}>
-                <Row span={4}>
+              <Flex vertical={true} style={{ transform: 'translate(25%,5%)' }}>
+                <Row gutter={[4, 4]}>
                   <Col span={12}>
                     <Form.Item
-                     label="First Name"
-                     name="first_name"
-                     rules={[{ required: true, message: 'First Name is required' }]}
+                      label="First Name"
+                      name="first_name"
+                      rules={[{ required: true, message: 'First Name is required' }]}
                     >
                       <Input
                         label="First Name"
@@ -241,13 +243,13 @@ const openFailedNotification = (placement, message) => {
                         autoComplete='off'
                         value={user["first_name"]}
                       />
-                      </Form.Item>
+                    </Form.Item>
                   </Col>
                   <Col span={12}>
-                  <Form.Item
-                     label="Last Name"
-                     name="last_name"
-                     rules={[{ required: true, message: 'Last Name is required' }]}
+                    <Form.Item
+                      label="Last Name"
+                      name="last_name"
+                      rules={[{ required: true, message: 'Last Name is required' }]}
                     >
                       <Input
                         className=" input-style input  input-extras"
@@ -258,15 +260,15 @@ const openFailedNotification = (placement, message) => {
                         autoComplete='off'
                         value={user["last_name"]}
                       />
-                   </Form.Item>
+                    </Form.Item>
                   </Col>
                 </Row>
                 <Row>
                   <Col span={12}>
-                  <Form.Item
-                     label="Email"
-                     name="email"
-                     rules={[{ required: true, message: 'Email is required' }]}
+                    <Form.Item
+                      label="Email"
+                      name="email"
+                      rules={[{ required: true, message: 'Email is required' }]}
                     >
                       <Input
                         className=" input-style input  input-extras"
@@ -280,10 +282,10 @@ const openFailedNotification = (placement, message) => {
                     </Form.Item>
                   </Col>
                   <Col span={12}>
-                  <Form.Item
-                     label="Mobile No."
-                     name="mobile_no"
-                     rules={[{ required: true, message: 'Mobile No. is required' }]}
+                    <Form.Item
+                      label="Mobile No."
+                      name="mobile_no"
+                      rules={[{ required: true, message: 'Mobile No. is required' }]}
                     >
                       <PhoneInput
                         country='in'
@@ -296,10 +298,10 @@ const openFailedNotification = (placement, message) => {
                 </Row>
                 <Row>
                   <Col span={12}>
-                  <Form.Item
-                     label="Company Name"
-                     name="comapny_name"
-                     rules={[{ required: true, message: 'Company Name is required' }]}
+                    <Form.Item
+                      label="Company Name"
+                      name="comapny_name"
+                      rules={[{ required: true, message: 'Company Name is required' }]}
                     >
                       <Input
                         className=" input-style input  input-extras"
@@ -313,9 +315,9 @@ const openFailedNotification = (placement, message) => {
                     </Form.Item>
                   </Col>
                   <Col span={12}>
-                  <Form.Item
-                     label="GST Number"
-                     name="GST_no"
+                    <Form.Item
+                      label="GST Number"
+                      name="GST_no"
                     //  rules={[{ required: true, message: 'GST Number is required' }]}
                     >
                       <Input
@@ -343,10 +345,10 @@ const openFailedNotification = (placement, message) => {
                 </Row>
                 <Row>
                   <Col span={12}>
-                  <Form.Item
-                     label="Password"
-                     name="password"
-                     rules={[{ required: true, message: 'Password is required' }]}
+                    <Form.Item
+                      label="Password"
+                      name="password"
+                      rules={[{ required: true, message: 'Password is required' }]}
                     >
                       <Input.Password
                         className="input black input-style"
@@ -360,10 +362,10 @@ const openFailedNotification = (placement, message) => {
                     </Form.Item>
                   </Col>
                   <Col span={8}>
-                  <Form.Item
-                     label="Confirm Password"
-                     name="checkPassword"
-                     rules={[{ required: true, message: 'Confirm Password is required' }]}
+                    <Form.Item
+                      label="Confirm Password"
+                      name="checkPassword"
+                      rules={[{ required: true, message: 'Confirm Password is required' }]}
                     >
                       <Input.Password
                         className="input black input-style"
@@ -377,18 +379,16 @@ const openFailedNotification = (placement, message) => {
                     </Form.Item>
                   </Col>
                 </Row>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="button-submit button-style"
-                >
-                  <span style={{ color: 'black', fontWeight: 'bolder' }}>Sign Up</span>
-                </Button>
-                <Flex>
-                  <p style={{ margin: '0px' }}>Already have an account ?   </p>
-                  <span onClick={() => { navigate(OPEN_ROUTES.LOGIN) }} style={{ color: 'rgb(29, 155, 240)' }}>
-                    Log In
-                  </span>
+                <Flex vertical>
+                  <Button type="primary" htmlType="submit" style={{ width: '400px', textAlign: 'center', fontWeight: '500' }}>
+                    Sign Up
+                  </Button>
+                  <Flex>
+                    <p style={{ margin: '0px' }}>Already have an account ?   <span onClick={() => { navigate(OPEN_ROUTES.LOGIN) }} style={{ color: 'rgb(29, 155, 240)', cursor: 'pointer' }}>
+                      Log In
+                    </span> </p>
+
+                  </Flex>
                 </Flex>
               </Flex>
             </Form> :
@@ -403,10 +403,10 @@ const openFailedNotification = (placement, message) => {
               <Flex vertical={true} gap={"large"} style={{ transform: 'translate(25%,5%)' }}>
                 <Row>
                   <Col span={12}>
-                  <Form.Item
-                     label="First Name"
-                     name="first_name"
-                     rules={[{ required: true, message: 'First Name is required' }]}
+                    <Form.Item
+                      label="First Name"
+                      name="first_name"
+                      rules={[{ required: true, message: 'First Name is required' }]}
                     >
                       <Input
                         label="First Name"
@@ -422,10 +422,10 @@ const openFailedNotification = (placement, message) => {
                     </Form.Item>
                   </Col>
                   <Col span={12}>
-                  <Form.Item
-                     label="Last Name"
-                     name="kast_name"
-                     rules={[{ required: true, message: 'Last Name is required' }]}
+                    <Form.Item
+                      label="Last Name"
+                      name="kast_name"
+                      rules={[{ required: true, message: 'Last Name is required' }]}
                     >
                       <Input
                         className=" input-style input  input-extras"
@@ -441,10 +441,10 @@ const openFailedNotification = (placement, message) => {
                 </Row>
                 <Row>
                   <Col span={12}>
-                  <Form.Item
-                     label="Email"
-                     name="email"
-                     rules={[{ required: true, message: 'Email is required' }]}
+                    <Form.Item
+                      label="Email"
+                      name="email"
+                      rules={[{ required: true, message: 'Email is required' }]}
                     >
                       <Input
                         className=" input-style input  input-extras"
@@ -458,10 +458,10 @@ const openFailedNotification = (placement, message) => {
                     </Form.Item>
                   </Col>
                   <Col span={12}>
-                  <Form.Item
-                     label="Mobile No."
-                     name="mobile_no"
-                     rules={[{ required: true, message: 'Mobile No. is required' }]}
+                    <Form.Item
+                      label="Mobile No."
+                      name="mobile_no"
+                      rules={[{ required: true, message: 'Mobile No. is required' }]}
                     >
                       <PhoneInput
                         country='in'
@@ -474,10 +474,10 @@ const openFailedNotification = (placement, message) => {
                 </Row>
                 <Row>
                   <Col span={12}>
-                  <Form.Item
-                     label="Password"
-                     name="password"
-                     rules={[{ required: true, message: 'Password is required' }]}
+                    <Form.Item
+                      label="Password"
+                      name="password"
+                      rules={[{ required: true, message: 'Password is required' }]}
                     >
 
                       <Input.Password
@@ -492,10 +492,10 @@ const openFailedNotification = (placement, message) => {
                     </Form.Item>
                   </Col>
                   <Col span={12}>
-                  <Form.Item
-                     label="Cofirm Password"
-                     name="checkPassword"
-                     rules={[{ required: true, message: 'Confirm Password is required' }]}
+                    <Form.Item
+                      label="Cofirm Password"
+                      name="checkPassword"
+                      rules={[{ required: true, message: 'Confirm Password is required' }]}
                     >
                       <Input.Password
                         className="input black input-style"
@@ -509,20 +509,17 @@ const openFailedNotification = (placement, message) => {
                     </Form.Item>
                   </Col>
                 </Row>
-                <Button
 
-                  type="primary"
-                  htmlType="submit"
-                  className="button-submit button-style"
-                // disabled={user["name"].length === 0 || user["uniqueField"].length === 0 || user["password"].length === 0 || user["handle"].length === 0 || !checked}
-                >
-                  <span style={{ color: 'black', fontWeight: 'bolder' }}>Sign Up</span>
-                </Button>
-                <Flex>
-                  <p style={{ margin: '0px' }}>Already have an account ?   </p>
-                  <span onClick={() => { navigate(OPEN_ROUTES.LOGIN) }} style={{ color: 'rgb(29, 155, 240)' }}>
-                    Log In
-                  </span>
+
+                <Flex vertical>
+                  <Button type="primary" htmlType="submit" style={{ width: '400px', textAlign: 'center', fontWeight: '500' }}>
+                    Sign Up
+                  </Button>
+                  <Flex>
+                    <p style={{ margin: '0px' }}>Already have an account ?   <span onClick={() => { navigate(OPEN_ROUTES.LOGIN) }} style={{ color: 'rgb(29, 155, 240)', cursor: 'pointer' }}>
+                      Log In
+                    </span> </p>
+                  </Flex>
                 </Flex>
               </Flex>
             </Form>

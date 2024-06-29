@@ -1,7 +1,7 @@
 .input-style{
     border-radius: 4px;
-    padding-top:12px; 
-    padding-bottom:12px; 
+    /* padding-top:12px;  */
+    /* padding-bottom:12px;  */
     /* border-color:rgb(51, 54, 57); */
     width:18rem;
   }
@@ -37,4 +37,8 @@
     color: black;
     border-radius: 20px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  }
+
+  .ant-form-item-label{
+    padding: 0px;
   }

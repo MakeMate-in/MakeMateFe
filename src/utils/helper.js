@@ -181,7 +181,7 @@ export const ROW_COLUMNS = [
 
 
 export const checkButtonRequired = (current, currentSub, currentInfraSub) => {
-  if ((current === 0 && currentSub === 0) || (current === 1 && (currentInfraSub === 0 || currentInfraSub === 2))) {
+  if ((current === 0 && currentSub === 0) || (current === 1 && (currentInfraSub === 0 || currentInfraSub === 2)) || (current===3)) {
     return false
   }
   return true

@@ -1,14 +1,11 @@
 import { BrowserRouter as Router,Route, Routes} from 'react-router-dom';
 import { OPEN_ROUTES } from '../utils/constants';
-import HomePage from '../components/HomePage/App'
 import SignIn from '../components/Authentication/SignIn/signIn';
 import SignUp from '../components/Authentication/Signup/signUp';
 import ForgotPassword from '../components/Authentication/SignIn/forgotPassword';
-import CustomerSignUP from '../components/Authentication/customerSignUp/customerSignUp';
 import Dashboard from '../components/Vendor/Dashboard/Dashboard';
 import DigitalFactory from '../components/Vendor/DigitalFactory/DigitalFactory';
 import DashboardPage from '../components/Vendor/Dashboard/DashboardPage/DashboardPage';
-import CustomerSignIn from '../components/Authentication/SignIn/CustomerSignIn';
 import CustomerDashboard from '../components/Customer/Dashboard';
 
 const AppRoutes=()=>{

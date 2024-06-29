@@ -1,5 +1,3 @@
-import React,{useState, useEffect  } from 'react'
-import { Flex } from 'antd';
 import ImageUpload from '../../../ImageUpload/ImageUpload';
 import { getPlantImages, uploadPlantImages } from '../../../../apis/Vendor/CompanyDetails';
 import { convertBufferToBinary, getCopanyId } from '../../../../utils/helper';

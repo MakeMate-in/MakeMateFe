@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react'
-import { Button, Layout, theme, AutoComplete, Input, Carousel, Row, Col } from 'antd';
+import { Button, Layout, theme, AutoComplete, Input, Row, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom'
 import { OPEN_ROUTES } from '../../../utils/constants'
+import "./../../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
+import ImageGallery from "react-image-gallery";
 
 const { Header, Content, Sider } = Layout;
 const { Option } = AutoComplete;
@@ -44,22 +46,34 @@ const CustomerDashboard = () => {
     margin: 0,
     height: '160px',
     color: '#fff',
+    width: '50%',
     lineHeight: '160px',
     textAlign: 'center',
     background: '#364d79',
   };
 
-  const slides = [
-    { id: 0, content: '1' },
-    { id: 1, content: '2' },
-    { id: 2, content: '3' },
-    { id: 3, content: '4' },
+  const images = [
+    {
+      original: "https://picsum.photos/id/1018/1000/600/",
+      thumbnail: "https://picsum.photos/id/1018/250/150/",
+    },
+    {
+      original: "https://picsum.photos/id/1015/1000/600/",
+      thumbnail: "https://picsum.photos/id/1015/250/150/",
+    },
+    {
+      original: "https://picsum.photos/id/1019/1000/600/",
+      thumbnail: "https://picsum.photos/id/1019/1000/600/",
+    },
+    {
+      original: "https://media.macphun.com/img/uploads/customer/blog/2063/16862172056481a1f590ac84.26256392.jpeg?q=85&w=840",
+      thumbnail: "https://media.macphun.com/img/uploads/customer/blog/2063/16862172056481a1f590ac84.26256392.jpeg?q=85&w=840",
+    },
+    {
+      original: "https://picsum.photos/id/1019/1000/600/",
+      thumbnail: "https://picsum.photos/id/1019/1000/600/",
+    },
   ];
-
-  const handleThumbnailClick = (index) => {
-    setCurrentSlide(index);
-    carouselRef.current.goTo(index);
-  };
 
   return (
     <Layout style={{ height: '100vh' }}>
@@ -91,7 +105,7 @@ const CustomerDashboard = () => {
       </Header>
       <Layout>
         <Sider
-          width={400}
+          width={300}
           style={{
             background: colorBgContainer,
           }}
@@ -116,43 +130,15 @@ const CustomerDashboard = () => {
               scrollbarWidth: 'thin'
             }}
           >
-            <Row>
-              <Col span={4}>
-                {slides.map(slide => (
-                  <div
-                    key={slide.id}
-                    style={{
-                      cursor: 'pointer',
-                      padding: '10px',
-                      border: currentSlide === slide.id ? '2px solid #1890ff' : '2px solid transparent',
-                    }}
-                    onClick={() => handleThumbnailClick(slide.id)}
-                  >
-                    <img
-                      src={`/path/to/your/thumbnails/${slide.id}.jpg`}
-                      alt={`Slide ${slide.content}`}
-                      style={{ width: '100%' }}
-                    />
-                  </div>
-                ))}
-              </Col>
-              <Col span={20}>
-                <Carousel
-                  ref={carouselRef}
-                  arrows
-                  infinite={false}
-                  beforeChange={(from, to) => setCurrentSlide(to)}
-                  dots={false}
-                  initialSlide={currentSlide}
-                >
-                  {slides.map(slide => (
-                    <div key={slide.id}>
-                      <h3 style={contentStyle}>{slide.content}</h3>
-                    </div>
-                  ))}
-                </Carousel>
-              </Col>
-            </Row>
+            <div style={{ display: 'flex', borderStyle:'ridge' }}>
+              <div style={{ flex: '0 0 40%', marginRight: '20px', borderStyle:'ridge' }}>
+                <ImageGallery items={images} thumbnailPosition='right' showFullscreenButton={false} showPlayButton={false} />
+              </div>
+              <div style={{ flex: '1' }}>
+                <h2>Product Details</h2>
+                <p> product details</p>
+              </div>
+            </div>
           </Content>
         </Layout>
       </Layout>

@@ -42,12 +42,6 @@ export const getCustomerData = (user, role) => {
   return data
 }
 
-
-// export const getAccessToken = () => {
-//     const state = store.getState();
-//     return state.authenReducer.access_token;
-//   };
-
 export const getToken = () => {
   let token = sessionStorage.getItem(SESSION_STORAGE_ITEMS.TOKEN)
   return token;
@@ -61,17 +55,6 @@ export const getJWTData = (token) => {
   const base64 = base64Url.replace("-", "+").replace("_", "/");
   return JSON.parse(window.atob(base64));
 };
-
-// export const getFileType = (fileName) => {
-//     let fileType = null;
-//     let fileExtension = null;
-// 	const mimeType = mime.getType(fileName)
-// 	if (mimeType){
-// 		fileType = mimeType.split('/')[0]
-// 		fileExtension = mimeType.split('/')[1]
-// 	}
-// 	return {mimeType, fileType, fileExtension}
-// };
 
 export const getUserName = () => sessionStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME);
 
@@ -157,93 +140,26 @@ export const options = [
 
 export const MACHINE_TYPE = [
   {
-    'label': "CNC Machine 1",
-    'value': "CNC Machine 1"
+    'label': "CNC Machine",
+    'value': "CNC Machine"
   },
   {
-    'label': "CNC Machine 2",
-    'value': "CNC Machine 2"
+    'label': "CNC EDM",
+    'value': "CNC EDM"
   },
   {
-    'label': "CNC EDM 1",
-    'value': "CNC EDM 1"
+    'label': "ZNC EDM",
+    'value': "ZNC EDM"
   },
   {
-    'label': "CNC EDM 2",
-    'value': "CNC EDM 2"
-  },
-  {
-    'label': "ZNC EDM 1",
-    'value': "ZNC EDM 1"
-  },
-  {
-    'label': "ZNC EDM 2",
-    'value': "ZNC EDM 2"
-  },
-  {
-    'label': "Wirecut 1",
-    'value': "Wirecut 1"
-  },
-  {
-    'label': "Wirecut 2",
-    'value': "Wirecut 2"
+    'label': "Wirecut",
+    'value': "Wirecut"
   },
   {
     'label': "Conventional",
     'value': "Conventional"
   }
 ]
-
-// export const MACHINE_COLUMNS = [
-//   {
-//     title: 'Machine Type',
-//     dataIndex: 'type',
-//     key: 'type',
-//     render: (text) => <a>{text}</a>,
-//   },
-//   {
-//     title: 'Company Name',
-//     dataIndex: 'type',
-//     key: 'type',
-//   },
-//   {
-//     title: 'Make',
-//     dataIndex: 'make',
-//     key: 'make',
-//   },
-//   {
-//     title: 'Bed Size(in mm)',
-//     dataIndex: 'bedSize',
-//     key: 'bedSize',
-//   },
-//   {
-//     title: 'Spindle RPM (max)',
-//     dataIndex: 'rpm',
-//     key: 'rpm',
-//   },
-//   {
-//     title: 'No. of Axis',
-//     dataIndex: 'axis',
-//     key: 'axis',
-//   },
-//   {
-//     title: 'Manufacture Year',
-//     dataIndex: 'year',
-//     key: 'year',
-//   },
-//   {
-//     title: 'Image',
-//     key: 'image',
-//     render: (_, record) => (
-//       <Space size="large">
-//         <a>View</a>
-//         <Popover content='Delete'>
-//           <DeleteTwoTone twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
-//         </Popover>
-//       </Space>
-//     ),
-//   },
-// ];
 
 
 export const ROW_COLUMNS = [

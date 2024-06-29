@@ -35,7 +35,7 @@ const Dashboard = () => {
       return item.route===window.location.pathname
     })
     setTab(list[0].id)
-    },[])
+    },[window.location.pathname])
 
   const handleDrawerOpen = () => {
     setOpen(true);

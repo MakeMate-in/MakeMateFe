@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Upload, Space, Popover } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Space, Popover } from 'antd';
 import { MACHINE_TYPE, convertBufferToBinary } from '../../../../utils/helper';
 import { addMachineDetails, getMachineDetails, deleteMachineDetails, uploadMachineImages } from '../../../../apis/Vendor/MachineDetails';
 import { COMPANY_ID, OPEN_ROUTES } from '../../../../utils/constants';
@@ -31,18 +30,21 @@ const Machines = (props) => {
         "no_of_Axis": "",
         "manufacturing_year": "",
         "make": "",
-        "bed_Size": {}
+        "bed_Size": {},
+        "machine_name": ""
     })
 
     const [imageModal, setImageModal] = useState(false)
     let [MachineData, setMachineData] = useState([])
     const [modalMachine, setmodalMachine] = useState(undefined)
+    const [TypeCount, setTypeCount] = useState(undefined)
+    const [machineName, setMachineName] = useState(undefined)
 
 
     const openNotification = (placement) => {
         api.success({
             message: `Success`,
-            description: <Context.Consumer>{({ name }) => `Machine Added Successfully`}</Context.Consumer>,
+            description: `Machine Added Successfully`,
             placement,
         });
     };
@@ -53,10 +55,10 @@ const Machines = (props) => {
         [],
     );
 
-    const openFailedNotification = (placement) => {
+    const openFailedNotification = (placement, msg) => {
         api.error({
             message: `Something went wrong`,
-            description: <Context.Consumer>{({ name }) => `Unable to add Machine `}</Context.Consumer>,
+            description: msg,
             placement,
         });
     };
@@ -82,10 +84,10 @@ const Machines = (props) => {
         [],
     );
 
-    const deleteFailedNotification = (placement) => {
+    const deleteFailedNotification = (placement, msg) => {
         api.success({
             message: `Success`,
-            description: <Context.Consumer>{({ name }) => `Unable to delete Machine Details`}</Context.Consumer>,
+            description: msg,
             placement,
         });
     };
@@ -97,18 +99,21 @@ const Machines = (props) => {
     );
 
     const fetchMachineDetails = async () => {
+        try{
         let params = { company_id: COMPANY_ID }
         const machines = await getMachineDetails(params)
         if (machines.success) {
             if (machines) {
                 let data = []
                 if (machines.count > 0) {
+                    setTypeCount(machines.machine_types_count)
                     data = machines.documents.map((machine, i) => {
                         let machineObj = {
                             key: i + 1,
                             id: machine._id,
                             type: machine.machine_type,
                             make: machine.make,
+                            name: machine.machine_name,
                             bedSize: machine.bed_Size ? <div>
                                 {machine.bed_Size.length ? <p style={{ margin: '0' }}><b>Length</b> - {machine.bed_Size.length}</p> : ''}
                                 {machine.bed_Size.breadth ? <p style={{ margin: '0' }}><b>Width</b> - {machine.bed_Size.breadth}</p> : ''}
@@ -127,8 +132,12 @@ const Machines = (props) => {
                 }
                 setMachineData([...data]);
             }
-
         }
+    }
+    catch(err){
+        //Toast
+        openFailedNotification('topRight', 'Unable to Fetch Mahine Details')
+    }
     }
 
     const handleDeleteInput = async (record) => {
@@ -142,10 +151,12 @@ const Machines = (props) => {
                 fetchMachineDetails()
             }
             else {
-                deleteFailedNotification('topRight')
+                deleteFailedNotification('topRight', 'Unable to delete Machine Details')
             }
         }
         catch (err) {
+            //Toast
+            openFailedNotification('topRight', 'Unable to Delete Mahine Details')
             console.log(err)
         }
     }
@@ -159,8 +170,8 @@ const Machines = (props) => {
         },
         {
             title: 'Machine Name',
-            dataIndex: 'type',
-            key: 'type',
+            dataIndex: 'name',
+            key: 'name',
         },
         {
             title: 'Make',
@@ -242,18 +253,21 @@ const Machines = (props) => {
 
         }
         catch (err) {
+            //Toast
+            openFailedNotification('topRight', 'Unable to Fetch Mahine Images')
             console.log(err)
         }
     }
 
+    useEffect(() => {
+        fetchMachineDetails()
+    }, [])
 
     useEffect(() => {
         if (window.location.pathname == OPEN_ROUTES.DIGITAL_FACTORY) {
             setTab(1);
         }
-
-        fetchMachineDetails()
-    }, [])
+    }, [window.location.pathname])
 
 
 
@@ -282,9 +296,24 @@ const Machines = (props) => {
         setMachine({ ...Machine, ["machine_type"]: value })
         if (value == 'Conventional')
             setIsVisible(false);
+        
         else
-            setIsVisible(true);
-    };
+        setIsVisible(true);
+        
+        };
+
+    useEffect(() => {
+        if(Machine!=undefined && Machine['machine_type']!=undefined &&Machine['machine_type']!='' && TypeCount!=undefined){
+        let count = Machine['machine_type'] && TypeCount[Machine['machine_type']]?TypeCount[Machine['machine_type']]+1:1
+        let name = Machine['machine_type'] +'_'+count
+        handleMachineChange(name)
+        }
+    },[Machine['machine_type']])
+
+    const handleMachineChange = (name) => {
+        setMachineName(name)
+        setMachine({ ...Machine, ["machine_name"]: name })
+    }
 
 
     const handleFormSubmit = async () => {
@@ -309,16 +338,19 @@ const Machines = (props) => {
                 //Add Toast
             }
             else {
-                openFailedNotification('topRight');
+            openFailedNotification('topRight', `Unable to Add Machine Details`);
             }
             setModalOpen(false)
             setLoading(false)
         }
         catch (err) {
+            openFailedNotification('topRight', 'Unable to Add Mahine Details')
             console.log(err)
         }
     }
 
+    console.log(Machine['machine_name'])
+    
     return (
 
         <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: tab ? '60vh' : '' }}>
@@ -414,6 +446,25 @@ const Machines = (props) => {
                                         </Form.Item>
                                     </Col>
                                     <Col span={12}>
+
+                               {/* <Form.Item 
+                                    label="Machine Name" 
+                                    name="machineName" 
+                                    dependencies={['machine_type']}
+                                    rules={[{ required: true, message: 'Machine Name is required' }]}>
+                                    
+                                    <Input 
+                                    className="custom-input" 
+                                    variant="filled" 
+                                    id="machine_name" 
+                                    placeholder='Enter Machine Name'
+                                    value={machineName}
+                                    onChange={handleChange}
+                        
+                                    />
+                                    
+                                     </Form.Item> */}
+
                                         <Form.Item
                                             label="No. of Axis"
                                             name="axis"
@@ -501,18 +552,17 @@ const Machines = (props) => {
                                                     onChange={(e) => { handleBedSize("height", e) }}
                                                 />
                                             </Form.Item>
-
-                                            {/* <Form.Item
-                                                label="Upload Image"
-                                                name="image">
-                                                <Upload>
-                                                    <Button size='large' icon={<UploadOutlined />}>Click to Upload</Button>
-                                                </Upload>
-                                            </Form.Item> */}
                                         </Col>
                                         <Col span={12}>
                                             <Form.Item label="Machine Name" name="machineName" rules={[{ required: true, message: 'Machine Name is required' }]}>
-                                                <Input className="custom-input" variant="filled" id="machineName" placeholder='Enter Machine Name' />
+                                             <Input 
+                                             className="custom-input" 
+                                             variant="filled" 
+                                             id="machine_name" 
+                                             placeholder='Enter Machine Name'
+                                             value={Machine["machine_name"]}
+                                             onChange={handleChange}
+                                             />
                                             </Form.Item>
                                             <Form.Item
                                                 label="Specification (Breadth)"

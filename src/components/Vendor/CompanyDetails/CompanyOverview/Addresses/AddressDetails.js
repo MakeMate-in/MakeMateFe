@@ -41,10 +41,10 @@ const AddressDetails = (props) => {
         [],
     );
 
-    const openFailedNotification = (placement) => {
+    const openFailedNotification = (placement,msg) => {
         api.error({
             message: `Something went wrong`,
-            description: <Context.Consumer>{({ name }) => `Unable to add Address `}</Context.Consumer>,
+            description: msg,
             placement,
         });
     };
@@ -91,8 +91,13 @@ const AddressDetails = (props) => {
             let param = {
                 user: USER_ID
             }
+            try{
             const resp = await getCompanyDetails(param)
             props.setcompanyDetails(resp.data)
+            }
+            catch(err){
+                openFailedNotification('topRight','Unable to fetch Company Details')
+            }
         }
 
         getCompany()
@@ -141,7 +146,7 @@ const AddressDetails = (props) => {
                 }
             }
             else {
-                openFailedNotification('topRight');
+                openFailedNotification('topRight',`Unable to add Address `);
             }
         }
         catch (err) {

@@ -7,6 +7,7 @@ import { uploadCertificate, getCertificates } from '../../../../../apis/Vendor/C
 import { DeleteTwoTone } from '@ant-design/icons';
 import './styles.css'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import moment from 'moment';
 
 import { notification} from 'antd';
 const Context = React.createContext({
@@ -27,7 +28,7 @@ const Certificates = () => {
   const openNotification = (placement) => {
     api.success({
     message: `Success`,
-    description: <Context.Consumer>{({ name }) => `Basic Details Updated Successfully`}</Context.Consumer>,
+    description:`Certificates Updated Successfully`,
     placement,
     });
 };
@@ -38,10 +39,10 @@ let contextValue = useMemo(
     [],
 );
 
-const openFailedNotification = (placement) => {
+const openFailedNotification = (placement,msg) => {
     api.error({
     message: `Something went wrong`,
-    description: <Context.Consumer>{({ name }) => `Unable to add detail `}</Context.Consumer>,
+    description: msg,
     placement,
     });
 };
@@ -62,9 +63,15 @@ const openFailedNotification = (placement) => {
 
 
   const handleDeleteInput = (index) => {
+
     const newArray = [...inputs];
     newArray.splice(index, 1);
+    if(inputs.length>1){
     setInputs(newArray);
+    }
+    else{
+      setInputs([{ name: undefined,exp: undefined, file: undefined }]);
+    }
   };
 
 
@@ -79,18 +86,21 @@ const openFailedNotification = (placement) => {
 
 
   const fetchCertificates = async () => {
+    try{
     const res = await getCertificates(COMPANY_ID)
     if (res.success){
         if(res.count>0){
-          console.log(res)
           let certificates  = res.data.certificates.map((item) => {
             const blob = new Blob([item.certificate.data], { type: item.type });
             const imageUrl = URL.createObjectURL(blob);
             let data = {}
+            const date = moment(item.expiration_date);
+
             data.name = item.fileName
             data.file={}
             data.file = item
             data.file.certificate = imageUrl
+            data.exp = date
             return data
           })
           console.log(certificates)
@@ -98,6 +108,10 @@ const openFailedNotification = (placement) => {
 
         }
     }
+  }
+  catch(err){
+   openFailedNotification('topRight','Unable to Fetch Certificates')
+  }
       
   }
 
@@ -108,25 +122,22 @@ const openFailedNotification = (placement) => {
 
   const uploadFiles = async () => {
     try {
-      console.log(inputs)
       const res = await uploadCertificate(COMPANY_ID, inputs)
       if (res.success) {
         fetchCertificates()
         openNotification('topRight');
       } 
-      console.log(res)
     }
     catch (err) {
-      openFailedNotification('topRight');
+      openFailedNotification('topRight', `Unable to upload Certificate `);
       console.log(err)
     }
   }
 
   const onChangeYear = (dateString,index) => {
-    // setMachine({ ...Machine, ["manufacturing_year"]: dateString.$y })
-
+    let x= dateString
     let onChangeValue = [...inputs];
-    onChangeValue[index]["exp"] = dateString.$y;
+    onChangeValue[index]["exp"] = x;
     setInputs(onChangeValue);
 };
 
@@ -137,7 +148,6 @@ const openFailedNotification = (placement) => {
       <div style={{
         height: '50%',
         overflow: 'auto',
-        // overflow:'hidden', 
         scrollbarWidth: 'none'
       }}>
         <h2 style={{ margin: '0px' }}>Certificates</h2>
@@ -158,9 +168,8 @@ const openFailedNotification = (placement) => {
 
                                             <DatePicker
                                                 onChange={(e) => {onChangeYear(e,index)}}
-                                                
                                                 id="year"
-                                                picker="year"
+                                                // picker="year"
                                                 placeholder='Select Expiration Year'
                                                 size="large"
                                                 variant="filled"
@@ -180,12 +189,12 @@ const openFailedNotification = (placement) => {
                     Upload Certificate</Button>
                   {item.file && <span style={{ marginLeft: '10px' }}><AttachFileIcon /> {item.file.name}</span>}
 
-                  {inputs.length == 1 && (
+                  {inputs.length >= 1 && (
                     <DeleteTwoTone onClick={() => handleDeleteInput(index)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
                   )}
 
                 </Flex>
-                {index === inputs.length - 1 && (
+                {inputs.length >= 0 && (
                   <a onClick={() => handleAddInput()} style={{ fontSize: '16px' }}>+ Add Certificate</a>
                 )}
               </Flex>
@@ -194,8 +203,10 @@ const openFailedNotification = (placement) => {
 
           }
         </Flex>
-        <Button onClick={uploadFiles}>Save</Button>
-        {/* <Button onClick={deleteFiles}>Delete</Button> */}
+        <Button
+         onClick={uploadFiles}
+         style={{marginTop:'20px', fontWeight:'500px', color:'white', background:'#1677ff'}}
+         >Save</Button>
       </div>
     </div>
     </Context.Provider>

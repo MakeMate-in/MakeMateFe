@@ -7,7 +7,7 @@ import ForgotPassword from '../components/Authentication/SignIn/forgotPassword';
 import CustomerSignUP from '../components/Authentication/customerSignUp/customerSignUp';
 import Dashboard from '../components/Vendor/Dashboard/Dashboard';
 import DigitalFactory from '../components/Vendor/DigitalFactory/DigitalFactory';
-import DashboardPage from '../components/Vendor/Dashboard/DashboardPage';
+import DashboardPage from '../components/Vendor/Dashboard/DashboardPage/DashboardPage';
 import CustomerSignIn from '../components/Authentication/SignIn/CustomerSignIn';
 import CustomerDashboard from '../components/Customer/Dashboard';
 

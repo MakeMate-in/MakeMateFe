@@ -63,8 +63,8 @@ const InfraStructureDetails = (props) => {
     "assembly_area": "",
     "assembly_table": "",
     "design_softwares": [],
-    "surface_table": "",
-    "CMM": "",
+    "surface_table": undefined,
+    "CMM": undefined,
     "crane_tonnage": "",
     "manpower": []
   })
@@ -109,7 +109,6 @@ const InfraStructureDetails = (props) => {
     try {
       const InfraDetails = await getInfraDetails(COMPANY_ID)
       if (InfraDetails.success && InfraDetails.count === 1) {
-        console.log(InfraDetails)
         props.setInfrastructureDetails(InfraDetails.documents[0])
         setInfraStructureDetails({ ...InfraDetails.documents[0] })
         setInputs([...InfraDetails.documents[0].manpower])

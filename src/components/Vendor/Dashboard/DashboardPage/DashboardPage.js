@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Card, Col, Statistic, Row, Flex, Tag, Carousel, ConfigProvider } from 'antd';
-import { COMPANY_ID } from './../../../utils/constants';
-import Machines from './../CompanyDetails/Machines/Machines';
-import business_plan from './../../../assets/business_plan.svg';
-import svg_experience from './../../../assets/svg_experience.svg';
-import svg_projects from './../../../assets/svg_projects.svg';
-import svg_customers from './../../../assets/svg_customers.svg';
-import CustomerDetails from '../CompanyDetails/CustomerDetails/CustomerDetails';
-import { getAllDetails } from '../../../apis/Vendor/CompanyDetails';
+import { COMPANY_ID } from '../../../../utils/constants';
+import Machines from '../../CompanyDetails/Machines/Machines';
+import business_plan from './../../../../assets/business_plan.svg';
+import svg_experience from './../../../../assets/svg_experience.svg';
+import svg_projects from './../../../../assets/svg_projects.svg';
+import svg_customers from './../../../../assets/svg_customers.svg';
+import CustomerDetails from '../../CompanyDetails/CustomerDetails/CustomerDetails';
+import { getAllDetails } from '../../../../apis/Vendor/CompanyDetails';
 import { Pie, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { rgb } from 'polished';
 import './DashboardPage.css';
-import { LOCAL_STORAGE_ITEMS, convertBufferToBinary } from '../../../utils/helper';
+import { LOCAL_STORAGE_ITEMS, convertBufferToBinary } from '../../../../utils/helper';
+import BasicCompanyDetails from './Components/BasicCompanyDetails';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -111,37 +112,10 @@ const DashboardPage = () => {
             },
           }}
         >
-          <Row gutter={16}>
+           <BasicCompanyDetails AllDetails={AllDetails}/>
+          <Row gutter={16} style={{marginTop:'10px'}}>
             <Col span={16}>
-              <Card>
-                <Row>
-                  <Col span={14}>
-                    <h1 style={{ fontFamily: 'Cambria', marginBottom: '0' }}>Welcome, {sessionStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME)?sessionStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME):''}</h1>
-                    <h4 style={{ fontFamily: 'Cambria', marginBottom: '0' }}>Company Name: {AllDetails?.companyDetails?.company_name}</h4>
-                    <p><b>About:</b> {AllDetails?.companyDetails?.description}</p>
-                    <p><strong>GSTN: </strong>{AllDetails?.companyDetails?.GST_no}</p>
-                    {AllDetails?.companyDetails?.address && AllDetails?.companyDetails?.address.length > 0 && (
-                    <Flex>
-                      <p><strong>Address: </strong><p style={{ margin: '0px' }}><b>{AllDetails.companyDetails.address[0].address_title}</b></p>
-                        <p style={{ margin: '0px' }}>{AllDetails.companyDetails.address[0].address_line}</p>
-                        <p style={{ margin: '0px' }}> {AllDetails.companyDetails.address[0].city}, {AllDetails.companyDetails.address[0].state}</p>
-                        <p style={{ margin: '0px' }}>{AllDetails.companyDetails.address[0].country}, {AllDetails.companyDetails.address[0].pincode}</p></p>
-                        </Flex>
-                        )}
-                        {AllDetails?.companyDetails?.contact_person && AllDetails?.companyDetails?.contact_person.length > 0 && (
-                          <Flex>
-                      <p><strong>Contact: </strong> <p style={{ margin: '0px' }}><b>{AllDetails.companyDetails.contact_person[0].name}</b></p>
-                        <p style={{ margin: '0px' }}>Designation: {AllDetails.companyDetails.contact_person[0].designation} </p>
-                        <p style={{ margin: '0px' }}>Email: {AllDetails.companyDetails.contact_person[0].email}</p>
-                        <p style={{ margin: '0px' }}>Phone: {AllDetails.companyDetails.contact_person[0].mobile_no}</p></p>
-                    </Flex>
-                        )}
-                  </Col>
-                  <Col span={10}>
-                    <img src={business_plan} alt="" style={{ float: 'right' }} />
-                  </Col>
-                </Row>
-              </Card>
+            
               <Row gutter={16} style={{ marginTop: '10px', marginBottom: '10px' }}>
                 <Col span={8}>
                   <Card size='small' hoverable>
@@ -215,7 +189,10 @@ const DashboardPage = () => {
               <Card size='small' style={{ overflow: 'auto', scrollbarWidth: 'none', height: '50vh' }}>
                 <CustomerDetails />
               </Card>
+
             </Col>
+
+
             <Col span={8}>
               <Card style={{ height: '100%' }}>
                 <h2 style={{ margin: '0' }}>InfraStructure Details</h2>

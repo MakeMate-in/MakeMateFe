@@ -32,10 +32,10 @@ const BasicDetails = (props) => {
         [],
     );
 
-    const openFailedNotification = (placement) => {
+    const openFailedNotification = (placement,msg) => {
         api.error({
         message: `Something went wrong`,
-        description: <Context.Consumer>{({ name }) => `Unable to add detail `}</Context.Consumer>,
+        description: msg,
         placement,
         });
     };
@@ -119,7 +119,7 @@ const BasicDetails = (props) => {
       }
     }
     else{
-      openFailedNotification('topRight');
+      openFailedNotification('topRight', 'Unable to add Company Details');
     }
  
     }
@@ -136,6 +136,7 @@ const BasicDetails = (props) => {
       onSuccess("Ok");
       console.log("server res: ", res);
     } catch (err) {
+      openFailedNotification('topRight','Unable to Upload Company Image')
       console.log("Eroor: ", err);
       const error = new Error("Some error");
     }
@@ -171,7 +172,7 @@ const BasicDetails = (props) => {
       <Row gutter={16}>
         <Col span={24}>
           <Row gutter={16} align="middle">
-            <Col span={8}>
+            <Col span={6}>
               <Form.Item label="Company Logo">
                 <div className="company-logo">
 

@@ -14,7 +14,7 @@ const Context = React.createContext({
 });
 
 
-const Certificates = () => {
+const Certificates = (props) => {
   const [inputs, setInputs] = useState([{ name: undefined,exp: undefined, file: undefined }]);
 
   const handleAddInput = () => {
@@ -89,6 +89,7 @@ const openFailedNotification = (placement,msg) => {
     const  COMPANY_ID = getCopanyId()
     const res = await getCertificates(COMPANY_ID)
     if (res.success){
+      props.setCertificateCount(res.count)
         if(res.count>0){
           let certificates  = res.data.certificates.map((item) => {
             const blob = new Blob([item.certificate.data], { type: item.type });

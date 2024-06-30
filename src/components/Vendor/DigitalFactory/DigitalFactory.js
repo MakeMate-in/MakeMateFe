@@ -11,6 +11,7 @@ import { checkButtonRequired, getCopanyId, getUserId } from '../../../utils/help
 import { LeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom'
 import { OPEN_ROUTES } from '../../../utils/constants'
+import Completed from '../CompanyDetails/Completed/Completed';
 
 
 const { Step } = Steps;
@@ -27,6 +28,7 @@ const DigitalFactory = () => {
   const [AllDetails, setAllDetails] = useState(undefined);
   const [percent, setPercent] = useState(0)
   const [plantImagesCount, setPlantImagesCount] = useState(0)
+  const [certificateCount, setCertificateCount] = useState(0)
   const navigate = useNavigate()
 
   const colors1 = ['#6253E1', '#04BEFE'];
@@ -53,6 +55,9 @@ const DigitalFactory = () => {
 
       if(respAll.data.plantImages){
       setPlantImagesCount(respAll.data.plantImages.company_Images.length)
+      }
+      if(respAll.data.certificates){
+        setCertificateCount(respAll.data.certificates.certificates.length)
       }
       setCustomerDetails(respAll.data.productDetails)
       setMachineDetails(respAll.data.machineDetails)
@@ -92,6 +97,8 @@ const DigitalFactory = () => {
 
     const CalculatePercentage = async () => {
       let per = 0;
+       
+      console.log(certificateCount)
 
       if (AllDetails?.companyDetails?.company_name !== undefined && AllDetails?.companyDetails?.company_name !== '') per = per + 5
 
@@ -105,7 +112,7 @@ const DigitalFactory = () => {
 
       if (AllDetails?.companyDetails?.product_details !== undefined && AllDetails?.companyDetails?.product_details.length > 0) per = per + PER_COUNT
 
-      if (AllDetails?.certificates?.certificates !== undefined && AllDetails?.certificates?.certificates.length > 0) per = per + 6
+      if (certificateCount>0) per = per + 6
 
       if ( (InfrastructureDetails && InfrastructureDetails.assembly_area !== undefined && InfrastructureDetails.assembly_area !== null) && InfrastructureDetails?.assembly_area !== '') per = per + PER_INFRA_COUNT
 
@@ -133,7 +140,7 @@ const DigitalFactory = () => {
 
     CalculatePercentage()
 
-  }, [InfrastructureDetails,MachineDetails, plantImagesCount, customerDetails, AllDetails])
+  }, [InfrastructureDetails,MachineDetails, plantImagesCount, customerDetails, AllDetails, certificateCount])
 
   const onSaveAndSubmit = () => {
 
@@ -144,7 +151,13 @@ const DigitalFactory = () => {
       setCurrentInfraSub(0);
     } else if (current === 1 && currentInfraSub < 3) {
       setCurrentInfraSub(currentInfraSub + 1);
-    } else {
+    } 
+    else if (current===3){
+      setCurrent(0)
+      setCurrentSub(0)
+      setCurrentInfraSub(0)
+    }
+    else {
       setCurrent(current + 1);
     }
   };
@@ -270,9 +283,10 @@ const DigitalFactory = () => {
               <div>
                 <h2 style={{ marginTop: '0' }}>{STEPS_HEADINGS[current]}</h2>
                 <hr />
-                {current === 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails} /> : ''}
+                {current === 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails} setCertificateCount={setCertificateCount} certificateCount={certificateCount}/> : ''}
                 {current === 1 ? <InfraDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} MachineDetails={MachineDetails} setMachineDetails={setMachineDetails} InfrastructureDetails={InfrastructureDetails} setInfrastructureDetails={setInfrastructureDetails} setPlantImagesCount={setPlantImagesCount} /> : ''}
                 {current === 2 ? <CustomerDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} customerDetails={customerDetails} setCustomerDetails={setCustomerDetails} /> : ''}
+                {current === 3 ? <Completed percent={percent} onSaveAndSubmit={onSaveAndSubmit}/> :''} 
               </div>
 
             </Card>

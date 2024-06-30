@@ -64,10 +64,13 @@ const Dashboard = () => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} style={{background:'#001529'}}>
       <Toolbar style={{ display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
+      <Box style={{  marginLeft:open?'0px':'53px', position: 'absolute' }}>
+        <div className="demo-logo" style={{  fontWeight: '700', fontSize: '1.5rem' }}>🛠MAKERS MATE</div>
+        </Box>
         <Box style={{ width: '100%', textAlign: 'center', position: 'absolute' }}>
-          <Typography variant="h5" noWrap component="div">
+          <Typography variant="h5" noWrap component="div" style={{fontWeight: '550'}}>
             {tab ? VENDOR_DRAWER_LIST[tab].name : VENDOR_DRAWER_LIST[0].name}
           </Typography>
         </Box>

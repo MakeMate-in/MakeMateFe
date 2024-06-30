@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Card, Col, Row, Modal, Form, Input, Flex } from 'antd';
+import { Card, Col, Row, Modal, Form, Input, Flex, Button, Rate } from 'antd';
 import "react-country-state-city/dist/react-country-state-city.css";
-import { deleteElement, getCompanyDetails, updateAddressandContacts, updateElement } from './../../../../../apis/Vendor/CompanyDetails';
+import { deleteElement, getCompanyDetails, updateAddressandContacts, updateElement, updatePrimaryAddressContacts } from './../../../../../apis/Vendor/CompanyDetails';
 import { MESSAGES } from './../../../../../utils/constants';
 import del from './../../../../../assets/del.png'
-import pen from './../../../../../assets/pen.png'
 import { notification } from 'antd';
-import { getUserId } from '../../../../../utils/helper';
+import { getUserId, reorderArray } from '../../../../../utils/helper';
 const Context = React.createContext({
     name: 'Default',
 });
@@ -36,10 +35,10 @@ const ContactDetails = (props) => {
     const [loading, setIsLoading] = useState(false)
     const [api, contextHolder] = notification.useNotification();
 
-    const openNotification = (placement) => {
+    const openNotification = (placement, msg) => {
         api.success({
             message: `Success`,
-            description: <Context.Consumer>{({ name }) => `Contact Details Added Successfully`}</Context.Consumer>,
+            description: msg,
             placement,
         });
     };
@@ -50,10 +49,10 @@ const ContactDetails = (props) => {
         [],
     );
 
-    const openFailedNotification = (placement) => {
+    const openFailedNotification = (placement, msg) => {
         api.error({
             message: `Something went wrong`,
-            description: <Context.Consumer>{({ name }) => `Unable to add Contact Details `}</Context.Consumer>,
+            description: msg,
             placement,
         });
     };
@@ -67,7 +66,7 @@ const ContactDetails = (props) => {
     const deleteNotification = (placement) => {
         api.success({
             message: `Success`,
-            description: <Context.Consumer>{({ name }) => `Contact Details deleted Successfully`}</Context.Consumer>,
+            description: `Contact Details deleted Successfully`,
             placement,
         });
     };
@@ -81,7 +80,7 @@ const ContactDetails = (props) => {
     const deleteFailedNotification = (placement) => {
         api.error({
             message: `Success`,
-            description: <Context.Consumer>{({ name }) => `Unable to delete Contact Details`}</Context.Consumer>,
+            description: `Unable to delete Contact Details`,
             placement,
         });
     };
@@ -119,6 +118,7 @@ const ContactDetails = (props) => {
 
         }
         catch (err) {
+            deleteFailedNotification('topRight');
             console.log(err)
         }
     }
@@ -157,14 +157,15 @@ const ContactDetails = (props) => {
                 const updatedData = await getCompanyDetails(params)
                 if (updatedData.success) {
                     props.setcompanyDetails(updatedData.data)
-                    openNotification('topRight');
+                    openNotification('topRight', `Contact Details Added Successfully`);
                 }
             }
             else {
-                openFailedNotification('topRight');
+                openFailedNotification('topRight', `Unable to add Contact Details `);
             }
         }
         catch (err) {
+            openFailedNotification('topRight', `Unable to add Contact Details `)
             console.log(err)
         }
         setContactModalOpen(false)
@@ -205,6 +206,35 @@ const ContactDetails = (props) => {
         return data
     }
 
+    const changeAddressPrimary = async (starValue, index, item) => {
+        try {
+            const USER_ID = getUserId()
+            let params = {
+                user: USER_ID
+            }
+
+            let contacts = [...props.CompanyDetails.contact_person]
+            const newContacts = reorderArray(contacts, index, 0);
+            let data = {}
+            data.contact_person = newContacts
+            const res = await updatePrimaryAddressContacts(params, data)
+            if (res.success) {
+                const updatedData = await getCompanyDetails(params)
+                if (updatedData.success) {
+                    props.setcompanyDetails(updatedData.data)
+                    openNotification('topRight', 'Primary Address has been Updates Successfully');
+                }
+            }
+            else {
+                openFailedNotification('topRight', `Unable to Update Address `);
+            }
+        }
+        catch (err) {
+            openFailedNotification('topRight', `Unable to Update Address `)
+        }
+    }
+
+
 
     return (
         <div>
@@ -215,7 +245,12 @@ const ContactDetails = (props) => {
                     <hr style={{ background: 'rgba(22, 119, 255)', height: '2px' }} />
                     <div style={{ height: '18rem', overflow: 'auto', scrollbarWidth: 'thin' }}>
                         {
-                            props.CompanyDetails.contact_person != undefined ? props.CompanyDetails.contact_person.map((item) => {
+                            props.CompanyDetails.contact_person != undefined ? props.CompanyDetails.contact_person.map((item, index) => {
+                                let starValue = 0;
+                                if (index === 0) {
+                                    starValue = 1;
+                                }
+
                                 return (
                                     <div style={{ marginBottom: '20px' }}>
                                         <Flex justify='space-between' >
@@ -226,14 +261,18 @@ const ContactDetails = (props) => {
                                                 <p style={{ margin: '0px' }}>Email: {item.email}</p>
                                                 <p style={{ margin: '0px' }}>Phone: {item.mobile_no}</p>
                                             </Flex>
-                                            <div onClick={() => { handleDelete(item) }}>
-                                                <img src={del} alt="My Icon" style={{ width: '30px', height: '30px' }} />
-                                            </div>
-                                            {/* <div onClick = {() => {handleEdit(item,MESSAGES.EDIT)}}>
-                                                <img src={pen} alt="My Icon" style={{ width: '30px', height: '30px' }} />
-                                            </div> */}
+
+                                            <Flex gap={20}>
+                                                <Button type="text" style={{ padding: '0px' }} >
+                                                    <Rate count={1} value={starValue} onChange={() => { changeAddressPrimary(starValue, index, item) }} />
+                                                </Button>
+
+                                                <Button type="text" onClick={() => { handleDelete(item) }}>
+                                                    <img src={del} alt="My Icon" style={{ width: '30px', height: '30px' }} />
+                                                </Button>
+                                            </Flex>
                                         </Flex>
-                                        {/* <Image src={del}/> <Image src={pen}/> */}
+
 
                                     </div>
                                 )
@@ -279,7 +318,11 @@ const ContactDetails = (props) => {
                                                 // value={"Vaibhav"}
                                                 />
                                             </Form.Item>
-                                            <Form.Item label="Email" name="email">
+                                            <Form.Item
+                                                label="Email"
+                                                name="email"
+                                                rules={[{ required: true, message: 'Email is required' }]}
+                                            >
                                                 <Input
                                                     className="custom-input"
                                                     variant="filled"

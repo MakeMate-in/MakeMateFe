@@ -73,6 +73,8 @@ const InfraStructureDetails = (props) => {
   const [isLoading, setisLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
 
+  const colors1 = ['#6253E1', '#04BEFE'];
+
   const openNotification = (placement) => {
     api.success({
       message: `Success`,
@@ -361,7 +363,7 @@ const InfraStructureDetails = (props) => {
 
             </div>
             <Form.Item style={{ bottom: '-6%', position: 'absolute', right: '-1%' }}>
-              <Button type="primary" htmlType="submit" style={{ fontSize: '18px', fontWeight: '600', height: '40px' }}>
+              <Button type="primary" htmlType="submit" style={{ fontSize: '18px', fontWeight: '600', height: '40px', background:`linear-gradient(135deg, ${colors1.join(', ')})` }}>
                 Save & Continue
               </Button>
             </Form.Item>

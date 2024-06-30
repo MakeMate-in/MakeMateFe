@@ -29,6 +29,8 @@ const DigitalFactory = () => {
   const [plantImagesCount, setPlantImagesCount] = useState(0)
   const navigate = useNavigate()
 
+  const colors1 = ['#6253E1', '#04BEFE'];
+
   const backToDashboard = () => {
     navigate(OPEN_ROUTES.VENDOR_DASHBOARD)
   }
@@ -277,7 +279,7 @@ const DigitalFactory = () => {
             {checkButtonRequired(current, currentSub, currentInfraSub) ?
 
               <div style={{ bottom: '1%', position: 'absolute', right: '2%' }}>
-                <Button type='primary' form='form1' onClick={onSaveAndSubmit} style={{ fontSize: '18px', fontWeight: '600', height: '40px', display: 'flex', alignItems: 'center' }}>Save & Continue</Button>
+                <Button type='primary' form='form1' onClick={onSaveAndSubmit} style={{ fontSize: '18px', fontWeight: '600', height: '40px', display: 'flex', alignItems: 'center', background:`linear-gradient(135deg, ${colors1.join(', ')})`}}>Save & Continue</Button>
               </div>
 
               : ''}

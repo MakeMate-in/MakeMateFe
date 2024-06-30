@@ -281,3 +281,21 @@ export const getAllDetails = async (data) => {
         throw err
     }
 }
+
+
+export const updatePrimaryAddressContacts = async (params,data) => {
+    try {
+        const url = COMPANY_DETAILS_URLS.UPDATE_PRIMARY_DETAILS
+        data = await axios.patch(baseAPIUrl+url,data,{
+            params: params
+        }).then((res)=>{
+          return res.data;
+        })
+        .catch(err=>console.log(err))
+        return data
+    }
+    catch (err) {
+        throw err
+    }
+
+}

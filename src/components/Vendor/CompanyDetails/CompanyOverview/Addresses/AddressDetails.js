@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Card, Col, Row, ConfigProvider, Modal, Form, Input, Flex } from 'antd';
+import { Card, Col, Row, ConfigProvider, Modal, Form, Input, Flex, Button, Rate } from 'antd';
 import "react-country-state-city/dist/react-country-state-city.css";
-import { getCompanyDetails, updateAddressandContacts, deleteElement } from '../../../../../apis/Vendor/CompanyDetails';
+import { getCompanyDetails, updateAddressandContacts, deleteElement, updatePrimaryAddressContacts } from '../../../../../apis/Vendor/CompanyDetails';
 import del from './../../../../../assets/del.png'
 import ContactDetails from './ContactDetails';
 import { notification } from 'antd';
-import { getUserId } from '../../../../../utils/helper';
+import { getUserId, reorderArray } from '../../../../../utils/helper';
 const Context = React.createContext({
     name: 'Default',
 });
@@ -14,7 +14,6 @@ const AddressDetails = (props) => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [form] = Form.useForm()
-    // const [CompanyDetails, setcompanyDetails] = useState({})
 
     const [address, setAddress] = useState({
         "address_title": "",
@@ -27,10 +26,10 @@ const AddressDetails = (props) => {
 
     const [api, contextHolder] = notification.useNotification();
 
-    const openNotification = (placement) => {
+    const openNotification = (placement,msg) => {
         api.success({
             message: `Success`,
-            description: <Context.Consumer>{({ name }) => `Address Added Successfully`}</Context.Consumer>,
+            description: msg,
             placement,
         });
     };
@@ -41,7 +40,7 @@ const AddressDetails = (props) => {
         [],
     );
 
-    const openFailedNotification = (placement,msg) => {
+    const openFailedNotification = (placement, msg) => {
         api.error({
             message: `Something went wrong`,
             description: msg,
@@ -58,7 +57,7 @@ const AddressDetails = (props) => {
     const deleteNotification = (placement) => {
         api.success({
             message: `Success`,
-            description: <Context.Consumer>{({ name }) => `Address deleted Successfully`}</Context.Consumer>,
+            description:  `Address deleted Successfully`,
             placement,
         });
     };
@@ -72,7 +71,7 @@ const AddressDetails = (props) => {
     const deleteFailedNotification = (placement) => {
         api.error({
             message: `Success`,
-            description: <Context.Consumer>{({ name }) => `Unable to delete Address`}</Context.Consumer>,
+            description: `Unable to delete Address`,
             placement,
         });
     };
@@ -86,21 +85,23 @@ const AddressDetails = (props) => {
     const handleChange = (event) => {
         setAddress({ ...address, [event.target.id]: event.target.value })
     }
-    useEffect(() => {
-        const getCompany = async () => {
-            const USER_ID = getUserId()
-            let param = {
-                user: USER_ID
-            }
-            try{
+
+    const getCompany = async () => {
+        const USER_ID = getUserId()
+        let param = {
+            user: USER_ID
+        }
+        try {
             const resp = await getCompanyDetails(param)
             props.setcompanyDetails(resp.data)
-            }
-            catch(err){
-                openFailedNotification('topRight','Unable to fetch Company Details')
-            }
         }
+        catch (err) {
+            openFailedNotification('topRight', 'Unable to fetch Company Details')
+        }
+    
+    }
 
+    useEffect(() => {
         getCompany()
     }, [])
 
@@ -127,6 +128,7 @@ const AddressDetails = (props) => {
 
         }
         catch (err) {
+            openFailedNotification('topRight', `Unable to delete Address `);
             console.log(err)
         }
     }
@@ -145,17 +147,48 @@ const AddressDetails = (props) => {
                 const updatedData = await getCompanyDetails(params)
                 if (updatedData.success) {
                     props.setcompanyDetails(updatedData.data)
-                    openNotification('topRight');
+                    openNotification('topRight',`Address Added Successfully`);
                 }
             }
             else {
-                openFailedNotification('topRight',`Unable to add Address `);
+                openFailedNotification('topRight', `Unable to add Address `);
             }
         }
         catch (err) {
+            openFailedNotification('topRight', `Unable to add Address `);
             console.log(err)
         }
         setModalOpen(false)
+    }
+
+
+
+    const changeAddressPrimary = async (starValue, index, item) => {
+        try{
+            const USER_ID = getUserId()
+            let params = {
+                user: USER_ID
+            }
+
+            let addresses = [...props.CompanyDetails.address]
+            const newAddresses = reorderArray(addresses,index,0);
+            let data = {}
+            data.address = newAddresses
+            const res = await updatePrimaryAddressContacts(params,data)
+            if (res.success) {
+                const updatedData = await getCompanyDetails(params)
+                if (updatedData.success) {
+                    props.setcompanyDetails(updatedData.data)
+                    openNotification('topRight','Primary Address has been Updates Successfully');
+                }
+            }
+            else {
+                openFailedNotification('topRight', `Unable to Update Address `);
+            }
+        }
+        catch(err){
+            openFailedNotification('topRight', `Unable to Update Address `)
+        }
     }
 
 
@@ -180,10 +213,14 @@ const AddressDetails = (props) => {
                                 <hr style={{ background: 'rgba(22, 119, 255)', height: '2px' }} />
                                 <div style={{ height: '18rem', overflow: 'auto', scrollbarWidth: 'thin' }}>
                                     {
-                                        props.CompanyDetails.address != undefined ? props.CompanyDetails.address.map((item) => {
+                                        props.CompanyDetails.address != undefined ? props.CompanyDetails.address.map((item, index) => {
+                                            let starValue=0;
+                                            if(index===0) {
+                                                starValue=1;
+                                            }
                                             return (
                                                 <div style={{ marginBottom: '20px' }}>
-                                                    <Flex justify='space-between' >
+                                                    <Flex justify='space-between'>
 
                                                         <Flex vertical>
                                                             <p style={{ margin: '0px' }}><b>{item.address_title}</b></p>
@@ -191,12 +228,15 @@ const AddressDetails = (props) => {
                                                             <p style={{ margin: '0px' }}> {item.city}, {item.state}</p>
                                                             <p style={{ margin: '0px' }}>{item.country}, {item.pincode}</p>
                                                         </Flex>
-                                                        <div onClick={() => { handleDelete(item) }}>
+                                                        <Flex gap={20}>
+                                                        <Button type="text" style={{padding:'0px'}} >
+                                                            <Rate count={1} value={starValue} onChange={() => {changeAddressPrimary(starValue, index, item)}}/>
+                                                        </Button>
+                                                        <Button type="text" onClick={() => { handleDelete(item) }} style={{padding:'0px'}}>
                                                             <img src={del} alt="My Icon" style={{ width: '30px', height: '30px' }} />
-                                                        </div>
-                                                        {/* <div>
-                                                        <img src={pen} alt="My Icon" style={{ width: '30px', height: '30px' }} />
-                                                        </div> */}
+                                                        </Button>
+                                                        </Flex>
+                                                       
                                                     </Flex>
 
 
@@ -226,6 +266,7 @@ const AddressDetails = (props) => {
                                                 <Form.Item
                                                     label="Address Title"
                                                     name="addressTitle"
+                                                    rules={[{ required: true, message: 'Address Title is required' }]}
                                                 >
                                                     <Input
                                                         className="custom-input"
@@ -236,21 +277,9 @@ const AddressDetails = (props) => {
                                                     />
                                                 </Form.Item>
                                                 <Form.Item
-                                                    label="Country"
-                                                    name="country"
-                                                >
-                                                    <Input
-                                                        className="custom-input"
-                                                        variant="filled"
-                                                        id="country"
-                                                        onChange={handleChange}
-                                                        value={address["country"]}
-                                                    />
-                                                </Form.Item>
-                                                <Form.Item
                                                     label="City"
                                                     name="city"
-                                                // rules={[{ required: true, message: 'City is required' }]}
+                                                    rules={[{ required: true, message: 'City is required' }]}
                                                 >
                                                     <Input
                                                         className="custom-input"
@@ -258,6 +287,19 @@ const AddressDetails = (props) => {
                                                         id="city"
                                                         onChange={handleChange}
                                                         value={address["city"]}
+                                                    />
+                                                </Form.Item>
+                                                <Form.Item
+                                                    label="Country"
+                                                    name="country"
+                                                    rules={[{ required: true, message: 'Country is required' }]}
+                                                >
+                                                    <Input
+                                                        className="custom-input"
+                                                        variant="filled"
+                                                        id="country"
+                                                        onChange={handleChange}
+                                                        value={address["country"]}
                                                     />
                                                 </Form.Item>
                                             </Col>
@@ -278,7 +320,7 @@ const AddressDetails = (props) => {
                                                 <Form.Item
                                                     label="State"
                                                     name="state"
-                                                // rules={[{ required: true, message: 'State is required' }]}
+                                                    rules={[{ required: true, message: 'State is required' }]}
                                                 >
                                                     <Input
                                                         className="custom-input"

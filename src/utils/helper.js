@@ -215,3 +215,15 @@ export const deepEqual = (obj1, obj2) => {
 
   return true;
 }
+
+
+export const reorderArray = (arr, fromIndex, toIndex) => {
+  if (fromIndex < 0 || fromIndex >= arr.length || toIndex < 0 || toIndex >= arr.length) {
+      throw new Error("Index out of bounds");
+    }
+  
+    const element = arr.splice(fromIndex, 1)[0];  
+    arr.splice(toIndex, 0, element);             
+  
+    return arr;
+}

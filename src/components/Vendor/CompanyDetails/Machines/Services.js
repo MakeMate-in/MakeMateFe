@@ -27,6 +27,7 @@ const Services = (props) => {
   const [inputs, setInputs] = useState(getInput());
   const [api, contextHolder] = notification.useNotification();
   const [allvalues,setallValues] = useState(undefined)
+  const colors1 = ['#6253E1', '#04BEFE'];
 
   const openNotification = (placement,msg) => {
     api.success({
@@ -159,7 +160,7 @@ const Services = (props) => {
 </Flex>
 
         <Form.Item style={{ bottom: '-9%', position: 'absolute', right: '-1%' }}>
-          <Button type="primary" htmlType="submit" style={{ fontSize: '18px', fontWeight: '600', height: '40px' }}>
+          <Button type="primary" htmlType="submit" style={{ fontSize: '18px', fontWeight: '600', height: '40px', background: `linear-gradient(135deg, ${colors1.join(', ')})` }}>
             Save & Continue
           </Button>
         </Form.Item>

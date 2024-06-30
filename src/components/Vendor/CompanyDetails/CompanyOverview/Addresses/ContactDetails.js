@@ -252,7 +252,7 @@ const ContactDetails = (props) => {
                                 }
 
                                 return (
-                                    <div style={{ marginBottom: '20px' }}>
+                                    <div style={{ marginBottom: '20px',background:index==0?'aliceblue':'' }}>
                                         <Flex justify='space-between' >
 
                                             <Flex vertical>

@@ -1,6 +1,7 @@
 import Home from '@mui/icons-material/Home';
 import Factory from '@mui/icons-material/Factory';
 import Logout from '@mui/icons-material/Logout';
+import Dashboard from '@mui/icons-material/DashboardCustomizeRounded';
 
 export const baseAPIUrl = 'http://localhost:5000';
 
@@ -52,7 +53,7 @@ export const VENDOR_DRAWER_LIST = [
     {
         id: 0,
         name: 'Dashboard',
-        icon: <Home/>,
+        icon: <Dashboard/>,
         route: OPEN_ROUTES.VENDOR_DASHBOARD
     },
     {
@@ -63,6 +64,12 @@ export const VENDOR_DRAWER_LIST = [
     },
     {
         id: 2,
+        name: 'Customer Dashboard',
+        icon: <Home/>,
+        route: OPEN_ROUTES.CUSTOMER_DASHBOARD
+    },
+    {
+        id: 3,
         name: 'Logout',
         icon: <Logout/>,
     },

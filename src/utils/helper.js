@@ -1,6 +1,7 @@
 import { Buffer } from 'buffer';
 import { PlusOutlined } from '@ant-design/icons';
 import mime from 'mime';
+import { notification } from 'antd';
 
 export const SESSION_STORAGE_ITEMS = {
   TOKEN: "jwtToken",
@@ -227,3 +228,34 @@ export const reorderArray = (arr, fromIndex, toIndex) => {
   
     return arr;
 }
+
+
+
+export const openNotification = (placement, message) => {
+  const [api] = notification.useNotification();
+  api.success({
+      message: `Success`,
+      description: message,
+      placement,
+  });
+};
+
+
+export const openFailedNotification = (placement, message) => {
+  const [api] = notification.useNotification();
+  api.error({
+      message: `Something went wrong`,
+      description: message,
+      placement,
+  });
+};
+
+
+export const deleteNotification = (placement, message) => {
+  const [api] = notification.useNotification();
+  api.success({
+      message: `Success`,
+      description: message,
+      placement,
+  });
+};

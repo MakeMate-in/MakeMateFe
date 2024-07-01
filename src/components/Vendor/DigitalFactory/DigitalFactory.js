@@ -12,6 +12,8 @@ import { LeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom'
 import { OPEN_ROUTES } from '../../../utils/constants'
 import Completed from '../CompanyDetails/Completed/Completed';
+import { NOTIFICATION_MESSAGES } from '../../../utils/locale';
+import { notification } from 'antd';
 
 
 const { Step } = Steps;
@@ -33,8 +35,35 @@ const DigitalFactory = () => {
 
   const colors1 = ['#6253E1', '#04BEFE'];
 
+  const [api] = notification.useNotification();
+
   const backToDashboard = () => {
     navigate(OPEN_ROUTES.VENDOR_DASHBOARD)
+  }
+
+  const openFailedNotification = (placement, message) => {
+    api.error({
+        message: `Something went wrong`,
+        description: message,
+        placement,
+    });
+};
+
+
+
+  const getCompany = async () => {
+
+    try{
+      const  COMPANY_ID = getCopanyId()
+    let param_1 = {
+      companyId: COMPANY_ID
+    }
+    const respAll = await getAllDetails(param_1);
+    setAllDetails(respAll.data);
+  }
+  catch(err){
+    openFailedNotification('topRight', NOTIFICATION_MESSAGES.ERROR_FETCH_DETAILS)
+  }
   }
 
   useEffect(() => {
@@ -52,7 +81,6 @@ const DigitalFactory = () => {
       const resp = await getCompanyDetails(param);
       const respAll = await getAllDetails(param_1);
 
-
       if(respAll.data.plantImages){
       setPlantImagesCount(respAll.data.plantImages.company_Images.length)
       }
@@ -66,78 +94,62 @@ const DigitalFactory = () => {
       setAllDetails(respAll.data);
     }
     catch(err){
-      //Toast
+        openFailedNotification('topRight', NOTIFICATION_MESSAGES.ERROR_FETCH_DETAILS)
     }
     }
     getCompany()
   }, [])
 
+
   useEffect(() => {
-
-    const getCompany = async () => {
-
-      try{
-        const  COMPANY_ID = getCopanyId()
-      let param_1 = {
-        companyId: COMPANY_ID
-      }
-      const respAll = await getAllDetails(param_1);
-      setAllDetails(respAll.data);
-    }
-    catch(err){
-      //Toast
-    }
-    }
     getCompany()
-
   }, [CompanyDetails])
 
 
+  const CalculatePercentage = async () => {
+    let per = 0;
+     
+    console.log(certificateCount)
+
+    if (AllDetails?.companyDetails?.company_name !== undefined && AllDetails?.companyDetails?.company_name !== '') per = per + 5
+
+    if (CompanyDetails.description !== undefined && CompanyDetails.description !== '') per = per + 5
+
+    if (AllDetails?.companyDetails?.address !== undefined && AllDetails?.companyDetails.address?.length > 0) per = per + PER_COUNT
+
+    if (AllDetails?.companyDetails?.contact_person !== undefined && AllDetails?.companyDetails?.contact_person.length > 0) per = per + PER_COUNT
+
+    if (AllDetails?.companyDetails?.customer_details !== undefined && AllDetails?.companyDetails?.customer_details.length > 0) per = per + PER_COUNT
+
+    if (AllDetails?.companyDetails?.product_details !== undefined && AllDetails?.companyDetails?.product_details.length > 0) per = per + PER_COUNT
+
+    if (certificateCount>0) per = per + 6
+
+    if ( (InfrastructureDetails && InfrastructureDetails.assembly_area !== undefined && InfrastructureDetails.assembly_area !== null) && InfrastructureDetails?.assembly_area !== '') per = per + PER_INFRA_COUNT
+
+    if ((InfrastructureDetails && InfrastructureDetails.assembly_table !== undefined && InfrastructureDetails.assembly_table !== null) && InfrastructureDetails?.assembly_table !== '') per = per + PER_INFRA_COUNT
+
+    if ( (InfrastructureDetails && InfrastructureDetails.design_softwares !== undefined && InfrastructureDetails.design_softwares !== null) && InfrastructureDetails?.design_softwares !== '') per = per + PER_INFRA_COUNT
+
+    if ( (InfrastructureDetails && InfrastructureDetails.surface_table !== undefined && InfrastructureDetails.surface_table !== null) && InfrastructureDetails?.surface_table !== '') per = per + PER_INFRA_COUNT
+
+    if ( (InfrastructureDetails && InfrastructureDetails.CMM !== undefined && InfrastructureDetails.CMM !== null) && InfrastructureDetails?.CMM !== '') per = per + PER_INFRA_COUNT
+
+    if ( (InfrastructureDetails && InfrastructureDetails.crane_tonnage !== undefined && InfrastructureDetails.crane_tonnage !== null) && InfrastructureDetails?.crane_tonnage > 0) per = per + PER_INFRA_COUNT
+
+    if ( (InfrastructureDetails && InfrastructureDetails.plant_area !== undefined && InfrastructureDetails.plant_area !== null) && InfrastructureDetails?.plant_area !== '') per = per + PER_INFRA_COUNT
+
+    if (MachineDetails !== undefined && MachineDetails.length>0) per = per + PER_COUNT
+
+    if (customerDetails !== undefined && customerDetails.length>0) per = per + PER_COUNT
+
+    if (plantImagesCount>0) per = per + PER_COUNT
+
+
+    setPercent(per)
+  }
+
   useEffect(() => {
-
-    const CalculatePercentage = async () => {
-      let per = 0;
-       
-      console.log(certificateCount)
-
-      if (AllDetails?.companyDetails?.company_name !== undefined && AllDetails?.companyDetails?.company_name !== '') per = per + 5
-
-      if (CompanyDetails.description !== undefined && CompanyDetails.description !== '') per = per + 5
-
-      if (AllDetails?.companyDetails?.address !== undefined && AllDetails?.companyDetails.address?.length > 0) per = per + PER_COUNT
-
-      if (AllDetails?.companyDetails?.contact_person !== undefined && AllDetails?.companyDetails?.contact_person.length > 0) per = per + PER_COUNT
-
-      if (AllDetails?.companyDetails?.customer_details !== undefined && AllDetails?.companyDetails?.customer_details.length > 0) per = per + PER_COUNT
-
-      if (AllDetails?.companyDetails?.product_details !== undefined && AllDetails?.companyDetails?.product_details.length > 0) per = per + PER_COUNT
-
-      if (certificateCount>0) per = per + 6
-
-      if ( (InfrastructureDetails && InfrastructureDetails.assembly_area !== undefined && InfrastructureDetails.assembly_area !== null) && InfrastructureDetails?.assembly_area !== '') per = per + PER_INFRA_COUNT
-
-      if ((InfrastructureDetails && InfrastructureDetails.assembly_table !== undefined && InfrastructureDetails.assembly_table !== null) && InfrastructureDetails?.assembly_table !== '') per = per + PER_INFRA_COUNT
-
-      if ( (InfrastructureDetails && InfrastructureDetails.design_softwares !== undefined && InfrastructureDetails.design_softwares !== null) && InfrastructureDetails?.design_softwares !== '') per = per + PER_INFRA_COUNT
-
-      if ( (InfrastructureDetails && InfrastructureDetails.surface_table !== undefined && InfrastructureDetails.surface_table !== null) && InfrastructureDetails?.surface_table !== '') per = per + PER_INFRA_COUNT
-
-      if ( (InfrastructureDetails && InfrastructureDetails.CMM !== undefined && InfrastructureDetails.CMM !== null) && InfrastructureDetails?.CMM !== '') per = per + PER_INFRA_COUNT
-
-      if ( (InfrastructureDetails && InfrastructureDetails.crane_tonnage !== undefined && InfrastructureDetails.crane_tonnage !== null) && InfrastructureDetails?.crane_tonnage > 0) per = per + PER_INFRA_COUNT
-
-      if ( (InfrastructureDetails && InfrastructureDetails.plant_area !== undefined && InfrastructureDetails.plant_area !== null) && InfrastructureDetails?.plant_area !== '') per = per + PER_INFRA_COUNT
-
-      if (MachineDetails !== undefined && MachineDetails.length>0) per = per + PER_COUNT
-
-      if (customerDetails !== undefined && customerDetails.length>0) per = per + PER_COUNT
-
-      if (plantImagesCount>0) per = per + PER_COUNT
-
-
-      setPercent(per)
-    }
-
     CalculatePercentage()
 
   }, [InfrastructureDetails,MachineDetails, plantImagesCount, customerDetails, AllDetails, certificateCount])

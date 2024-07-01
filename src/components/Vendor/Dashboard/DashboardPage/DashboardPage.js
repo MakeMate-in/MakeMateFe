@@ -11,16 +11,29 @@ import { Pie, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { rgb } from 'polished';
 import './DashboardPage.css';
-import { LOCAL_STORAGE_ITEMS, convertBufferToBinary, getCopanyId } from '../../../../utils/helper';
+import { convertBufferToBinary, getCopanyId } from '../../../../utils/helper';
 import BasicCompanyDetails from './Components/BasicCompanyDetails';
+import { NOTIFICATION_MESSAGES } from '../../../../utils/locale';
+import { notification } from 'antd';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const DashboardPage = () => {
   const [AllDetails, setAllDetails] = useState(undefined);
   const [loading, setLoading] = useState(true);
+  const [api] = notification.useNotification();
 
   const [srcList, setSrcList] = useState([]);
+
+  const openFailedNotification = (placement, message) => {
+    api.error({
+        message: `Something went wrong`,
+        description: message,
+        placement,
+    });
+};
+
+
 
   useEffect(() => {
     const getAllDashboardDetails = async () => {
@@ -48,7 +61,7 @@ const DashboardPage = () => {
       setLoading(false);
   }
   catch(err){
-    //Toast 
+    openFailedNotification('topRight', NOTIFICATION_MESSAGES.ERROR_FETCH_DETAILS)
   }
     };
 

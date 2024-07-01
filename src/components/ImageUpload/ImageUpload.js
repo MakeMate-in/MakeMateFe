@@ -3,7 +3,7 @@ import { Upload, Carousel } from 'antd';
 import { notification } from 'antd';
 
 import { PlusOutlined } from '@ant-design/icons';
-import { MESSAGES } from '../../utils/locale';
+import { NOTIFICATION_MESSAGES } from '../../utils/locale';
 
 
 const getBase64 = (file) =>
@@ -28,7 +28,7 @@ const ImageUpload = (props) => {
     const openNotification = (placement) => {
         api.success({
             message: `Success`,
-            description: MESSAGES.UPLOAD_PLANT_IMAGES,
+            description: NOTIFICATION_MESSAGES.UPLOAD_PLANT_IMAGES,
             placement,
         });
     };
@@ -59,7 +59,7 @@ const ImageUpload = (props) => {
             setFileList(newSrcList);
         }
         catch (err) {
-            openFailedNotification('topRight', MESSAGES.FETCH_IMAGE_ERROR)
+            openFailedNotification('topRight', NOTIFICATION_MESSAGES.FETCH_IMAGE_ERROR)
             return err
         }
     }
@@ -88,7 +88,7 @@ const ImageUpload = (props) => {
             onSuccess("Ok");
             // console.log("server res: ", res);
         } catch (err) {
-            openFailedNotification('topRight', MESSAGES.UPLOAD_IMAGE_ERROR)
+            openFailedNotification('topRight', NOTIFICATION_MESSAGES.UPLOAD_IMAGE_ERROR)
             console.log("Eroor: ", err);
             const error = new Error("Some error");
         }
@@ -103,7 +103,7 @@ const ImageUpload = (props) => {
         try {
             const res = await props.uploadImages(filesList)
             if (res.success) {
-                deleteNotification('topRight', MESSAGES.DELETE_PLANT_IMAGES);
+                deleteNotification('topRight', NOTIFICATION_MESSAGES.DELETE_PLANT_IMAGES);
                 fetchImages()
 
             }

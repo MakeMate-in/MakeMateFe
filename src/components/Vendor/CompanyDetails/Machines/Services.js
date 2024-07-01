@@ -5,7 +5,7 @@ import TextArea from 'antd/es/input/TextArea'
 import { addServiceDetails, getServiceDetails } from '../../../../apis/Vendor/ServiceDetails';
 import {  notification } from 'antd';
 import { deepEqual } from '../../../../utils/helper';
-import { MESSAGES } from '../../../../utils/locale';
+import { NOTIFICATION_MESSAGES } from '../../../../utils/locale';
 const Context = React.createContext({
   name: 'Default',
 });
@@ -71,7 +71,7 @@ const Services = (props) => {
         setallValues([...deepCopy])
       }
       else {
-        openFailedNotification('topRight',MESSAGES.FETCH_SERVICES_ERROR)
+        openFailedNotification('topRight',NOTIFICATION_MESSAGES.FETCH_SERVICES_ERROR)
       }
     }
     catch (err) {
@@ -104,13 +104,13 @@ const Services = (props) => {
       if ((res && res.success) || equal) {
         if(!equal){
         fetchServices()
-        openNotification('topRight', MESSAGES.UPDATE_SERVICES_SUCCESS);
+        openNotification('topRight', NOTIFICATION_MESSAGES.UPDATE_SERVICES_SUCCESS);
         }
         
         props.onSaveAndSubmit();
       }
       else {
-        openFailedNotification('topRight', MESSAGES.UPDATE_SERVICES_ERROR);
+        openFailedNotification('topRight', NOTIFICATION_MESSAGES.UPDATE_SERVICES_ERROR);
       }
     }
     catch (err) {

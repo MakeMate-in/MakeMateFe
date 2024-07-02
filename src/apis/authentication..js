@@ -76,7 +76,19 @@ export const forgotpassword =async (data)=>{
     
     try{
        const url=AUTHEN_URLS.FORGOTPASSWORD;
-       const user = await requestHandler.patch(url,data);
+       const user = await axios.patch(baseAPIUrl+url,data)
+       return user;
+    }
+    catch(err){
+        throw (err)
+    }
+}
+
+export const sendEmailOtp =async (data)=>{
+    
+    try{
+       const url=AUTHEN_URLS.SENDEMAILOTP;
+       const user = await requestHandler.post(url,data);
        return user
     }
     catch(err){

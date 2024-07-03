@@ -19,8 +19,13 @@ export const getServiceDetails = async (company_id) => {
             }).then((response) => {
             return response.data;
      })
-        .catch((err) => {
-            console.log(err);
+        .catch((err) =>  {
+            if (err.response.status == 401) {
+                errorValidator(err)
+            }
+            else {
+                return err
+            }
         })
         return res;
     }
@@ -43,7 +48,14 @@ export const updateServiceDetails = async (params,data) => {
         }).then((res)=>{
           return res.data;
         })
-        .catch(err=>console.log(err))
+        .catch(err=> {
+            if (err.response.status == 401) {
+                errorValidator(err)
+            }
+            else {
+                return err
+            }
+        })
         return response
     }
     catch (err) {
@@ -62,7 +74,14 @@ export const addServiceDetails = async (params,services) => {
         }).then((res)=>{
           return res.data;
         })
-        .catch(err=>console.log(err))
+        .catch(err=> {
+            if (err.response.status == 401) {
+                errorValidator(err)
+            }
+            else {
+                return err
+            }
+        })
         return response
     }
     catch (err) {
@@ -85,7 +104,14 @@ export const deleteServiceDetails = async (company_id) => {
         }).then((res)=>{
           return res.data;
         })
-        .catch(err=>console.log(err))
+        .catch(err=> {
+            if (err.response.status == 401) {
+                errorValidator(err)
+            }
+            else {
+                return err
+            }
+        })
         return response
     }
     catch (err) {

@@ -42,7 +42,14 @@ export const updateProductDetails = async (company_id,product_id,customer_name,p
             .then((res)=>{
           return res.data;
         })
-        .catch(err=>console.log(err))
+        .catch(err=> {
+            if (err.response.status == 401) {
+                errorValidator(err)
+            }
+            else {
+                return err
+            }
+        })
         return data
     }
     catch (err) {
@@ -61,7 +68,14 @@ export const addProductDetails = async (params,data) => {
         }).then((res)=>{
           return res.data;
         })
-        .catch(err=>console.log(err))
+        .catch(err=> {
+            if (err.response.status == 401) {
+                errorValidator(err)
+            }
+            else {
+                return err
+            }
+        })
         return data
     }
     catch (err) {
@@ -81,7 +95,14 @@ export const deleteProductDetails = async (params) => {
         }).then((res)=>{
           return res.data;
         })
-        .catch(err=>console.log(err))
+        .catch(err=> {
+            if (err.response.status == 401) {
+                errorValidator(err)
+            }
+            else {
+                return err
+            }
+        })
         return data
     }
     catch (err) {
@@ -113,8 +134,13 @@ export const uploadToolImages = async (id, file) => {
         }).then((response) => {
         return response.data;
     })
-    .catch((err) => {
-        console.log(err);
+    .catch((err) =>  {
+        if (err.response.status == 401) {
+            errorValidator(err)
+        }
+        else {
+            return err
+        }
     })
     return res;
 }
@@ -142,8 +168,13 @@ export const uploadProductImages = async (id, file) => {
         }).then((response) => {
         return response.data;
     })
-    .catch((err) => {
-        console.log(err);
+    .catch((err) =>  {
+        if (err.response.status == 401) {
+            errorValidator(err)
+        }
+        else {
+            return err
+        }
     })
     return res;
 }

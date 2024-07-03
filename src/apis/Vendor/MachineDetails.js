@@ -29,7 +29,14 @@ export const updateMachineDetails = async (params,data) => {
         }).then((res)=>{
           return res.data;
         })
-        .catch(err=>console.log(err))
+        .catch(err=> {
+            if (err.response.status == 401) {
+                errorValidator(err)
+            }
+            else {
+                return err
+            }
+        })
         return data
     }
     catch (err) {
@@ -50,7 +57,14 @@ export const addMachineDetails = async (params,data) => {
         }).then((res)=>{
           return res.data;
         })
-        .catch(err=>console.log(err))
+        .catch(err=> {
+            if (err.response.status == 401) {
+                errorValidator(err)
+            }
+            else {
+                return err
+            }
+        })
         return data
     }
     catch (err) {
@@ -72,7 +86,14 @@ export const deleteMachineDetails = async (params,data) => {
         }).then((res)=>{
           return res.data;
         })
-        .catch(err=>console.log(err))
+        .catch(err=> {
+            if (err.response.status == 401) {
+                errorValidator(err)
+            }
+            else {
+                return err
+            }
+        })
         return data
     }
     catch (err) {
@@ -105,7 +126,12 @@ export const uploadMachineImages = async (id, file) => {
         return response.data;
     })
     .catch((err) => {
-        console.log(err);
+        if (err.response.status == 401) {
+            errorValidator(err)
+        }
+        else {
+            return err
+        }
     })
     return res;
 }

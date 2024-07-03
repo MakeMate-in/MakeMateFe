@@ -82,7 +82,12 @@ export const addInfraDetails = async (params, data) => {
         return response.data
     }
     catch (err) {
+            if (err.response.status == 401) {
+               errorValidator(err)
+            }
+            else{
         throw err
+            }
     }
 
 }

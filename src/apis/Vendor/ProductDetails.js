@@ -2,6 +2,7 @@ import { requestHandler } from "./../requestHandler";
 import { PRODUCT_DETAILS_URL} from "../../utils/urls";
 import axios from 'axios'
 import { baseAPIUrl } from "./../../utils/constants";
+import { getToken } from "../../utils/helper";
 
 export const getProductDetails = async (data) => {
     try {
@@ -29,7 +30,16 @@ export const updateProductDetails = async (company_id,product_id,customer_name,p
             manufacturing_year: manufacturing_year
         }
         const url = PRODUCT_DETAILS_URL.UPDATE_PRODUCT
-        data = await axios.patch(baseAPIUrl+url,data).then((res)=>{
+        data = await axios.patch(
+            baseAPIUrl+url,
+            data,
+            {
+                headers: {
+                    'Authorization': getToken(),
+                }
+            }
+        )
+            .then((res)=>{
           return res.data;
         })
         .catch(err=>console.log(err))
@@ -44,6 +54,9 @@ export const addProductDetails = async (params,data) => {
     try {
         const url = PRODUCT_DETAILS_URL.CREATE_PRODUCT
         data = await axios.post(baseAPIUrl+url,data,{
+            headers: {
+                'Authorization': getToken(),
+            },
             params: params
         }).then((res)=>{
           return res.data;
@@ -61,6 +74,9 @@ export const deleteProductDetails = async (params) => {
     try {
         const url = PRODUCT_DETAILS_URL.DELETE_SINGLE_PRODUCT;
         const data = await axios.delete(baseAPIUrl+url, {
+            headers: {
+                'Authorization': getToken(),
+            },
             params: params
         }).then((res)=>{
           return res.data;
@@ -80,7 +96,7 @@ export const uploadToolImages = async (id, file) => {
     const url = PRODUCT_DETAILS_URL.UPLOAD_TOOL_IMAGE;
     // const authToken = getAccessToken();
     const headers = {
-        // 'Authorization': authToken,
+        'Authorization': getToken(),
         'Content-Type':' multipart/form-data;',
       }
     const params={
@@ -109,7 +125,7 @@ export const uploadProductImages = async (id, file) => {
     const url = PRODUCT_DETAILS_URL.UPLOAD_PRODUCT_IMAGE;
     // const authToken = getAccessToken();
     const headers = {
-        // 'Authorization': authToken,
+        'Authorization': getToken(),
         'Content-Type':' multipart/form-data;',
       }
     const params={

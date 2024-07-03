@@ -1,44 +1,65 @@
 import { requestHandler } from "./../requestHandler";
-import { INFRA_DETAILS_URL} from "../../utils/urls";
+import { INFRA_DETAILS_URL } from "../../utils/urls";
 import axios from 'axios'
 import { baseAPIUrl } from "./../../utils/constants";
+import { getToken } from "../../utils/helper";
 
 
 export const getInfraDetails = async (company_id) => {
-    try{
+    try {
         const url = INFRA_DETAILS_URL.GET_INFRA_DETAILS;
-        const params={
-            ids:company_id
+        const params = {
+            ids: company_id
         }
         let res = await axios.get(
-            baseAPIUrl+url ,
+            baseAPIUrl + url,
             {
-                params:params
+                headers: {
+                    'Authorization': getToken(),
+                },
+                params: params,
+
             }).then((response) => {
-            return response.data;
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+                return response.data;
+            })
+            .catch((err) => {
+                if (err.response.status == 401) {
+                    errorValidator(err)
+                }
+                else {
+                    return err
+                }
+            })
 
         return res
     }
-    catch(err)
-    {
+    catch (err) {
         throw err;
     }
 }
 
-export const updateInfraDetails = async (params,data) => {
+export const updateInfraDetails = async (params, data) => {
     try {
-       
+
         const url = INFRA_DETAILS_URL.UPDATE_INFRA_DETAILS
-        data = await axios.patch(baseAPIUrl+url,data,{
-            params:params
-        }).then((res)=>{
-          return res.data;
+        data = await axios.patch(baseAPIUrl + url, data, {
+            headers: {
+                'Authorization': getToken(),
+            },
+            params: params,
+
+
+        }).then((res) => {
+            return res.data;
         })
-        .catch(err=>console.log(err))
+            .catch(err => {
+                if (err.response.status == 401) {
+                    errorValidator(err)
+                }
+                else {
+                    return err
+                }
+            })
         return data
     }
     catch (err) {
@@ -46,13 +67,17 @@ export const updateInfraDetails = async (params,data) => {
     }
 }
 
-export const addInfraDetails = async (params,data) => {
+export const addInfraDetails = async (params, data) => {
     try {
         const url = INFRA_DETAILS_URL.ADD_INFRA_DETAILS;
-        let response = await axios.post(baseAPIUrl+url,
+        let response = await axios.post(baseAPIUrl + url,
             data,
             {
-            params:params
+                headers: {
+                    'Authorization': getToken(),
+                },
+                params: params
+
             })
         return response.data
     }
@@ -65,15 +90,25 @@ export const addInfraDetails = async (params,data) => {
 export const deleteInfraDetails = async (company_id) => {
     try {
         const url = INFRA_DETAILS_URL.DELETE_INFRA_DETAILS;
-        const params={
-            id:company_id
+        const params = {
+            id: company_id
         };
-        const data = await axios.delete(baseAPIUrl+url,{
+        const data = await axios.delete(baseAPIUrl + url, {
+            headers: {
+                'Authorization': getToken(),
+            },
             params: params
-        }).then((res)=>{
-          return res.data;
+        }).then((res) => {
+            return res.data;
         })
-        .catch(err=>console.log(err))
+            .catch(err => {
+                if (err.response.status == 401) {
+                    errorValidator(err)
+                }
+                else {
+                    return err
+                }
+            })
         return data
     }
     catch (err) {

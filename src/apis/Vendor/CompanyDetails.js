@@ -355,7 +355,6 @@ export const getAllDetails = async (data) => {
     }
 }
 
-
 export const updatePrimaryAddressContacts = async (params, data) => {
     try {
         const url = COMPANY_DETAILS_URLS.UPDATE_PRIMARY_DETAILS

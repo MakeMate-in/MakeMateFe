@@ -12,6 +12,9 @@ export const getServiceDetails = async (company_id) => {
         let res = await axios.get(
             baseAPIUrl+url ,
             {
+                headers: {
+                    'Authorization': getToken(),
+                },
                 params:params
             }).then((response) => {
             return response.data;
@@ -33,6 +36,9 @@ export const updateServiceDetails = async (params,data) => {
        
         const url = SERVICE_DETAILS_URL.UPDATE_SERVICE_DETAILS;
         const response = await axios.patch(baseAPIUrl+url,data,{
+            headers: {
+                'Authorization': getToken(),
+            },
             params:params
         }).then((res)=>{
           return res.data;
@@ -49,6 +55,9 @@ export const addServiceDetails = async (params,services) => {
     try {
         const url = SERVICE_DETAILS_URL.ADD_SERVICE_DETAILS;
         const response = await axios.post(baseAPIUrl+url,services,{
+            headers: {
+                'Authorization': getToken(),
+            },
             params:params
         }).then((res)=>{
           return res.data;
@@ -69,6 +78,9 @@ export const deleteServiceDetails = async (company_id) => {
             id:company_id
         };
         const response = await axios.delete(baseAPIUrl+url,{
+            headers: {
+                'Authorization': getToken(),
+            },
             params: params
         }).then((res)=>{
           return res.data;

@@ -3,6 +3,7 @@ import { PRODUCT_DETAILS_URL} from "../../utils/urls";
 import axios from 'axios'
 import { baseAPIUrl } from "./../../utils/constants";
 import { getToken } from "../../utils/helper";
+import { errorValidator } from "../../utils/commons/validators";
 
 export const getProductDetails = async (data) => {
     try {

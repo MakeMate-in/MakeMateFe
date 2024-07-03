@@ -28,16 +28,21 @@ const AddressDetails = (props) => {
         setAddress({ ...address, [event.target.id]: event.target.value })
     }
 
-    useEffect(() => {
-        const getCompany = async () => {
-            const USER_ID = getUserId()
-            let param = {
-                user: USER_ID
-            }
-            const resp = await getCompanyDetails(param)
-            props.setcompanyDetails(resp.data)
+    const getCompany = async () => {
+        const USER_ID = getUserId()
+        let param = {
+            user: USER_ID
         }
+        try{
+        const resp = await getCompanyDetails(param)
+        props.setcompanyDetails(resp.data)
+        }
+        catch(err){
+            
+        }
+    }
 
+    useEffect(() => {
         getCompany()
     }, [])
 
@@ -77,6 +82,7 @@ const AddressDetails = (props) => {
             let data = {}
             data.address = address
             const res = await updateAddressandContacts(params, data)
+            console.log(res)
             if (res.success) {
                 const updatedData = await getCompanyDetails(params)
                 if (updatedData.success) {

@@ -217,9 +217,6 @@ const Machines = (props) => {
     ];
 
 
-    console.log(modalMachine)
-
-
     const uploadMachineImage = async (files) => {
         try {
             if (modalMachine) {

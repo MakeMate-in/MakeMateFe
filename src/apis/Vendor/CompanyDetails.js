@@ -1,7 +1,9 @@
 import { requestHandler } from "./../requestHandler";
 import  {  CERTIFICATES_URLS, COMPANY_DETAILS_URLS, PLANT_IMAGES_URLS }  from './../../utils/urls'
 import axios from 'axios'
-import { baseAPIUrl } from "./../../utils/constants";
+import { OPEN_ROUTES, baseAPIUrl, baseURL } from "./../../utils/constants";
+import { getToken } from "../../utils/helper";
+import { errorValidator } from "../../utils/commons/validators";
 
 
  
@@ -20,11 +22,21 @@ export const updateCompanyDetails = async (params,data) => {
     try {
         const url = COMPANY_DETAILS_URLS.UPDATE_COMPANY_DETAILS
         data = await axios.patch(baseAPIUrl+url,data,{
+            headers: {
+                'Authorization': getToken(),
+            },
             params: params
         }).then((res)=>{
+            if(res.data){
           return res.data;
+            }
+            else{
+                return res
+            }
         })
-        .catch(err=>console.log(err))
+        .catch(err=>{
+            return err
+    })
         return data
     }
     catch (err) {
@@ -36,13 +48,24 @@ export const updateCompanyDetails = async (params,data) => {
 export const updateAddressandContacts = async (params,data) => {
     try {
         const url = COMPANY_DETAILS_URLS.UPDATE_COMPANY_DETAILS_ARRAY
-        data = await axios.patch(baseAPIUrl+url,data,{
+        let resp = await axios.patch(baseAPIUrl+url,data,{
+            headers: {
+                'Authorization': getToken(),
+            },
             params: params
         }).then((res)=>{
+            console.log(res)
           return res.data;
         })
-        .catch(err=>console.log(err))
-        return data
+        .catch(err=>{
+            if(err.response.status ==401){
+            errorValidator(err)
+            }
+            else{
+            return err
+            }
+        })
+        return resp
     }
     catch (err) {
         throw err
@@ -73,6 +96,9 @@ export const updateElement = async (params,data) => {
         data.params = params
         const url = COMPANY_DETAILS_URLS.UPDATE_COMPANY_DETAILS_ARRAY_ELEMENT
         data = await axios.patch(baseAPIUrl+url,data,{
+            headers: {
+                'Authorization': getToken(),
+            },
             params: params
         }).then((res)=>{
           return res.data;
@@ -221,9 +247,8 @@ export const uploadPlantImages = async (company_id, file) => {
 
 export const getPlantImages = async (company_id) => {
     const url = PLANT_IMAGES_URLS.GET_IMAGES;
-    // const authToken = getAccessToken();
     const headers = {
-        // 'Authorization': authToken,
+        'Authorization': getToken(),
         // 'Content-Type':' multipart/form-data;',
       }
       const params={
@@ -232,7 +257,7 @@ export const getPlantImages = async (company_id) => {
     let res = await axios.get(
         baseAPIUrl+url ,
         {
-            // headers:headers,
+            headers:headers,
             params:params
         
         }).then((response) => {
@@ -248,7 +273,7 @@ export const deletePlantImages = async (company_id, file) => {
     const url = PLANT_IMAGES_URLS.DELETE_IMAGES;
     // const authToken = getAccessToken();
     const headers = {
-        // 'Authorization': authToken,
+        'Authorization': getToken(),
         'Content-Type':' multipart/form-data;',
       }
     const params={
@@ -278,6 +303,7 @@ export const getAllDetails = async (data) => {
         return response
     }
     catch (err) {
+        console.log(err)
         throw err
     }
 }
@@ -287,6 +313,9 @@ export const updatePrimaryAddressContacts = async (params,data) => {
     try {
         const url = COMPANY_DETAILS_URLS.UPDATE_PRIMARY_DETAILS
         data = await axios.patch(baseAPIUrl+url,data,{
+            headers: {
+                'Authorization': getToken(),
+            },
             params: params
         }).then((res)=>{
           return res.data;

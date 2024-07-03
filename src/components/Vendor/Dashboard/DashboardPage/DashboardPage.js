@@ -13,8 +13,10 @@ import { rgb } from 'polished';
 import './DashboardPage.css';
 import { convertBufferToBinary, getCopanyId } from '../../../../utils/helper';
 import BasicCompanyDetails from './Components/BasicCompanyDetails';
-import { NOTIFICATION_MESSAGES } from '../../../../utils/locale';
 import { notification } from 'antd';
+import { useNavigate } from 'react-router-dom'
+import { OPEN_ROUTES } from '../../../../utils/constants';
+
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -23,6 +25,7 @@ const DashboardPage = () => {
   const [loading, setLoading] = useState(true);
   const [api] = notification.useNotification();
 
+  const navigate = useNavigate()
   const [srcList, setSrcList] = useState([]);
 
   const openFailedNotification = (placement, message) => {
@@ -34,37 +37,38 @@ const DashboardPage = () => {
 };
 
 
+const getAllDashboardDetails = async () => {
+  const  COMPANY_ID = getCopanyId()
+  let param = {
+    companyId: COMPANY_ID,
+  };
+  try{
+  const resp = await getAllDetails(param);
+  
+  console.log(resp)
+  setAllDetails(resp.data);
+
+  let newSrcList = [];
+  if(resp.data.plantImages){
+  resp.data.plantImages.company_Images.map(async (item, i) => {
+      let data = {
+          name: "Image_"+i,
+          src: convertBufferToBinary(item.image),
+          type: 'image/png',
+          id: i + 1
+      }
+      newSrcList.push(data)
+  })
+  setSrcList(newSrcList);
+}
+  setLoading(false);
+}
+catch(err){
+navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD)
+}
+};
 
   useEffect(() => {
-    const getAllDashboardDetails = async () => {
-      const  COMPANY_ID = getCopanyId()
-      let param = {
-        companyId: COMPANY_ID,
-      };
-      try{
-      const resp = await getAllDetails(param);
-      setAllDetails(resp.data);
-
-      let newSrcList = [];
-      if(resp.data.plantImages){
-      resp.data.plantImages.company_Images.map(async (item, i) => {
-          let data = {
-              name: "Image_"+i,
-              src: convertBufferToBinary(item.image),
-              type: 'image/png',
-              id: i + 1
-          }
-          newSrcList.push(data)
-      })
-      setSrcList(newSrcList);
-    }
-      setLoading(false);
-  }
-  catch(err){
-    openFailedNotification('topRight', NOTIFICATION_MESSAGES.ERROR_FETCH_DETAILS)
-  }
-    };
-
     getAllDashboardDetails();
   }, []);
 

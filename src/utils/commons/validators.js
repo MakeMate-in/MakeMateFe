@@ -1,4 +1,5 @@
-import { EMAIL, MOBILE, PASSWORD, ROLE } from './../../utils/constants';
+import { openNotificationWithIcon } from '../helper';
+import { EMAIL, MOBILE, OPEN_ROUTES, PASSWORD, ROLE, baseURL } from './../../utils/constants';
 
 
 export const  validateForm = (user,setUser,setErrors,checked,checkPassword, role) => {
@@ -66,3 +67,33 @@ export const  validateForm = (user,setUser,setErrors,checked,checkPassword, role
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
+
+
+  export const errorValidator = (error) => {
+    const err = new Error();
+    if(error.response.status == 500) {
+      err.msg = "Something went wrong!";
+      err.status = 500;
+      openNotificationWithIcon("error", err.msg);
+  }
+  else if(error.response.status == 502) {
+      err.msg = "Cannot reach the servers at the moment, Please try agian later!";
+      err.status = 500;
+      openNotificationWithIcon("error", err.msg);
+  }
+  else if(error.response.data.errors){
+      error.response.data.errors.forEach(error => {
+          openNotificationWithIcon("error", error.msg);
+          err.msg = error.msg;
+          err.status = error.status;
+      });
+      window.location.href = baseURL+OPEN_ROUTES.CUSTOMER_DASHBOARD
+  }
+  else if(error.response.status == 404) {
+      err.msg = "Could not find the resource!";
+      err.status = 500;
+      openNotificationWithIcon("error", err.msg);
+  }
+
+  throw err
+  }

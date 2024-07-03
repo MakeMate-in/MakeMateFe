@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_METHODS, baseAPIUrl } from "./../utils/constants";
 import { getToken } from "./../utils/helper";
+import { openNotificationWithIcon } from "./../utils/helper";
 
 const RequestInstance = axios.create({
     baseURL: baseAPIUrl
@@ -9,6 +10,9 @@ const RequestInstance = axios.create({
 const makeGetRequest = async (url, params, method) => {
     try {
         const response = await axios.get(url, {
+            headers: {
+                'Authorization': getToken(),
+            },
           params,
         });
         
@@ -16,19 +20,20 @@ const makeGetRequest = async (url, params, method) => {
       } 
     catch(error) {
         const err = new Error();
+        console.log(error)
         if(error.response.status == 500) {
             err.msg = "Something went wrong!";
             err.status = 500;
-            // openNotificationWithIcon("error", err.msg);
+            openNotificationWithIcon("error", err.msg);
         }
         else if(error.response.status == 502) {
             err.msg = "Cannot reach the servers at the moment, Please try agian later!";
             err.status = 500;
-            // openNotificationWithIcon("error", err.msg);
+            openNotificationWithIcon("error", err.msg);
         }
         else if(error.response.data.errors){
             error.response.data.errors.forEach(error => {
-                // openNotificationWithIcon("error", error.msg);
+                openNotificationWithIcon("error", error.msg);
                 err.msg = error.msg;
                 err.status = error.status;
             });
@@ -36,9 +41,9 @@ const makeGetRequest = async (url, params, method) => {
         else if(error.response.status == 404) {
             err.msg = "Could not find the resource!";
             err.status = 500;
-            // openNotificationWithIcon("error", err.msg);
+            openNotificationWithIcon("error", err.msg);
         }
-        throw err;    
+       throw error
     }
 };
 

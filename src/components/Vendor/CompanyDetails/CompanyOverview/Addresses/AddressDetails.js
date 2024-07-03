@@ -5,7 +5,9 @@ import { getCompanyDetails, updateAddressandContacts, deleteElement, updatePrima
 import del from './../../../../../assets/del.png'
 import ContactDetails from './ContactDetails';
 import { notification } from 'antd';
-import { getUserId, reorderArray } from '../../../../../utils/helper';
+import { getUserId, openNotificationWithIcon, reorderArray } from '../../../../../utils/helper';
+import { useNavigate } from 'react-router-dom';
+import { OPEN_ROUTES } from '../../../../../utils/constants';
 const Context = React.createContext({
     name: 'Default',
 });
@@ -14,6 +16,7 @@ const AddressDetails = (props) => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [form] = Form.useForm()
+    const navigate = useNavigate()
 
     const [address, setAddress] = useState({
         "address_title": "",
@@ -143,6 +146,7 @@ const AddressDetails = (props) => {
             let data = {}
             data.address = address
             const res = await updateAddressandContacts(params, data)
+            console.log(res)
             if (res.success) {
                 const updatedData = await getCompanyDetails(params)
                 if (updatedData.success) {
@@ -151,7 +155,16 @@ const AddressDetails = (props) => {
                 }
             }
             else {
-                openFailedNotification('topRight', `Unable to add Address `);
+                if (res.response.status == 401) {
+                    res.response.data.errors.forEach(error => {
+                      openNotificationWithIcon("error", error.msg);
+                    });
+                    navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD)
+                  }
+                  else {
+                    openFailedNotification('topRight', `Unable to add Address `);
+                  }
+                
             }
         }
         catch (err) {

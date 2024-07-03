@@ -108,8 +108,6 @@ const DigitalFactory = () => {
 
   const CalculatePercentage = async () => {
     let per = 0;
-     
-    console.log(certificateCount)
 
     if (AllDetails?.companyDetails?.company_name !== undefined && AllDetails?.companyDetails?.company_name !== '') per = per + 5
 

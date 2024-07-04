@@ -64,7 +64,11 @@ const getAllDashboardDetails = async () => {
   setLoading(false);
 }
 catch(err){
-navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD)
+  console.log(err)
+  if(err.response.status!=401){
+    openFailedNotification('topRight', "Unable to Fetch Details")
+  }
+// navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD)
 }
 };
 

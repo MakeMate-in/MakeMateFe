@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_METHODS, baseAPIUrl } from "./../utils/constants";
+import { API_METHODS, baseAPIUrl, baseURL, OPEN_ROUTES } from "./../utils/constants";
 import { getToken } from "./../utils/helper";
 import { openNotificationWithIcon } from "./../utils/helper";
 
@@ -37,6 +37,7 @@ const makeGetRequest = async (url, params, method) => {
                 err.msg = error.msg;
                 err.status = error.status;
             });
+            window.location.href = baseURL + OPEN_ROUTES.CUSTOMER_DASHBOARD
         }
         else if(error.response.status == 404) {
             err.msg = "Could not find the resource!";

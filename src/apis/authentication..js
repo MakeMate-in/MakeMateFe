@@ -11,7 +11,7 @@ import { getCustomerData } from "../utils/helper";
 export const getOtp = async (data,isEmail) => {
     try {
         const url = isEmail == 1 ? AUTHEN_URLS.GET_MAIL_OTP : AUTHEN_URLS.GET_MOBILE_OTP
-        console.log(url)   
+        // console.log(url)   
         if (isEmail) {
             let obj = {}
             obj.email = data;
@@ -49,7 +49,7 @@ export const signUp = async (userData,role) => {
     try {
         let data = {}
         data = getUserData(userData, role)
-        console.log(data)
+        // console.log(data)
         const url = AUTHEN_URLS.SIGNUP
         const user = await requestHandler.post(url, data)
         return user
@@ -101,7 +101,7 @@ export const customerSignUp = async (userData,role) => {
     try {
         let data = {}
         data = getCustomerData(userData, role)
-        console.log(data)
+        // console.log(data)
         const url = AUTHEN_URLS.CUSTOMER_SIGNUP
         const user = await requestHandler.post(url, data)
         return user
@@ -121,7 +121,7 @@ export const checkUser=async (user, id)=>{
       isUser= axios.get(baseAPIUrl+url, {
         params
       }).then((res)=>{
-        console.log(res)
+        // console.log(res)
         return res.data;
       })
       

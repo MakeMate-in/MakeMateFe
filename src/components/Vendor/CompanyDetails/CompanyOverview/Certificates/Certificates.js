@@ -1,7 +1,7 @@
 import { Select, Button, Flex, Input, DatePicker } from 'antd';
 import React,{ useState, useEffect, useMemo } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
-import { getCopanyId, options } from '../../../../../utils/helper';
+import { getCopanyId, CERTIFIATE_TYPES } from '../../../../../utils/helper';
 import { uploadCertificate, getCertificates } from '../../../../../apis/Vendor/CompanyDetails';
 import { DeleteTwoTone } from '@ant-design/icons';
 import './styles.css'
@@ -165,7 +165,7 @@ const openFailedNotification = (placement,msg) => {
                     value={item.name}
                     allowClear
                     onChange={(event) => handleSelectValue(event, index, "name")}
-                    options={options}
+                    options={CERTIFIATE_TYPES}
                   />
 
                                             <DatePicker

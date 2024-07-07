@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { ROW_COLUMNS, getCopanyId } from '../../../../utils/helper'
+import { SERVICES_NAMES, getCopanyId } from '../../../../utils/helper'
 import { Flex, Form, Row, Col, Button, Radio, Space } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import { addServiceDetails, getServiceDetails } from '../../../../apis/Vendor/ServiceDetails';
@@ -14,7 +14,7 @@ const Context = React.createContext({
 const Services = (props) => {
 
   function getInput(){
-  const all_services = ROW_COLUMNS.map((item) => {
+  const all_services = SERVICES_NAMES.map((item) => {
     return {
       service_name: item,
       service_type: undefined,

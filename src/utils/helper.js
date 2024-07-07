@@ -137,7 +137,7 @@ export const uploadButton = (
   </button>
 );
 
-export const options = [
+export const CERTIFIATE_TYPES = [
   {
     value: 'IS0-14001',
     label: 'IS0-14001',
@@ -172,7 +172,7 @@ export const MACHINE_TYPE = [
 ]
 
 
-export const ROW_COLUMNS = [
+export const SERVICES_NAMES = [
   'Part DFM / Review',
   'Mold Flow / Part Simulation',
   'PLG Format',

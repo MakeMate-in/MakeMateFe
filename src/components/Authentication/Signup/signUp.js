@@ -9,12 +9,14 @@ import {
   Image,
   Row,
   Col,
-  notification
+  notification,
+  ConfigProvider,
+  Typography
 } from 'antd'
 import "./SignUp.css"
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
-import gojo from './../../images/3.jpg'
+import SignUpImage from './../../../assets/SignupImage.jpg'
 import { OPEN_ROUTES, ROLE } from '../../../utils/constants'
 import { useNavigate } from 'react-router-dom';
 import { validateForm } from '../../../utils/commons/validators'
@@ -196,14 +198,23 @@ const SignUp = () => {
 
   return (
     <div style={{ background: '' }}>
+      <ConfigProvider
+  theme={{
+    components: {
+      Form: {
+        // itemMarginBottom: '12px'
+        /* here is your component tokens */
+      },
+    },
+  }}>
+
       {contextHolder}
       <Flex>
-        <Image src={gojo} style={{ height: '46rem', width: '30rem' }} />
+        <Image src={SignUpImage} style={{ height: '46rem', width: '30rem' }} />
 
         <Flex vertical align='center' justify='center'>
-          <h1 
-          // style={{ transform: 'translate(52%,5%)' }}
-          >Create your Account</h1>
+          <div  style={{ transform: 'translate(52%,5%)' }}>
+          <Typography style={{fontSize:'35px', fontWeight:'500'}} >Create your Account</Typography>
 
           <Flex gap="large" justify='center' align='flex-end' >
             <Card style={{ border: role == ROLE.VENDOR ? '2px solid green' : '', cursor: 'pointer' }} onClick={() => { changeRole(ROLE.VENDOR) }}>
@@ -213,6 +224,7 @@ const SignUp = () => {
               Customer Signup
             </Card>
           </Flex>
+          </div>
 
           {ROLE.VENDOR == role ?
 
@@ -222,10 +234,10 @@ const SignUp = () => {
               layout="vertical"
               ref={formRef}
               onFinish={handleSubmit}
-              style={{ transform: 'translate(0%,5%)' }}
+              style={{ transform: 'translate(30%,5%)' }}
             >
 
-              <Flex vertical style={{ transform: 'translate(25%,5%)' }}>
+              <Flex vertical >
                 <Row>
                   <Col span={12}>
                     <Form.Item
@@ -318,6 +330,7 @@ const SignUp = () => {
                     <Form.Item
                       label="GST Number"
                       name="GST_no"
+                      // style={{margin:'0px'}}
                     //  rules={[{ required: true, message: 'GST Number is required' }]}
                     >
                       <Input
@@ -330,8 +343,7 @@ const SignUp = () => {
                         value={user["GST_no"]}
                         disabled={checked}
                       />
-                    </Form.Item>
-                    <Row>
+                        <Row>
                       <Checkbox
                         checked={checked}
                         disabled={disabled}
@@ -341,6 +353,8 @@ const SignUp = () => {
                         I do not have a GST Number
                       </Checkbox>
                     </Row>
+                    </Form.Item>
+                  
                   </Col>
                 </Row>
                 <Row>
@@ -379,7 +393,7 @@ const SignUp = () => {
                     </Form.Item>
                   </Col>
                 </Row>
-                <Flex vertical>
+                <Flex vertical justify='center' align='center'>
                   <Button type="primary" htmlType="submit" style={{ width: '400px', textAlign: 'center', fontWeight: '500' }}>
                     Sign Up
                   </Button>
@@ -398,9 +412,9 @@ const SignUp = () => {
               layout='vertical'
               ref={formRef}
               onFinish={handleSubmit}
-              style={{ transform: 'translate(0%,5%)' }}
+              style={{ transform: 'translate(30%,5%)' }}
             >
-              <Flex vertical={true} style={{ transform: 'translate(25%,5%)' }}>
+              <Flex vertical={true}>
                 <Row>
                   <Col span={12}>
                     <Form.Item
@@ -511,7 +525,7 @@ const SignUp = () => {
                 </Row>
 
 
-                <Flex vertical>
+                <Flex vertical justify='center' align='center'>
                   <Button type="primary" htmlType="submit" style={{ width: '400px', textAlign: 'center', fontWeight: '500' }}>
                     Sign Up
                   </Button>
@@ -534,6 +548,7 @@ const SignUp = () => {
 
         </Flex>
       </Flex>
+      </ConfigProvider>
     </div>
   )
 }

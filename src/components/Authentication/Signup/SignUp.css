@@ -42,3 +42,7 @@
   .ant-form-item-label{
     padding: 0px;
   }
+
+  .ant-form-item{
+    margin:'0px'
+  }

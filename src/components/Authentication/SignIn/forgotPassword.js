@@ -3,15 +3,11 @@ import { useLocation } from 'react-router-dom';
 import { Flex, Button, Image, Input, Row, Form, Typography } from 'antd';
 import { OPEN_ROUTES } from '../../../utils/constants'
 import { useNavigate } from 'react-router-dom';
-import { MESSAGES } from '../../../utils/constants';
+import { checkUser} from '../../../apis/authentication.';
 import gojo from './../../images/3.jpg';
-import { sendOTP } from '../../../apis/commonFunctions'
 import OtpModal from '../OTP/otpModal';
-import PhoneInput from 'react-phone-input-2';
 import { notification } from 'antd';
-import { ROLE } from '../../../utils/constants';
 import { forgotpassword, sendEmailOtp } from '../../../apis/authentication.';
-const { Title } = Typography;
 const Context = React.createContext({
   name: 'Default',
 });
@@ -81,23 +77,30 @@ const ForgotPassword = () => {
   }
 
   const handleSubmit = async () => {
-    if (!passwordsMatch) {
-      openFailedNotification('topRight', 'Passwords do not match');
-      return;
+    let isUser = await checkUser(user, 3);
+    console.log('isUser response', isUser);
+    if (isUser.success == false) {
+      openFailedNotification('topRight', 'User does not Exist with Entered Email');
     }
-
-    console.log('User data:', user);
-
-    const res = await forgotpassword(user);
-    if (res.status == 200) {
-           await handleSendOTP();
-           console.log('forgot password res:',res);
-          } 
-          else {
-            console.log("Failed Forgot password res:",res);
-            openFailedNotification('topRight', res?.msg);
-          }
-  };
+    else{
+    if(!passwordsMatch) {
+      openFailedNotification('topRight', 'Passwords do not match');
+      return
+    }
+    else{
+      console.log('User data:', user);
+      const res = await handleSendOTP();
+      console.log('handleotp resp',res);
+      if(res.Success == true) {
+        console.log('forgot password res:',res);
+      } 
+      else {
+        console.log("Failed Forgot password res:",res);
+        openFailedNotification('topRight', res?.msg);
+      }
+  }
+  }
+};
 
   const handleOtpResponse = () => {
     setotpResponse(null);
@@ -106,6 +109,14 @@ const ForgotPassword = () => {
   const submitOTP = async (otp) => {
     if(otpResponse.otp == otp)
       {
+        const res1 = await forgotpassword(user);
+        if(res1.status == 200)
+          {
+            console.log("Password Changed successfully");
+          }
+          else {
+            console.log('Error in password change');
+          }
         api.success({
           message: 'Success',
           description: 'OTP verified successfully!',
@@ -123,6 +134,7 @@ const ForgotPassword = () => {
     try {
       const otpRes = await sendEmailOtp(user);
       setotpResponse(otpRes);
+      return otpRes;
     } catch (err) {
       console.log(err);
       throw err;
@@ -174,7 +186,6 @@ const ForgotPassword = () => {
     </div>
     </Context.Provider>
   );
-};
-
+}
 export default ForgotPassword;
 

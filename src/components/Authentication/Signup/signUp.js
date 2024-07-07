@@ -29,6 +29,7 @@ import { SESSION_STORAGE_ITEMS, getRole, initializeUserValues } from '../../../u
 
 
 
+
 const SignUp = () => {
   const navigate = useNavigate();
 
@@ -212,8 +213,8 @@ const SignUp = () => {
       <Flex>
         <Image src={SignUpImage} style={{ height: '46rem', width: '30rem' }} />
 
-        <Flex vertical align='center' justify='center'>
-          <div  style={{ transform: 'translate(52%,5%)' }}>
+        <Flex vertical align='center' justify='center' gap={30}>
+          <Flex vertical gap={25} style={{ transform: 'translate(52%,5%)' }}>
           <Typography style={{fontSize:'35px', fontWeight:'500'}} >Create your Account</Typography>
 
           <Flex gap="large" justify='center' align='flex-end' >
@@ -224,7 +225,8 @@ const SignUp = () => {
               Customer Signup
             </Card>
           </Flex>
-          </div>
+          </Flex>
+        
 
           {ROLE.VENDOR == role ?
 

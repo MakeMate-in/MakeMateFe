@@ -117,6 +117,7 @@ export const PER_INFRA_COUNT=2
 export const PER_MACHINE_COUNT=1
 
 export const baseURL = 'http://localhost:3000'
+// export const baseURL = 'https://weconnect.makersmate.in'
 
 
 // export const HANDLE_REGEX:RegExp = /^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?/~\\-]+$/;

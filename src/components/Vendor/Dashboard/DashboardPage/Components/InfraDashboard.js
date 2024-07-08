@@ -5,7 +5,7 @@ const InfraDashboard = (props) => {
     let AllDetails = props.AllDetails
     return (
     <div>
-              <Typography style={{ margin: '0', fontSize:'30px', fontWeight:'600' }}>InfraStructure Details</Typography>
+              <Typography style={{ margin: '0', fontSize:'25px', fontWeight:'600' }}>InfraStructure Details</Typography>
                 <Row gutter={16}>
 
                   <Col span={12}>

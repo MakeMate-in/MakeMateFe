@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card, Col, Statistic, Row, Flex, Tag, Carousel, ConfigProvider, Typography } from 'antd';
+import { Card, Col, Statistic, Row, Flex, Tag, Carousel, ConfigProvider, Typography, Image } from 'antd';
 import Machines from '../../CompanyDetails/Machines/Machines';
 import business_plan from './../../../../assets/business_plan.svg';
 import svg_experience from './../../../../assets/svg_experience.svg';
@@ -43,8 +43,6 @@ const DashboardPage = () => {
     };
     try {
       const resp = await getAllDetails(param);
-
-      console.log(resp)
       setAllDetails(resp.data);
 
       let newSrcList = [];
@@ -58,6 +56,7 @@ const DashboardPage = () => {
           }
           newSrcList.push(data)
         })
+        console.log(newSrcList)
         setSrcList(newSrcList);
       }
       setLoading(false);
@@ -107,7 +106,7 @@ const DashboardPage = () => {
 
   const totalManpower = AllDetails ? AllDetails?.infrastructureDetails?.manpower.reduce((total, m) => total + m.count, 0) : 0;
 
-
+console.log(srcList)
 
   return (
     <div style={{ overflow: 'auto', scrollbarWidth: 'none' }}>
@@ -130,21 +129,24 @@ const DashboardPage = () => {
           }}
         >
 
+
           <Row gutter={16} style={{ marginTop: '10px' }}>
             <Col span={16}>
-              <Row gutter={16}>
-                <Card style={{Height:'40%'}}>
-                  <Carousel arrows dotPosition="left">
+      
+            <Card style={{height:'40%'}}>
+                  <Carousel style={{height:'100%', width:'100%'}} arrows dotPosition="left">
 
-                    {srcList.map((item, i) => (
-                      <div>
-                        <img src={item.src} style={{ height: "40vh", width: "100%" }} />
-                      </div>
+                    { srcList.map((item, i) => {
+                      let x= item
+                      console.log(x)
+                     return ( <div>
+                        <img key={i} src={item.src} style={{ height: "40vh", width: "100&" }} />
+                      </div>)
 
-                    ))}
+})}
                   </Carousel>
                 </Card>
-              </Row>
+
 
               <Row gutter={16} style={{ marginTop: '10px', marginBottom: '10px' }}>
                 <Col span={8}>

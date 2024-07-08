@@ -5,8 +5,8 @@ const ContactDetails = (props) => {
     let AllDetails = props.AllDetails
   return (
     <div>
-        <Typography style={{ margin: '0', fontSize:'30px', fontWeight:'600' }}>Contact Details</Typography>
-    <Card>
+        <Typography style={{ margin: '0', fontSize:'25px', fontWeight:'600' }}>Contact Details</Typography>
+    <Card >
         
          {AllDetails?.companyDetails?.address && AllDetails?.companyDetails?.address.length > 0 && (
                     <Flex>

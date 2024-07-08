@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card, Col, Row, Steps, Button, Progress, Flex, Collapse, ConfigProvider } from 'antd';
+import { Card, Col, Row, Steps, Button, Progress, Flex, Collapse, ConfigProvider, Typography } from 'antd';
 import './../Dashboard/Dashboard.css';
 import './DigitalFactory.css'
 import InfraDetails from '../CompanyDetails/Machines';
@@ -272,13 +272,13 @@ const DigitalFactory = () => {
                 <div style={{ margin: '0' }}>
                   <Steps direction="vertical" current={current}
                     onChange={onChange}>
-                    <Step title={<span>{STEPS_HEADINGS[0]} <Collapse ghost items={[{ key: '1', label: 'Provide Company Details', children: <StepDropdown /> }]}
+                    <Step title={<span><Typography style={{ margin: '0px', fontSize:'18px', fontWeight:'600' }}>{STEPS_HEADINGS[0]}</Typography> <Collapse ghost items={[{ key: '1', label: 'Provide Company Details', children: <StepDropdown /> }]}
                     /></span>} />
-                    <Step title={STEPS_HEADINGS[1]} description={<Collapse ghost
+                    <Step title={<Typography style={{ margin: '0px', fontSize:'18px', fontWeight:'600' }}>{STEPS_HEADINGS[1]}</Typography>} description={<Collapse ghost
                       items={[{ key: '1', label: 'Machines & Business Info', children: <StepDropdownMachines /> }]}
                     />} />
-                    <Step title={STEPS_HEADINGS[2]} description="Create a list of Customers" />
-                    <Step title={STEPS_HEADINGS[3]} description="Woah, we are here" />
+                    <Step title={<Typography style={{ margin: '0px', fontSize:'18px', fontWeight:'600' }}>{STEPS_HEADINGS[2]}</Typography>} description="Create a list of Customers" />
+                    <Step title={<Typography style={{ margin: '0px', fontSize:'18px', fontWeight:'600' }}>{STEPS_HEADINGS[3]}</Typography>} description="Woah, we are here" />
                   </Steps>
                 </div>
               </Flex>
@@ -291,7 +291,7 @@ const DigitalFactory = () => {
               scrollbarWidth: 'none', position: 'relative'
             }}>
               <div>
-                <h2 style={{ marginTop: '0' }}>{STEPS_HEADINGS[current]}</h2>
+              {<Typography style={{ margin: '0px', fontSize:'18px', fontWeight:'620' }}>{STEPS_HEADINGS[current]}</Typography>}
                 <hr />
                 {current === 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails} setCertificateCount={setCertificateCount} certificateCount={certificateCount}/> : ''}
                 {current === 1 ? <InfraDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} MachineDetails={MachineDetails} setMachineDetails={setMachineDetails} InfrastructureDetails={InfrastructureDetails} setInfrastructureDetails={setInfrastructureDetails} setPlantImagesCount={setPlantImagesCount} /> : ''}

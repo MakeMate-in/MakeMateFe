@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { SERVICES_NAMES, getCopanyId } from '../../../../utils/helper'
-import { Flex, Form, Row, Col, Button, Radio, Space } from 'antd'
+import { Flex, Form, Row, Col, Button, Radio, Space, Typography } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import { addServiceDetails, getServiceDetails } from '../../../../apis/Vendor/ServiceDetails';
 import {  notification } from 'antd';
@@ -124,7 +124,7 @@ const Services = (props) => {
     <Context.Provider value={contextValue}>
       {contextHolder}
       <Form layout="vertical" onFinish={handleFormSubmit}>
-        <h3>Working Process for Mold Development</h3>
+      <Typography style={{ marginBottom: '10px', fontSize:'18px', fontWeight:'620' }}><u>Working Process for Mold Development</u></Typography>
         <Flex vertical gap="large">
         {inputs.map((item, index) => (
             <Row gutter={16}>

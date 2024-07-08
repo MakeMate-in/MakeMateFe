@@ -6,7 +6,7 @@ const ContactDetails = (props) => {
   return (
     <div>
         <Typography style={{ margin: '0', fontSize:'25px', fontWeight:'600' }}>Contact Details</Typography>
-    <Card >
+    <Card  >
         
          {AllDetails?.companyDetails?.address && AllDetails?.companyDetails?.address.length > 0 && (
                     <Flex>
@@ -16,6 +16,7 @@ const ContactDetails = (props) => {
                         <p style={{ margin: '0px' }}>{AllDetails.companyDetails.address[0].country}, {AllDetails.companyDetails.address[0].pincode}</p></p>
                         </Flex>
                         )}
+                        
                         {AllDetails?.companyDetails?.contact_person && AllDetails?.companyDetails?.contact_person.length > 0 && (
                           <Flex>
                       <p><strong>Contact: </strong> <p style={{ margin: '0px' }}><b>{AllDetails.companyDetails.contact_person[0].name}</b></p>

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Button, Flex, Modal, Form, Input, Tag } from 'antd';
+import { Button, Flex, Modal, Form, Input, Tag, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { updateAddressandContacts, getCompanyDetails } from '../../../../../apis/Vendor/CompanyDetails'
 import { notification } from 'antd';
@@ -155,8 +155,8 @@ const Projects = (props) => {
                 <Flex vertical gap={15}>
                     <Flex>
                         <div>
-                            <h2 style={{ margin: '0' }}>Projects</h2>
-                            <p style={{ margin: '0' }}>Add Projects</p>
+                        <Typography style={{ margin: '0px', fontSize:'25px', fontWeight:'600' }}>Projects</Typography>
+                        <Typography style={{ margin: '0px', fontSize:'15px' }}>Add Projects</Typography>
                         </div>
                         <Button size='large' icon={<PlusOutlined />} onClick={showModal} iconPosition='start' style={{ fontWeight: 600, marginLeft: 'auto' }}>Add New Project</Button>
 

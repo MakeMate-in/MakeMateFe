@@ -230,7 +230,7 @@ console.log(srcList)
               <BasicCompanyDetails AllDetails={AllDetails} />
 
 
-              <Card style={{ height: '100%' }}>
+              <Card style={{ height: '100%', border:'2px solid green' }}>
 
                 <ContactDetails AllDetails={AllDetails} />
 

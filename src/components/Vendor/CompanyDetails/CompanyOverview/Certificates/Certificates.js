@@ -1,4 +1,4 @@
-import { Select, Button, Flex, Input, DatePicker } from 'antd';
+import { Select, Button, Flex, Input, DatePicker, Typography } from 'antd';
 import React,{ useState, useEffect, useMemo } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { getCopanyId, CERTIFIATE_TYPES } from '../../../../../utils/helper';
@@ -152,7 +152,7 @@ const openFailedNotification = (placement,msg) => {
         overflow: 'auto',
         scrollbarWidth: 'none'
       }}>
-        <h2 style={{ marginTop:'0px'}}>Certificates</h2>
+        <Typography style={{ marginBottom: '10px', fontSize:'25px', fontWeight:'600' }}>Certificates</Typography>
         <Flex vertical gap="large">
           {inputs.map((item, index) => {
             return (

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Layout, theme, Typography, Flex, Slider, Divider, Select, InputNumber } from 'antd';
 import "./../../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
-import SideBar from './SideBar';
 import { CERTIFIATE_TYPES, MACHINE_TYPE, SERVICES_NAMES } from '../../../utils/helper';
 
 const { Header, Content, Sider } = Layout;
@@ -92,13 +91,14 @@ const CustomerSideBar = () => {
                 <div>
                     <Typography style={{ fontSize: '20px', fontWeight: '400' }}>Services</Typography>
 
-
+                    <Flex vertical gap={20}>
                     <div>
-                        <Typography style={{ fontSize: '20px', fontWeight: '400' }}>Outsourced</Typography>
+                        <Typography style={{ fontSize: '15px', fontWeight: '400' }}>Outsourced</Typography>
                         <Select style={{ width: '93%' }}
                             id="name"
                             placeholder="Select Outsourced Services"
                             size='large' variant="filled"
+                            mode="multiple"
                             // value={item.name}
                             allowClear
                             onChange={handleChange}
@@ -107,9 +107,10 @@ const CustomerSideBar = () => {
                     </div>
 
                     <div>
-                        <Typography style={{ fontSize: '20px', fontWeight: '400' }}>Inhouse</Typography>
+                        <Typography style={{ fontSize: '15px', fontWeight: '400' }}>Inhouse</Typography>
                         <Select style={{ width: '93%' }}
                             id="name"
+                            mode="multiple"
                             placeholder="Select Inhouse Services"
                             size='large' variant="filled"
                             // value={item.name}
@@ -118,7 +119,7 @@ const CustomerSideBar = () => {
                             options={SERVICES}
                         />
                     </div>
-
+                    </Flex>
 
                 </div>
 

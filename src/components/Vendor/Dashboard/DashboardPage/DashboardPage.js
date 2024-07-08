@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card, Col, Statistic, Row, Flex, Tag, Carousel, ConfigProvider } from 'antd';
+import { Card, Col, Statistic, Row, Flex, Tag, Carousel, ConfigProvider, Typography } from 'antd';
 import Machines from '../../CompanyDetails/Machines/Machines';
 import business_plan from './../../../../assets/business_plan.svg';
 import svg_experience from './../../../../assets/svg_experience.svg';
@@ -9,13 +9,13 @@ import CustomerDetails from '../../CompanyDetails/CustomerDetails/CustomerDetail
 import { getAllDetails } from '../../../../apis/Vendor/CompanyDetails';
 import { Pie, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { rgb } from 'polished';
 import './DashboardPage.css';
 import { convertBufferToBinary, getCopanyId } from '../../../../utils/helper';
 import BasicCompanyDetails from './Components/BasicCompanyDetails';
 import { notification } from 'antd';
-import { useNavigate } from 'react-router-dom'
-import { OPEN_ROUTES } from '../../../../utils/constants';
+import InfraDashboard from './Components/InfraDashboard';
+import ContactDetails from './Components/ContactDetails';
+import ServicesDetails from './Components/ServicesDetails';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -25,62 +25,59 @@ const DashboardPage = () => {
   const [loading, setLoading] = useState(true);
   const [api] = notification.useNotification();
 
-  const navigate = useNavigate()
   const [srcList, setSrcList] = useState([]);
 
   const openFailedNotification = (placement, message) => {
     api.error({
-        message: `Something went wrong`,
-        description: message,
-        placement,
+      message: `Something went wrong`,
+      description: message,
+      placement,
     });
-};
-
-
-const getAllDashboardDetails = async () => {
-  const  COMPANY_ID = getCopanyId()
-  let param = {
-    companyId: COMPANY_ID,
   };
-  try{
-  const resp = await getAllDetails(param);
-  
-  console.log(resp)
-  setAllDetails(resp.data);
 
-  let newSrcList = [];
-  if(resp.data.plantImages){
-  resp.data.plantImages.company_Images.map(async (item, i) => {
-      let data = {
-          name: "Image_"+i,
-          src: convertBufferToBinary(item.image),
-          type: 'image/png',
-          id: i + 1
+
+  const getAllDashboardDetails = async () => {
+    const COMPANY_ID = getCopanyId()
+    let param = {
+      companyId: COMPANY_ID,
+    };
+    try {
+      const resp = await getAllDetails(param);
+
+      console.log(resp)
+      setAllDetails(resp.data);
+
+      let newSrcList = [];
+      if (resp.data.plantImages) {
+        resp.data.plantImages.company_Images.map(async (item, i) => {
+          let data = {
+            name: "Image_" + i,
+            src: convertBufferToBinary(item.image),
+            type: 'image/png',
+            id: i + 1
+          }
+          newSrcList.push(data)
+        })
+        setSrcList(newSrcList);
       }
-      newSrcList.push(data)
-  })
-  setSrcList(newSrcList);
-}
-  setLoading(false);
-}
-catch(err){
-  console.log(err)
-  if(err.response.status!=401){
-    openFailedNotification('topRight', "Unable to Fetch Details")
-  }
-// navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD)
-}
-};
+      setLoading(false);
+    }
+    catch (err) {
+      console.log(err)
+      if (err.response.status != 401) {
+        openFailedNotification('topRight', "Unable to Fetch Details")
+      }
+    }
+  };
 
   useEffect(() => {
     getAllDashboardDetails();
   }, []);
 
-  const colors = [
-    'processing', 'success', 'error', 'warning', 'magenta', 'red', 'volcano', 'orange', 'gold', 'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple',
-  ];
 
   const pieChartColors = ['#9e0142', '#3288bd', '#5e4fa2', '#f46d43', '#d53e4f', '#fdae61', '#fee08b', '#e6f598', '#abdda4', '#66c2a5']
+
+
   const pieData = AllDetails ? {
     labels: AllDetails?.infrastructureDetails?.manpower.map(m => m.designation),
     datasets: [
@@ -110,12 +107,11 @@ catch(err){
 
   const totalManpower = AllDetails ? AllDetails?.infrastructureDetails?.manpower.reduce((total, m) => total + m.count, 0) : 0;
 
-  // Function to get a random color for Services Tags
-  const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
+
 
   return (
     <div style={{ overflow: 'auto', scrollbarWidth: 'none' }}>
-      {AllDetails==undefined ? (
+      {AllDetails == undefined ? (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '84vh' }}>
           <div class="spinner-square">
             <div class="square-1 square"></div>
@@ -133,10 +129,23 @@ catch(err){
             },
           }}
         >
-           <BasicCompanyDetails AllDetails={AllDetails}/>
-          <Row gutter={16} style={{marginTop:'10px'}}>
+
+          <Row gutter={16} style={{ marginTop: '10px' }}>
             <Col span={16}>
-            
+              <Row gutter={16}>
+                <Card style={{Height:'40%'}}>
+                  <Carousel arrows dotPosition="left">
+
+                    {srcList.map((item, i) => (
+                      <div>
+                        <img src={item.src} style={{ height: "40vh", width: "100%" }} />
+                      </div>
+
+                    ))}
+                  </Carousel>
+                </Card>
+              </Row>
+
               <Row gutter={16} style={{ marginTop: '10px', marginBottom: '10px' }}>
                 <Col span={8}>
                   <Card size='small' hoverable>
@@ -201,12 +210,12 @@ catch(err){
                 </Col>
               </Row>
 
-              <h2>Machine Details</h2>
+              <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Machine Details</Typography>
               <Card size='small' style={{ overflow: 'auto', scrollbarWidth: 'none', height: '50vh' }}>
                 <Machines />
               </Card>
 
-              <h2>Customer Details</h2>
+              <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Customer Details</Typography>
               <Card size='small' style={{ overflow: 'auto', scrollbarWidth: 'none', height: '50vh' }}>
                 <CustomerDetails />
               </Card>
@@ -215,85 +224,24 @@ catch(err){
 
 
             <Col span={8}>
+
+              <BasicCompanyDetails AllDetails={AllDetails} />
+
+
               <Card style={{ height: '100%' }}>
-                <h2 style={{ margin: '0' }}>InfraStructure Details</h2>
-                <Row gutter={16}>
 
-                  <Col span={12}>
-                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px' }}>
-                      <Statistic
-                        title="Plant Area"
-                        value={AllDetails.infrastructureDetails?AllDetails.infrastructureDetails.plant_area:0}
-                        precision={2}
-                        valueStyle={{
-                          color: '#3f8600',
-                        }}
-                        suffix='sqm'
-                      />
-                    </Card>
-                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px' }}>
-                      <Statistic
-                        title="Assembly Area"
-                        value={AllDetails.infrastructureDetails?AllDetails.infrastructureDetails.assembly_area:0}
-                        precision={2}
-                        valueStyle={{
-                          color: '#3f8600',
-                        }}
-                        suffix='sqm'
-                      />
-                    </Card>
-                  </Col>
-                  <Col span={12}>
-                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px' }}>
-                      <Statistic
-                        title="Crane Tonnage"
-                        value={AllDetails.infrastructureDetails?AllDetails.infrastructureDetails.crane_tonnage:0}
-                        precision={2}
-                        valueStyle={{
-                          color: '#3f8600',
-                        }}
-                      />
-                    </Card>
-                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px' }}>
-                      <Statistic
-                        title="Assembly Table"
-                        value={AllDetails.infrastructureDetails?AllDetails.infrastructureDetails.assembly_table:0}
-                        valueStyle={{
-                          color: '#3f8600',
-                        }}
-                      />
-                    </Card>
-                  </Col>
-                </Row>
+                <ContactDetails AllDetails={AllDetails} />
 
-                <h2 style={{ margin: '0', marginTop: '10px' }}>Total Manpower: {totalManpower}</h2>
+                <InfraDashboard AllDetails={AllDetails} />
+
+                <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Total Manpower: {totalManpower}</Typography>
                 <Card style={{ backgroundImage: business_plan }} id='pie' >
                   <Doughnut style={{ height: '40vh' }} data={pieData} options={pieOptions} />
                 </Card>
 
-                <h2 style={{ margin: '0', marginTop: '10px' }}>Services</h2>
-                <Card>
-                  <Flex gap="5px 2px" wrap>
-                    {AllDetails.services?AllDetails.services.services.map((service, index) => (
-                      <Tag size='large' key={index} style={{ fontSize: '18px', fontFamily: 'none' }} color={getRandomColor()}>
-                        {service.service_name}
-                      </Tag>
-                    )):''}
-                  </Flex>
-                </Card>
+                <ServicesDetails />
 
-                <h2 style={{ margin: '0', marginTop: '10px' }}>Plant Images</h2>
-                <Card>
-                  <Carousel arrows dotPosition="left">
-               
-                    {srcList.map((item, i) => (
-                           <div>
-                           <img src={item.src} style={{ height: "40vh", width: "35vw" }} />
-                       </div>
-                        
-                        ))}
-                  </Carousel>
-                </Card>
+
 
               </Card>
             </Col>

@@ -133,19 +133,18 @@ console.log(srcList)
           <Row gutter={16} style={{ marginTop: '10px' }}>
             <Col span={16}>
       
-            <Card style={{height:'40%'}}>
-                  <Carousel style={{height:'100%', width:'100%'}} arrows dotPosition="left">
+     
+                  <Carousel arrows dotPosition="left">
 
                     { srcList.map((item, i) => {
                       let x= item
-                      console.log(x)
-                     return ( <div>
-                        <img key={i} src={item.src} style={{ height: "40vh", width: "100&" }} />
+                     return ( <div style={{height:'105%'}}>
+                        <img key={i} src={item.src} style={{ height: "50vh", width: "80vw" }}/>
                       </div>)
 
 })}
                   </Carousel>
-                </Card>
+              
 
 
               <Row gutter={16} style={{ marginTop: '10px', marginBottom: '10px' }}>
@@ -213,12 +212,12 @@ console.log(srcList)
               </Row>
 
               <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Machine Details</Typography>
-              <Card size='small' style={{ overflow: 'auto', scrollbarWidth: 'none', height: '50vh' }}>
+              <Card  style={{ overflow: 'auto', scrollbarWidth: 'none', height: '50vh' }}>
                 <Machines />
               </Card>
 
               <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Customer Details</Typography>
-              <Card size='small' style={{ overflow: 'auto', scrollbarWidth: 'none', height: '50vh' }}>
+              <Card  style={{ overflow: 'auto', scrollbarWidth: 'none', height: '50vh' }}>
                 <CustomerDetails />
               </Card>
 

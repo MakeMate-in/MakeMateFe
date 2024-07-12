@@ -7,7 +7,7 @@ const ContactDetails = (props) => {
     <div>
         <Typography style={{ margin: '0', fontSize:'25px', fontWeight:'600' }}>Contact Details</Typography>
     <Card  >
-        
+        <div>
          {AllDetails?.companyDetails?.address && AllDetails?.companyDetails?.address.length > 0 && (
                     <Flex>
                       <p><strong>Address: </strong><p style={{ margin: '0px' }}><b>{AllDetails.companyDetails.address[0].address_title}</b></p>
@@ -16,7 +16,8 @@ const ContactDetails = (props) => {
                         <p style={{ margin: '0px' }}>{AllDetails.companyDetails.address[0].country}, {AllDetails.companyDetails.address[0].pincode}</p></p>
                         </Flex>
                         )}
-                        
+</div>
+<div>
                         {AllDetails?.companyDetails?.contact_person && AllDetails?.companyDetails?.contact_person.length > 0 && (
                           <Flex>
                       <p><strong>Contact: </strong> <p style={{ margin: '0px' }}><b>{AllDetails.companyDetails.contact_person[0].name}</b></p>
@@ -25,6 +26,7 @@ const ContactDetails = (props) => {
                         <p style={{ margin: '0px' }}>Phone: {AllDetails.companyDetails.contact_person[0].mobile_no}</p></p>
                     </Flex>
                         )}
+                        </div>
     </Card>
     </div>
   )

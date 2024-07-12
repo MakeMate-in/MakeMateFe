@@ -152,7 +152,7 @@ const openFailedNotification = (placement,msg) => {
         overflow: 'auto',
         scrollbarWidth: 'none'
       }}>
-        <Typography style={{ marginBottom: '10px', fontSize:'25px', fontWeight:'600' }}>Certificates</Typography>
+        <Typography style={{ marginBottom: '10px', fontSize:'25px', fontWeight:'600' }}><u>Certificates</u></Typography>
         <Flex vertical gap="large">
           {inputs.map((item, index) => {
             return (

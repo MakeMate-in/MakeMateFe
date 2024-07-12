@@ -6,6 +6,7 @@ import { getCompanyDetails, updateAddressandContacts, deleteElement } from '../.
 import del from './../../../../../assets/del.png'
 import pen from './../../../../../assets/pen.png'
 import ContactDetails from './Addresses/ContactDetails';
+import { getUserId } from '../../../../utils/helper';
 
 const AddressDetails = (props) => {
 

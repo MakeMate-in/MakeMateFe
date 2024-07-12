@@ -129,19 +129,19 @@ const DashboardPage = () => {
 
           <Row gutter={16} style={{ marginTop: '10px' }}>
             <Col span={16}>
-      
-     
-                  <Carousel arrows dotPosition="left">
 
-                    { srcList.map((item, i) => {
-                      let x= item
-                     return ( <div style={{height:'105%'}}>
-                        <img key={i} src={item.src} style={{ height: "50vh", width: "80vw" }}/>
-                      </div>)
 
-})}
-                  </Carousel>
-              
+              <Carousel arrows dotPosition="left">
+
+                {srcList.map((item, i) => {
+                  let x = item
+                  return (<div style={{ height: '105%' }}>
+                    <img key={i} src={item.src} style={{ height: "50vh", width: "80vw" }} />
+                  </div>)
+
+                })}
+              </Carousel>
+
 
 
               <Row gutter={16} style={{ marginTop: '10px', marginBottom: '10px' }}>
@@ -209,12 +209,12 @@ const DashboardPage = () => {
               </Row>
 
               <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Machine Details</Typography>
-              <Card  style={{ overflow: 'auto', scrollbarWidth: 'none', height: '50vh' }}>
+              <Card style={{ overflow: 'auto', scrollbarWidth: 'none', height: '50vh' }}>
                 <Machines />
               </Card>
 
               <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Customer Details</Typography>
-              <Card  style={{ overflow: 'auto', scrollbarWidth: 'none', height: '50vh' }}>
+              <Card style={{ overflow: 'auto', scrollbarWidth: 'none', height: '50vh' }}>
                 <CustomerDetails />
               </Card>
 
@@ -225,11 +225,9 @@ const DashboardPage = () => {
 
               <BasicCompanyDetails AllDetails={AllDetails} />
 
+              <ContactDetails AllDetails={AllDetails} />
 
-              <Card style={{ border:'2px solid green' }}>
-
-                <ContactDetails AllDetails={AllDetails} />
-
+              <Card>
                 <InfraDashboard AllDetails={AllDetails} />
 
                 <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Total Manpower: {totalManpower}</Typography>
@@ -237,7 +235,7 @@ const DashboardPage = () => {
                   <Doughnut style={{ height: '40vh' }} data={pieData} options={pieOptions} />
                 </Card>
 
-                <ServicesDetails AllDetails={AllDetails}/>
+                <ServicesDetails AllDetails={AllDetails} />
 
 
 

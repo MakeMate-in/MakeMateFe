@@ -6,7 +6,6 @@ import { convertBufferToBinary } from '../../../../../utils/helper'
 
 const BasicCompanyDetails = (props) => {
   let AllDetails = props.AllDetails
-  console.log(AllDetails.companyDetails)
   let url = convertBufferToBinary(AllDetails.companyDetails.company_logo)
 
   return (

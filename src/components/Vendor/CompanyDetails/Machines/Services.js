@@ -96,7 +96,7 @@ const Services = (props) => {
       let params = {
         company_id: COMPANY_ID
       }
-      let equal = deepEqual(allvalues, inputs) || allvalues == undefined
+      let equal = deepEqual(allvalues, inputs)
       let res;
       if(!equal){
        res = await addServiceDetails(params, inputs)

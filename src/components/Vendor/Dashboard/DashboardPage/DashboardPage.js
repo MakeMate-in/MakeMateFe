@@ -56,7 +56,6 @@ const DashboardPage = () => {
           }
           newSrcList.push(data)
         })
-        console.log(newSrcList)
         setSrcList(newSrcList);
       }
       setLoading(false);
@@ -105,8 +104,6 @@ const DashboardPage = () => {
   };
 
   const totalManpower = AllDetails ? AllDetails?.infrastructureDetails?.manpower.reduce((total, m) => total + m.count, 0) : 0;
-
-console.log(srcList)
 
   return (
     <div style={{ overflow: 'auto', scrollbarWidth: 'none' }}>
@@ -229,7 +226,7 @@ console.log(srcList)
               <BasicCompanyDetails AllDetails={AllDetails} />
 
 
-              <Card style={{ height: '100%', border:'2px solid green' }}>
+              <Card style={{ border:'2px solid green' }}>
 
                 <ContactDetails AllDetails={AllDetails} />
 
@@ -240,7 +237,7 @@ console.log(srcList)
                   <Doughnut style={{ height: '40vh' }} data={pieData} options={pieOptions} />
                 </Card>
 
-                <ServicesDetails />
+                <ServicesDetails AllDetails={AllDetails}/>
 
 
 

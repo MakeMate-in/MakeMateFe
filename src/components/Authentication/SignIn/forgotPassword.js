@@ -1,19 +1,18 @@
 import React, { useState, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Flex, Button, Image, Input, Row, Form, Typography } from 'antd';
+import { Flex, Button, Image, Input, Row, Form, Typography, Col } from 'antd';
 import { OPEN_ROUTES } from '../../../utils/constants'
 import { useNavigate } from 'react-router-dom';
-import { checkUser} from '../../../apis/authentication.';
-import gojo from './../../images/3.jpg';
+import { checkUser } from '../../../apis/authentication.';
+import gojo from './../../../assets/forgotpassword.avif'
 import OtpModal from '../OTP/otpModal';
 import { notification } from 'antd';
 import { forgotpassword, sendEmailOtp } from '../../../apis/authentication.';
+import { bg1 } from '../../../utils/colorGradient';
 const Context = React.createContext({
   name: 'Default',
 });
 
 const ForgotPassword = () => {
-  const location = useLocation();
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [isEmail, setIsEmail] = useState(null);
 
@@ -53,7 +52,7 @@ const ForgotPassword = () => {
     [],
   );
 
-  const openFailedNotification = (placement,msg) => {
+  const openFailedNotification = (placement, msg) => {
     api.error({
       message: `Something went wrong`,
       description: msg,
@@ -82,52 +81,48 @@ const ForgotPassword = () => {
     if (isUser.success == false) {
       openFailedNotification('topRight', 'User does not Exist with Entered Email');
     }
-    else{
-    if(!passwordsMatch) {
-      openFailedNotification('topRight', 'Passwords do not match');
-      return
-    }
-    else{
-      console.log('User data:', user);
-      const res = await handleSendOTP();
-      console.log('handleotp resp',res);
-      if(res.Success == true) {
-        console.log('forgot password res:',res);
-      } 
-      else {
-        console.log("Failed Forgot password res:",res);
-        openFailedNotification('topRight', res?.msg);
+    else {
+      if (!passwordsMatch) {
+        openFailedNotification('topRight', 'Passwords do not match');
+        return
       }
-  }
-  }
-};
+      else {
+        const res = await handleSendOTP();
+        if (res.Success == true) {
+          console.log('forgot password res:', res);
+        }
+        else {
+          console.log("Failed Forgot password res:", res);
+          openFailedNotification('topRight', res?.msg);
+        }
+      }
+    }
+  };
 
   const handleOtpResponse = () => {
     setotpResponse(null);
   }
 
   const submitOTP = async (otp) => {
-    if(otpResponse.otp == otp)
-      {
-        const res1 = await forgotpassword(user);
-        if(res1.status == 200)
-          {
-            console.log("Password Changed successfully");
-          }
-          else {
-            console.log('Error in password change');
-          }
-        api.success({
-          message: 'Success',
-          description: 'OTP verified successfully!',
-          placement: 'topRight',
-          onClose: () => navigate(OPEN_ROUTES.LOGIN),
-        });
+    if (otpResponse.otp == otp) {
+      const res1 = await forgotpassword(user);
+      if (res1.status == 200) {
+        console.log("Password Changed successfully");
       }
       else {
-        openFailedNotification('topRight', 'OTP verification failed. Please try again.');
+        console.log('Error in password change');
       }
-}
+      api.success({
+        message: 'Success',
+        description: 'OTP verified successfully!',
+        placement: 'topRight',
+        onClose: () => navigate(OPEN_ROUTES.LOGIN),
+      });
+    }
+    else {
+      openFailedNotification('topRight', 'OTP verification failed. Please try again.');
+    }
+  }
 
   const handleSendOTP = async () => {
     console.log('Sending OTP to:', user.uniqueField);
@@ -140,51 +135,56 @@ const ForgotPassword = () => {
       throw err;
     }
   };
-  
+
 
   return (
-    <Context.Provider value={contextValue}>
-      {contextHolder}
-    <div style={{ display: 'flex' }}>
-      <div style={{  }}>
-        <Image src={gojo} style={{ height: '46rem', width: '30rem' }} />
-      </div>
-      <div style={{margin: 'auto', alignItems: 'center', justifyContent: 'center'}}>
-      <Form onSubmit={handleSubmit} 
-      layout="vertical"
-      // onFinish={handleSubmit}
-      >
-        <h1 style={{textAlign:'center'}}>Forgot Password</h1>
-            {/* <Title level={2}>Forgot Password</Title> */}
-            <Form.Item name="uniqueField" label={"Email"} rules={[{ required: true, message: 'Please input your email!' }]}>
-            <div>
-            <Input placeholder="Email" id={'uniqueField'} variant="filled" autoComplete='on' value={user['uniqueField']} onChange={handleChange} />
-            </div>
-        </Form.Item>
-        <Form.Item name="newPassword" label="New Password" rules={[{ required: true, message: 'Please input your password!' }]}>
-          <Input.Password placeholder="New Password" variant="filled" onChange={handleChange} autoComplete='off' id={'newPassword'} value={user['newPassword']} />
-          </Form.Item>
+    <div>
+      <Flex gap={100}>
+        <img src={gojo} style={{ height: '45rem', width: '40rem' }} />
 
-        <Form.Item name="confirmPassword" label="Confirm Password" rules={[{ required: true, message: 'Please input your password!' }]}>
-          <Input.Password placeholder="Confirm Password" variant="filled" onChange={handleChange} autoComplete='off' id={'confirmPassword'} value={user['confirmPassword']} />
-          </Form.Item>
+        <Flex align='center' justify='center' vertical>
+          <Flex vertical justify='center' align='center'>
+            <Col>
+              <div className="demo-logo" style={{ fontWeight: '700', fontSize: '2rem' }}>🛠MAKERS MATE</div>
+            </Col>
+            <Typography style={{ fontSize: '20px', color: 'grey' }} >Forgot Password</Typography>
+          </Flex>
+
+          <Form onSubmit={handleSubmit}
+            layout="vertical"
+          >
+            <Form.Item name="uniqueField" label={"Email"} rules={[{ required: true, message: 'Please input your email!' }]}>
+              <div>
+                <Input placeholder="Email" id={'uniqueField'} variant="filled" autoComplete='on' value={user['uniqueField']} onChange={handleChange} />
+              </div>
+            </Form.Item>
+            <Form.Item name="newPassword" label="New Password" rules={[{ required: true, message: 'Please input your password!' }]}>
+              <Input.Password placeholder="New Password" variant="filled" onChange={handleChange} autoComplete='off' id={'newPassword'} value={user['newPassword']} />
+            </Form.Item>
+
+            <Form.Item name="confirmPassword" label="Confirm Password" rules={[{ required: true, message: 'Please input your password!' }]}>
+              <Input.Password placeholder="Confirm Password" variant="filled" onChange={handleChange} autoComplete='off' id={'confirmPassword'} value={user['confirmPassword']} />
+            </Form.Item>
 
             <Form.Item>
-              <Button onClick={handleSubmit} type="primary" htmlType="submit" style={{ width: '400px', textAlign: 'center' }}>
-                Submit
+              <Button onClick={handleSubmit} type="primary" htmlType="submit" style={{ width: '400px', textAlign: 'center', background: bg1 }}>
+                <Typography style={{ fontSize: '18px', color: 'white' }}>Submit </Typography>
               </Button>
             </Form.Item>
-            <Flex>
-              <p style={{ margin: '0px' }}>Go back to&nbsp;  </p>
-              <span onClick={() => { navigate(OPEN_ROUTES.LOGIN) }} style={{ color: 'rgb(29, 155, 240)' }}>
-                Login
-              </span>
+            <Flex justify='center'>
+              <Typography style={{ fontSize: '15px', color: 'black' }}>Go back to&nbsp;
+                <span onClick={() => { navigate(OPEN_ROUTES.LOGIN) }} style={{ color: 'rgb(29, 155, 240)', cursor:'pointer' }}>
+                  Login
+                </span>
+              </Typography>
+
+
             </Flex>
-      </Form>
-      {otpResponse && <OtpModal otpRes={otpResponse} user={user} submitOTP={submitOTP} handleOtpResponse={handleOtpResponse} />} 
+          </Form>
+          {otpResponse && <OtpModal otpRes={otpResponse} user={user} submitOTP={submitOTP} handleOtpResponse={handleOtpResponse} />}
+        </Flex>
+      </Flex>
     </div>
-    </div>
-    </Context.Provider>
   );
 }
 export default ForgotPassword;

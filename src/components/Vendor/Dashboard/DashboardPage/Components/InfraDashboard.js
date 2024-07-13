@@ -1,15 +1,17 @@
 import React from 'react'
 import { Row, Col, Card, Statistic, Typography } from 'antd'
+import { bg4 } from '../../../../../utils/colorGradient'
 
 const InfraDashboard = (props) => {
     let AllDetails = props.AllDetails
+
     return (
     <div>
               <Typography style={{ margin: '0', fontSize:'25px', fontWeight:'600' }}>InfraStructure Details</Typography>
                 <Row gutter={16}>
 
                   <Col span={12}>
-                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px' }}>
+                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px', background: bg4 }}>
                       <Statistic
                         title="Plant Area"
                         value={AllDetails.infrastructureDetails?AllDetails.infrastructureDetails.plant_area:0}
@@ -20,7 +22,7 @@ const InfraDashboard = (props) => {
                         suffix='sqm'
                       />
                     </Card>
-                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px' }}>
+                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px',  background: bg4 }}>
                       <Statistic
                         title="Assembly Area"
                         value={AllDetails.infrastructureDetails?AllDetails.infrastructureDetails.assembly_area:0}
@@ -33,7 +35,7 @@ const InfraDashboard = (props) => {
                     </Card>
                   </Col>
                   <Col span={12}>
-                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px' }}>
+                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px',  background: bg4 }}>
                       <Statistic
                         title="Crane Tonnage"
                         value={AllDetails.infrastructureDetails?AllDetails.infrastructureDetails.crane_tonnage:0}
@@ -43,7 +45,14 @@ const InfraDashboard = (props) => {
                         }}
                       />
                     </Card>
-                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px' }}>
+                    <Card 
+                    size='small' 
+                    hoverable 
+                    style={{ 
+                      borderRadius: "15px", 
+                      marginTop: '5px',  
+                      background: bg4 
+                      }}>
                       <Statistic
                         title="Assembly Table"
                         value={AllDetails.infrastructureDetails?AllDetails.infrastructureDetails.assembly_table:0}

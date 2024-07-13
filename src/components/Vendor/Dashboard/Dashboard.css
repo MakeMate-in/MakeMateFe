@@ -19,4 +19,15 @@
     font-size: 1rem !important;
   }
   
+  .scrollable-div {
+    /* background-color: #f1f1f1; */
+    height: 60px;
+    /* border: 1px solid black; */
+    width: 40vh;
+    overflow-y: scroll;
+    overflow: auto;
+    text-align: justify;
+    scrollbar-width: none;
+  }
+  
   

@@ -16,7 +16,7 @@ import { notification } from 'antd';
 import InfraDashboard from './Components/InfraDashboard';
 import ContactDetails from './Components/ContactDetails';
 import ServicesDetails from './Components/ServicesDetails';
-
+import { bg3, bg4, bg5 } from '../../../../utils/colorGradient';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -227,11 +227,17 @@ const DashboardPage = () => {
 
               <ContactDetails AllDetails={AllDetails} />
 
-              <Card>
+              <Card 
+              // style={{background: bg3}}
+              >
                 <InfraDashboard AllDetails={AllDetails} />
 
                 <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Total Manpower: {totalManpower}</Typography>
-                <Card style={{ backgroundImage: business_plan }} id='pie' >
+                <Card 
+                style={{ 
+                  backgroundImage: business_plan, 
+                  // background: bg4 
+                  }} id='pie' >
                   <Doughnut style={{ height: '40vh' }} data={pieData} options={pieOptions} />
                 </Card>
 

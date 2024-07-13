@@ -1,6 +1,7 @@
 import React from 'react'
 import { Typography, Flex, Card, Tag } from 'antd'
 import { SERVICES_NAMES } from '../../../../../utils/helper'
+import { bg4 } from '../../../../../utils/colorGradient'
 
 const ServicesDetails = (props) => {
     let AllDetails = props.AllDetails
@@ -15,7 +16,7 @@ const ServicesDetails = (props) => {
   return (
     <div>
        <Typography style={{ margin: '0', marginTop: '10px', fontSize:'20px', fontWeight:'600' }}>Services</Typography>
-                <Card style={{overflow:'auto'}}>
+                <Card style={{overflow:'auto', background:bg4}}>
                 <Typography style={{ margin: '0', fontSize:'18px', fontWeight:'500' }}>Inhouse</Typography>
                   <Flex gap="5px 2px" wrap>
                   {AllDetails?.services?AllDetails.services.services.map((service, index) => 

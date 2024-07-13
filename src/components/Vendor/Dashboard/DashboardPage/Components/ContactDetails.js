@@ -9,7 +9,7 @@ import FlagIcon from '@mui/icons-material/Flag';
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork';
 import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
-import { bg1, bg2 } from '../../../../../utils/colorGradient';
+import { bg1, bg2,bg5, bg4 } from '../../../../../utils/colorGradient';
 
 const ContactDetails = (props) => {
   let AllDetails = props.AllDetails
@@ -19,7 +19,7 @@ const ContactDetails = (props) => {
   return (
     <div style={{marginBottom:'15px'}}>
       <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical">
-        <Card style={{ background: bg1, cursor:'pointer' }} onClick={() => { setisFlipped(!isFlipped) }}>
+        <Card style={{ background: bg4, cursor:'pointer' }} onClick={() => { setisFlipped(!isFlipped) }}>
           <Typography style={{ margin: '0', fontSize: '18px', fontWeight: '600' }}><u>Contact Details</u></Typography>
           <div>
             {AllDetails?.companyDetails?.contact_person && AllDetails?.companyDetails?.contact_person.length > 0 && (
@@ -35,7 +35,7 @@ const ContactDetails = (props) => {
         </Card>
 
 
-        <Card style={{ background: bg2  , cursor:'pointer'}} onClick={() => { setisFlipped(!isFlipped) }}>
+        <Card style={{ background: bg4  , cursor:'pointer'}} onClick={() => { setisFlipped(!isFlipped) }}>
           <Typography style={{ margin: '0', fontSize: '18px', fontWeight: '600' }}><u>Address Details</u></Typography>
           <div>
             {AllDetails?.companyDetails?.address && AllDetails?.companyDetails?.address.length > 0 && (

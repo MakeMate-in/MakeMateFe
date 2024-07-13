@@ -17,6 +17,8 @@ const Context = React.createContext({
 const Certificates = (props) => {
   const [inputs, setInputs] = useState([{ name: undefined,exp: undefined, file: undefined }]);
 
+
+
   const handleAddInput = () => {
     setInputs([...inputs, { name: undefined,exp: undefined, file: undefined }]);
   };
@@ -197,7 +199,9 @@ const openFailedNotification = (placement,msg) => {
 
                 </Flex>
                 {index === inputs.length-1 && (
+                  <div style={{width:'25%'}}>
                   <a onClick={() => handleAddInput()} style={{ fontSize: '16px' }}>+ Add Certificate</a>
+                  </div>
                 )}
               </Flex>
             )

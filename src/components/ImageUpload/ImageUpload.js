@@ -4,6 +4,7 @@ import { notification } from 'antd';
 
 import { PlusOutlined } from '@ant-design/icons';
 import { NOTIFICATION_MESSAGES } from '../../utils/locale';
+import { OPEN_ROUTES } from '../../utils/constants';
 
 
 const getBase64 = (file) =>
@@ -19,6 +20,8 @@ const ImageUpload = (props) => {
 
     const [fileList, setFileList] = useState([]);
     const [api] = notification.useNotification();
+
+    const [notShow,setShow] = useState(false)
 
 
     const [previewOpen, setPreviewOpen] = useState(false);
@@ -66,6 +69,10 @@ const ImageUpload = (props) => {
 
 
     useEffect(() => {
+        const path= window.location.pathname
+        if(path == OPEN_ROUTES.VENDOR_DASHBOARD)
+            setShow(true)
+        console.log(path)
         fetchImages()
 
     }, [])
@@ -74,6 +81,9 @@ const ImageUpload = (props) => {
     const onChange = ({ fileList: newFileList }) => {
         setFileList(newFileList);
     };
+
+
+    console.log(notShow)
 
 
     const uploadImage = async options => {
@@ -153,7 +163,7 @@ const ImageUpload = (props) => {
                    
                    ))}
              </Carousel>
-            <Upload
+           {notShow?null : <Upload
                 listType="picture-card"
                 fileList={fileList}
                 onPreview={handlePreview}
@@ -164,7 +174,7 @@ const ImageUpload = (props) => {
                 }}
             >
                 {fileList && fileList.length >= 8  ? null : uploadButton}
-            </Upload>
+            </Upload>}
             {/* {previewImage && (
                 <Image
                     wrapperStyle={{ display: 'none' }}

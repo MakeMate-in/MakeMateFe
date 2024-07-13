@@ -145,7 +145,7 @@ const ForgotPassword = () => {
         <Flex align='center' justify='center' vertical>
           <Flex vertical justify='center' align='center'>
             <Col>
-              <div className="demo-logo" style={{ fontWeight: '700', fontSize: '2rem' }}>🛠MAKERS MATE</div>
+              <div  className="demo-logo" style={{ fontWeight: '700', fontSize: '2rem'  }}><span onClick={() => {navigate(OPEN_ROUTES.PARENT_ROUTE)}} style={{cursor:'pointer'}}>🛠</span>MAKERS MATE</div>
             </Col>
             <Typography style={{ fontSize: '20px', color: 'grey' }} >Forgot Password</Typography>
           </Flex>

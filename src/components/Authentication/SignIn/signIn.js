@@ -71,7 +71,6 @@ const SignIn = () => {
   }
 
   const handleSubmit = async () => {
-    console.log('User data:', user);
     if (!isEmail) {
       user.uniqueField = user.uniqueField.substring(2);
     }
@@ -114,13 +113,13 @@ const SignIn = () => {
 
   return (
     <div >
-      <Row gutter={200}>
-        <Col>
-          <img src={gojo} style={{ height: '45rem', width: '45rem' }} />
-        </Col>
+      <Flex gap={100}>
+          <img src={gojo} style={{ height: '45rem', width: '40rem' }} />
         <Flex vertical gap={30} justify='center' align='center'>
           <Flex vertical justify='center' align='center' gap={30}>
-            <div className="demo-logo" style={{ fontWeight: '700', fontSize: '2rem', marginTop: '70px' }}>🛠MAKERS MATE</div>
+            <Col>
+            <div  className="demo-logo" style={{ fontWeight: '700', fontSize: '2rem', marginTop: '70px' }}><span onClick={() => {navigate(OPEN_ROUTES.PARENT_ROUTE)}} style={{cursor:'pointer'}}>🛠</span>MAKERS MATE</div>
+            </Col>
             <Flex vertical justify='center' align='center'>
               <h1 style={{ margin: '0px' }}>Welcome back!</h1>
               <Typography style={{ fontSize: '20px', color: 'grey' }} >Log In</Typography>
@@ -176,7 +175,7 @@ const SignIn = () => {
           </Form>
 
         </Flex>
-      </Row>
+      </Flex>
     </div>
   )
 }

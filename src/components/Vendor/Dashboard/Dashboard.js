@@ -13,6 +13,7 @@ import {
   ListItemIcon,
   ListItemText
 } from '@mui/material';
+import { Col } from 'antd';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -67,7 +68,9 @@ const Dashboard = () => {
       <AppBar position="fixed" open={open} style={{background:'#001529'}}>
       <Toolbar style={{ display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
       <Box style={{  marginLeft:open?'0px':'53px', position: 'absolute' }}>
+        <Col>
         <div className="demo-logo" style={{  fontWeight: '700', fontSize: '1.5rem' }}>🛠MAKERS MATE</div>
+        </Col>
         </Box>
         <Box style={{ width: '100%', textAlign: 'center', position: 'absolute' }}>
           <Typography variant="h5" noWrap component="div" style={{fontWeight: '550'}}>

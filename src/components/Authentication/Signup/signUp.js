@@ -218,7 +218,7 @@ const SignUp = () => {
           <Flex vertical align='center' justify='center' gap={20}>
             <Flex vertical justify='center' align='center'>
               <Col>
-                <div className="demo-logo" style={{ fontWeight: '700', fontSize: '2rem' }}>🛠MAKERS MATE</div>
+                <div onClick={navigate(OPEN_ROUTES.PARENT_ROUTE)} className="demo-logo" style={{ fontWeight: '700', fontSize: '2rem' }}><span onClick={() => { navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD) }} style={{ cursor: 'pointer' }}>🛠</span>MAKERS MATE</div>
               </Col>
               <Typography style={{ fontSize: '20px', color: 'grey' }} >Create Account</Typography>
             </Flex>
@@ -406,7 +406,7 @@ const SignUp = () => {
                     </Col>
                   </Row>
                   <Flex vertical justify='center' align='center'>
-                    <Button type="primary" htmlType="submit" style={{ width: '400px', textAlign: 'center', fontWeight: '500',  background:bg1 }}>
+                    <Button type="primary" htmlType="submit" style={{ width: '400px', textAlign: 'center', fontWeight: '500', background: bg1 }}>
                       Sign Up
                     </Button>
                     <Flex style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -537,7 +537,7 @@ const SignUp = () => {
 
 
                   <Flex vertical justify='center' align='center'>
-                    <Button type="primary" htmlType="submit" style={{ width: '400px', textAlign: 'center', fontWeight: '500', background:bg1 }}>
+                    <Button type="primary" htmlType="submit" style={{ width: '400px', textAlign: 'center', fontWeight: '500', background: bg1 }}>
                       Sign Up
                     </Button>
                     <Flex style={{ alignItems: 'center', justifyContent: 'center' }}>

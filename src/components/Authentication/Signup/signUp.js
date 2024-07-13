@@ -218,7 +218,7 @@ const SignUp = () => {
           <Flex vertical align='center' justify='center' gap={20}>
             <Flex vertical justify='center' align='center'>
               <Col>
-                <div onClick={navigate(OPEN_ROUTES.PARENT_ROUTE)} className="demo-logo" style={{ fontWeight: '700', fontSize: '2rem' }}><span onClick={() => { navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD) }} style={{ cursor: 'pointer' }}>🛠</span>MAKERS MATE</div>
+                <div className="demo-logo" style={{ fontWeight: '700', fontSize: '2rem' }}><span onClick={() => { navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD) }} style={{ cursor: 'pointer' }}>🛠</span>MAKERS MATE</div>
               </Col>
               <Typography style={{ fontSize: '20px', color: 'grey' }} >Create Account</Typography>
             </Flex>

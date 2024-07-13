@@ -10,11 +10,11 @@ import { getCustomerData } from "../utils/helper";
 
 export const getOtp = async (data,isEmail) => {
     try {
-        const url = isEmail == 1 ? AUTHEN_URLS.GET_MAIL_OTP : AUTHEN_URLS.GET_MOBILE_OTP
+        const url = AUTHEN_URLS.GET_MAIL_OTP
         // console.log(url)   
         if (isEmail) {
             let obj = {}
-            obj.email = data;
+            obj.uniqueField = data;
             obj.type = "VERIFICATION"
             data = obj;
         }
@@ -23,7 +23,7 @@ export const getOtp = async (data,isEmail) => {
             obj.mobile_no = data
             data = obj
         }
-        const response = await requestHandler.get(baseAPIUrl+url, data);
+        const response = await requestHandler.post(url, data);
         return response
     }
     catch (err) {
@@ -38,6 +38,7 @@ export const verifyOtp = async (data,isEmail) => {
         return response
     }
     catch (err) {
+        console.log(err)
         throw err
     }
 

@@ -31,15 +31,7 @@ const CustomerContent = () => {
               scrollbarWidth: 'thin'
             }}
           >
-            <div style={{ display: 'flex', borderStyle:'ridge' }}>
-              <div style={{ flex: '0 0 40%', marginRight: '20px', borderStyle:'ridge' }}>
-                <ImageGallery items={images} thumbnailPosition='right' showFullscreenButton={false} showPlayButton={false} />
-              </div>
-              <div style={{ flex: '1' }}>
-                <h2>Product Details</h2>
-                <p> product details</p>
-              </div>
-            </div>
+
           </Content>
   )
 }

@@ -97,3 +97,9 @@ export const  validateForm = (user,setUser,setErrors,checked,checkPassword, role
 
   throw err
   }
+
+
+export const errorRouting = () => {
+  openNotificationWithIcon("error","Something went Wrong")
+  sessionStorage.clear()
+}

@@ -27,7 +27,8 @@ export const LOCAL_STORAGE_ITEMS = {
   USER_EMAIL: "user_email",
   USER_ID: "user_id",
   COMPANY_ID: "company_id",
-  ROLE: "role"
+  ROLE: "role",
+  JWT_TOKEN : 'jwtToken'
 };
 
 export const getUserData = (user, role) => {
@@ -67,6 +68,8 @@ export const getJWTData = (token) => {
 };
 
 export const getUserName = () => sessionStorage.getItem(LOCAL_STORAGE_ITEMS.USER_NAME);
+
+export const getJwt = () => sessionStorage.getItem(LOCAL_STORAGE_ITEMS.JWT_TOKEN);
 
 export const getUserEmail = () => sessionStorage.getItem(LOCAL_STORAGE_ITEMS.USER_EMAIL);
 

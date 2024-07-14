@@ -1,16 +1,38 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import { Button, Layout, theme, AutoComplete, Input, Row, Flex } from 'antd';
 import "./../../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
 import { useNavigate } from 'react-router-dom';
 import { OPEN_ROUTES } from '../../../utils/constants';
 import { UserOutlined } from '@ant-design/icons';
+import Profile from '../../Vendor/Profile/Profile';
+import { getJwt, getJWTData, openNotificationWithIcon } from '../../../utils/helper';
+import { errorRouting } from '../../../utils/commons/validators';
 
 const { Header, Content, Sider } = Layout;
 
 const CustomerHeader = (props) => {
 
     const navigate = useNavigate()
+    const [loggedIn, setloggedIn] = useState(false)
 
+    useEffect(() => {
+       try{
+        const jwt = getJwt()
+        const path= window.location.pathname
+        if(jwt && jwt!='' && path == OPEN_ROUTES.CUSTOMER_DASHBOARD ){
+            setloggedIn(true)
+        }
+        else{
+            errorRouting()
+            navigate(OPEN_ROUTES.PARENT_ROUTE)    
+        }
+       }
+       catch(err){
+            errorRouting()
+            navigate(OPEN_ROUTES.PARENT_ROUTE)    
+       }
+    })
+    
     const login = () => {
         navigate(OPEN_ROUTES.LOGIN)
     }
@@ -44,7 +66,10 @@ const CustomerHeader = (props) => {
                 >
                     <Input.Search size="large" placeholder="Search" enterButton="Search" onSearch={handleSelect} />
                 </AutoComplete>
-                <Button onClick={login} size='large' style={{ marginLeft: 'auto', background: 'transparent', color: 'white', border: 'transparent' }}><UserOutlined />Sign Up/Login</Button>
+           {    
+           loggedIn ? <Profile/>
+           :<Button onClick={login} size='large' style={{ marginLeft: 'auto', background: 'transparent', color: 'white', border: 'transparent' }}><UserOutlined />Sign Up/Login</Button>
+           }
             </div>
         </Header>
     )

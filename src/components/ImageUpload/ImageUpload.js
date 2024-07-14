@@ -72,7 +72,6 @@ const ImageUpload = (props) => {
         const path= window.location.pathname
         if(path == OPEN_ROUTES.VENDOR_DASHBOARD)
             setShow(true)
-        console.log(path)
         fetchImages()
 
     }, [])
@@ -81,9 +80,6 @@ const ImageUpload = (props) => {
     const onChange = ({ fileList: newFileList }) => {
         setFileList(newFileList);
     };
-
-
-    console.log(notShow)
 
 
     const uploadImage = async options => {
@@ -96,10 +92,9 @@ const ImageUpload = (props) => {
                 fetchImages()
             }
             onSuccess("Ok");
-            // console.log("server res: ", res);
         } catch (err) {
             openFailedNotification('topRight', NOTIFICATION_MESSAGES.UPLOAD_IMAGE_ERROR)
-            console.log("Eroor: ", err);
+
             const error = new Error("Some error");
         }
     };
@@ -119,7 +114,6 @@ const ImageUpload = (props) => {
             }
 
         } catch (err) {
-            console.log("Eroor: ", err);
             const error = new Error("Some error");
         }
     }

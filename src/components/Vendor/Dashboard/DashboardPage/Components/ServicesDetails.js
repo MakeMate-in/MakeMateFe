@@ -5,7 +5,6 @@ import { bg4 } from '../../../../../utils/colorGradient'
 
 const ServicesDetails = (props) => {
     let AllDetails = props.AllDetails
-  console.log(AllDetails.services)
     const colors = [
         'processing', 'success', 'error', 'warning', 'magenta', 'red', 'volcano', 'orange', 'gold', 'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple',
       ];

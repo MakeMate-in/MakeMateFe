@@ -141,7 +141,6 @@ const ContactDetails = (props) => {
             }
             let data = {}
             let res
-            console.log(modalHeading)
             if (modalHeading == MESSAGES.ADD) {
                 data.contact_person = contact
                 res = await updateAddressandContacts(params, data)

@@ -83,7 +83,7 @@ const SignIn = () => {
       initializeUserValues(res.token)
       openNotification('topRight')
       if (getRole() == ROLE.VENDOR) {
-        navigate(OPEN_ROUTES.VENDOR_DASHBOARD)
+        navigate(OPEN_ROUTES.DIGITAL_FACTORY)
       }
       else {
         navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD)

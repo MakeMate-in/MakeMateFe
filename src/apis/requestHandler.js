@@ -37,7 +37,8 @@ const makeGetRequest = async (url, params, method) => {
                 err.msg = error.msg;
                 err.status = error.status;
             });
-            window.location.href = baseURL + OPEN_ROUTES.CUSTOMER_DASHBOARD
+            window.location.href = baseURL + OPEN_ROUTES.PARENT_ROUTE
+            sessionStorage.clear()
         }
         else if(error.response.status == 404) {
             err.msg = "Could not find the resource!";

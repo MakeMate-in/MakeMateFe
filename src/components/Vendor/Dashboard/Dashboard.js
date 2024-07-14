@@ -24,8 +24,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { Outlet } from 'react-router-dom';
 import { logOut } from '../../../apis/authentication..js';
 import Profile from '../Profile/Profile.js';
+import { connect } from 'react-redux';
+import { setProgress } from '../../../actions/allAction.js';
+import { openNotificationWithIcon } from '../../../utils/helper.js';
 
-const Dashboard = () => {
+const Dashboard = (props) => {
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [tab, setTab] = useState(0)
@@ -47,7 +51,12 @@ const Dashboard = () => {
   };
 
   const selectTab = (e,item) => {
+    if(item.id==0 && props.progress<=90){
+      openNotificationWithIcon('error',"Please Complete Profile.","Progress Bar should be above 90 Percent","")
+    }
+    else{
     setTab(item.id);
+    }
   };
 
   const getLogout = async () => {
@@ -117,7 +126,7 @@ const Dashboard = () => {
             <ListItemText primary={item.name} sx={{ opacity: open ? 1 : 0 }} />
           </ListItemButton>
         </ListItem>)
-          :(<Link to={item.route} style={{ color: "inherit", textDecoration: "inherit" }} >  
+          :(<Link to={(item.id==0 && props.progress<=90)?VENDOR_DRAWER_LIST[tab].route:item.route} style={{ color: "inherit", textDecoration: "inherit" }} >  
             <ListItem key={index} disablePadding sx={{ display: 'block' }} onClick={(e) => {selectTab(e,item)}}>
               <ListItemButton  sx={{ minHeight: 48, justifyContent: open ? 'initial' : 'center', px: 2.5, }} >
                 <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center',}}>
@@ -142,4 +151,15 @@ const Dashboard = () => {
   );
 }
 
-export default Dashboard
+
+const mapStateToProps = (state) => {
+  return {
+      progress: state.allReducer.progress
+  }
+}
+
+const mapDispatchToProps = {
+  setProgress
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

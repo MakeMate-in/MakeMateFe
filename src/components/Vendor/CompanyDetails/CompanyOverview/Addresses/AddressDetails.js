@@ -146,7 +146,6 @@ const AddressDetails = (props) => {
             let data = {}
             data.address = address
             const res = await updateAddressandContacts(params, data)
-            console.log(res)
             if (res.success) {
                 const updatedData = await getCompanyDetails(params)
                 if (updatedData.success) {

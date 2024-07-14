@@ -14,11 +14,13 @@ import { OPEN_ROUTES } from '../../../utils/constants'
 import Completed from '../CompanyDetails/Completed/Completed';
 import { NOTIFICATION_MESSAGES } from '../../../utils/locale';
 import { notification } from 'antd';
+import { connect } from 'react-redux';
+import { setProgress } from '../../../actions/allAction';
 
 
 const { Step } = Steps;
 
-const DigitalFactory = () => {
+const DigitalFactory = (props) => {
 
   const [current, setCurrent] = useState(0);
   const [currentSub, setCurrentSub] = useState(0);
@@ -108,20 +110,22 @@ const DigitalFactory = () => {
 
   const CalculatePercentage = async () => {
     let per = 0;
-
+    
     if (AllDetails?.companyDetails?.company_name !== undefined && AllDetails?.companyDetails?.company_name !== '') per = per + 5
 
-    if (CompanyDetails.description !== undefined && CompanyDetails.description !== '') per = per + 5
+    if (CompanyDetails?.company_logo !== undefined && CompanyDetails?.company_logo.data.length>0) per = per + PER_COUNT
+    
+    if (CompanyDetails.description !== undefined && CompanyDetails.description !== '') per = per + 10
 
-    if (AllDetails?.companyDetails?.address !== undefined && AllDetails?.companyDetails.address?.length > 0) per = per + PER_COUNT
+    if (AllDetails?.companyDetails?.address !== undefined && AllDetails?.companyDetails.address?.length > 0) per = per + 5
 
-    if (AllDetails?.companyDetails?.contact_person !== undefined && AllDetails?.companyDetails?.contact_person.length > 0) per = per + PER_COUNT
+    if (AllDetails?.companyDetails?.contact_person !== undefined && AllDetails?.companyDetails?.contact_person.length > 0) per = per + 5
 
-    if (AllDetails?.companyDetails?.customer_details !== undefined && AllDetails?.companyDetails?.customer_details.length > 0) per = per + PER_COUNT
+    if (AllDetails?.companyDetails?.customer_details !== undefined && AllDetails?.companyDetails?.customer_details.length > 0) per = per + 3
 
-    if (AllDetails?.companyDetails?.product_details !== undefined && AllDetails?.companyDetails?.product_details.length > 0) per = per + PER_COUNT
+    if (AllDetails?.companyDetails?.product_details !== undefined && AllDetails?.companyDetails?.product_details.length > 0) per = per + 3
 
-    if (certificateCount>0) per = per + 6
+    if (certificateCount>0) per = per + PER_COUNT
 
     if ( (InfrastructureDetails && InfrastructureDetails.assembly_area !== undefined && InfrastructureDetails.assembly_area !== null) && InfrastructureDetails?.assembly_area !== '') per = per + PER_INFRA_COUNT
 
@@ -137,6 +141,8 @@ const DigitalFactory = () => {
 
     if ( (InfrastructureDetails && InfrastructureDetails.plant_area !== undefined && InfrastructureDetails.plant_area !== null) && InfrastructureDetails?.plant_area !== '') per = per + PER_INFRA_COUNT
 
+    if ( (InfrastructureDetails && InfrastructureDetails.manpower !== undefined && InfrastructureDetails.manpower !== null) && InfrastructureDetails?.manpower.lemgth>0) per = per + 5
+
     if (MachineDetails !== undefined && MachineDetails.length>0) per = per + PER_COUNT
 
     if (customerDetails !== undefined && customerDetails.length>0) per = per + PER_COUNT
@@ -145,12 +151,14 @@ const DigitalFactory = () => {
 
 
     setPercent(per)
+    if(per!=props.progress)
+    props.setProgress(per)
   }
 
   useEffect(() => {
     CalculatePercentage()
 
-  }, [InfrastructureDetails,MachineDetails, plantImagesCount, customerDetails, AllDetails, certificateCount])
+  }, [CompanyDetails,InfrastructureDetails,MachineDetails, plantImagesCount, customerDetails, AllDetails, certificateCount])
 
   const onSaveAndSubmit = () => {
 
@@ -267,7 +275,7 @@ const DigitalFactory = () => {
               <Flex vertical>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h4 onClick={backToDashboard}><LeftOutlined /> Return to Dashboard</h4>
-                  <Progress strokeWidth={13} type="dashboard" percent={percent} size={150} gapDegree={150} />
+                  <Progress strokeWidth={13} type="dashboard" percent={props.progress} size={150} gapDegree={150} />
                 </div>
                 <div style={{ margin: '0' }}>
                   <Steps direction="vertical" current={current}
@@ -296,7 +304,7 @@ const DigitalFactory = () => {
                 {current === 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails} setCertificateCount={setCertificateCount} certificateCount={certificateCount}/> : ''}
                 {current === 1 ? <InfraDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} MachineDetails={MachineDetails} setMachineDetails={setMachineDetails} InfrastructureDetails={InfrastructureDetails} setInfrastructureDetails={setInfrastructureDetails} setPlantImagesCount={setPlantImagesCount} /> : ''}
                 {current === 2 ? <CustomerDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} customerDetails={customerDetails} setCustomerDetails={setCustomerDetails} /> : ''}
-                {current === 3 ? <Completed percent={percent} onSaveAndSubmit={onSaveAndSubmit}/> :''} 
+                {current === 3 ? <Completed percent={props.progress} onSaveAndSubmit={onSaveAndSubmit}/> :''} 
               </div>
 
             </Card>
@@ -315,4 +323,14 @@ const DigitalFactory = () => {
   )
 }
 
-export default DigitalFactory
+const mapStateToProps = (state) => {
+  return {
+      progress: state.allReducer.progress
+  }
+}
+
+const mapDispatchToProps = {
+  setProgress
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DigitalFactory)

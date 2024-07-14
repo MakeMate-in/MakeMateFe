@@ -65,7 +65,7 @@ const CustomerSignUp = () => {
   }
 
   const handlePhone = (value) => {
-    console.log(value)
+    // console.log(value)
     setUser({ ...user, ['mobile_no']: value })
   }
 
@@ -76,7 +76,7 @@ const CustomerSignUp = () => {
   const formRef = React.createRef();
 
   const handleSubmit = async () => {
-    console.log(user)
+    // console.log(user)
     if (validateForm(user, setUser, setErrors, checked, checkPassword)) {
       let errors = {}
       // Form is valid, submit the data or perform further actions
@@ -96,7 +96,7 @@ const CustomerSignUp = () => {
         else {
           try {
             const otpRes = await sendOTP(user["email"],true)
-            console.log(otpRes)
+            // console.log(otpRes)
             setotpResponse(otpRes)
           }
           catch (err) {

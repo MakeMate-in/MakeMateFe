@@ -3,8 +3,8 @@ import Factory from '@mui/icons-material/Factory';
 import Logout from '@mui/icons-material/Logout';
 import Dashboard from '@mui/icons-material/DashboardCustomizeRounded';
 
-// export const baseAPIUrl = 'http://localhost:5000';
-export const baseAPIUrl = 'https://makematebe.onrender.com';
+export const baseAPIUrl = 'http://localhost:5000';
+// export const baseAPIUrl = 'https://makematebe.onrender.com';
 
 export enum API_STATUS_ENUM {
     IDLE = "idle",
@@ -116,8 +116,8 @@ export const PER_COUNT=10
 export const PER_INFRA_COUNT=2
 export const PER_MACHINE_COUNT=1
 
-// export const baseURL = 'http://localhost:3000'
-export const baseURL = 'https://weconnect.makersmate.in'
+export const baseURL = 'http://localhost:3000'
+// export const baseURL = 'https://weconnect.makersmate.in'
 
 
 // export const HANDLE_REGEX:RegExp = /^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?/~\\-]+$/;

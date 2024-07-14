@@ -130,7 +130,7 @@ const SignUp = () => {
             setotpResponse(otpRes)
           }
           catch (err) {
-            console.log(err)
+            // console.log(err)
             openFailedNotification('topRight', 'Unable to Signup')
             // throw err
           }
@@ -138,7 +138,7 @@ const SignUp = () => {
 
       }
       catch (err) {
-        console.log(err)
+        // console.log(err)
         openFailedNotification('topRight', 'Unable to Signup')
         // throw err
       }
@@ -174,7 +174,7 @@ const SignUp = () => {
           sessionStorage.setItem(SESSION_STORAGE_ITEMS.TOKEN, res.token);
           initializeUserValues(res.token)
           openNotification('topRight', "User is Signed Up ")
-          getRole() == ROLE.VENDOR ? navigate(OPEN_ROUTES.VENDOR_DASHBOARD) : navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD)
+          getRole() == ROLE.VENDOR ? navigate(OPEN_ROUTES.DIGITAL_FACTORY) : navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD)
         } else {
           openFailedNotification('topRight', res.msg);
           // throw new Error('Login failed')
@@ -182,7 +182,7 @@ const SignUp = () => {
 
       }
       catch (err) {
-        console.log(err)
+        // console.log(err)
         openFailedNotification('topRight', 'Unable to Signup')
         // return err
       }

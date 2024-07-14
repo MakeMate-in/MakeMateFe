@@ -16,7 +16,7 @@ const CustomerHeader = (props) => {
     }
 
     const handleSelect = (value) => {
-        console.log("Selected:", value);
+
     };
 
 

@@ -147,9 +147,14 @@ const BasicDetails = (props) => {
     const { onSuccess, onError, file, onProgress } = options;
     try {
       const USER_ID = getUserId()
+      let params = {
+        user: USER_ID
+      }
       const res = await uploadAvatar(file, USER_ID)
-      onSuccess("Ok");
-      console.log("server res: ", res);
+      if(res.success){
+        let updatedData = await getCompanyDetails(params)
+        props.setcompanyDetails(updatedData.data)
+      }
     } catch (err) {
       openFailedNotification('topRight', 'Unable to Upload Company Image')
       console.log("Eroor: ", err);

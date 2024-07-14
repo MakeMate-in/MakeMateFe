@@ -106,7 +106,6 @@ const openFailedNotification = (placement,msg) => {
             data.exp = date
             return data
           })
-          console.log(certificates)
           setInputs([...certificates])
 
         }

@@ -77,7 +77,7 @@ const ForgotPassword = () => {
 
   const handleSubmit = async () => {
     let isUser = await checkUser(user, 3);
-    console.log('isUser response', isUser);
+    // console.log('isUser response', isUser);
     if (isUser.success == false) {
       openFailedNotification('topRight', 'User does not Exist with Entered Email');
     }
@@ -89,10 +89,10 @@ const ForgotPassword = () => {
       else {
         const res = await handleSendOTP();
         if (res.Success == true) {
-          console.log('forgot password res:', res);
+          // console.log('forgot password res:', res);
         }
         else {
-          console.log("Failed Forgot password res:", res);
+          // console.log("Failed Forgot password res:", res);
           openFailedNotification('topRight', res?.msg);
         }
       }
@@ -107,10 +107,10 @@ const ForgotPassword = () => {
     if (otpResponse.otp == otp) {
       const res1 = await forgotpassword(user);
       if (res1.status == 200) {
-        console.log("Password Changed successfully");
+        // console.log("Password Changed successfully");
       }
       else {
-        console.log('Error in password change');
+        // console.log('Error in password change');
       }
       api.success({
         message: 'Success',
@@ -125,13 +125,13 @@ const ForgotPassword = () => {
   }
 
   const handleSendOTP = async () => {
-    console.log('Sending OTP to:', user.uniqueField);
+    // console.log('Sending OTP to:', user.uniqueField);
     try {
       const otpRes = await sendEmailOtp(user);
       setotpResponse(otpRes);
       return otpRes;
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       throw err;
     }
   };

@@ -178,7 +178,7 @@ export const getRefresh = (() => {
     let res = axios.get(baseAPIUrl+url,{
         withCredentials: true
     }).then((response) => {
-        console.log(response)
+        // console.log(response)
         return response.data
     }).catch((err) => {
         console.log(err)

@@ -8,7 +8,7 @@ import {
 import { VENDOR_DRAWER_LIST } from '../../../utils/constants';
 
 const AppBar = (props) => {
- console.log(props)
+
   return (
     <div>
         <AppBar position="fixed" open={props.open}>
@@ -16,11 +16,9 @@ const AppBar = (props) => {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            // onClick={() => {props.handleDrawerOpen()}}
             edge="start"
             sx={{
               marginLeft: 10,
-            //   ...(props.open && { display: 'none' }),
             }}
           >
             <MenuIcon />

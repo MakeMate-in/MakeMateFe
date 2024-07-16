@@ -22,7 +22,7 @@ const CustomerHeader = (props) => {
         if(jwt && jwt!='' && path == OPEN_ROUTES.CUSTOMER_DASHBOARD ){
             setloggedIn(true)
         }
-        else{
+        else if(path !== OPEN_ROUTES.PARENT_ROUTE){
             errorRouting()
             navigate(OPEN_ROUTES.PARENT_ROUTE)    
         }
@@ -31,7 +31,7 @@ const CustomerHeader = (props) => {
             errorRouting()
             navigate(OPEN_ROUTES.PARENT_ROUTE)    
        }
-    })
+    },[])
     
     const login = () => {
         navigate(OPEN_ROUTES.LOGIN)
@@ -47,28 +47,17 @@ const CustomerHeader = (props) => {
             style={{
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
+                background:'white'
             }}
         >
-            <div className="demo-logo" style={{ color: '#fff', fontWeight: '700', fontSize: '1.5rem' }}>🛠MAKERS MATE</div>
+            <div className="demo-logo" style={{ color: '#fff', fontWeight: '700', fontSize: '1.5rem' }}>🛠<span style={{color:'black'}}>MAKERS MATE</span></div>
 
             <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
-                <AutoComplete
-                    popupMatchSelectWidth={252}
-                    style={{
-                        width: 300,
-                        marginRight: '20px'
-                    }}
-                    options={props.options.map(option => ({ value: option }))}
-                    onSelect={handleSelect}
-                    onSearch={props.handleSearch}
-                    size="large"
-                >
-                    <Input.Search size="large" placeholder="Search" enterButton="Search" onSearch={handleSelect} />
-                </AutoComplete>
+            
            {    
            loggedIn ? <Profile/>
-           :<Button onClick={login} size='large' style={{ marginLeft: 'auto', background: 'transparent', color: 'white', border: 'transparent' }}><UserOutlined />Sign Up/Login</Button>
+           :<Button onClick={login} size='large' style={{ marginLeft: 'auto', background: 'transparent', color: 'white', border: 'transparent', color:'black' }}><UserOutlined />Sign Up/Login</Button>
            }
             </div>
         </Header>

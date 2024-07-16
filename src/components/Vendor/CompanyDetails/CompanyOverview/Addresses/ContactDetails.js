@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Card, Col, Row, Modal, Form, Input, Flex, Button, Rate } from 'antd';
-import "react-country-state-city/dist/react-country-state-city.css";
 import { deleteElement, getCompanyDetails, updateAddressandContacts, updateElement, updatePrimaryAddressContacts } from './../../../../../apis/Vendor/CompanyDetails';
 import { MESSAGES } from './../../../../../utils/constants';
 import del from './../../../../../assets/del.png'

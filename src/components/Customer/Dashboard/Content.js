@@ -1,19 +1,41 @@
 import React, { useState, useRef } from 'react'
-import { Button, Layout, theme, AutoComplete, Input, Row, Flex } from 'antd';
+import { Layout, theme, Carousel, Card} from 'antd';
 import "./../../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
-import ImageGallery from "react-image-gallery";
+import ProductCard from './Component/ProductCard';
+import Login1 from './../../../assets/Login.jpg'
+import Login2 from './../../../assets/Login.jpg'
+import Login3 from './../../../assets/Login.jpg'
+import Login4 from './../../../assets/Login.jpg'
 
 const { Header, Content, Sider } = Layout;
 
+const cardsData = [
+  {
+    images: [
+   Login1,
+   Login2,
+   Login3,
+   Login4
+    ],
+    title: 'Card Title 1',
+    description: 'This is the description for card 1.',
+  },
+  {
+    images: [
+      Login1,
+      Login2,
+      Login3,
+      Login4
+    ],
+    title: 'Card Title 2',
+    description: 'This is the description for card 2.',
+  },
+  // Add more cards as needed
+];
+
+
 const CustomerContent = () => {
 
-    
-  const images = [
-    {
-      original: "https://picsum.photos/id/1018/1000/600/",
-      thumbnail: "https://picsum.photos/id/1018/250/150/",
-    }
-  ];
   
     const {
         token: { colorBgContainer, borderRadiusLG },
@@ -22,16 +44,22 @@ const CustomerContent = () => {
   return (
          <Content
             style={{
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
               overflow: 'auto',
               scrollbarWidth: 'thin'
             }}
           >
-
+            <div className='gap-4'>
+       {cardsData.map((card, index) => (
+        <ProductCard
+          key={index}
+          images={card.images}
+          title={card.title}
+          description={card.description}
+        />
+      ))}
+      </div>
           </Content>
   )
 }

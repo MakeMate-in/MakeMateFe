@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef,useEffect } from 'react'
 import { Layout, theme, Carousel, Card} from 'antd';
 import "./../../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
 import ProductCard from './Component/ProductCard';
@@ -6,43 +6,56 @@ import Login1 from './../../../assets/Login.jpg'
 import Login2 from './../../../assets/Login.jpg'
 import Login3 from './../../../assets/Login.jpg'
 import Login4 from './../../../assets/Login.jpg'
+import { getAllDetails } from '../../../apis/Vendor/CompanyDetails';
+import { getAllUserDetails } from '../../../apis/commonFunctions';
+import { convertBufferToBinary } from '../../../utils/helper';
 
 const { Header, Content, Sider } = Layout;
 
 const cardsData = [
   {
-    images: [
-   Login1,
-   Login2,
-   Login3,
-   Login4
-    ],
-    title: 'Card Title 1',
-    description: 'This is the description for card 1.',
+    title: 'Card Title 1'
   },
   {
-    images: [
-      Login1,
-      Login2,
-      Login3,
-      Login4
-    ],
-    title: 'Card Title 2',
-    description: 'This is the description for card 2.',
-  },
-  // Add more cards as needed
+    title: 'Card Title 2'
+  }
 ];
 
 
 const CustomerContent = () => {
 
-  
     const {
         token: { colorBgContainer, borderRadiusLG },
       } = theme.useToken();
 
-  return (
-         <Content
+  const [data, setData] = useState(undefined)
+  const [srcList, setSrcList] = useState([]);
+
+  const fetchDetails = async () => {
+    const COMPANY_ID = "667db48e42b5be5e507c4b37"
+    let param = {
+      companyId: COMPANY_ID,
+    };
+    try {
+      const resp = await getAllUserDetails(param);
+      console.log(resp)
+      if(resp.success){
+        setData(resp.data)
+        }
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    fetchDetails()
+  },[])
+
+  console.log(data)
+  
+      return (
+    <Content
             style={{
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
@@ -51,12 +64,10 @@ const CustomerContent = () => {
             }}
           >
             <div className='gap-4'>
-       {cardsData.map((card, index) => (
+       {data && data.map((card, index) => (
         <ProductCard
           key={index}
-          images={card.images}
-          title={card.title}
-          description={card.description}
+          data = {card}
         />
       ))}
       </div>

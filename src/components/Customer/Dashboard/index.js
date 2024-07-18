@@ -57,7 +57,7 @@ const CustomerDashboard = () => {
       <Layout>
 
       {/* Side Bar */}
-      {/* <CustomerSideBar/> */}
+      <CustomerSideBar/>
 
         <Layout
           style={{

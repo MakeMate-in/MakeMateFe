@@ -63,7 +63,7 @@ const CustomerContent = () => {
               scrollbarWidth: 'thin'
             }}
           >
-            <div className='gap-4'>
+            <div className='ml-8 mt-8 gap-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 '>
        {data && data.map((card, index) => (
         <ProductCard
           key={index}

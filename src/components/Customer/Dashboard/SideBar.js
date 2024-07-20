@@ -65,6 +65,8 @@ const CustomerSideBar = () => {
                         variant="filled"
                         onChange={handleChange}
                         style={{ width: '93%' }}
+                        mode="multiple"
+                        allowClear
                         placeholder='Select Machine Type'
                         options={MACHINE_TYPE}
                     />

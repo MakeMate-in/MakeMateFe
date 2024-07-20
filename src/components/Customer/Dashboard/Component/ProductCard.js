@@ -1,6 +1,7 @@
 import React from 'react'
-import { Layout, theme, Carousel, Card, Flex, Image, Typography, Button, Rate } from 'antd';
+import { Carousel, Flex, Typography, Button, Rate } from 'antd';
 import './ProductCard.css'
+import { bg1 } from '../../../../utils/colorGradient';
 
 // const ProductCard = ( props ) => {
 //   console.log(props)
@@ -41,7 +42,7 @@ const ProductCard = (props) => {
         {props.data.images && props.data.images.map((image, index) => {
           return (
             <div key={index} className='bg-gray-500 rounded-2xl object-cover aspect-square container-fluid'>
-              <img src={image} alt={`Slide ${index}`} className='rounded-2xl object-cover aspect-squuare' fluid />
+              <img src={image} alt={`Slide ${index}`} className='rounded-2xl object-cover aspect-squuare' style={{height:"100%"}} />
             </div>
           )
         }
@@ -80,9 +81,10 @@ const ProductCard = (props) => {
              }
              <Rate/>
              <hr/>
-             <Flex vertical>
-             <Button>Connect</Button>
-             <Button>FeedBack</Button>
+             <Flex vertical gap={20}>
+             <Button type='primary'  style={{ fontSize: '18px', fontWeight: '600', height: '40px', display: 'flex', alignItems: 'center', background: bg1}}>Connect</Button>
+                 <Button type='primary' 
+             style={{ fontSize: '18px', fontWeight: '600', height: '40px', display: 'flex', alignItems: 'center', background: bg1}}>Feedback</Button>
              </Flex>
     </div>
   )

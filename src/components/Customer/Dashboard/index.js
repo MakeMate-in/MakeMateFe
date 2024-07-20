@@ -1,8 +1,7 @@
 import React, { useState, useRef } from 'react'
-import { Button, Layout, theme, AutoComplete, Input, Row, Flex } from 'antd';
+import { Layout, theme, AutoComplete, Input, Row, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom'
 import "./../../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
-import ImageGallery from "react-image-gallery";
 import CustomerHeader from './Header';
 import CustomerSideBar from './SideBar';
 import CustomerContent from './Content';

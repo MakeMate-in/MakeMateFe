@@ -10,7 +10,6 @@ const ProductCard = ( props ) => {
       <Carousel autoplay>
         {props.data.images && props.data.images.map((image, index) => 
         {
-          console.log(image)
           return (
           <div key={index} className="relative h-full">
             <img src={image} alt={`Slide ${index}`} className="w-full h-full object-cover" />

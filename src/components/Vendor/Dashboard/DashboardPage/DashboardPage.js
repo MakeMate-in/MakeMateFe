@@ -16,9 +16,10 @@ import { notification } from 'antd';
 import InfraDashboard from './Components/InfraDashboard';
 import ContactDetails from './Components/ContactDetails';
 import ServicesDetails from './Components/ServicesDetails';
-import { OPEN_ROUTES } from '../../../../utils/constants';
+import { OPEN_ROUTES, PRODUCT_URL_PATTERN } from '../../../../utils/constants';
 import { useParams } from 'react-router-dom';
 import { getAllDetailsCustomer } from '../../../../apis/commonFunctions';
+import CustomerHeader from '../../../Customer/Dashboard/Header';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -119,6 +120,10 @@ const DashboardPage = () => {
 
   return (
     <div style={{ overflow: 'auto', scrollbarWidth: 'none' }}>
+      {/* {
+        PRODUCT_URL_PATTERN.test(window.location.pathname) &&
+        <CustomerHeader/>
+      } */}
       {AllDetails == undefined ? (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '84vh' }}>
           <div class="spinner-square">

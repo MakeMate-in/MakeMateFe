@@ -7,6 +7,7 @@ import { notification } from 'antd';
 import { OPEN_ROUTES, PRODUCT_URL_PATTERN } from '../../../../utils/constants';
 import ImageUpload from '../../../ImageUpload/ImageUpload';
 import { useParams } from 'react-router-dom';
+import { getMachineDetailsCustomer } from '../../../../apis/commonFunctions';
 const Context = React.createContext({
     name: 'Default',
 });
@@ -243,14 +244,18 @@ const Machines = (props) => {
         try {
             let  COMPANY_ID;
             const pathname = window.location.pathname
+            let machines;
             if(PRODUCT_URL_PATTERN.test(pathname)){
             COMPANY_ID =companyID.company_id
+            let params = { company_id: COMPANY_ID, machine_id: modalMachine.id }
+             machines = await getMachineDetailsCustomer(params)
             }
             else{
             COMPANY_ID = getCopanyId()
-            }
             let params = { company_id: COMPANY_ID, machine_id: modalMachine.id }
-            const machines = await getMachineDetails(params)
+             machines = await getMachineDetails(params)
+            }
+           
             if (machines.success) {
                 let newSrcList = [];
                 machines.documents.image.map(async (item, i) => {
@@ -279,7 +284,7 @@ const Machines = (props) => {
         try{
     
         let params = { company_id: companyID.company_id }
-        const machines = await getMachineDetails(params)
+        const machines = await getMachineDetailsCustomer(params)
         if (machines.success) {
             if (machines) {
                 let data = []

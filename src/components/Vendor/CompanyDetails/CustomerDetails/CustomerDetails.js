@@ -84,7 +84,7 @@ const CustomerDetails = (props) => {
 
 
     const fetchCustomerDetails = async () => {
-        const  COMPANY_ID = getCopanyId()
+        const COMPANY_ID = getCopanyId()
         let params = { company_id: COMPANY_ID }
         const customers = await getProductDetails(params)
         if (customers.success) {
@@ -113,8 +113,8 @@ const CustomerDetails = (props) => {
                         console.log("Errorrrr in fetch")
                     }
                 }
-                if(Object.keys(props).length>0){
-                props.setCustomerDetails(data)
+                if (Object.keys(props).length > 0) {
+                    props.setCustomerDetails(data)
                 }
                 setCustomerData([...data]);
             }
@@ -197,10 +197,10 @@ const CustomerDetails = (props) => {
             key: 'product_image',
             render: (_, record) => (
                 <Space size="large">
-                    <a onClick={() => { 
+                    <a onClick={() => {
                         setImageModal(true)
                         setmodalProduct(record)
-                        }}>View</a>
+                    }}>View</a>
                     {tab ? <Popover content='Delete'>
                         <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
                     </Popover> : ''}
@@ -228,19 +228,22 @@ const CustomerDetails = (props) => {
 
     const getToolImage = async () => {
         try {
-            
-            let  COMPANY_ID;
+
+            let COMPANY_ID;
             const pathname = window.location.pathname
-            if(PRODUCT_URL_PATTERN.test(pathname)){
-            COMPANY_ID =companyID.company_id
+            let customers
+            if (PRODUCT_URL_PATTERN.test(pathname)) {
+                COMPANY_ID = companyID.company_id
+                let params = { company_id: COMPANY_ID, product_id: modalProduct.id }
+                customers = await getProductDetailsCustomer(params)
             }
-            else{
-            COMPANY_ID = getCopanyId()
+            else {
+                COMPANY_ID = getCopanyId()
+                let params = { company_id: COMPANY_ID, product_id: modalProduct.id }
+                customers = await getProductDetails(params)
+
             }
-            let params = { company_id: COMPANY_ID, product_id: modalProduct.id }
-            
-            const customers = await getProductDetails(params)
-            
+
             if (customers.success) {
                 let newSrcList = [];
                 customers.data.tool_image.map(async (item, i) => {
@@ -282,16 +285,20 @@ const CustomerDetails = (props) => {
 
     const getProductImage = async () => {
         try {
-            let  COMPANY_ID;
+            let COMPANY_ID;
             const pathname = window.location.pathname
-            if(PRODUCT_URL_PATTERN.test(pathname)){
-            COMPANY_ID =companyID.company_id
+            let customers;
+            if (PRODUCT_URL_PATTERN.test(pathname)) {
+                COMPANY_ID = companyID.company_id
+                let params = { company_id: COMPANY_ID, product_id: modalProduct.id }
+                customers = await getProductDetailsCustomer(params)
             }
-            else{
-            COMPANY_ID = getCopanyId()
+            else {
+                COMPANY_ID = getCopanyId()
+                let params = { company_id: COMPANY_ID, product_id: modalProduct.id }
+                customers = await getProductDetails(params)
             }
-            let params = { company_id: COMPANY_ID, product_id: modalProduct.id }
-            const customers = await getProductDetails(params)
+
             if (customers.success) {
                 let newSrcList = [];
                 customers.data.product_images.map(async (item, i) => {
@@ -313,7 +320,7 @@ const CustomerDetails = (props) => {
         }
     }
 
-   
+
     const fetchCustomerDetailsCustomer = async () => {
 
         let params = { company_id: companyID.company_id }
@@ -344,8 +351,8 @@ const CustomerDetails = (props) => {
                         console.log("Errorrrr in fetch")
                     }
                 }
-                if(Object.keys(props).length>0){
-                props.setCustomerDetails(data)
+                if (Object.keys(props).length > 0) {
+                    props.setCustomerDetails(data)
                 }
                 setCustomerData([...data]);
             }
@@ -359,13 +366,13 @@ const CustomerDetails = (props) => {
         }
         const pathname = window.location.pathname
         setnoShow(PRODUCT_URL_PATTERN.test(pathname))
-        if(PRODUCT_URL_PATTERN.test(pathname)){
+        if (PRODUCT_URL_PATTERN.test(pathname)) {
             fetchCustomerDetailsCustomer()
         }
-        else{
+        else {
             fetchCustomerDetails()
         }
-        
+
     }, [])
 
     const handleInputNumber = (id, value) => {
@@ -383,7 +390,7 @@ const CustomerDetails = (props) => {
 
     const handleFormSubmit = async () => {
         try {
-            const  COMPANY_ID = getCopanyId()
+            const COMPANY_ID = getCopanyId()
             let params = {
                 company_id: COMPANY_ID
             }
@@ -540,17 +547,17 @@ const CustomerDetails = (props) => {
                             </Form>
                         </Modal>
                     </div> : ''}
-                  {toolImageModal &&  <Modal
+                    {toolImageModal && <Modal
                         title="Product Images"
                         centered
                         open={toolImageModal}
-                        footer={show?null:''}
+                        footer={show ? null : ''}
                         okText="Save"
                         onOk={() => {
                             settoolImageModal(false)
                             setmodalProduct(undefined)
                         }
-                    }
+                        }
                         onCancel={() => {
                             settoolImageModal(false)
                             setmodalProduct(undefined)
@@ -562,25 +569,25 @@ const CustomerDetails = (props) => {
 
                     </Modal>}
 
-                  {imageModal &&  <Modal
+                    {imageModal && <Modal
                         title="Product Images"
                         centered
                         open={imageModal}
                         okText="Save"
-                        footer={show?null:''}
+                        footer={show ? null : ''}
                         onOk={() => {
                             setImageModal(false)
                             setmodalProduct(undefined)
                         }
-                        
+
                         }
-                        onCancel={() =>  {
+                        onCancel={() => {
                             setImageModal(false)
                             setmodalProduct(undefined)
                         }}
                         width={750}
                     >
-                        <ImageUpload   uploadImages={uploadProductImage} getImages={getProductImage}/>
+                        <ImageUpload uploadImages={uploadProductImage} getImages={getProductImage} />
 
                     </Modal>}
 

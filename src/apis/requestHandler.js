@@ -37,7 +37,7 @@ const makeGetRequest = async (url, params, method) => {
                 err.msg = error.msg;
                 err.status = error.status;
             });
-            window.location.href = baseURL + OPEN_ROUTES.PARENT_ROUTE
+            // window.location.href = baseURL + OPEN_ROUTES.PARENT_ROUTE
             sessionStorage.clear()
         }
         else if(error.response.status == 404) {

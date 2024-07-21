@@ -20,12 +20,7 @@ const CustomerSideBar = () => {
 
     const marks = {
         0: '0',
-        100: {
-            style: {
-                color: '#f50',
-            },
-            label: <strong>100</strong>,
-        },
+        100: '100'
     };
 
     const {
@@ -35,8 +30,6 @@ const CustomerSideBar = () => {
     return (
         <Sider width={300} style={{ background: colorBgContainer, overflow: 'auto', scrollbarWidth: 'none', padding: '13px' }}>
             <Flex vertical>
-                <Typography style={{ fontSize: '30px', fontWeight: '600' }}>Filters</Typography>
-                <Divider />
                 <div>
                     <Typography style={{ fontSize: '20px', fontWeight: '400' }}>Experience</Typography>
                     <Slider marks={marks} defaultValue={37} />
@@ -82,7 +75,6 @@ const CustomerSideBar = () => {
                         size='large'
                         variant="filled"
                         placeholder='Enter Plant Area'
-                        // value={InfraStructureDetails["plant_area"]}
                         onChange={handleChange()}
                         style={{ width: '93%' }}
                     />

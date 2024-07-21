@@ -51,8 +51,6 @@ const CustomerContent = () => {
   useEffect(() => {
     fetchDetails()
   },[])
-
-  console.log(data)
   
       return (
     <Content

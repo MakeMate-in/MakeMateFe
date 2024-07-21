@@ -25,7 +25,7 @@ const DigitalFactory = (props) => {
   const [current, setCurrent] = useState(0);
   const [currentSub, setCurrentSub] = useState(0);
   const [currentInfraSub, setCurrentInfraSub] = useState(0);
-  const [CompanyDetails, setcompanyDetails] = useState({})
+  const [CompanyDetails, setcompanyDetails] = useState(undefined)
   const [MachineDetails, setMachineDetails] = useState({})
   const [InfrastructureDetails, setInfrastructureDetails] = useState({})
   const [customerDetails, setCustomerDetails] = useState({})
@@ -68,38 +68,54 @@ const DigitalFactory = (props) => {
   }
   }
 
+
+  const setAllData = async (respAll) => {
+
+
+    if (respAll.data.images) {
+      setPlantImagesCount(respAll.data.images.length);
+    }
+    if (respAll.data.certificates && respAll.data.certificates.certificates) {
+      setCertificateCount(respAll.data.certificates.certificates.length);
+    }
+
+    setCustomerDetails(respAll.data.productDetails);
+    
+    setMachineDetails(respAll.data.machineDetails);
+    
+    setInfrastructureDetails(respAll.data.infrastructureDetails);
+    
+    setAllDetails(respAll.data);
+
+  }
+
+  const getCompanyData = async () => {
+    const USER_ID = getUserId();
+    const  COMPANY_ID = getCopanyId()
+  
+    let param = { user: USER_ID };
+    let param_1 = { companyId: COMPANY_ID };
+  
+    try {
+      // Run both API calls in parallel
+      const [resp, respAll] = await Promise.all([
+        getCompanyDetails(param),
+        getAllDetails(param_1)
+      ]);
+  
+  
+      setcompanyDetails(resp.data);
+
+      setAllData(respAll)
+  
+    } catch (err) {
+      openFailedNotification('topRight', NOTIFICATION_MESSAGES.ERROR_FETCH_DETAILS);
+    }
+  };
+
   useEffect(() => {
-    const getCompany = async () => {
-      const USER_ID = getUserId()
-      let param = {
-        user: USER_ID
-      }
-      const  COMPANY_ID = getCopanyId()
-      let param_1 = {
-        companyId: COMPANY_ID
-      }
-
-      try{
-      const resp = await getCompanyDetails(param);
-      const respAll = await getAllDetails(param_1);
-
-      if(respAll.data.plantImages){
-      setPlantImagesCount(respAll.data.plantImages.company_Images.length)
-      }
-      if(respAll.data.certificates){
-        setCertificateCount(respAll.data.certificates.certificates.length)
-      }
-      setCustomerDetails(respAll.data.productDetails)
-      setMachineDetails(respAll.data.machineDetails)
-      setInfrastructureDetails(respAll.data.infrastructureDetails)
-      setcompanyDetails(resp.data)
-      setAllDetails(respAll.data);
-    }
-    catch(err){
-        openFailedNotification('topRight', NOTIFICATION_MESSAGES.ERROR_FETCH_DETAILS)
-    }
-    }
-    getCompany()
+    getCompanyData()
+    console.log(CompanyDetails)
   }, [])
 
 
@@ -115,7 +131,7 @@ const DigitalFactory = (props) => {
 
     if (CompanyDetails?.company_logo !== undefined && CompanyDetails?.company_logo.data.length>0) per = per + PER_COUNT
     
-    if (CompanyDetails.description !== undefined && CompanyDetails.description !== '') per = per + 10
+    if (CompanyDetails?.description !== undefined && CompanyDetails.description !== '') per = per + 10
 
     if (AllDetails?.companyDetails?.address !== undefined && AllDetails?.companyDetails.address?.length > 0) per = per + 5
 
@@ -251,6 +267,8 @@ const DigitalFactory = (props) => {
       />
     );
   };
+
+
   return (
     <ConfigProvider
       theme={{
@@ -301,7 +319,7 @@ const DigitalFactory = (props) => {
               <div>
               {<Typography style={{ margin: '0px', fontSize:'18px', fontWeight:'620' }}>{STEPS_HEADINGS[current]}</Typography>}
                 <hr />
-                {current === 0 ? <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails} setCertificateCount={setCertificateCount} certificateCount={certificateCount}/> : ''}
+                {CompanyDetails && current === 0 && <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails} setCertificateCount={setCertificateCount} certificateCount={certificateCount}/>}
                 {current === 1 ? <InfraDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} MachineDetails={MachineDetails} setMachineDetails={setMachineDetails} InfrastructureDetails={InfrastructureDetails} setInfrastructureDetails={setInfrastructureDetails} setPlantImagesCount={setPlantImagesCount} /> : ''}
                 {current === 2 ? <CustomerDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} customerDetails={customerDetails} setCustomerDetails={setCustomerDetails} /> : ''}
                 {current === 3 ? <Completed percent={props.progress} onSaveAndSubmit={onSaveAndSubmit}/> :''} 

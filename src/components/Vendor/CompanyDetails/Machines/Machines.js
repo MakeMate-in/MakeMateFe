@@ -4,8 +4,9 @@ import { MACHINE_TYPE, convertBufferToBinary, getCopanyId } from '../../../../ut
 import { addMachineDetails, getMachineDetails, deleteMachineDetails, uploadMachineImages } from '../../../../apis/Vendor/MachineDetails';
 import { DeleteTwoTone } from '@ant-design/icons';
 import { notification } from 'antd';
-import { OPEN_ROUTES } from '../../../../utils/constants';
+import { OPEN_ROUTES, PRODUCT_URL_PATTERN } from '../../../../utils/constants';
 import ImageUpload from '../../../ImageUpload/ImageUpload';
+import { useParams } from 'react-router-dom';
 const Context = React.createContext({
     name: 'Default',
 });
@@ -39,6 +40,10 @@ const Machines = (props) => {
     const [modalMachine, setmodalMachine] = useState(undefined)
     const [TypeCount, setTypeCount] = useState(undefined)
     const [machineName, setMachineName] = useState(undefined)
+    const [show, setnoShow] = useState(false);
+    
+
+    const companyID = useParams()
 
 
     const openNotification = (placement) => {
@@ -97,6 +102,7 @@ const Machines = (props) => {
         }),
         [],
     );
+
 
     const fetchMachineDetails = async () => {
         try{
@@ -235,7 +241,14 @@ const Machines = (props) => {
 
     const getMachineImage = async () => {
         try {
-            const  COMPANY_ID = getCopanyId()
+            let  COMPANY_ID;
+            const pathname = window.location.pathname
+            if(PRODUCT_URL_PATTERN.test(pathname)){
+            COMPANY_ID =companyID.company_id
+            }
+            else{
+            COMPANY_ID = getCopanyId()
+            }
             let params = { company_id: COMPANY_ID, machine_id: modalMachine.id }
             const machines = await getMachineDetails(params)
             if (machines.success) {
@@ -261,14 +274,61 @@ const Machines = (props) => {
         }
     }
 
-    // useEffect(() => {
-        
-    //     console.log("modalChange")
-    //     // getMachineImage()
-    // },[modalMachine])
+
+    const fetchMachineDetailsCustomer = async () => {
+        try{
+    
+        let params = { company_id: companyID.company_id }
+        const machines = await getMachineDetails(params)
+        if (machines.success) {
+            if (machines) {
+                let data = []
+                if (machines.count > 0) {
+                    setTypeCount(machines.machine_types_count)
+                    data = machines.documents.map((machine, i) => {
+                        let machineObj = {
+                            key: i + 1,
+                            id: machine._id,
+                            type: machine.machine_type,
+                            make: machine.make,
+                            name: machine.machine_name,
+                            bedSize: machine.bed_Size ? <div>
+                                {machine.bed_Size.length ? <p style={{ margin: '0' }}><b>Length</b> - {machine.bed_Size.length}</p> : ''}
+                                {machine.bed_Size.breadth ? <p style={{ margin: '0' }}><b>Width</b> - {machine.bed_Size.breadth}</p> : ''}
+                                {machine.bed_Size.height ? <p style={{ margin: '0' }}><b>Height</b> - {machine.bed_Size.height}</p> : ''}
+                                {machine.bed_Size.diameter ? <p style={{ margin: '0' }}><b>Diameter</b> - {machine.bed_Size.diameter}</p> : ''}
+                            </div> : '',
+                            rpm: machine.spindle_rpm,
+                            axis: machine.no_of_Axis,
+                            year: machine.manufacturing_year
+                        }
+                        return machineObj
+                    })
+                }
+                if(Object.keys(props).length>0) {
+                    props.setMachineDetails(data)
+                }
+                setMachineData([...data]);
+            }
+        }
+    }
+    catch(err){
+        //Toast
+        openFailedNotification('topRight', 'Unable to Fetch Mahine Details')
+    }
+    }
 
     useEffect(() => {
-        fetchMachineDetails()
+        
+        const pathname = window.location.pathname
+        setnoShow(PRODUCT_URL_PATTERN.test(pathname))
+        if(PRODUCT_URL_PATTERN.test(pathname)){
+            fetchMachineDetailsCustomer()
+        }
+        else{
+            fetchMachineDetails()
+        }
+      
     }, [])
 
     useEffect(() => {
@@ -604,6 +664,7 @@ const Machines = (props) => {
                         centered
                         open={imageModal}
                         okText="Save"
+                        footer={show?null:''}
                         onOk={() => setImageModal(false)}
                         onCancel={() => setImageModal(false)}
                         width={750}

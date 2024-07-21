@@ -15,6 +15,9 @@ export enum AUTHEN_URLS{
     REFRESH_TOKEN = '/api/auth/refresh',
     LOGOUT = '/api/users/logout',
     GET_ALL_USER_DETAILS = '/api/common/all-user-details',
+    GET_COMPANY_DETAILS = '/api/common/get/company-details/all',
+    GET_MACHINES_CUSTOMER = '/api/common/get/machine-details/all',
+    GET_PRODUCT_CUSTOMER = '/api/common/get/product-details/all',
 }
 
 export enum COMPANY_DETAILS_URLS{

@@ -10,7 +10,7 @@ import { errorRouting } from '../../../utils/commons/validators';
 
 const { Header, Content, Sider } = Layout;
 
-const CustomerHeader = (props) => {
+const CustomerHeader = () => {
 
     const navigate = useNavigate()
     const [loggedIn, setloggedIn] = useState(false)

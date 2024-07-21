@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Upload, Space, Popover } from 'antd';
-import { OPEN_ROUTES } from '../../../../utils/constants';
+import { OPEN_ROUTES, PRODUCT_URL_PATTERN } from '../../../../utils/constants';
 import { addProductDetails, getProductDetails, deleteProductDetails, uploadToolImages, uploadProductImages } from '../../../../apis/Vendor/ProductDetails';
 import { DeleteTwoTone } from '@ant-design/icons';
 import { notification } from 'antd';
 import ImageUpload from '../../../ImageUpload/ImageUpload';
 import { convertBufferToBinary } from '../../../../utils/helper';
 import { getCopanyId } from '../../../../utils/helper';
+import { useParams } from 'react-router-dom';
+import { getProductDetailsCustomer } from '../../../../apis/commonFunctions';
 
 const Context = React.createContext({
     name: 'Default',
@@ -15,7 +17,6 @@ const Context = React.createContext({
 const CustomerDetails = (props) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [form] = Form.useForm();
-    // const [CustomerDetails, setCustomerDetails] = useState()
     const [tab, setTab] = useState(0);
     const [Customer, setCustomer] = useState({
         "customer_name": "",
@@ -35,6 +36,9 @@ const CustomerDetails = (props) => {
     let [CustomerData, setCustomerData] = useState([]);
 
     const [api, contextHolder] = notification.useNotification();
+    const [show, setnoShow] = useState(false)
+
+    let companyID = useParams()
 
     const openNotification = (placement) => {
         api.success({
@@ -224,9 +228,19 @@ const CustomerDetails = (props) => {
 
     const getToolImage = async () => {
         try {
-            const  COMPANY_ID = getCopanyId()
+            
+            let  COMPANY_ID;
+            const pathname = window.location.pathname
+            if(PRODUCT_URL_PATTERN.test(pathname)){
+            COMPANY_ID =companyID.company_id
+            }
+            else{
+            COMPANY_ID = getCopanyId()
+            }
             let params = { company_id: COMPANY_ID, product_id: modalProduct.id }
+            
             const customers = await getProductDetails(params)
+            
             if (customers.success) {
                 let newSrcList = [];
                 customers.data.tool_image.map(async (item, i) => {
@@ -268,7 +282,14 @@ const CustomerDetails = (props) => {
 
     const getProductImage = async () => {
         try {
-            const  COMPANY_ID = getCopanyId()
+            let  COMPANY_ID;
+            const pathname = window.location.pathname
+            if(PRODUCT_URL_PATTERN.test(pathname)){
+            COMPANY_ID =companyID.company_id
+            }
+            else{
+            COMPANY_ID = getCopanyId()
+            }
             let params = { company_id: COMPANY_ID, product_id: modalProduct.id }
             const customers = await getProductDetails(params)
             if (customers.success) {
@@ -292,18 +313,59 @@ const CustomerDetails = (props) => {
         }
     }
 
+   
+    const fetchCustomerDetailsCustomer = async () => {
 
+        let params = { company_id: companyID.company_id }
+        const customers = await getProductDetailsCustomer(params)
+        if (customers.success) {
+            if (customers) {
+                let data = [];
+                if (customers.count > 0) {
+                    if (customers.data) {
+                        data = customers.data.map((customer, i) => {
+                            let customerObj = {
+                                key: i + 1,
+                                id: customer._id,
+                                customer_name: customer.customer_name,
+                                product_name: customer.product_name,
+                                part_material: customer.part_material,
+                                tool_material: customer.tool_material,
+                                no_of_cavity: customer.no_of_cavity,
+                                runner: customer.runner,
+                                tool_tonnage: customer.tool_tonnage,
+                                tool_image: customer.tool_image,
+                                manufacturing_year: customer.manufacturing_year
+                            }
+                            return customerObj
+                        })
+                    }
+                    else {
+                        console.log("Errorrrr in fetch")
+                    }
+                }
+                if(Object.keys(props).length>0){
+                props.setCustomerDetails(data)
+                }
+                setCustomerData([...data]);
+            }
+
+        }
+    };
 
     useEffect(() => {
         if (window.location.pathname == OPEN_ROUTES.DIGITAL_FACTORY) {
             setTab(1);
         }
-
-        fetchCustomerDetails()
-    }, [])
-
-    useEffect(() => {
-        fetchCustomerDetails()
+        const pathname = window.location.pathname
+        setnoShow(PRODUCT_URL_PATTERN.test(pathname))
+        if(PRODUCT_URL_PATTERN.test(pathname)){
+            fetchCustomerDetailsCustomer()
+        }
+        else{
+            fetchCustomerDetails()
+        }
+        
     }, [])
 
     const handleInputNumber = (id, value) => {
@@ -482,7 +544,7 @@ const CustomerDetails = (props) => {
                         title="Product Images"
                         centered
                         open={toolImageModal}
-
+                        footer={show?null:''}
                         okText="Save"
                         onOk={() => {
                             settoolImageModal(false)
@@ -505,6 +567,7 @@ const CustomerDetails = (props) => {
                         centered
                         open={imageModal}
                         okText="Save"
+                        footer={show?null:''}
                         onOk={() => {
                             setImageModal(false)
                             setmodalProduct(undefined)

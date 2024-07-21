@@ -31,8 +31,12 @@ export enum OPEN_ROUTES {
     CUSTOMER_SIGNUP = '/customer/signUp',
     VENDOR_DASHBOARD = '/vendor/dashboard',
     CUSTOMER_DASHBOARD = '/customer/dashboard',
-    DIGITAL_FACTORY = '/vendor/digital-factory'
+    DIGITAL_FACTORY = '/vendor/digital-factory',
+    PRODUCT_DETAILS = '/product/vendor/',
+    PRODUCT = '/product/vendor/:company_id'
 };
+
+export const PRODUCT_URL_PATTERN = /^\/product\/vendor\/.*$/;
 
 export enum MESSAGES {
     SUCCESS= "SUCCESS",

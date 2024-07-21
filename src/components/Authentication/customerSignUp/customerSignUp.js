@@ -44,7 +44,6 @@ const CustomerSignUp = () => {
   const [otpResponse, setotpResponse] = useState({})
 
   const openNotification = () => {
-    console.log(1)
     api.open({
       message: 'Notification Title',
       description:
@@ -111,7 +110,6 @@ const CustomerSignUp = () => {
     } else {
       // Form is invalid, handle errors or display error messages
       console.log(errors)
-      console.log('Form validation failed');
       openNotification(errors)
     }
 
@@ -125,7 +123,6 @@ const CustomerSignUp = () => {
     data.verification_key = otpResponse.response
     const res = await verifyOtp(data,true)
     if (res.Status === MESSAGES.SUCCESS) {
-      console.log(user)
         try{
         let user_created = await customerSignUp(user,ROLE.CUSTOMER)
         console.log(user_created)

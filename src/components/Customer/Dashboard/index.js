@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Layout, theme, AutoComplete, Input, Row, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom'
 import "./../../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
@@ -12,8 +12,6 @@ const { Option } = AutoComplete;
 const CustomerDashboard = () => {
 
   const navigate = useNavigate()
-
-
 
 
   const availableOptions = [
@@ -51,7 +49,7 @@ const CustomerDashboard = () => {
     <Layout style={{ height: '100vh' }}>
 
     {/* Header */}
-      <CustomerHeader handleSearch={handleSearch} options={options}/>
+      <CustomerHeader/>
 
       <Layout>
 

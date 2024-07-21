@@ -4,7 +4,7 @@ import { notification } from 'antd';
 
 import { PlusOutlined } from '@ant-design/icons';
 import { NOTIFICATION_MESSAGES } from '../../utils/locale';
-import { OPEN_ROUTES } from '../../utils/constants';
+import { OPEN_ROUTES, PRODUCT_URL_PATTERN } from '../../utils/constants';
 
 
 const getBase64 = (file) =>
@@ -70,7 +70,7 @@ const ImageUpload = (props) => {
 
     useEffect(() => {
         const path= window.location.pathname
-        if(path == OPEN_ROUTES.VENDOR_DASHBOARD)
+        if(path == OPEN_ROUTES.VENDOR_DASHBOARD || PRODUCT_URL_PATTERN.test(path))
             setShow(true)
         fetchImages()
 

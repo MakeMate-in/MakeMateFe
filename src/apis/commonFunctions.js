@@ -26,3 +26,38 @@ export const sendOTP = async (data,isEmail) => {
         throw err
     }
 }
+
+export const getAllDetailsCustomer = async (data) => {
+  try {
+      const url = AUTHEN_URLS.GET_COMPANY_DETAILS;
+      const response = await requestHandler.get(baseAPIUrl + url, data);
+      return response
+  }
+  catch (err) {
+      console.log(err)
+      throw err
+  }
+}
+
+
+export const getMachineDetailsCustomer = async (data) => {
+  try {
+      const url =AUTHEN_URLS.GET_MACHINES_CUSTOMER;
+      const response = await requestHandler.get(baseAPIUrl+url, data);
+      return response
+  }
+  catch (err) {
+      throw err
+  }
+}
+
+export const getProductDetailsCustomer = async (data) => {
+  try {
+      const url = AUTHEN_URLS.GET_PRODUCT_CUSTOMER;
+      const response = await requestHandler.get(baseAPIUrl+url, data);
+      return response
+  }
+  catch (err) {
+      throw err
+  }
+}

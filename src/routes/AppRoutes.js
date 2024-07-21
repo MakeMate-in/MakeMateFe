@@ -12,18 +12,12 @@ const AppRoutes=()=>{
 return(
     <Router>
     <Routes>
-        {/* <Route path={OPEN_ROUTES.PARENT_ROUTE} element={<HomePage/>}/>    */}
         <Route path={OPEN_ROUTES.PARENT_ROUTE} element={<CustomerDashboard/>}/>   
         <Route path={OPEN_ROUTES.SIGNUP} element={<SignUp/>}/>
         <Route path={OPEN_ROUTES.LOGIN} element={<SignIn />}/>
-        {/* <Route path={OPEN_ROUTES.CUSTOMER_LOGIN} element={<CustomerSignIn />}/> */}
         <Route path={OPEN_ROUTES.FORGOTPASSWORD} element={<ForgotPassword />}/>
-        {/* <Route path={OPEN_ROUTES.CUSTOMER_SIGNUP} element={<CustomerSignUP/>}/> */}
-
-
         <Route path={OPEN_ROUTES.CUSTOMER_DASHBOARD} element={<CustomerDashboard/>}/>
-
-
+        <Route path={OPEN_ROUTES.PRODUCT} element={<DashboardPage/>}/>
         <Route element={<Dashboard/>}>
         <Route path={OPEN_ROUTES.VENDOR_DASHBOARD} element={<DashboardPage />}/>
         <Route path={OPEN_ROUTES.DIGITAL_FACTORY} element={<DigitalFactory/>} />

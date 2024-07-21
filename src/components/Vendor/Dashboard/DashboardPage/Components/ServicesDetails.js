@@ -18,7 +18,7 @@ const ServicesDetails = (props) => {
                 <Card style={{overflow:'auto', background:bg4}}>
                 <Typography style={{ margin: '0', fontSize:'18px', fontWeight:'500' }}>Inhouse</Typography>
                   <Flex gap="5px 2px" wrap>
-                  {AllDetails?.services?AllDetails.services.services.map((service, index) => 
+                  {AllDetails && AllDetails.services && AllDetails.services.length>0? AllDetails.services.services.map((service, index) => 
                   {
                      if(service.service_type=="Inhouse")
                     {
@@ -31,7 +31,7 @@ const ServicesDetails = (props) => {
                   </Flex>
                   <Typography style={{ margin: '0', marginTop: '10px', fontSize:'18px', fontWeight:'500' }}>Outsorced</Typography>
                   <Flex gap="5px 2px" wrap>
-                  {AllDetails?.services?AllDetails.services.services.map((service, index) => 
+                  {AllDetails && AllDetails.services && AllDetails.services.length>0 ? AllDetails.services.services.map((service, index) => 
                   {
                      if(service.service_type=="Outsorced")
                     {

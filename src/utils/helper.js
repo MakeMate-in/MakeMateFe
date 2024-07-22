@@ -271,3 +271,16 @@ export const deleteNotification = (placement, message) => {
       placement,
   });
 };
+
+
+export const getRandomRansomValue = (min,max) => {
+  if (min >= max) {
+    throw new Error("Minimum value must be less than maximum value");
+}
+
+let randomValue = Math.random();
+randomValue = randomValue * (max - min) + min;
+randomValue = Math.floor(randomValue * 10) / 10;
+
+return randomValue;
+}

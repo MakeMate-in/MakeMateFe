@@ -120,6 +120,9 @@ export const PER_COUNT=10
 export const PER_INFRA_COUNT=2
 export const PER_MACHINE_COUNT=1
 
+export const MIN_VALUE=3
+export const MAX_VALUE=5
+
 export const baseURL = 'http://localhost:3000'
 // export const baseURL = 'https://weconnect.makersmate.in'
 

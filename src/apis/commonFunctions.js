@@ -61,3 +61,14 @@ export const getProductDetailsCustomer = async (data) => {
       throw err
   }
 }
+
+export const getSearchedProducts = async (data) => {
+  try {
+      const url =AUTHEN_URLS.SEARCH_PRODUCTS;
+      const response = await requestHandler.get(baseAPIUrl+url, data);
+      return response
+  }
+  catch (err) {
+      throw err
+  }
+}

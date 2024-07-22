@@ -25,7 +25,7 @@ const CustomerContent = (props) => {
         scrollbarWidth: 'thin'
       }}
     >
-      <div className='ml-8 mt-8 gap-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 '>
+      <div className='ml-8 mt-8 gap-20 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 '>
         {props.data && props.data.map((card, index) => (
           <ProductCard
             key={index}

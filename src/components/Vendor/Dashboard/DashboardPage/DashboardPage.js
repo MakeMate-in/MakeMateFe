@@ -58,7 +58,7 @@ const DashboardPage = () => {
   let company_id = useParams()
 
   const getAllDashboardDetailsCustomer = async () => {
-  
+
     let param = {
       companyId: company_id.company_id,
     };
@@ -77,10 +77,10 @@ const DashboardPage = () => {
 
   useEffect(() => {
     const pathname = window.location.pathname
-    if(pathname == OPEN_ROUTES.VENDOR_DASHBOARD){
-    getAllDashboardDetails();
+    if (pathname == OPEN_ROUTES.VENDOR_DASHBOARD) {
+      getAllDashboardDetails();
     }
-    else{
+    else {
       getAllDashboardDetailsCustomer()
     }
   }, []);
@@ -139,6 +139,9 @@ const DashboardPage = () => {
               Statistic: {
                 titleFontSize: 20
               },
+              Carousel: {
+                arrowSize: 35,
+              },
             },
           }}
         >
@@ -148,7 +151,7 @@ const DashboardPage = () => {
             <Col span={16}>
 
 
-              <Carousel arrows dotPosition="left">
+              <Carousel arrows dotPosition="bottom" arrowSize="25">
 
                 {AllDetails.images.map((item, i) => {
                   let x = item
@@ -244,16 +247,16 @@ const DashboardPage = () => {
 
               <ContactDetails AllDetails={AllDetails} />
 
-              <Card 
+              <Card
               // style={{background: bg3}}
               >
                 <InfraDashboard AllDetails={AllDetails} />
 
                 <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Total Manpower: {totalManpower}</Typography>
-                <Card 
-                style={{ 
-                  backgroundImage: business_plan, 
-                  // background: bg4 
+                <Card
+                  style={{
+                    backgroundImage: business_plan,
+                    // background: bg4 
                   }} id='pie' >
                   <Doughnut style={{ height: '40vh' }} data={pieData} options={pieOptions} />
                 </Card>

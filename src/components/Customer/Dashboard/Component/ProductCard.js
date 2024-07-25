@@ -43,7 +43,7 @@ const ProductCard = (props) => {
         </Flex>
         <Flex vertical>
           <Typography style={{ fontSize: '20px', fontWeight: '400' }}>{props.data.company_data.company_name}, </Typography>
-          <Typography style={{ fontSize: '18px', fontWeight: '400' }}>{props.data.company_data.description}</Typography>
+          <Typography style={{ fontSize: '18px', fontWeight: '400', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{props.data.company_data.description}</Typography>
         </Flex>
        
       <Flex>

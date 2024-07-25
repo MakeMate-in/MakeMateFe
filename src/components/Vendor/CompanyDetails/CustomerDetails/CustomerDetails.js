@@ -425,7 +425,7 @@ const CustomerDetails = (props) => {
                 <Context.Provider value={contextValue}>
                     {contextHolder}
                     <div >
-                        <Table columns={Customer_COLUMNS} dataSource={CustomerData} scroll={{ y: tab ? 265 : 200 }} />
+                        <Table style={{ whiteSpace: 'nowrap'}} columns={Customer_COLUMNS} dataSource={CustomerData} scroll={{ y: tab ? 265 : 200 }} />
                     </div>
                     {tab ? <div style={{ marginTop: 'auto' }}>
                         <Button type="primary" onClick={() => setModalOpen(true)}>

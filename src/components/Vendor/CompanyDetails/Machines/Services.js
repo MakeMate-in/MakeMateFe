@@ -10,6 +10,7 @@ const Context = React.createContext({
   name: 'Default',
 });
 
+const EXCLUDED_SERVICES = [  'Mould Finalisation after trial (No of days)' ]
 
 const Services = (props) => {
 
@@ -132,27 +133,34 @@ const Services = (props) => {
                     <p>{item.service_name}</p>       
               </Col>
               <Col span={7}>
+    { EXCLUDED_SERVICES.includes(item.service_name)?'':
       <Radio.Group  onChange={(event) => handleManpowerChange(event, index, "service_type")}  value={item.service_type}>
       <Space direction="vertical">
         <Radio value={"Outsorced"}>Outsourced</Radio>
         <Radio value={"Inhouse"}>Inhouse</Radio>
       </Space>
     </Radio.Group>
+}
               </Col>
               <Col span={7}>
+                
                   <TextArea
-                    placeholder="Enter Supplier Details"
+                    placeholder="Supplier Details"
                     onChange={(event) => handleManpowerChange(event, index, 'supplier_details')}
                     name="supplierDetails"
                     id="supplierDetails"
                     size='large'
-                    variant="filled" allowClear
+                    // variant="filled"
+                     allowClear
                     value={item.supplier_details}
                     style={{ width: '100%' }}
                     autoSize={{
                       maxRows: 6,
                     }}
-                  />
+                    disabled= {item.service_type=="Inhouse"}
+                 />
+
+              
               </Col>
             </Row>
         ))}

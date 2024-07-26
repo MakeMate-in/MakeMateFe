@@ -73,7 +73,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Layout, AutoComplete, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { OPEN_ROUTES } from '../../../utils/constants';
+import { OPEN_ROUTES, PRODUCT_URL_PATTERN } from '../../../utils/constants';
 import { UserOutlined } from '@ant-design/icons';
 import Profile from '../../Vendor/Profile/Profile';
 import { getJwt, openNotificationWithIcon } from '../../../utils/helper';
@@ -101,7 +101,7 @@ const CustomerHeader = () => {
             const path = window.location.pathname;
             if (jwt && jwt !== '' && path === OPEN_ROUTES.CUSTOMER_DASHBOARD) {
                 setloggedIn(true);
-            } else if (path !== OPEN_ROUTES.PARENT_ROUTE) {
+            } else if (!PRODUCT_URL_PATTERN.test(path) && path !== OPEN_ROUTES.PARENT_ROUTE) {
                 errorRouting();
                 navigate(OPEN_ROUTES.PARENT_ROUTE);
             }

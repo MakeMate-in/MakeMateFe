@@ -68,6 +68,7 @@ const InfraStructureDetails = (props) => {
     "manpower": []
   })
   const [allvalues, setallValues] = useState(undefined)
+  let SELECCT_INPUTS = [];
 
   const [inputs, setInputs] = useState([{ designation: undefined, count: "" }]);
   const [isLoading, setisLoading] = useState(false);
@@ -182,6 +183,19 @@ const InfraStructureDetails = (props) => {
     catch (err) {
       console.log(err)
     }
+  }
+
+  const getOptions = async () => {
+    let selected_designations = inputs.map(item => item.designation)
+    console.log(selected_designations)
+    SELECCT_INPUTS = MANPOWER_DESIGNATION
+    SELECCT_INPUTS.map((item,index) => {
+      if(selected_designations.includes(item.value)){
+        SELECCT_INPUTS.slice(index+1)
+      }
+    })
+    console.log(SELECCT_INPUTS)
+    return SELECCT_INPUTS
   }
 
   return (

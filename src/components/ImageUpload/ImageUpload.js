@@ -150,7 +150,7 @@ const ImageUpload = (props) => {
         <div>
              <Carousel arrows autoplay fade dotPosition="left" style={{marginBottom:'10px'}}>
                
-               {fileList.map((item, i) => (
+               {fileList && fileList.map((item, i) => (
                       <div>
                       <img src={item.url} style={{ height: "40vh", width: "35vw" }} />
                   </div>

@@ -548,7 +548,7 @@ const CustomerDetails = (props) => {
                         </Modal>
                     </div> : ''}
                     {toolImageModal && <Modal
-                        title="Product Images"
+                        title="Tool Images"
                         centered
                         open={toolImageModal}
                         footer={show ? null : ''}

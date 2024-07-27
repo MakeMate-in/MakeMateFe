@@ -13,7 +13,6 @@ const CustomerDashboard = () => {
   const [data, setData] = useState(undefined)
 
   const handleSearch = async (value) => {
-    console.log(value)
     try{
       let params ={
         search: value
@@ -23,7 +22,6 @@ const CustomerDashboard = () => {
       {
         setData(res.results)
       }
-      console.log(res)
     }
     catch(err){
       console.log(err)

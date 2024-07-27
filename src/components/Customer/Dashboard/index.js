@@ -52,7 +52,7 @@ const CustomerDashboard = () => {
     <Layout style={{ height: '100vh' }}>
 
       {/* Header */}
-      <CustomerHeader  handleSearch={handleSearch}/>
+      <CustomerHeader  handleSearch={handleSearch} fetchDetails={fetchDetails}/>
 
       <Layout>
 

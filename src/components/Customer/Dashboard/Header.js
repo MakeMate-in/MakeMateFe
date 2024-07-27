@@ -49,9 +49,8 @@ const CustomerHeader = (props) => {
     };
 
     const handleSelect = (value) => {
-        console.log(value)
         if(value==undefined || value==''){
-            props.handleSearch(value)
+            props.fetchDetails()
         }
         setSearch(value)
     }

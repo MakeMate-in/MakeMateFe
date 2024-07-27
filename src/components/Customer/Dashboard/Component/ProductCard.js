@@ -72,8 +72,8 @@ const ProductCard = (props) => {
         } */}
         <Flex>
           {
-            props.data.machine_details.map((item) => {
-              return (<Tag style={{ background: 'purple', color: 'white' }} >{item.machine_type}</Tag>)
+            props.data.machine_details.map((item,index) => {
+              return (index<3?<Tag style={{ background: 'purple', color: 'white' }} >{item.machine_type}</Tag>:'')
             })
           }
         </Flex>

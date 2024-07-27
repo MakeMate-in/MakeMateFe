@@ -19,6 +19,7 @@ export enum AUTHEN_URLS{
     GET_MACHINES_CUSTOMER = '/api/common/get/machine-details/all',
     GET_PRODUCT_CUSTOMER = '/api/common/get/product-details/all',
     SEARCH_PRODUCTS = '/api/common/search',
+    SEARCH_FILTER = '/api/common/search-filter'
 }
 
 export enum COMPANY_DETAILS_URLS{

@@ -72,3 +72,15 @@ export const getSearchedProducts = async (data) => {
       throw err
   }
 }
+
+
+export const getSearchResults = async (data) => {
+  try {
+      const url =AUTHEN_URLS.SEARCH_FILTER;
+      const response = await requestHandler.get(baseAPIUrl+url, data);
+      return response
+  }
+  catch (err) {
+      throw err
+  }
+}

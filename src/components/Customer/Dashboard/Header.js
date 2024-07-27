@@ -1,84 +1,16 @@
-// import React,{useEffect, useState} from 'react'
-// import { Button, Layout, theme, AutoComplete, Input, Row, Flex } from 'antd';
-// import "./../../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
-// import { useNavigate } from 'react-router-dom';
-// import { OPEN_ROUTES } from '../../../utils/constants';
-// import { UserOutlined } from '@ant-design/icons';
-// import Profile from '../../Vendor/Profile/Profile';
-// import { getJwt, getJWTData, openNotificationWithIcon } from '../../../utils/helper';
-// import { errorRouting } from '../../../utils/commons/validators';
 
-// const { Header, Content, Sider } = Layout;
-
-// const CustomerHeader = () => {
-
-//     const navigate = useNavigate()
-//     const [loggedIn, setloggedIn] = useState(false)
-
-//     useEffect(() => {
-//        try{
-//         const jwt = getJwt()
-//         const path= window.location.pathname
-//         if(jwt && jwt!='' && path == OPEN_ROUTES.CUSTOMER_DASHBOARD ){
-//             setloggedIn(true)
-//         }
-//         else if(path !== OPEN_ROUTES.PARENT_ROUTE){
-//             errorRouting()
-//             navigate(OPEN_ROUTES.PARENT_ROUTE)    
-//         }
-//        }
-//        catch(err){
-//             errorRouting()
-//             navigate(OPEN_ROUTES.PARENT_ROUTE)    
-//        }
-//     },[])
-    
-//     const login = () => {
-//         navigate(OPEN_ROUTES.LOGIN)
-//     }
-
-//     const handleSelect = (value) => {
-
-//     };
-
-
-//     return (
-//         <Header
-//             style={{
-//                 display: 'flex',
-//                 alignItems: 'center',
-//                 justifyContent: 'space-between',
-//                 background:'white'
-//             }}
-//         >
-//             <div className="demo-logo" style={{ color: '#fff', fontWeight: '700', fontSize: '1.5rem' }}>🛠<span style={{color:'black'}}>MAKERS MATE</span></div>
-
-//             <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
-            
-//            {    
-//            loggedIn ? <Profile/>
-//            :<Button onClick={login} size='large' style={{ marginLeft: 'auto', background: 'transparent', color: 'white', border: 'transparent', color:'black' }}><UserOutlined />Sign Up/Login</Button>
-//            }
-//             </div>
-//         </Header>
-//     )
-// }
-
-// export default CustomerHeader
-
-
-
-
-
-import React, { useEffect, useState } from 'react';
-import { Button, Layout, AutoComplete, Input } from 'antd';
+import React, { useEffect, useState, useMemo } from 'react';
+import { Button, Layout, AutoComplete } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { OPEN_ROUTES, PRODUCT_URL_PATTERN } from '../../../utils/constants';
 import { UserOutlined } from '@ant-design/icons';
 import Profile from '../../Vendor/Profile/Profile';
-import { getJwt, openNotificationWithIcon } from '../../../utils/helper';
+import { getJwt } from '../../../utils/helper';
 import { errorRouting } from '../../../utils/commons/validators';
 import './Header.css';
+import { SearchOutlined } from '@mui/icons-material';
+import { getSearchResults } from '../../../apis/commonFunctions';
+import debounce from 'lodash.debounce';
 
 const { Header } = Layout;
 
@@ -90,7 +22,8 @@ const allOptions = [
     { value: 'Twelve' }
 ];
 
-const CustomerHeader = () => {
+const CustomerHeader = (props) => {
+    const [search, setSearch] = useState(undefined)
     const navigate = useNavigate();
     const [loggedIn, setloggedIn] = useState(false);
     const [options, setOptions] = useState([]);
@@ -99,7 +32,7 @@ const CustomerHeader = () => {
         try {
             const jwt = getJwt();
             const path = window.location.pathname;
-            if (jwt && jwt !== '' && path === OPEN_ROUTES.CUSTOMER_DASHBOARD) {
+            if (jwt && jwt !== '' && (path === OPEN_ROUTES.CUSTOMER_DASHBOARD || PRODUCT_URL_PATTERN.test(path))) {
                 setloggedIn(true);
             } else if (!PRODUCT_URL_PATTERN.test(path) && path !== OPEN_ROUTES.PARENT_ROUTE) {
                 errorRouting();
@@ -115,59 +48,105 @@ const CustomerHeader = () => {
         navigate(OPEN_ROUTES.LOGIN);
     };
 
-    const handleSearch = (value) => {
-        if (value) {
-            // Show options only if the input field is not empty
-            const filteredOptions = allOptions.filter(option =>
-                option.value.toLowerCase().includes(value.toLowerCase())
-            );
-            setOptions(filteredOptions);
-        } else {
-            // Hide options if the input field is empty
-            setOptions([]);
+    const handleSelect = (value) => {
+        console.log(value)
+        if(value==undefined || value==''){
+            props.handleSearch(value)
+        }
+        setSearch(value)
+    }
+
+    const handleSearch = async (value) => {
+        try {
+            if (value) {
+                setSearch(value)
+                let params = {
+                    search: value
+                }
+                const res = await getSearchResults(params)
+                if (res.success) {
+                    const filteredOptions = res.data.filter(option =>
+                        option.value.toLowerCase().includes(value.toLowerCase())
+                    );
+                    setOptions(filteredOptions);
+                }
+            } else {
+                setOptions([]);
+            }
+        }
+        catch (err) {
+            return err
         }
     };
 
+
+    const debounceResults = useMemo(() => {
+        return debounce(handleSearch, 300);
+    }, [])
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            props.handleSearch(search)
+        }
+    };
+
+
+
     return (
         <Header
+            className='flex items-center justif-between bg-white'
             style={{
-                display: 'flex',
-                alignItems: 'center',
                 justifyContent: 'space-between',
-                background: 'white'
+                background: 'white',
+                borderBottom: '1px solid black'
             }}
         >
+
             <div className="demo-logo" style={{ color: '#fff', fontWeight: '700', fontSize: '1.5rem' }}>
                 🛠<span style={{ color: 'black' }}>MAKERS MATE</span>
             </div>
-            
-            <div className="flex-1 flex justify-center">
-                <AutoComplete
-                    options={options}
-                    style={{
-                        width: 600,
-                    }}
-                    onSearch={handleSearch}
-                    filterOption={false}
-                >
-                    <Input.Search
-                        size="large"
-                        variant="borderless"
-                        placeholder="Search"
-                        className="shadow-lg rounded-md px-3 py-2"
+
+
+            {(window.location.pathname == OPEN_ROUTES.PARENT_ROUTE || window.location.pathname == OPEN_ROUTES.CUSTOMER_DASHBOARD) ?
+
+                <div className='flex  border border-gray-300 rounded-full items-center justify-center shadow-md shadow-gray-300 w-1/3 '>
+
+                    <AutoComplete
+                        id="myInput"
+                        placeholder='Search'
+                        allowClear
+                        size={"large"}
+                        onKeyDown={handleKeyDown}
+                        // value={search}
+                        onChange={handleSelect}
+                        options={options}
                         style={{
-                            boxShadow: '0px px 8px rgba(0, 0, 0, 0.1)',
-                            borderRadius: '5rem'
+                            width: '110%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            borderRadius: '9999px'
                         }}
+                        onSelect={handleSelect}
+                        onSearch={debounceResults}
+                        filterOption={true}
                     />
-                </AutoComplete>
-            </div>
+                    <Button
+                        id="myBtn"
+                        className='bg-primary text-white p-2 rounded-full'
+                        onClick={() => { props.handleSearch(search) }}
+                        onKeyPress={() => { props.handleSearch(search) }}
+                    >
+                        <SearchOutlined />
+
+                    </Button>
+                </div> : ''}
 
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 {loggedIn ? (
                     <Profile />
                 ) : (
                     <Button
+
                         onClick={login}
                         size="large"
                         style={{

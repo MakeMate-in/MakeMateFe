@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, theme, Typography, Flex, Slider, Divider, Select, InputNumber } from 'antd';
+import { Layout, theme, Typography, Flex, Slider, Divider, Select, InputNumber, Button } from 'antd';
 import "./../../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
 import { CERTIFIATE_TYPES, MACHINE_TYPE, SERVICES_NAMES } from '../../../utils/helper';
 
@@ -29,13 +29,13 @@ const CustomerSideBar = () => {
 
     return (
         <Sider width={300} style={{ background: colorBgContainer, overflow: 'auto', scrollbarWidth: 'none', padding: '13px' }}>
-            <Flex vertical>
+            <Flex vertical gap={35}>
                 <div>
                     <Typography style={{ fontSize: '20px', fontWeight: '400' }}>Experience</Typography>
                     <Slider marks={marks} defaultValue={37} />
                 </div>
 
-                <Divider />
+                {/* <Divider /> */}
 
                 <div>
                     <Typography style={{ fontSize: '20px', fontWeight: '400' }}>Certificate Type</Typography>
@@ -50,7 +50,7 @@ const CustomerSideBar = () => {
                     />
                 </div>
 
-                <Divider />
+                {/* <Divider /> */}
 
                 <div>
                     <Typography style={{ fontSize: '20px', fontWeight: '400' }}>Machine Type</Typography>
@@ -65,7 +65,7 @@ const CustomerSideBar = () => {
                     />
                 </div>
 
-                <Divider />
+                {/* <Divider /> */}
 
                 <div>
                     <Typography style={{ fontSize: '20px', fontWeight: '400' }}>Plant Area</Typography>
@@ -80,43 +80,53 @@ const CustomerSideBar = () => {
                     />
                 </div>
 
-                <Divider />
+                {/* <Divider /> */}
 
-                <div>
-                    <Typography style={{ fontSize: '20px', fontWeight: '400' }}>Services</Typography>
+            
+                        <div>
+                            <Typography style={{ fontSize: '20px', fontWeight: '400' }}>Outsourced Services</Typography>
+                            <Select style={{ width: '93%' }}
+                                id="name"
+                                placeholder="Select Outsourced Services"
+                                size='large' variant="filled"
+                                mode="multiple"
+                                // value={item.name}
+                                allowClear
+                                onChange={handleChange}
+                                options={SERVICES}
+                            />
+                        </div>
 
-                    <Flex vertical gap={20}>
-                    <div>
-                        <Typography style={{ fontSize: '15px', fontWeight: '400' }}>Outsourced</Typography>
-                        <Select style={{ width: '93%' }}
-                            id="name"
-                            placeholder="Select Outsourced Services"
-                            size='large' variant="filled"
-                            mode="multiple"
-                            // value={item.name}
-                            allowClear
-                            onChange={handleChange}
-                            options={SERVICES}
-                        />
-                    </div>
+                        <div>
+                            <Typography style={{ fontSize: '20px', fontWeight: '400' }}>Inhouse Services</Typography>
+                            <Select style={{ width: '93%' }}
+                                id="name"
+                                mode="multiple"
+                                placeholder="Select Inhouse Services"
+                                size='large' variant="filled"
+                                // value={item.name}
+                                allowClear
+                                onChange={handleChange}
+                                options={SERVICES}
+                            />
+                        </div>
 
-                    <div>
-                        <Typography style={{ fontSize: '15px', fontWeight: '400' }}>Inhouse</Typography>
-                        <Select style={{ width: '93%' }}
-                            id="name"
-                            mode="multiple"
-                            placeholder="Select Inhouse Services"
-                            size='large' variant="filled"
-                            // value={item.name}
-                            allowClear
-                            onChange={handleChange}
-                            options={SERVICES}
-                        />
-                    </div>
-                    </Flex>
+                        <Button type='primary'
+            className='flex items-center rounded-full'
+            style={{
+              fontSize: '18px',
+              fontWeight: '500',
+              height: '40px',
+              background: '#FFD814',
+              color:'black'
+            }}
 
-                </div>
+            // onClick={handleConnet}
+          >
+                        Apply
+                    </Button>
 
+        
             </Flex>
         </Sider>
     )

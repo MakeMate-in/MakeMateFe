@@ -91,7 +91,7 @@ const ProductCard = (props) => {
 
             onClick={handleConnet}
           >
-            Connect
+            View Profile
           </Button>
           {/* <Button type='primary'
           style={{ fontSize: '18px', fontWeight: '600', height: '40px', display: 'flex', alignItems: 'center', background: bg1 }}>Feedback</Button> */}

@@ -126,8 +126,10 @@ const DigitalFactory = (props) => {
 
   const CalculatePercentage = async () => {
     let per = 0;
+
+    // if ( (InfrastructureDetails && InfrastructureDetails.manpower !== undefined && InfrastructureDetails.manpower !== null )) per = per + 5
     
-    if (AllDetails?.companyDetails?.company_name !== undefined && AllDetails?.companyDetails?.company_name !== '') per = per + 5
+    if (AllDetails?.companyDetails?.company_name !== undefined && AllDetails?.companyDetails?.company_name !== '') per = per + 10
 
     if (CompanyDetails?.company_logo !== undefined && CompanyDetails?.company_logo.data.length>0) per = per + PER_COUNT
     
@@ -157,7 +159,7 @@ const DigitalFactory = (props) => {
 
     if ( (InfrastructureDetails && InfrastructureDetails.plant_area !== undefined && InfrastructureDetails.plant_area !== null) && InfrastructureDetails?.plant_area !== '') per = per + PER_INFRA_COUNT
 
-    if ( (InfrastructureDetails && InfrastructureDetails.manpower !== undefined && InfrastructureDetails.manpower !== null) && InfrastructureDetails?.manpower.lemgth>0) per = per + 5
+    
 
     if (MachineDetails !== undefined && MachineDetails.length>0) per = per + PER_COUNT
 

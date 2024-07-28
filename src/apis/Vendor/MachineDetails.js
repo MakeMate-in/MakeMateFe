@@ -73,8 +73,6 @@ export const addMachineDetails = async (params,data) => {
 
 }
 
-
-
 export const deleteMachineDetails = async (params,data) => {
     try {
         const url = MACHINE_DETAILS_URL.DELETE_MACHINE_DETAILS

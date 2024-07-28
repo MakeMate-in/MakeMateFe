@@ -77,16 +77,16 @@ export const deleteElement = async (params, data) => {
         data.params = params
         const url = COMPANY_DETAILS_URLS.REMOVE_COMPANY_DETAILS_ARRAY_ELEMENT
         data = await axios.delete(baseAPIUrl + url, {
-            data: data
-        }, {
             headers: {
                 'Authorization': getToken(),
             },
+            params:data
         }).then((res) => {
             return res.data;
         })
             .catch(err => {
                 if (err.response.status == 401) {
+                    console.log(err)
                     errorValidator(err)
                 }
                 else {

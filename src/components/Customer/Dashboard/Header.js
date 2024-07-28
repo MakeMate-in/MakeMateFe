@@ -2,15 +2,16 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Button, Layout, AutoComplete } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { OPEN_ROUTES, PRODUCT_URL_PATTERN } from '../../../utils/constants';
+import { OPEN_ROUTES, PRODUCT_URL_PATTERN, ROLE } from '../../../utils/constants';
 import { UserOutlined } from '@ant-design/icons';
 import Profile from '../../Vendor/Profile/Profile';
-import { getJwt } from '../../../utils/helper';
+import { getJwt, getRole } from '../../../utils/helper';
 import { errorRouting } from '../../../utils/commons/validators';
 import './Header.css';
 import { SearchOutlined } from '@mui/icons-material';
 import { getSearchResults } from '../../../apis/commonFunctions';
 import debounce from 'lodash.debounce';
+import Factory from '@mui/icons-material/Factory';
 
 const { Header } = Layout;
 
@@ -48,8 +49,10 @@ const CustomerHeader = (props) => {
         navigate(OPEN_ROUTES.LOGIN);
     };
 
+    
+
     const handleSelect = (value) => {
-        if(value==undefined || value==''){
+        if (value == undefined || value == '') {
             props.fetchDetails()
         }
         setSearch(value)
@@ -142,6 +145,21 @@ const CustomerHeader = (props) => {
                 </div> : ''}
 
             <div style={{ display: 'flex', alignItems: 'center' }}>
+                {
+                    getRole() == ROLE.VENDOR ? <Button
+                        onClick={() => {
+                            navigate(OPEN_ROUTES.DIGITAL_FACTORY)
+                        }}
+                        size="large"
+                        style={{
+                            background: 'transparent',
+                            border: 'transparent',
+                            color: 'black'
+                        }}
+                    >
+                        <Factory /> Digital Factory
+                    </Button> : ''
+                }
                 {loggedIn ? (
                     <Profile />
                 ) : (

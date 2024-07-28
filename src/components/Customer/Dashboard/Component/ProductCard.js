@@ -1,9 +1,12 @@
 import React from 'react'
-import { Carousel, Typography, Button, Rate, Badge, Tag } from 'antd';
+import { Carousel, Typography, Button, Rate, Badge, Tag, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { OPEN_ROUTES } from '../../../../utils/constants';
 import { getRandomRansomValue } from '../../../../utils/helper';
 import './ProductCard.css';
+import DomainIcon from '@mui/icons-material/Domain';
+import StoreIcon from '@mui/icons-material/Store';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 const ProductCard = (props) => {
   const navigate = useNavigate();
@@ -18,7 +21,7 @@ const ProductCard = (props) => {
       <Carousel autoplay className='rounded-lg overflow-hidden mb-2'>
         {props.data.images && props.data.images.map((image, index) => (
           <div key={index} className='aspect-square bg-gray-200'>
-            <img src={image} alt={`Slide ${index}`} className='object-cover w-full h-full' />
+            <img src={image} alt={`Slide ${index}`} className='object-cover w-full h-full' style={{cursor:'pointer'}} onClick={handleConnect} />
           </div>
         ))}
       </Carousel>
@@ -34,8 +37,14 @@ const ProductCard = (props) => {
           </div>
         </div>
         <div>
+          <Flex gap={2} align='center'>
+        <StoreIcon/> 
           <Typography.Text className='font-semibold text-lg'>{props.data.company_data.company_name}</Typography.Text>
-          <Typography.Paragraph ellipsis className='text-gray-600'>{props.data.company_data.description}</Typography.Paragraph>
+          </Flex>
+          <Flex gap={2} align='center'>
+            <DescriptionIcon/>
+          <Typography.Paragraph ellipsis className='text-gray-600 mb-0' style={{marginBottom:'0px'}}>{props.data.company_data.description}</Typography.Paragraph>
+            </Flex>
         </div>
         <div className='flex flex-wrap gap-1'>
           <Tag color='red' className='flex items-center justify-center'>

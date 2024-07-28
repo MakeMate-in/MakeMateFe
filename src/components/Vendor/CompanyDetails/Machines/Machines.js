@@ -440,7 +440,7 @@ const Machines = (props) => {
                     <div >
                         <Table columns={MACHINE_COLUMNS} dataSource={MachineData} scroll={{ y: tab ? 265 : 200 }} />
                     </div>
-                    <div style={{ marginTop: 'auto' }}>
+                    <div style={{ marginTop: '10px' }}>
                         <Button type="primary" style={{ display: tab ? 'block' : 'none' }} onClick={() => {
                             setModalOpen(true)
                             setLoading(true)

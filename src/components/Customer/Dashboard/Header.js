@@ -97,7 +97,8 @@ const CustomerHeader = (props) => {
             style={{
                 justifyContent: 'space-between',
                 background: 'white',
-                borderBottom: '1px solid black'
+                borderBottom: '1px solid black',
+                height: '80px'
             }}
         >
 

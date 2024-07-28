@@ -344,7 +344,7 @@ const InfraStructureDetails = (props) => {
                         />
                       </Form.Item>
                       {index === inputs.length - 1 && (
-                        <a onClick={() => handleAddInput()} style={{ fontSize: '16px' }}>Add Manpower</a>
+                        <a onClick={() => handleAddInput()} style={{ fontSize: '16px', fontWeight: '600' }}>+ Add Manpower</a>
                       )}
                     </Col>
                     <Col span={10}>

@@ -187,6 +187,7 @@ const openFailedNotification = (placement,msg) => {
                   />
                   <Button
                     icon={<UploadOutlined />}
+                    size='large'
                     onClick={() => document.getElementById(index).click()}
                   >
                     Upload Certificate</Button>

@@ -6,11 +6,9 @@ import ProductCard from './Component/ProductCard';
 const { Content } = Layout;
 
 const CustomerContent = (props) => {
-
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-
 
   useEffect(() => {
     props.fetchDetails()
@@ -21,11 +19,11 @@ const CustomerContent = (props) => {
       style={{
         background: colorBgContainer,
         borderRadius: borderRadiusLG,
+        padding: '16px',
         overflow: 'auto',
-        scrollbarWidth: 'thin'
       }}
     >
-      <div className='ml-8 mt-8 gap-20 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 '>
+      <div className='grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
         {props.data && props.data.map((card, index) => (
           <ProductCard
             key={index}

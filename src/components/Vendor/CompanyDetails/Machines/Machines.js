@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Space, Popover } from 'antd';
+import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Space, Popover, Flex } from 'antd';
 import { MACHINE_TYPE, convertBufferToBinary, getCopanyId } from '../../../../utils/helper';
 import { addMachineDetails, getMachineDetails, deleteMachineDetails, uploadMachineImages } from '../../../../apis/Vendor/MachineDetails';
 import { DeleteTwoTone } from '@ant-design/icons';
@@ -23,12 +23,11 @@ const Machines = (props) => {
     const [bedSize, setBedSize] = useState({
         "length": "",
         "height": "",
-        "breadth": "",
-        "diameter": ""
+        "breadth": ""
     })
     const [Machine, setMachine] = useState({
         "machine_type": undefined,
-        "spindle_rpm": "",
+        "tonnage": "",
         "no_of_Axis": "",
         "manufacturing_year": "",
         "make": "",
@@ -36,13 +35,14 @@ const Machines = (props) => {
         "machine_name": ""
     })
 
+    const [conventionalModal, setConvetionalModal] = useState(false)
+    const [conventionalMachinesData, setConvetionalMachinesData] = useState([])
+
     const [imageModal, setImageModal] = useState(false)
     let [MachineData, setMachineData] = useState([])
     const [modalMachine, setmodalMachine] = useState(undefined)
-    const [TypeCount, setTypeCount] = useState(undefined)
-    const [machineName, setMachineName] = useState(undefined)
     const [show, setnoShow] = useState(false);
-    
+
 
     const companyID = useParams()
 
@@ -106,46 +106,56 @@ const Machines = (props) => {
 
 
     const fetchMachineDetails = async () => {
-        try{
-            const  COMPANY_ID = getCopanyId()
-        let params = { company_id: COMPANY_ID }
-        const machines = await getMachineDetails(params)
-        if (machines.success) {
-            if (machines) {
-                let data = []
-                if (machines.count > 0) {
-                    setTypeCount(machines.machine_types_count)
-                    data = machines.documents.map((machine, i) => {
-                        let machineObj = {
-                            key: i + 1,
-                            id: machine._id,
-                            type: machine.machine_type,
-                            make: machine.make,
-                            name: machine.machine_name,
-                            bedSize: machine.bed_Size ? <div>
-                                {machine.bed_Size.length ? <p style={{ margin: '0' }}><b>Length</b> - {machine.bed_Size.length}</p> : ''}
-                                {machine.bed_Size.breadth ? <p style={{ margin: '0' }}><b>Width</b> - {machine.bed_Size.breadth}</p> : ''}
-                                {machine.bed_Size.height ? <p style={{ margin: '0' }}><b>Height</b> - {machine.bed_Size.height}</p> : ''}
-                                {machine.bed_Size.diameter ? <p style={{ margin: '0' }}><b>Diameter</b> - {machine.bed_Size.diameter}</p> : ''}
-                            </div> : '',
-                            rpm: machine.spindle_rpm,
-                            axis: machine.no_of_Axis,
-                            year: machine.manufacturing_year
-                        }
-                        return machineObj
-                    })
+        try {
+            const COMPANY_ID = getCopanyId()
+            let params = { company_id: COMPANY_ID }
+            const machines = await getMachineDetails(params)
+            if (machines.success) {
+                if (machines) {
+                    let data = []
+                    let totaldata = []
+                    let conventionalMachines = []
+                    if (machines.count > 0) {
+
+                        machines.documents.filter((machine, i) => {
+                            let machineObj = {
+                                key: i + 1,
+                                id: machine._id,
+                                type: machine.machine_type,
+                                name: machine.machine_name,
+                                make: machine.make,
+                                bedSize: machine.bed_Size ? <Flex>
+                                    {machine.bed_Size.length ? <p style={{ margin: '0' }}> {machine.bed_Size.length}</p> : '-'}X
+                                    {machine.bed_Size.breadth ? <p style={{ margin: '0' }}>{machine.bed_Size.breadth}</p> : '-'}X
+                                    {machine.bed_Size.height ? <p style={{ margin: '0' }}> {machine.bed_Size.height}</p> : '-'}
+                                </Flex> : '',
+                                tonnage: machine.tonnage,
+                                axis: machine.no_of_Axis,
+                                year: machine.manufacturing_year
+                            }
+                            if (machineObj.type == "Conventional") {
+                                machineObj.count = machine.tonnage
+                                conventionalMachines.push(machineObj)
+                            }
+                            else {
+                                data.push(machineObj)
+                            }
+                            totaldata.push(machineObj)
+                        })
+                    }
+                    if (Object.keys(props).length > 0) {
+                        console.log(conventionalMachines)
+                        props.setMachineDetails(totaldata)
+                    }
+                    setMachineData([...data]);
+                    setConvetionalMachinesData([...conventionalMachines])
                 }
-                if(Object.keys(props).length>0) {
-                    props.setMachineDetails(data)
-                }
-                setMachineData([...data]);
             }
         }
-    }
-    catch(err){
-        //Toast
-        openFailedNotification('topRight', 'Unable to Fetch Mahine Details')
-    }
+        catch (err) {
+            //Toast
+            openFailedNotification('topRight', 'Unable to Fetch Mahine Details')
+        }
     }
 
     const handleDeleteInput = async (record) => {
@@ -176,11 +186,11 @@ const Machines = (props) => {
             key: 'type',
             render: (text) => <a>{text}</a>,
         },
-        {
-            title: 'Machine Name',
-            dataIndex: 'name',
-            key: 'name',
-        },
+        // {
+        //     title: 'Machine Name',
+        //     dataIndex: 'name',
+        //     key: 'name',
+        // },
         {
             title: 'Make',
             dataIndex: 'make',
@@ -192,9 +202,9 @@ const Machines = (props) => {
             key: 'bedSize',
         },
         {
-            title: 'Spindle RPM (max)',
-            dataIndex: 'rpm',
-            key: 'rpm',
+            title: 'Tonnage',
+            dataIndex: 'tonnage',
+            key: 'tonnage',
         },
         {
             title: 'No. of Axis',
@@ -212,7 +222,43 @@ const Machines = (props) => {
             render: (_, record) => (
                 <Space size="large">
                     <a onClick={() => {
-                        setImageModal(true )
+                        setImageModal(true)
+                        setmodalMachine(record)
+                    }}>View</a>
+                    {tab ? <Popover content='Delete'>
+                        <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
+                    </Popover> : ''}
+                </Space>
+            ),
+        },
+    ];
+
+
+    const CONVENTIONAL_MACHINE_COLUMNS = [
+        {
+            title: 'Machine Type',
+            dataIndex: 'type',
+            key: 'type',
+            render: (text) => <a>{text}</a>,
+        },
+        {
+            title: 'Machine Name',
+            dataIndex: 'name',
+            key: 'name',
+        },
+
+        {
+            title: 'Machines Count',
+            dataIndex: 'count',
+            key: 'count',
+        },
+        {
+            title: 'Image',
+            key: 'image',
+            render: (_, record) => (
+                <Space size="large">
+                    <a onClick={() => {
+                        setImageModal(true)
                         setmodalMachine(record)
                     }}>View</a>
                     {tab ? <Popover content='Delete'>
@@ -242,20 +288,20 @@ const Machines = (props) => {
 
     const getMachineImage = async () => {
         try {
-            let  COMPANY_ID;
+            let COMPANY_ID;
             const pathname = window.location.pathname
             let machines;
-            if(PRODUCT_URL_PATTERN.test(pathname)){
-            COMPANY_ID =companyID.company_id
-            let params = { company_id: COMPANY_ID, machine_id: modalMachine.id }
-             machines = await getMachineDetailsCustomer(params)
+            if (PRODUCT_URL_PATTERN.test(pathname)) {
+                COMPANY_ID = companyID.company_id
+                let params = { company_id: COMPANY_ID, machine_id: modalMachine.id }
+                machines = await getMachineDetailsCustomer(params)
             }
-            else{
-            COMPANY_ID = getCopanyId()
-            let params = { company_id: COMPANY_ID, machine_id: modalMachine.id }
-             machines = await getMachineDetails(params)
+            else {
+                COMPANY_ID = getCopanyId()
+                let params = { company_id: COMPANY_ID, machine_id: modalMachine.id }
+                machines = await getMachineDetails(params)
             }
-           
+
             if (machines.success) {
                 let newSrcList = [];
                 machines.documents.image.map(async (item, i) => {
@@ -281,59 +327,68 @@ const Machines = (props) => {
 
 
     const fetchMachineDetailsCustomer = async () => {
-        try{
-    
-        let params = { company_id: companyID.company_id }
-        const machines = await getMachineDetailsCustomer(params)
-        if (machines.success) {
-            if (machines) {
-                let data = []
-                if (machines.count > 0) {
-                    setTypeCount(machines.machine_types_count)
-                    data = machines.documents.map((machine, i) => {
-                        let machineObj = {
-                            key: i + 1,
-                            id: machine._id,
-                            type: machine.machine_type,
-                            make: machine.make,
-                            name: machine.machine_name,
-                            bedSize: machine.bed_Size ? <div>
-                                {machine.bed_Size.length ? <p style={{ margin: '0' }}><b>Length</b> - {machine.bed_Size.length}</p> : ''}
-                                {machine.bed_Size.breadth ? <p style={{ margin: '0' }}><b>Width</b> - {machine.bed_Size.breadth}</p> : ''}
-                                {machine.bed_Size.height ? <p style={{ margin: '0' }}><b>Height</b> - {machine.bed_Size.height}</p> : ''}
-                                {machine.bed_Size.diameter ? <p style={{ margin: '0' }}><b>Diameter</b> - {machine.bed_Size.diameter}</p> : ''}
-                            </div> : '',
-                            rpm: machine.spindle_rpm,
-                            axis: machine.no_of_Axis,
-                            year: machine.manufacturing_year
-                        }
-                        return machineObj
-                    })
+        try {
+
+            let params = { company_id: companyID.company_id }
+            const machines = await getMachineDetailsCustomer(params)
+            if (machines.success) {
+                if (machines) {
+                    let data = []
+                    let totaldata = []
+                    let conventionalMachines = []
+                    if (machines.count > 0) {
+
+                        machines.documents.filter((machine, i) => {
+                            let machineObj = {
+                                key: i + 1,
+                                id: machine._id,
+                                type: machine.machine_type,
+                                make: machine.make,
+                                name: machine.machine_name,
+                                bedSize: machine.bed_Size ? <Flex>
+                                    {machine.bed_Size.length ? <p style={{ margin: '0' }}>{machine.bed_Size.length}</p> : '-'}X
+                                    {machine.bed_Size.breadth ? <p style={{ margin: '0' }}> {machine.bed_Size.breadth}</p> : '-'}X
+                                    {machine.bed_Size.height ? <p style={{ margin: '0' }}> {machine.bed_Size.height}</p> : '-'}
+                                </Flex> : '',
+                                tonnage: machine.tonnage,
+                                axis: machine.no_of_Axis,
+                                year: machine.manufacturing_year
+                            }
+                            if (machineObj.type == "Conventional") {
+                                machineObj.count = machine.tonnage
+                                conventionalMachines.push(machineObj)
+
+                            }
+                            else {
+                                data.push(machineObj)
+                            }
+                            totaldata.push(machineObj)
+                        })
+                    }
+                    if (Object.keys(props).length > 0) {
+                        props.setMachineDetails(totaldata)
+                    }
+                    setMachineData([...data]);
+                    setConvetionalMachinesData([...conventionalMachines])
                 }
-                if(Object.keys(props).length>0) {
-                    props.setMachineDetails(data)
-                }
-                setMachineData([...data]);
             }
         }
-    }
-    catch(err){
-        //Toast
-        openFailedNotification('topRight', 'Unable to Fetch Mahine Details')
-    }
+        catch (err) {
+            openFailedNotification('topRight', 'Unable to Fetch Mahine Details')
+        }
     }
 
     useEffect(() => {
-        
+
         const pathname = window.location.pathname
         setnoShow(PRODUCT_URL_PATTERN.test(pathname))
-        if(PRODUCT_URL_PATTERN.test(pathname)){
+        if (PRODUCT_URL_PATTERN.test(pathname)) {
             fetchMachineDetailsCustomer()
         }
-        else{
+        else {
             fetchMachineDetails()
         }
-      
+
     }, [])
 
     useEffect(() => {
@@ -369,40 +424,29 @@ const Machines = (props) => {
         setMachine({ ...Machine, ["machine_type"]: value })
         if (value == 'Conventional')
             setIsVisible(false);
-        
+
         else
-        setIsVisible(true);
-        
-        };
+            setIsVisible(true);
 
-    useEffect(() => {
-        if(Machine!=undefined && Machine['machine_type']!=undefined &&Machine['machine_type']!='' && TypeCount!=undefined){
-        let count = Machine['machine_type'] && TypeCount[Machine['machine_type']]?TypeCount[Machine['machine_type']]+1:1
-        let name = Machine['machine_type'] +'_'+count
-        handleMachineChange(name)
-        }
-    },[Machine['machine_type']])
+    };
 
-    const handleMachineChange = (name) => {
-        setMachineName(name)
-        setMachine({ ...Machine, ["machine_name"]: name })
-    }
 
 
     const handleFormSubmit = async () => {
         try {
-            const  COMPANY_ID = getCopanyId()
+            const COMPANY_ID = getCopanyId()
             form.resetFields()
             let params = {
                 company_id: COMPANY_ID
             }
+            console.log(Machine)
             const res = await addMachineDetails(params, Machine)
             if (res.success) {
                 openNotification('topRight');
                 fetchMachineDetails()
                 setMachine({
                     "machine_type": "",
-                    "spindle_rpm": "",
+                    "tonnage": "",
                     "no_of_Axis": "",
                     "manufacturing_year": "",
                     "make": "",
@@ -411,7 +455,7 @@ const Machines = (props) => {
                 setBedSize({})
             }
             else {
-            openFailedNotification('topRight', `Unable to Add Machine Details`);
+                openFailedNotification('topRight', `Unable to Add Machine Details`);
             }
             setModalOpen(false)
             setLoading(false)
@@ -422,7 +466,7 @@ const Machines = (props) => {
         }
     }
 
-    
+
     return (
 
         <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: tab ? '60vh' : '' }}>
@@ -437,10 +481,19 @@ const Machines = (props) => {
             >
                 <Context.Provider value={contextValue}>
                     {contextHolder}
+                    <Button
+                        type="primary"
+                        // style={{ display: tab ? 'block' : 'none' }} 
+                        onClick={() => {
+                            setConvetionalModal(true)
+                        }}>
+                        Conventional Machines
+                    </Button>
                     <div >
                         <Table columns={MACHINE_COLUMNS} dataSource={MachineData} scroll={{ y: tab ? 265 : 200 }} />
                     </div>
                     <div style={{ marginTop: '10px' }}>
+
                         <Button type="primary" style={{ display: tab ? 'block' : 'none' }} onClick={() => {
                             setModalOpen(true)
                             setLoading(true)
@@ -479,64 +532,59 @@ const Machines = (props) => {
                                                 onChange={handleChange}
                                             />
                                         </Form.Item>
+
+                                        {/* Tonnage */}
+
                                         <Form.Item
-                                            label="Spindle RPM(max)"
-                                            name="rpm"
-                                            rules={[{ required: true, message: 'No. of Axis is required' }]}>
+                                            label="Tonnage"
+                                            name="tonnage"
+                                            rules={[{ required: true, message: 'Tonnage is required' }]}>
                                             <InputNumber
                                                 min={1}
                                                 size='large'
                                                 variant="filled"
-                                                placeholder='Enter Spindle RPM'
-                                                value={Machine["spindle_rpm"]}
-                                                onChange={(e) => { handleInputNumber("spindle_rpm", e) }}
+                                                placeholder='Enter Tonnage'
+                                                value={Machine["tonnage"]}
+                                                onChange={(e) => { handleInputNumber("tonnage", e) }}
                                             />
                                         </Form.Item>
+
+
                                         <Form.Item
-                                            label="Specification (Breadth)"
-                                            name="breadth">
-                                            <InputNumber
-                                                id="breadth"
-                                                size='large'
-                                                variant="filled"
-                                                placeholder='Enter Breadth (mm)'
-                                                value={bedSize["breadth"]}
-                                                onChange={(e) => { handleBedSize("breadth", e) }}
-                                            />
-                                        </Form.Item>
-                                        <Form.Item label="Specification (Diameter)" name="diameter">
-                                            <InputNumber
-                                                // className="custom-input" 
-                                                label="Specification (Diameter)"
-                                                variant="filled"
-                                                id="diameter"
-                                                size='large'
-                                                placeholder='Enter Diameter'
-                                                value={bedSize["diameter"]}
-                                                onChange={(e) => { handleBedSize("diameter", e) }}
-                                            />
+                                            label="Bed Size (L X W X H)"
+                                            name="bed_size">
+                                            <Flex gap={50} justify='center'>
+                                                <InputNumber
+                                                    id="length"
+                                                    size='large'
+                                                    variant="filled"
+                                                    placeholder='Enter Length (mm)'
+                                                    style={{ width: '50%' }}
+                                                    value={bedSize["length"]}
+                                                    onChange={(e) => { handleBedSize("length", e) }}
+                                                />
+                                                X
+                                                <InputNumber
+                                                    id="breadth"
+                                                    size='large'
+                                                    variant="filled"
+                                                    placeholder='Enter Breadth (mm)'
+                                                    value={bedSize["breadth"]}
+                                                    onChange={(e) => { handleBedSize("breadth", e) }}
+                                                />
+                                                X
+                                                <InputNumber
+                                                    id="height"
+                                                    size='large'
+                                                    variant="filled"
+                                                    placeholder='Enter Height (mm)'
+                                                    value={bedSize["height"]}
+                                                    onChange={(e) => { handleBedSize("height", e) }}
+                                                />
+                                            </Flex>
                                         </Form.Item>
                                     </Col>
                                     <Col span={12}>
-
-                               {/* <Form.Item 
-                                    label="Machine Name" 
-                                    name="machineName" 
-                                    dependencies={['machine_type']}
-                                    rules={[{ required: true, message: 'Machine Name is required' }]}>
-                                    
-                                    <Input 
-                                    className="custom-input" 
-                                    variant="filled" 
-                                    id="machine_name" 
-                                    placeholder='Enter Machine Name'
-                                    value={machineName}
-                                    onChange={handleChange}
-                        
-                                    />
-                                    
-                                     </Form.Item> */}
-
                                         <Form.Item
                                             label="No. of Axis"
                                             name="axis"
@@ -565,97 +613,44 @@ const Machines = (props) => {
                                                 style={{ width: '93%' }}
                                             />
                                         </Form.Item>
-                                        <Form.Item
-                                            label="Specification (Length)"
-                                            name="length">
-                                            <InputNumber
-                                                id="length"
-                                                size='large'
-                                                variant="filled"
-                                                placeholder='Enter Length (mm)'
-                                                value={bedSize["length"]}
-                                                onChange={(e) => { handleBedSize("length", e) }}
-                                            />
-                                        </Form.Item>
-                                        <Form.Item
-                                            label="Specification (Height)"
-                                            name="height">
-                                            <InputNumber
-                                                id="height"
-                                                size='large'
-                                                variant="filled"
-                                                placeholder='Enter Height (mm)'
-                                                value={bedSize["height"]}
-                                                onChange={(e) => { handleBedSize("height", e) }}
-                                            />
-                                        </Form.Item>
                                     </Col>
                                 </Row>
                             </Form> :
                                 <Form layout="vertical" onFinish={handleFormSubmit} form={form} >
-                                    <Row gutter={16}>
-                                        <Col span={12}>
+                                    <Row gutter={32}>
+                                        <Col span={8}>
+
+
                                             <Form.Item name="type" label="Machine Type" rules={[{ required: true, },]}>
                                                 <Select size='large' variant="filled" onChange={handleChangeType}
                                                     style={{ width: '93%' }} placeholder='Select Machine Type' options={MACHINE_TYPE} />
                                             </Form.Item>
 
-                                            <Form.Item
-                                                label="Specification (Length)"
-                                                name="length">
-                                                <InputNumber
-                                                    id="length"
-                                                    size='large'
+                                        </Col>
+                                        <Col span={8}>
+                                            <Form.Item label="Machine Name" name="machineName" rules={[{ required: true, message: 'Machine Name is required' }]}>
+                                                <Input
+                                                    className="custom-input"
                                                     variant="filled"
-                                                    placeholder='Enter Length (mm)'
-                                                    value={bedSize["length"]}
-                                                    onChange={(e) => { handleBedSize("length", e) }}
+                                                    id="machine_name"
+                                                    placeholder='Enter Machine Name'
+                                                    value={Machine["machine_name"]}
+                                                    onChange={handleChange}
                                                 />
                                             </Form.Item>
-                                            <Form.Item
-                                                label="Specification (Height)"
-                                                name="height">
+
+
+                                        </Col>
+
+                                        <Col span={8}>
+                                            <Form.Item label="Count" name="machine_count" rules={[{ required: true, message: 'Machine Count is required' }]}>
                                                 <InputNumber
                                                     id="height"
                                                     size='large'
                                                     variant="filled"
-                                                    placeholder='Enter Height (mm)'
-                                                    value={bedSize["height"]}
-                                                    onChange={(e) => { handleBedSize("height", e) }}
-                                                />
-                                            </Form.Item>
-                                        </Col>
-                                        <Col span={12}>
-                                            <Form.Item label="Machine Name" name="machineName" rules={[{ required: true, message: 'Machine Name is required' }]}>
-                                             <Input 
-                                             className="custom-input" 
-                                             variant="filled" 
-                                             id="machine_name" 
-                                             placeholder='Enter Machine Name'
-                                             value={Machine["machine_name"]}
-                                             onChange={handleChange}
-                                             />
-                                            </Form.Item>
-                                            <Form.Item
-                                                label="Specification (Breadth)"
-                                                name="breadth">
-                                                <InputNumber
-                                                    id="breadth"
-                                                    size='large'
-                                                    variant="filled"
-                                                    placeholder='Enter Breadth (mm)'
-                                                    value={bedSize["breadth"]}
-                                                    onChange={(e) => { handleBedSize("breadth", e) }}
-                                                />
-                                            </Form.Item>
-                                            <Form.Item label="Specification (Diameter)" name="diameter">
-                                                <InputNumber
-                                                    label="Specification (Diameter)"
-                                                    variant="filled"
-                                                    id="diameter"
-                                                    placeholder='Enter Diameter'
-                                                    value={bedSize["diameter"]}
-                                                    onChange={(e) => { handleBedSize("diameter", e) }}
+                                                    placeholder='Enter Machines Count'
+                                                    value={Machine["tonnage"]}
+                                                    onChange={(e) => { handleInputNumber("tonnage", e) }}
                                                 />
                                             </Form.Item>
                                         </Col>
@@ -664,17 +659,31 @@ const Machines = (props) => {
                         </Modal>
                     </div>
 
-                {imageModal &&  <Modal
+                    {imageModal && <Modal
                         title="Add Machine"
                         centered
                         open={imageModal}
                         okText="Save"
-                        footer={show?null:''}
+                        footer={show ? null : ''}
                         onOk={() => setImageModal(false)}
                         onCancel={() => setImageModal(false)}
                         width={750}
                     >
                         <ImageUpload uploadImages={uploadMachineImage} getImages={getMachineImage} tab={tab} />
+
+                    </Modal>}
+
+                    {conventionalModal && <Modal
+                        title="Conventional Machines"
+                        centered
+                        open={conventionalModal}
+                        // okText="Save"
+                        footer={show ? null : ''}
+                        onOk={() => setConvetionalModal(false)}
+                        onCancel={() => setConvetionalModal(false)}
+                        width={750}
+                    >
+                        <Table columns={CONVENTIONAL_MACHINE_COLUMNS} dataSource={conventionalMachinesData} scroll={{ y: tab ? 265 : 200 }} />
 
                     </Modal>}
 

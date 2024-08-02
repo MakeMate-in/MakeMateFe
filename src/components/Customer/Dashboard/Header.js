@@ -15,14 +15,6 @@ import Factory from '@mui/icons-material/Factory';
 
 const { Header } = Layout;
 
-const allOptions = [
-    { value: 'One' },
-    { value: 'Zero' },
-    { value: 'Five' },
-    { value: 'Two' },
-    { value: 'Twelve' }
-];
-
 const CustomerHeader = (props) => {
     const [search, setSearch] = useState(undefined)
     const navigate = useNavigate();

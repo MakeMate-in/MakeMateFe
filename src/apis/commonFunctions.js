@@ -84,3 +84,15 @@ export const getSearchResults = async (data) => {
       throw err
   }
 }
+
+
+export const getFilteredResults = async (data) => {
+  try {
+      const url =AUTHEN_URLS.FILTER_PRODUCTS;
+      const response = await requestHandler.get(baseAPIUrl+url, data);
+      return response
+  }
+  catch (err) {
+      throw err
+  }
+}

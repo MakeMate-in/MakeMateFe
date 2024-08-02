@@ -135,13 +135,13 @@ const DigitalFactory = (props) => {
     
     if (CompanyDetails?.description !== undefined && CompanyDetails.description !== '') per = per + 10
 
-    if (AllDetails?.companyDetails?.address !== undefined && AllDetails?.companyDetails.address?.length > 0) per = per + 5
+    if (AllDetails?.companyDetails?.address !== undefined && AllDetails?.companyDetails.address?.length > 0) per = per + 8
 
-    if (AllDetails?.companyDetails?.contact_person !== undefined && AllDetails?.companyDetails?.contact_person.length > 0) per = per + 5
+    if (AllDetails?.companyDetails?.contact_person !== undefined && AllDetails?.companyDetails?.contact_person.length > 0) per = per + 8
 
-    if (AllDetails?.companyDetails?.customer_details !== undefined && AllDetails?.companyDetails?.customer_details.length > 0) per = per + 3
+    // if (AllDetails?.companyDetails?.customer_details !== undefined && AllDetails?.companyDetails?.customer_details.length > 0) per = per + 3
 
-    if (AllDetails?.companyDetails?.product_details !== undefined && AllDetails?.companyDetails?.product_details.length > 0) per = per + 3
+    // if (AllDetails?.companyDetails?.product_details !== undefined && AllDetails?.companyDetails?.product_details.length > 0) per = per + 3
 
     if (certificateCount>0) per = per + PER_COUNT
 
@@ -179,10 +179,10 @@ const DigitalFactory = (props) => {
   }, [CompanyDetails,InfrastructureDetails,MachineDetails, plantImagesCount, customerDetails, AllDetails, certificateCount])
 
   const onSaveAndSubmit = () => {
-
-    if (current === 0 && currentSub < 3) {
+    const CURRENT_SUB = 2
+    if (current === 0 && currentSub < CURRENT_SUB) {
       setCurrentSub(currentSub + 1);
-    } else if (current === 0 && currentSub === 3) {
+    } else if (current === 0 && currentSub === CURRENT_SUB) {
       setCurrent(current + 1);
       setCurrentInfraSub(0);
     } else if (current === 1 && currentInfraSub < 3) {
@@ -236,9 +236,9 @@ const DigitalFactory = (props) => {
           {
             title: 'Certificates'
           },
-          {
-            title: 'Additional Information'
-          },
+          // {
+          //   title: 'Additional Information'
+          // },
         ]}
       />
     );

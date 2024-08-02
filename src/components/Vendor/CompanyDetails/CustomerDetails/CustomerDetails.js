@@ -26,7 +26,7 @@ const CustomerDetails = (props) => {
         "no_of_cavity": "",
         "runner": "",
         "tool_tonnage": "",
-        "manufacturing_year": ""
+        "part_name": ""
     })
 
     const [imageModal, setImageModal] = useState(false)
@@ -104,7 +104,7 @@ const CustomerDetails = (props) => {
                                 runner: customer.runner,
                                 tool_tonnage: customer.tool_tonnage,
                                 tool_image: customer.tool_image,
-                                manufacturing_year: customer.manufacturing_year
+                                part_name: customer.part_name
                             }
                             return customerObj
                         })
@@ -151,6 +151,11 @@ const CustomerDetails = (props) => {
             key: 'product_name',
         },
         {
+            title: 'Part Name',
+            dataIndex: 'part_name',
+            key: 'part_name',
+        },
+        {
             title: 'Part Material',
             dataIndex: 'part_material',
             key: 'part_material',
@@ -166,7 +171,7 @@ const CustomerDetails = (props) => {
             key: 'no_of_cavity',
         },
         {
-            title: 'Runner',
+            title: 'Feed System',
             dataIndex: 'runner',
             key: 'runner',
         },
@@ -174,11 +179,6 @@ const CustomerDetails = (props) => {
             title: 'Tool Tonnage',
             dataIndex: 'tool_tonnage',
             key: 'tool_tonnage',
-        },
-        {
-            title: 'Manufacture Year',
-            dataIndex: 'manufacturing_year',
-            key: 'manufacturing_year',
         },
         {
             title: 'Tool Image',
@@ -453,7 +453,21 @@ const CustomerDetails = (props) => {
                                                 onChange={handleChange}
                                             />
                                         </Form.Item>
-                                        <Form.Item label="Product Name" name="product_name" rules={[{ required: true, message: 'Product Name is required' }]}>
+
+                                        <Form.Item label="Part Name" name="part_name" rules={[{ required: true, message: 'Part Name is required' }]}>
+                                            <Input
+                                                className="custom-input"
+                                                variant="filled"
+                                                id="part_name"
+                                                placeholder='Enter Part Name'
+                                                value={Customer["part_name"]}
+                                                onChange={handleChange}
+                                            />
+                                        </Form.Item>
+                                        
+                                    </Col>
+                                    <Col span={12}>
+                                    <Form.Item label="Product Name" name="product_name" rules={[{ required: true, message: 'Product Name is required' }]}>
                                             <Input
                                                 className="custom-input"
                                                 variant="filled"
@@ -463,8 +477,6 @@ const CustomerDetails = (props) => {
                                                 onChange={handleChange}
                                             />
                                         </Form.Item>
-                                    </Col>
-                                    <Col span={12}>
                                         <Form.Item label="Part Material" name="part_material" rules={[{ required: true, message: 'Material is required' }]}>
                                             <Input
                                                 className="custom-input"
@@ -475,7 +487,10 @@ const CustomerDetails = (props) => {
                                                 onChange={handleChange}
                                             />
                                         </Form.Item>
-                                        <Form.Item label="Tool Material" name="tool_material" rules={[{ required: true, message: 'Tool Material is required' }]}>
+                                    
+                                    </Col>
+                                    <Col span={12}>
+                                    <Form.Item label="Tool Material" name="tool_material" rules={[{ required: true, message: 'Tool Material is required' }]}>
                                             <Input
                                                 className="custom-input"
                                                 variant="filled"
@@ -485,28 +500,13 @@ const CustomerDetails = (props) => {
                                                 onChange={handleChange}
                                             />
                                         </Form.Item>
-                                    </Col>
-                                    <Col span={12}>
-                                        <Form.Item
-                                            label="No of Cavity"
-                                            name="no_of_cavity"
-                                            rules={[{ required: true, message: 'No. of Cavity is required' }]}>
-                                            <InputNumber
-                                                min={1}
-                                                size='large'
-                                                variant="filled"
-                                                style={{ width: '93%' }}
-                                                placeholder='Enter No of Cavity'
-                                                value={Customer["no_of_cavity"]}
-                                                onChange={(e) => { handleInputNumber("no_of_cavity", e) }}
-                                            />
-                                        </Form.Item>
-                                        <Form.Item label="Runner" name="runner" rules={[{ required: true, message: 'Runner is required' }]}>
+
+                                        <Form.Item label="Feed System" name="runner" rules={[{ required: true, message: 'Runner is required' }]}>
                                             <Input
                                                 className="custom-input"
                                                 variant="filled"
                                                 id="runner"
-                                                placeholder='Enter Runner'
+                                                placeholder='Feed System'
                                                 value={Customer["runner"]}
                                                 onChange={handleChange}
                                             />
@@ -528,18 +528,17 @@ const CustomerDetails = (props) => {
                                             />
                                         </Form.Item>
                                         <Form.Item
-                                            label="Manufacture Year"
-                                            name="manufacturing_year"
-                                            rules={[{ required: true, message: 'Year is required' }]}>
-                                            <DatePicker
-                                                onChange={onChangeYear}
-                                                id="manufacturing_year"
-                                                picker="manufacturing_year"
-                                                placeholder='Select Manufacturing Year'
-                                                size="large"
+                                            label="No of Cavity"
+                                            name="no_of_cavity"
+                                            rules={[{ required: true, message: 'No. of Cavity is required' }]}>
+                                            <InputNumber
+                                                min={1}
+                                                size='large'
                                                 variant="filled"
-                                                value={Customer["manufacturing_year"]}
                                                 style={{ width: '93%' }}
+                                                placeholder='Enter No of Cavity'
+                                                value={Customer["no_of_cavity"]}
+                                                onChange={(e) => { handleInputNumber("no_of_cavity", e) }}
                                             />
                                         </Form.Item>
                                     </Col>

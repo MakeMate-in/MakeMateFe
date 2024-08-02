@@ -18,6 +18,7 @@
     "buffer": "^6.0.3",
     "chart": "^0.1.2",
     "chart.js": "^4.4.3",
+    "dayjs": "^1.11.12",
     "fontsource-montez": "^4.0.0",
     "jwt-decode": "^4.0.0",
     "lodash.debounce": "^4.0.8",

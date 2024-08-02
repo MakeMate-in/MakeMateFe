@@ -29,12 +29,12 @@ const MANPOWER_DESIGNATION = [
     label: 'Project Engineer',
   },
   {
-    value: 'Design Team',
-    label: 'Design Team',
+    value: 'Designer',
+    label: 'Designer',
   },
   {
-    value: 'Programming Team',
-    label: 'Programming Team',
+    value: 'Programmer',
+    label: 'Programmer',
   },
   {
     value: 'CNC Operator',
@@ -52,6 +52,14 @@ const MANPOWER_DESIGNATION = [
   {
     value: 'Quality Person',
     label: 'Quality Person',
+  },
+  {
+    value: 'Polisher',
+    label: 'Polisher',
+  },
+  {
+    value: 'Wirecut Operator',
+    label: 'Wirecut Operator',
   }
 ]
 
@@ -73,6 +81,8 @@ const InfraStructureDetails = (props) => {
   const [inputs, setInputs] = useState([{ designation: undefined, count: "" }]);
   const [isLoading, setisLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
+  const [ManpowerSelected, setManpowerSelected] = useState([])
+  let selectedManpower = []
 
   const colors1 = ['#6253E1', '#04BEFE'];
 
@@ -108,7 +118,7 @@ const InfraStructureDetails = (props) => {
 
   const fetchInfraDetails = async () => {
     try {
-      const  COMPANY_ID = getCopanyId()
+      const COMPANY_ID = getCopanyId()
       const InfraDetails = await getInfraDetails(COMPANY_ID)
       if (InfraDetails.success && InfraDetails.count === 1) {
         props.setInfrastructureDetails(InfraDetails.documents[0])
@@ -141,12 +151,24 @@ const InfraStructureDetails = (props) => {
     let onChangeValue = [...inputs];
     onChangeValue[index][id] = event;
     setInputs(onChangeValue);
+    inputs.map((item) => {
+      if (item.designation != null && item.designation != undefined) {
+        selectedManpower.push(item.designation)
+      }
+    })
+    setManpowerSelected(selectedManpower)
   };
 
   const handleDeleteInput = (index) => {
     const newArray = [...inputs];
     newArray.splice(index, 1);
     setInputs(newArray);
+    newArray.map((item) => {
+      if (item.designation != null && item.designation != undefined) {
+        selectedManpower.push(item.designation)
+      }
+    })
+    setManpowerSelected(selectedManpower)
   };
 
 
@@ -160,11 +182,11 @@ const InfraStructureDetails = (props) => {
 
   const handleFormSubmit = async () => {
     try {
-      const  COMPANY_ID = getCopanyId()
+      const COMPANY_ID = getCopanyId()
       let params = {
         company_id: COMPANY_ID
       }
-      let equal = deepEqual(allvalues, InfraStructureDetails) 
+      let equal = deepEqual(allvalues, InfraStructureDetails)
       let res;
       if (!equal) {
         res = await addInfraDetails(params, InfraStructureDetails)
@@ -189,9 +211,9 @@ const InfraStructureDetails = (props) => {
     let selected_designations = inputs.map(item => item.designation)
     console.log(selected_designations)
     SELECCT_INPUTS = MANPOWER_DESIGNATION
-    SELECCT_INPUTS.map((item,index) => {
-      if(selected_designations.includes(item.value)){
-        SELECCT_INPUTS.slice(index+1)
+    SELECCT_INPUTS.map((item, index) => {
+      if (selected_designations.includes(item.value)) {
+        SELECCT_INPUTS.slice(index + 1)
       }
     })
     console.log(SELECCT_INPUTS)
@@ -340,8 +362,18 @@ const InfraStructureDetails = (props) => {
                           size='large' variant="filled"
                           value={item.designation}
                           onChange={(event) => handleManpowerChange(event, index, "designation")}
-                          options={MANPOWER_DESIGNATION}
-                        />
+                        // options={MANPOWER_DESIGNATION}
+                        >
+                          <Select.Option value="Project Engineer" disabled={ManpowerSelected.includes("Project Engineer")}>Project Engineer</Select.Option>
+                          <Select.Option value="Designer" disabled={ManpowerSelected.includes("Designer")}>Designer</Select.Option>
+                          <Select.Option value="Programmer" disabled={ManpowerSelected.includes("Programmer")}>Programmer</Select.Option>
+                          <Select.Option value="CNC Operator" disabled={ManpowerSelected.includes("CNC Operator")}>CNC Operator</Select.Option>
+                          <Select.Option value="EDM Operator" disabled={ManpowerSelected.includes("EDM Operator")}>EDM Operator</Select.Option>
+                          <Select.Option value="Diefitter" disabled={ManpowerSelected.includes("Diefitter")}>Diefitter</Select.Option>
+                          <Select.Option value="Quality Person" disabled={ManpowerSelected.includes("Quality Person")}>Quality Person</Select.Option>
+                          <Select.Option value="Polisher" disabled={ManpowerSelected.includes("Polisher")}>Polisher</Select.Option>
+                          <Select.Option value="Wirecut Operator" disabled={ManpowerSelected.includes("Wirecut Operator")}>Wirecut Operator</Select.Option>
+                        </Select>
                       </Form.Item>
                       {index === inputs.length - 1 && (
                         <a onClick={() => handleAddInput()} style={{ fontSize: '16px', fontWeight: '600' }}>+ Add Manpower</a>
@@ -377,7 +409,7 @@ const InfraStructureDetails = (props) => {
 
             </div>
             <Form.Item style={{ bottom: '-6%', position: 'absolute', right: '-1%' }}>
-              <Button type="primary" htmlType="submit" style={{ fontSize: '18px', fontWeight: '600', height: '40px', background:`linear-gradient(135deg, ${colors1.join(', ')})` }}>
+              <Button type="primary" htmlType="submit" style={{ fontSize: '18px', fontWeight: '600', height: '40px', background: `linear-gradient(135deg, ${colors1.join(', ')})` }}>
                 Save & Continue
               </Button>
             </Form.Item>

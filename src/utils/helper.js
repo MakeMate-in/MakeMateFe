@@ -169,6 +169,10 @@ export const MACHINE_TYPE = [
     'value': "Wirecut"
   },
   {
+    'label': "Die Spotting",
+    'value': "Die Spotting"
+  },
+  {
     'label': "Conventional",
     'value': "Conventional"
   }
@@ -176,20 +180,16 @@ export const MACHINE_TYPE = [
 
 
 export const SERVICES_NAMES = [
-  'Part DFM / Review',
-  'Mold Flow / Part Simulation',
-  'PLG Format',
+  'Part DFM ',
+  'Mold Flow',
   'Tool Design',
-  'Insert Ordering',
-  'Mold Base',
-  'Standard Parts',
-  'Insert Machining Rough',
+  'Steel Procurement (Core-Cavity)',
+  'Mold Base/Standard part procurement',
   'Electrode Manufacturing',
-  'Insert Finalization',
-  'Ejector assembly',
-  'Mould assembly',
-  'Mould Trial',
-  'Mould Finalisation after trial (No of days)'
+  'Mold Manufacturing',
+  'Mold assembly',
+  'Mold Trial',
+  'Part Inspection'
 ]
 
 

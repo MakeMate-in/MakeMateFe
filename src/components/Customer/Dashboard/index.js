@@ -5,13 +5,47 @@ import "./../../../../node_modules/react-image-gallery/styles/css/image-gallery.
 import CustomerHeader from './Header';
 import CustomerSideBar from './SideBar';
 import CustomerContent from './Content';
-import { getAllUserDetails, getSearchedProducts } from '../../../apis/commonFunctions';
+import { getAllUserDetails, getFilteredResults, getSearchedProducts } from '../../../apis/commonFunctions';
 import './index.css';
 
 
 const CustomerDashboard = () => {
 
   const [data, setData] = useState(undefined)
+  const [filtersData, setfiltersData] = useState({
+    "experience": 0,
+    "certificate_type": "",
+    "machine_types": [],
+    "plant_area": 0,
+    "inhouse_services": [],
+    "outsource_services": []
+  })
+
+  const handleChange = (id,value) => {
+    console.log(id)
+    console.log(value)
+    setfiltersData({[id]:value})
+  }
+
+  const handleFilter = async () => {
+    try{
+      let params = {
+        exp: filtersData["experience"],
+        certificate_type: filtersData["certificate_type"],
+        machine_type: filtersData["machine_types"],
+        plant_area: filtersData["plant_area"]
+      }
+      const res = await getFilteredResults(params) 
+      if(res.success){
+        setData(res.data)
+      }
+      setfiltersData({}) 
+      console.log(res)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
 
   const handleSearch = async (value) => {
     try{
@@ -56,17 +90,8 @@ const CustomerDashboard = () => {
       <Layout>
 
         {/* Side Bar */}
-        <CustomerSideBar />
+        <CustomerSideBar filtersData={filtersData} handleChange={handleChange} handleFilter={handleFilter}/>
 
-        {/* {data == undefined ? (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '84vh' }}>
-            <div class="spinner-square">
-              <div class="square-1 square"></div>
-              <div class="square-2 square"></div>
-              <div class="square-3 square"></div>
-            </div>
-          </div>
-        ) : */}
           <Layout
             style={{
               padding: '0 20px 20px',
@@ -75,7 +100,6 @@ const CustomerDashboard = () => {
             <CustomerContent data={data} fetchDetails={fetchDetails} />
 
           </Layout>
-          {/* } */}
       </Layout>
     </Layout>
   )

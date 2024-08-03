@@ -15,7 +15,7 @@ let bg3 = `linear-gradient(135deg, ${colors1.join(', ')})`
 const navigate = useNavigate()
     return (
     <div>
-        {props.percent===100?
+        {props.percent>90?
         <Result
          status="success"
          title="Completed"
@@ -31,7 +31,7 @@ const navigate = useNavigate()
         <Result
         status="403"
         title="Incomplete"
-        subTitle="Digital Factory is Incompleted. Please Complete your Digital Factory Profile"
+        subTitle={<div>To access the dashboard, your profile needs to be at least 90% complete<br/>Please complete your Digital Factory profile</div>}
         extra={  
             <div style={{display:'flex', justifyContent:'center'    }}>
             <Button type='primary' form='form1' onClick={props.onSaveAndSubmit} style={{ fontSize: '18px', fontWeight: '600', height: '40px', display: 'flex', alignItems: 'center', background: bg3}}>Complete Factory</Button>

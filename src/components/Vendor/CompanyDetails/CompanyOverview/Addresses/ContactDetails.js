@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Card, Col, Row, Modal, Form, Input, Flex, Button, Rate } from 'antd';
+import { Card, Col, Row, Modal, Form, Input, Flex, Button, Rate, Empty } from 'antd';
 import { deleteElement, getCompanyDetails, updateAddressandContacts, updateElement, updatePrimaryAddressContacts } from './../../../../../apis/Vendor/CompanyDetails';
 import { MESSAGES } from './../../../../../utils/constants';
 import del from './../../../../../assets/del.png'
@@ -232,7 +232,7 @@ const ContactDetails = (props) => {
         }
     }
 
-
+    console.log(props.CompanyDetails)
 
     return (
         <div>
@@ -243,7 +243,7 @@ const ContactDetails = (props) => {
                     <hr style={{ background: 'rgba(22, 119, 255)', height: '2px' }} />
                     <div style={{ height: '18rem', overflow: 'auto', scrollbarWidth: 'thin' }}>
                         {
-                            props.CompanyDetails.contact_person != undefined ? props.CompanyDetails.contact_person.map((item, index) => {
+                            props.CompanyDetails.contact_person != undefined  && props.CompanyDetails.contact_person.length!=0? props.CompanyDetails.contact_person.map((item, index) => {
                                 let starValue = 0;
                                 if (index === 0) {
                                     starValue = 1;
@@ -274,7 +274,7 @@ const ContactDetails = (props) => {
 
                                     </div>
                                 )
-                            }) : ''
+                            }) : <div style={{marginTop:'5rem'}}><Empty /></div>
                         }
                     </div>
 

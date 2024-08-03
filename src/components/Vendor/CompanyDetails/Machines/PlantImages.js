@@ -1,7 +1,7 @@
 import ImageUpload from '../../../ImageUpload/ImageUpload';
 import { getPlantImages, uploadPlantImages } from '../../../../apis/Vendor/CompanyDetails';
 import { convertBufferToBinary, getCopanyId } from '../../../../utils/helper';
-import { Typography } from 'antd';
+import { ConfigProvider, Typography } from 'antd';
 
 
 const PlantImages = (props) => {
@@ -48,14 +48,24 @@ const PlantImages = (props) => {
   }
 
   return (
-    <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-   <Typography style={{ marginBottom: '10px', fontSize:'25px', fontWeight:'620' }}><u>Plant Images</u></Typography>
+    <ConfigProvider
+    theme={{
+      components: {
+        Carousel: {
+          arrowSize: 35,
+        },
+      },
+    }}
+  >
+    <div style={{ flexDirection:'column', alignItems:'center'}}>
+   <Typography style={{ marginBottom: '10px', fontSize:'25px', fontWeight:'620' }}>Plant Images</Typography>
     <ImageUpload 
     uploadImages={uploadImages} 
     getImages={getImages} 
     
     />
     </div>
+    </ConfigProvider>
   )
 }
 

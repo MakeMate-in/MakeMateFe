@@ -324,7 +324,7 @@ const DigitalFactory = (props) => {
                 {CompanyDetails && current === 0 && <CompanyDetailsComp onSaveAndSubmit={onSaveAndSubmit} currentSub={currentSub} onChangeTab={onChangeTab} CompanyDetails={CompanyDetails} setcompanyDetails={setcompanyDetails} setCertificateCount={setCertificateCount} certificateCount={certificateCount}/>}
                 {current === 1 ? <InfraDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} MachineDetails={MachineDetails} setMachineDetails={setMachineDetails} InfrastructureDetails={InfrastructureDetails} setInfrastructureDetails={setInfrastructureDetails} setPlantImagesCount={setPlantImagesCount} /> : ''}
                 {current === 2 ? <CustomerDetails onSaveAndSubmit={onSaveAndSubmit} currentSub={currentInfraSub} onChangeTab={onChangeInfraTab} customerDetails={customerDetails} setCustomerDetails={setCustomerDetails} /> : ''}
-                {current === 3 ? <Completed percent={props.progress} onSaveAndSubmit={onSaveAndSubmit}/> :''} 
+                {current === 3 ? <Completed percent={props.progress} onSaveAndSubmit={onSaveAndSubmit} /> :''} 
               </div>
 
             </Card>

@@ -36,6 +36,17 @@ html {
 }
 
 .ant-card {
-  box-shadow: rgba(0, 0, 0, 0.2) 1px 3px 5px
+  box-shadow: rgba(0, 0, 0, 0.2) 1px 3px 5px;
+  cursor: default;
+}
+
+Button {
+  transition: background-color 0.3s ease, box-shadow 0.2s ease;
+}
+
+Button:active {
+  background-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: scale(0.98);
 }
 

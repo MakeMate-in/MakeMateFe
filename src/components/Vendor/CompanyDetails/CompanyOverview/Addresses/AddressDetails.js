@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Card, Col, Row, ConfigProvider, Modal, Form, Input, Flex, Button, Rate } from 'antd';
+import { Card, Col, Row, ConfigProvider, Modal, Form, Input, Flex, Button, Rate, Empty } from 'antd';
 import { getCompanyDetails, updateAddressandContacts, deleteElement, updatePrimaryAddressContacts } from '../../../../../apis/Vendor/CompanyDetails';
 import del from './../../../../../assets/del.png'
 import ContactDetails from './ContactDetails';
@@ -224,7 +224,7 @@ const AddressDetails = (props) => {
                                 <hr style={{ background: 'rgba(22, 119, 255)', height: '2px' }} />
                                 <div style={{ height: '18rem', overflow: 'auto', scrollbarWidth: 'thin' }}>
                                     {
-                                        props.CompanyDetails.address != undefined ? props.CompanyDetails.address.map((item, index) => {
+                                        props.CompanyDetails.address != undefined && props.CompanyDetails.address!=0 ? props.CompanyDetails.address.map((item, index) => {
                                             let starValue=0;
                                             if(index===0) {
                                                 starValue=1;
@@ -253,7 +253,7 @@ const AddressDetails = (props) => {
 
                                                 </div>
                                             )
-                                        }) : ''
+                                        }) : <div style={{marginTop:'5rem'}}><Empty /></div>
                                     }
                                 </div>
 

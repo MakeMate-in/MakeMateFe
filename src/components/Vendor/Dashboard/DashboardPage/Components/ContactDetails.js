@@ -19,6 +19,7 @@ const ContactDetails = (props) => {
   return (
     <div style={{marginBottom:'15px'}}>
       <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical">
+    
         <Card style={{ background: bg4, cursor:'pointer' }} onClick={() => { setisFlipped(!isFlipped) }}>
           <Typography style={{ margin: '0', fontSize: '18px', fontWeight: '600' }}><u>Contact Details</u></Typography>
           <div>

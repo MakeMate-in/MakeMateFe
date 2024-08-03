@@ -151,7 +151,7 @@ const DashboardPage = () => {
             <Col span={16}>
 
 
-              <Carousel arrows dotPosition="bottom" arrowSize="25">
+              <Carousel arrows dotPosition="left">
 
                 {AllDetails.images.map((item, i) => {
                   let x = item

@@ -538,7 +538,8 @@ const Machines = (props) => {
                                         <Form.Item
                                             label="Tonnage"
                                             name="tonnage"
-                                            rules={[{ required: true, message: 'Tonnage is required' }]}>
+                                            // rules={[{ required: true, message: 'Tonnage is required' }]}
+                                            >
                                             <InputNumber
                                                 min={1}
                                                 size='large'
@@ -551,20 +552,7 @@ const Machines = (props) => {
 
                                     </Col>
                                     <Col span={12}>
-                                        <Form.Item
-                                            label="No. of Axis"
-                                            name="axis"
-                                            rules={[{ required: true, message: 'No. of Axis is required' }]}>
-                                            <InputNumber
-                                                min={1}
-                                                size='large'
-                                                variant="filled"
-                                                placeholder='Enter No. of Axis'
-                                                value={Machine["no_of_Axis"]}
-                                                onChange={(e) => { handleInputNumber("no_of_Axis", e) }}
-                                            />
-                                        </Form.Item>
-                                        <Form.Item
+                                    <Form.Item
                                             label="Manufacturing Year"
                                             name="year"
                                             rules={[{ required: true, message: 'Year is required' }]}>
@@ -579,6 +567,21 @@ const Machines = (props) => {
                                                 style={{ width: '93%' }}
                                             />
                                         </Form.Item>
+                                        <Form.Item
+                                            label="No. of Axis"
+                                            name="axis"
+                                            // rules={[{ required: true, message: 'No. of Axis is required' }]}
+                                            >
+                                            <InputNumber
+                                                min={1}
+                                                size='large'
+                                                variant="filled"
+                                                placeholder='Enter No. of Axis'
+                                                value={Machine["no_of_Axis"]}
+                                                onChange={(e) => { handleInputNumber("no_of_Axis", e) }}
+                                            />
+                                        </Form.Item>
+                                     
                                     </Col>
                                 </Row>
                                 <h3 style={{fontWeight: '500', fontFamily: 'sans-serif'}}>Bed Size</h3>

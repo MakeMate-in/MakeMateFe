@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Upload, Carousel } from 'antd';
+import { Upload, Carousel, Empty } from 'antd';
 import { notification } from 'antd';
 
 import { PlusOutlined } from '@ant-design/icons';
@@ -140,7 +140,7 @@ const ImageUpload = (props) => {
                     marginTop: 8,
                 }}
             >
-                Upload
+                Upload Images
             </div>
         </button>
     );
@@ -148,15 +148,15 @@ const ImageUpload = (props) => {
     
     return (
         <div>
-             <Carousel arrows autoplay fade dotPosition="left" style={{marginBottom:'10px'}}>
+             {fileList && fileList.length>0?<Carousel arrows autoplay fade dotPosition="left" arrowSize={35} style={{marginBottom:'10px'}}>
                
                {fileList && fileList.map((item, i) => (
                       <div>
-                      <img src={item.url} style={{ height: "40vh", width: "35vw" }} />
+                      <img src={item.url} style={{ height: "50vh", width: "80vw" }} />
                   </div>
                    
                    ))}
-             </Carousel>
+             </Carousel>: <Empty/>}
            {notShow?null : <Upload
                 listType="picture-card"
                 fileList={fileList}

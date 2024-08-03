@@ -12,6 +12,7 @@ import { SearchOutlined } from '@mui/icons-material';
 import { getSearchResults } from '../../../apis/commonFunctions';
 import debounce from 'lodash.debounce';
 import Factory from '@mui/icons-material/Factory';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const { Header } = Layout;
 
@@ -41,7 +42,7 @@ const CustomerHeader = (props) => {
         navigate(OPEN_ROUTES.LOGIN);
     };
 
-    
+
 
     const handleSelect = (value) => {
         if (value == undefined || value == '') {
@@ -84,6 +85,13 @@ const CustomerHeader = (props) => {
         }
     };
 
+    const backToHome = () => {
+        if(loggedIn){
+            navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD);
+        } else {
+            navigate(OPEN_ROUTES.PARENT_ROUTE);
+        }
+    };
 
 
     return (
@@ -96,6 +104,7 @@ const CustomerHeader = (props) => {
                 height: '80px'
             }}
         >
+            {PRODUCT_URL_PATTERN.test(window.location.pathname) ? <ArrowBackIcon onClick={backToHome} style={{cursor: 'pointer'}} /> : ''}
 
             <div className="demo-logo" style={{ color: '#fff', fontWeight: '700', fontSize: '1.5rem' }}>
                 🛠<span style={{ color: 'black' }}>MAKERS MATE</span>
@@ -104,7 +113,7 @@ const CustomerHeader = (props) => {
 
             {(window.location.pathname == OPEN_ROUTES.PARENT_ROUTE || window.location.pathname == OPEN_ROUTES.CUSTOMER_DASHBOARD) ?
 
-                <div className='home-search-bar flex  border border-gray-300 rounded-full items-center justify-center shadow-md shadow-gray-300 w-1/3 '>
+                <div className='flex  border border-gray-300 rounded-full items-center justify-center shadow-md shadow-gray-300 w-1/3 '>
 
                     <AutoComplete
                         id="myInput"
@@ -146,9 +155,13 @@ const CustomerHeader = (props) => {
                         style={{
                             background: 'transparent',
                             border: 'transparent',
-                            color: 'black'
+                            color: 'black',
+                            boxShadow: '0 4px 4px rgba(0, 0, 0, 0.2)',
+                            padding: '10px 20px',
+                            borderRadius: '5px',
+                            transition: 'all 0.2s ease-in-out',
+                            marginRight: '2vw'
                         }}
-                        className='digi'
                     >
                         <Factory /> Digital Factory
                     </Button> : ''
@@ -163,7 +176,11 @@ const CustomerHeader = (props) => {
                         style={{
                             background: 'transparent',
                             border: 'transparent',
-                            color: 'black'
+                            color: 'black',
+                            boxShadow: '0 4px 4px rgba(0, 0, 0, 0.2)',
+                            padding: '10px 20px',
+                            borderRadius: '5px',
+                            transition: 'all 0.2s ease-in-out',
                         }}
                     >
                         <UserOutlined /> Sign Up/Login

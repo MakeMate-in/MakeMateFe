@@ -549,40 +549,6 @@ const Machines = (props) => {
                                             />
                                         </Form.Item>
 
-
-                                        <Form.Item
-                                            label="Bed Size (L X W X H)"
-                                            name="bed_size">
-                                            <Flex gap={50} justify='center'>
-                                                <InputNumber
-                                                    id="length"
-                                                    size='large'
-                                                    variant="filled"
-                                                    placeholder='Enter Length (mm)'
-                                                    style={{ width: '50%' }}
-                                                    value={bedSize["length"]}
-                                                    onChange={(e) => { handleBedSize("length", e) }}
-                                                />
-                                                X
-                                                <InputNumber
-                                                    id="breadth"
-                                                    size='large'
-                                                    variant="filled"
-                                                    placeholder='Enter Breadth (mm)'
-                                                    value={bedSize["breadth"]}
-                                                    onChange={(e) => { handleBedSize("breadth", e) }}
-                                                />
-                                                X
-                                                <InputNumber
-                                                    id="height"
-                                                    size='large'
-                                                    variant="filled"
-                                                    placeholder='Enter Height (mm)'
-                                                    value={bedSize["height"]}
-                                                    onChange={(e) => { handleBedSize("height", e) }}
-                                                />
-                                            </Flex>
-                                        </Form.Item>
                                     </Col>
                                     <Col span={12}>
                                         <Form.Item
@@ -611,6 +577,50 @@ const Machines = (props) => {
                                                 variant="filled"
                                                 value={Machine["manufacturing_year"]}
                                                 style={{ width: '93%' }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                </Row>
+                                <h3 style={{fontWeight: '500', fontFamily: 'sans-serif'}}>Bed Size</h3>
+                                <Row gutter={0}>
+                                    <Col span={7} >
+                                        <Form.Item label="Length">                                            
+                                            <InputNumber
+                                                id="length"
+                                                size='large'
+                                                variant="filled"
+                                                placeholder='Enter Length (mm)'
+                                                style={{width: '90%'}}
+                                                value={bedSize["length"]}
+                                                onChange={(e) => { handleBedSize("length", e) }}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={1} >X</Col>
+                                    <Col span={7} >
+                                        <Form.Item label="Width">
+                                            <InputNumber
+                                                id="breadth"
+                                                size='large'
+                                                variant="filled"
+                                                placeholder='Enter Breadth (mm)'
+                                                value={bedSize["breadth"]}
+                                                onChange={(e) => { handleBedSize("breadth", e) }}
+                                                style={{width: '90%'}}
+                                            />
+                                        </Form.Item>
+                                    </Col>
+                                    <Col span={1} >X</Col>
+                                    <Col span={7} >
+                                        <Form.Item label="Height">
+                                            <InputNumber
+                                                id="height"
+                                                size='large'
+                                                variant="filled"
+                                                placeholder='Enter Height (mm)'
+                                                value={bedSize["height"]}
+                                                onChange={(e) => { handleBedSize("height", e) }}
+                                                style={{width: '90%'}}
                                             />
                                         </Form.Item>
                                     </Col>
@@ -650,6 +660,7 @@ const Machines = (props) => {
                                                     variant="filled"
                                                     placeholder='Enter Machines Count'
                                                     value={Machine["tonnage"]}
+                                                    style={{ width: '90%' }}
                                                     onChange={(e) => { handleInputNumber("tonnage", e) }}
                                                 />
                                             </Form.Item>

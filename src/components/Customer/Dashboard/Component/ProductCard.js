@@ -27,7 +27,7 @@ const ProductCard = (props) => {
       </Carousel>
       <div className='p-2 flex flex-col gap-2'>
         {props.data.Certificstes && props.data.Certificstes.map((item, index) => (
-          <Badge.Ribbon key={index} text={item.fileName} />
+          (index<1?<Badge.Ribbon key={index} text={item.fileName} />:'')
         ))}
         <div>
           <Typography.Title level={4}>{props.data.product_name}</Typography.Title>

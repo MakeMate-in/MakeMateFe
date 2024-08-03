@@ -104,7 +104,7 @@ const CustomerHeader = (props) => {
 
             {(window.location.pathname == OPEN_ROUTES.PARENT_ROUTE || window.location.pathname == OPEN_ROUTES.CUSTOMER_DASHBOARD) ?
 
-                <div className='flex  border border-gray-300 rounded-full items-center justify-center shadow-md shadow-gray-300 w-1/3 '>
+                <div className='home-search-bar flex  border border-gray-300 rounded-full items-center justify-center shadow-md shadow-gray-300 w-1/3 '>
 
                     <AutoComplete
                         id="myInput"
@@ -148,6 +148,7 @@ const CustomerHeader = (props) => {
                             border: 'transparent',
                             color: 'black'
                         }}
+                        className='digi'
                     >
                         <Factory /> Digital Factory
                     </Button> : ''

@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
-import { Layout, theme } from 'antd';
+import { Empty, Layout, theme } from 'antd';
 import "./../../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
 import ProductCard from './Component/ProductCard';
+import './Header.css'
 
 const { Content } = Layout;
 
@@ -24,12 +25,20 @@ const CustomerContent = (props) => {
       }}
     >
       <div className='grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
-        {props.data && props.data.map((card, index) => (
+        {props.data && props.data.length!=0? props.data.map((card, index) => (
           <ProductCard
             key={index}
             data={card}
           />
-        ))}
+        )):  (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '84vh', marginLeft:'40rem' }}>
+            <div class="spinner-squarea">
+              <div class="squarea-1 squarea"></div>
+              <div class="squarea-2 squarea"></div>
+              <div class="squarea-3 squarea"></div>
+            </div>
+          </div>
+        ) }
       </div>
     </Content>
   )

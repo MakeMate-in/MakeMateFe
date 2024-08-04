@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card, Col, Statistic, Row, Carousel, ConfigProvider, Typography } from 'antd';
+import { Card, Col, Statistic, Row, Carousel, ConfigProvider, Typography, Empty } from 'antd';
 import Machines from '../../CompanyDetails/Machines/Machines';
 import business_plan from './../../../../assets/business_plan.svg';
 import svg_experience from './../../../../assets/svg_experience.svg';
@@ -119,7 +119,7 @@ const DashboardPage = () => {
   const totalManpower = AllDetails ? AllDetails?.infrastructureDetails?.manpower.reduce((total, m) => total + m.count, 0) : 0;
 
   return (
-    <div style={{ overflow: 'auto', scrollbarWidth: 'none' }}>
+    <div style={{ overflow: 'auto', scrollbarWidth: 'none', padding:'1rem' }}>
       {/* {
         PRODUCT_URL_PATTERN.test(window.location.pathname) &&
         <CustomerHeader/>
@@ -255,10 +255,10 @@ const DashboardPage = () => {
                 <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Total Manpower: {totalManpower}</Typography>
                 <Card
                   style={{
-                    backgroundImage: business_plan,
+                    // backgroundImage: business_plan,
                     // background: bg4 
                   }} id='pie' >
-                  <Doughnut style={{ height: '40vh' }} data={pieData} options={pieOptions} />
+                  {pieData.labels && pieData.labels[0]!=undefined? <Doughnut style={{ height: '40vh' }} data={pieData} options={pieOptions} />:  <Empty />}
                 </Card>
 
                 <ServicesDetails AllDetails={AllDetails} />

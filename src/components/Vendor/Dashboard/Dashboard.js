@@ -51,7 +51,7 @@ const Dashboard = (props) => {
   };
 
   const selectTab = (e,item) => {
-    if(item.id==0 && props.progress<=70){
+    if(item.id==0 && props.progress<=90){
       openNotificationWithIcon('error',"Please Complete Profile.","Progress Bar should be above 90 Percent","")
     }
     else{

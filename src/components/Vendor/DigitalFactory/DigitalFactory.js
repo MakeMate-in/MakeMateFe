@@ -7,7 +7,7 @@ import { STEP_TAB_MAP_2, STEP_TAB_MAP_INFRA_2, STEPS_HEADINGS, PER_COUNT, PER_IN
 import CompanyDetailsComp from '../CompanyDetails/CompanyOverview/CompanyDetails';
 import { getAllDetails, getCompanyDetails } from '../../../apis/Vendor/CompanyDetails';
 import CustomerDetails from '../CompanyDetails/CustomerDetails/CustomerDetails';
-import { checkButtonRequired, getCopanyId, getUserId } from '../../../utils/helper';
+import { checkButtonRequired, getCopanyId, getUserId, openNotificationWithIcon } from '../../../utils/helper';
 import { LeftOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom'
 import { OPEN_ROUTES } from '../../../utils/constants'
@@ -40,7 +40,13 @@ const DigitalFactory = (props) => {
   const [api] = notification.useNotification();
 
   const backToDashboard = () => {
-    navigate(OPEN_ROUTES.VENDOR_DASHBOARD)
+    if(props.progress<=90){
+      openNotificationWithIcon('error',"Please Complete Profile.","Progress Bar should be above 90 Percent","")
+    }
+    else{
+      navigate(OPEN_ROUTES.VENDOR_DASHBOARD)
+    }
+   
   }
 
   const openFailedNotification = (placement, message) => {

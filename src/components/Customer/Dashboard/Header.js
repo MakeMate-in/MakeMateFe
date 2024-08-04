@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useMemo } from 'react';
-import { Button, Layout, AutoComplete } from 'antd';
+import { Button, Layout, AutoComplete, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { OPEN_ROUTES, PRODUCT_URL_PATTERN, ROLE } from '../../../utils/constants';
 import { UserOutlined } from '@ant-design/icons';
@@ -36,7 +36,7 @@ const CustomerHeader = (props) => {
             errorRouting();
             navigate(OPEN_ROUTES.PARENT_ROUTE);
         }
-    }, [navigate]);
+    }, []);
 
     const login = () => {
         navigate(OPEN_ROUTES.LOGIN);
@@ -53,13 +53,16 @@ const CustomerHeader = (props) => {
 
     const handleSearch = async (value) => {
         try {
+
             if (value) {
+                // props.setLoading(true)
                 setSearch(value)
                 let params = {
                     search: value
                 }
                 const res = await getSearchResults(params)
                 if (res.success) {
+                    // props.setLoading(false)
                     const filteredOptions = res.data.filter(option =>
                         option.value.toLowerCase().includes(value.toLowerCase())
                     );
@@ -145,7 +148,27 @@ const CustomerHeader = (props) => {
                     </Button>
                 </div> : ''}
 
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Flex>
+                {
+                     <Button
+                     onClick={() => {
+                      props.showDrawer()
+                     }}
+                     size="large"
+                     style={{
+                         background: 'transparent',
+                         border: 'transparent',
+                         color: 'black',
+                         boxShadow: '0 4px 4px rgba(0, 0, 0, 0.2)',
+                         padding: '10px 20px',
+                         borderRadius: '5px',
+                         transition: 'all 0.2s ease-in-out',
+                         marginRight: '2vw'
+                     }}
+                 >
+                     Filters
+                 </Button>
+                }
                 {
                     getRole() == ROLE.VENDOR ? <Button
                         onClick={() => {
@@ -186,7 +209,7 @@ const CustomerHeader = (props) => {
                         <UserOutlined /> Sign Up/Login
                     </Button>
                 )}
-            </div>
+            </Flex>
         </Header>
     );
 };

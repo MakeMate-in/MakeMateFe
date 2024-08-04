@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, Col, Statistic, Row, Carousel, ConfigProvider, Typography, Empty } from 'antd';
 import Machines from '../../CompanyDetails/Machines/Machines';
-import business_plan from './../../../../assets/business_plan.svg';
 import svg_experience from './../../../../assets/svg_experience.svg';
 import svg_projects from './../../../../assets/svg_projects.svg';
 import svg_customers from './../../../../assets/svg_customers.svg';
@@ -10,7 +9,7 @@ import { getAllDetails } from '../../../../apis/Vendor/CompanyDetails';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import './DashboardPage.css';
-import { getCopanyId } from '../../../../utils/helper';
+import { getCopanyId, getJwt } from '../../../../utils/helper';
 import BasicCompanyDetails from './Components/BasicCompanyDetails';
 import { notification } from 'antd';
 import InfraDashboard from './Components/InfraDashboard';
@@ -19,7 +18,6 @@ import ServicesDetails from './Components/ServicesDetails';
 import { OPEN_ROUTES, PRODUCT_URL_PATTERN } from '../../../../utils/constants';
 import { useParams } from 'react-router-dom';
 import { getAllDetailsCustomer } from '../../../../apis/commonFunctions';
-import CustomerHeader from '../../../Customer/Dashboard/Header';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -27,6 +25,7 @@ const DashboardPage = () => {
   const [AllDetails, setAllDetails] = useState(undefined);
   const [loading, setLoading] = useState(true);
   const [api] = notification.useNotification();
+  const [loggedIn, setloggedIn] = useState(false)
 
   const openFailedNotification = (placement, message) => {
     api.error({
@@ -35,6 +34,8 @@ const DashboardPage = () => {
       placement,
     });
   };
+
+
 
 
   const getAllDashboardDetails = async () => {
@@ -77,6 +78,11 @@ const DashboardPage = () => {
 
   useEffect(() => {
     const pathname = window.location.pathname
+    const jwt = getJwt();
+    if (jwt && jwt !== '' && (pathname === OPEN_ROUTES.CUSTOMER_DASHBOARD || PRODUCT_URL_PATTERN.test(pathname))) {
+        setloggedIn(true);
+    }
+
     if (pathname == OPEN_ROUTES.VENDOR_DASHBOARD) {
       getAllDashboardDetails();
     }
@@ -119,11 +125,7 @@ const DashboardPage = () => {
   const totalManpower = AllDetails ? AllDetails?.infrastructureDetails?.manpower.reduce((total, m) => total + m.count, 0) : 0;
 
   return (
-    <div style={{ overflow: 'auto', scrollbarWidth: 'none', padding:'1rem' }}>
-      {/* {
-        PRODUCT_URL_PATTERN.test(window.location.pathname) &&
-        <CustomerHeader/>
-      } */}
+    <div style={{ overflow: 'auto', scrollbarWidth: 'none', padding:window.location.pathname==OPEN_ROUTES.VENDOR_DASHBOARD?'':'1rem' }}>
       {AllDetails == undefined ? (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '84vh' }}>
           <div class="spinner-square">

@@ -16,6 +16,8 @@ const ProductCard = (props) => {
 
   const random_val = getRandomRansomValue(3, 5);
 
+  console.log(props.data.machine_details)
+
   return (
     <div className='bg-white p-4 rounded-lg shadow-md overflow-hidden flex flex-col mb-2'>
       <Carousel autoplay className='rounded-lg overflow-hidden mb-2'>
@@ -55,8 +57,10 @@ const ProductCard = (props) => {
           </Tag>
         </div>
         <div className='flex flex-wrap gap-1'>
-          {props.data.machine_details.map((item, index) => {
-            return (index < 3 ? <Tag key={index} color='purple'>{item.machine_type}</Tag> : '')
+          {Object.entries(props.data.machine_details).map((entry, index) => { 
+            let key = entry[0]
+            let value = entry[1]
+            return (index < 3 ? <Tag key={index} color='purple'>{key}: {value}</Tag> : '')
           })}
         </div>
         <Button

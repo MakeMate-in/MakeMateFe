@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Upload, Carousel, Empty } from 'antd';
 import { notification } from 'antd';
-
+import { LinearProgress } from '@mui/material'
 import { PlusOutlined } from '@ant-design/icons';
 import { NOTIFICATION_MESSAGES } from '../../utils/locale';
 import { OPEN_ROUTES, PRODUCT_URL_PATTERN } from '../../utils/constants';
@@ -20,8 +20,8 @@ const ImageUpload = (props) => {
 
     const [fileList, setFileList] = useState([]);
     const [api] = notification.useNotification();
-
-    const [notShow,setShow] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [notShow, setShow] = useState(false)
 
 
     const [previewOpen, setPreviewOpen] = useState(false);
@@ -56,12 +56,15 @@ const ImageUpload = (props) => {
 
 
     const fetchImages = async () => {
+        setLoading(true)
         try {
             const newSrcList = await props.getImages()
-            
+
             setFileList(newSrcList);
+            setLoading(false)
         }
         catch (err) {
+            setLoading(false)
             openFailedNotification('topRight', NOTIFICATION_MESSAGES.FETCH_IMAGE_ERROR)
             return err
         }
@@ -69,8 +72,8 @@ const ImageUpload = (props) => {
 
 
     useEffect(() => {
-        const path= window.location.pathname
-        if(path == OPEN_ROUTES.VENDOR_DASHBOARD || PRODUCT_URL_PATTERN.test(path))
+        const path = window.location.pathname
+        if (path == OPEN_ROUTES.VENDOR_DASHBOARD || PRODUCT_URL_PATTERN.test(path))
             setShow(true)
         fetchImages()
 
@@ -145,31 +148,36 @@ const ImageUpload = (props) => {
         </button>
     );
 
-    
+
     return (
         <div>
-             {fileList && fileList.length>0?<Carousel arrows autoplay fade dotPosition="left" arrowSize={35} style={{marginBottom:'10px'}}>
-               
-               {fileList && fileList.map((item, i) => (
-                      <div>
-                      <img src={item.url} style={{ height: "50vh", width: "80vw" }} />
-                  </div>
-                   
-                   ))}
-             </Carousel>: <Empty/>}
-           {notShow?null : <Upload
-                listType="picture-card"
-                fileList={fileList}
-                onPreview={handlePreview}
-                customRequest={uploadImage}
-                onChange={onChange}
-                onRemove={(file) => {
-                    handleDelete(file)
-                }}
-            >
-                {fileList && fileList.length >= 8  ? null : uploadButton}
-            </Upload>}
-            {/* {previewImage && (
+            {loading ?
+                <div style={{ height: '50vh', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <LinearProgress style={{ width: '50%' }} />
+                </div>
+                : <div>
+                    {fileList && fileList.length > 0 ? <Carousel arrows autoplay fade dotPosition="left" arrowSize={35} style={{ marginBottom: '10px' }}>
+
+                        {fileList && fileList.map((item, i) => (
+                            <div>
+                                <img src={item.url} style={{ height: "50vh", width: "80vw" }} />
+                            </div>
+
+                        ))}
+                    </Carousel> : <Empty />}
+                    {notShow ? null : <Upload
+                        listType="picture-card"
+                        fileList={fileList}
+                        onPreview={handlePreview}
+                        customRequest={uploadImage}
+                        onChange={onChange}
+                        onRemove={(file) => {
+                            handleDelete(file)
+                        }}
+                    >
+                        {fileList && fileList.length >= 8 ? null : uploadButton}
+                    </Upload>}
+                    {/* {previewImage && (
                 <Image
                     wrapperStyle={{ display: 'none' }}
                     preview={{
@@ -181,6 +189,7 @@ const ImageUpload = (props) => {
                 />
             )} */}
 
+                </div>}
         </div>
     )
 }

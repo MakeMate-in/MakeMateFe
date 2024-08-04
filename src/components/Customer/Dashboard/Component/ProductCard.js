@@ -1,12 +1,12 @@
-import React from 'react'
-import { Carousel, Typography, Button, Rate, Badge, Tag, Flex } from 'antd';
+import React, {useState} from 'react'
+import { Carousel, Typography, Button, Rate, Badge, Tag, Flex, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { OPEN_ROUTES } from '../../../../utils/constants';
 import { getRandomRansomValue } from '../../../../utils/helper';
 import './ProductCard.css';
-import DomainIcon from '@mui/icons-material/Domain';
 import StoreIcon from '@mui/icons-material/Store';
 import DescriptionIcon from '@mui/icons-material/Description';
+import TextArea from 'antd/es/input/TextArea';
 
 const ProductCard = (props) => {
   const navigate = useNavigate();
@@ -14,9 +14,9 @@ const ProductCard = (props) => {
     navigate(OPEN_ROUTES.PRODUCT_DETAILS + props.data.company_data._id);
   }
 
+  const [reviewModal, setReviewModal] = useState(false)
+  
   const random_val = getRandomRansomValue(3, 5);
-
-  console.log(props.data.machine_details)
 
   return (
     <div className='bg-white p-4 rounded-lg shadow-md overflow-hidden flex flex-col mb-2'>
@@ -38,6 +38,7 @@ const ProductCard = (props) => {
             <Rate defaultValue={random_val} allowHalf disabled />
           </div>
         </div>
+        <Button onClick = {() => {setReviewModal(true)}}>Review</Button>
         <div>
           <Flex gap={2} align='center'>
         <StoreIcon/> 
@@ -78,6 +79,20 @@ const ProductCard = (props) => {
           View Profile
         </Button>
       </div>
+
+      { reviewModal && <Modal
+                        title="Review"
+                        centered
+                        open={reviewModal}
+                        okText="Save"
+                        // footer={show ? null : ''}
+                        onOk={() => setReviewModal(false)}
+                        onCancel={() => setReviewModal(false)}
+                        width={750}
+                    >
+                      <Rate/>
+                      <TextArea/>
+                    </Modal>}
     </div>
   )
 }

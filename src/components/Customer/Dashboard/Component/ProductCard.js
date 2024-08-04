@@ -56,7 +56,7 @@ const ProductCard = (props) => {
             Plant Area: {props.data.infrastructuredetails.plant_area}
           </Tag>
         </div>
-        <div className='flex flex-wrap gap-1'>
+        <div className='flex flex-wrap'>
           {Object.entries(props.data.machine_details).map((entry, index) => { 
             let key = entry[0]
             let value = entry[1]

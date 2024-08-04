@@ -12,6 +12,7 @@ import { notification } from 'antd';
 // import business_plan from './../../../assets/customer.jpg'
 import { SESSION_STORAGE_ITEMS, getRole, initializeUserValues } from '../../../utils/helper'
 import { bg1 } from '../../../utils/colorGradient'
+import { LinearProgress } from '@mui/material'
 const Context = React.createContext({
   name: 'Default',
 });
@@ -27,6 +28,7 @@ const SignIn = () => {
     isEmail: true,
     role: ROLE.VENDOR
   })
+  const [loading, setLoading] = useState(false)
 
 
   const [api, contextHolder] = notification.useNotification();
@@ -71,6 +73,8 @@ const SignIn = () => {
   }
 
   const handleSubmit = async () => {
+    setLoading(true)
+    try{
     if (!isEmail) {
       user.uniqueField = user.uniqueField.substring(2);
     }
@@ -92,6 +96,13 @@ const SignIn = () => {
       openFailedNotification('topRight', res.msg);
       // throw new Error('Login failed')
     }
+    setLoading(false)
+  }
+  catch(err){
+    setLoading(false)
+    console.log(err)
+  }
+
   }
 
   const handleRememberMeChange = (e) => {
@@ -112,8 +123,12 @@ const SignIn = () => {
   }
 
   return (
-    <div >
-      <Flex gap={100}>
+    <div>
+    {loading? 
+    <div style={{height:'100vh', width:'100%', display:'flex', justifyContent:'center' , alignItems:'center'}}>
+    <LinearProgress style={{width:'50%'}}/> 
+    </div>
+    : <Flex gap={100}>
           <img src={gojo} style={{ height: '45rem', width: '40rem' }} />
         <Flex vertical gap={30} justify='center' align='center'>
           <Flex vertical justify='center' align='center' gap={30}>
@@ -175,7 +190,7 @@ const SignIn = () => {
           </Form>
 
         </Flex>
-      </Flex>
+      </Flex>}
     </div>
   )
 }

@@ -79,7 +79,7 @@ const DashboardPage = () => {
   useEffect(() => {
     const pathname = window.location.pathname
     const jwt = getJwt();
-    if (jwt && jwt !== '' && (pathname === OPEN_ROUTES.CUSTOMER_DASHBOARD || PRODUCT_URL_PATTERN.test(pathname))) {
+    if (jwt && jwt !== '') {
         setloggedIn(true);
     }
 
@@ -245,9 +245,9 @@ const DashboardPage = () => {
 
             <Col span={8}>
 
-              <BasicCompanyDetails AllDetails={AllDetails} />
+              <BasicCompanyDetails AllDetails={AllDetails} loggedIn={loggedIn}/>
 
-              <ContactDetails AllDetails={AllDetails} />
+              <ContactDetails AllDetails={AllDetails} loggedIn={loggedIn}/>
 
               <Card
               // style={{background: bg3}}

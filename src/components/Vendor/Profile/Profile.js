@@ -56,9 +56,11 @@ const Profile = () => {
                         style={{
                             background: 'transparent',
                             border: 'transparent',
-                            color: 'black'
-                        }}
-                    >
+                            color: 'black',
+                            width:'100%'
+                          }}
+                        
+             >
         <Logout />
         <Typography style={{ fontSize: '20px', color: 'grey', fontWeight:'500' }} >Logout</Typography>
         </Button>

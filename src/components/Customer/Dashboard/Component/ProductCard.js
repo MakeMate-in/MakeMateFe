@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Carousel, Typography, Button, Rate, Badge, Tag, Flex, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { OPEN_ROUTES } from '../../../../utils/constants';
-import { getRandomRansomValue, getUserId } from '../../../../utils/helper';
+import { getRandomRansomValue, getUserId, openNotificationWithIcon } from '../../../../utils/helper';
 import './ProductCard.css';
 import StoreIcon from '@mui/icons-material/Store';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -19,6 +19,8 @@ const ProductCard = (props) => {
   const [starRating, setStarRating] = useState(0)
   const [comment, setComment] = useState("")
 
+  let reviewsCount = 100;
+
   const random_val = getRandomRansomValue(3, 5);
   const handleAddReview = async () => {
     try {
@@ -29,10 +31,10 @@ const ProductCard = (props) => {
           comments: comment,
           userIds: getUserId()
         }
-
-        console.log(data)
         const res = await addProductReview(data);
-
+        if(res.success){
+          openNotificationWithIcon("success", "Thanks for the Feedback")
+        }
       }
 
     }
@@ -61,7 +63,8 @@ const ProductCard = (props) => {
             <Rate defaultValue={random_val} allowHalf disabled />
           </div>
         </div>
-        <Button onClick={() => { setReviewModal(true) }}>Review</Button>
+        <div>{reviewsCount}+ Ratings | <Button color="primary" onClick={() => { setReviewModal(true) }}>Share your Review</Button></div>
+
         <div>
           <Flex gap={2} align='center'>
             <StoreIcon />
@@ -111,7 +114,7 @@ const ProductCard = (props) => {
         // footer={show ? null : ''}
         onOk={() => {
           handleAddReview()
-          // setReviewModal(false)
+          setReviewModal(false)
         }}
         onCancel={() => setReviewModal(false)}
         width={750}

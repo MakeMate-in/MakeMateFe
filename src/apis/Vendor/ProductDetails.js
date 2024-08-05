@@ -179,3 +179,29 @@ export const uploadProductImages = async (id, file) => {
     })
     return res;
 }
+
+
+export const addProductReview = (async (data) => {
+    const url = PRODUCT_DETAILS_URL.ADD_REVIEWS;
+    const headers = {
+        'Authorization': getToken(),
+    }
+
+    let res = await axios.post(
+        baseAPIUrl + url, data,
+        {
+            headers: headers
+
+        }).then((response) => {
+            return response.data;
+        })
+        .catch((err) => {
+            if (err.response.status == 401) {
+                errorValidator(err)
+            }
+            else {
+                return err
+            }
+        })
+    return res;
+})

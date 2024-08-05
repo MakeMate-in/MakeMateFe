@@ -69,10 +69,6 @@ export enum SERVICE_DETAILS_URL{
   DELETE_SERVICE_DETAILS = '/api/company/delete/services',
 }
 
-export enum UPLOAD_FILES_URL{
-
-}
-
 export enum PRODUCT_DETAILS_URL{
 CREATE_PRODUCT = '/api/company/create-product',
 UPDATE_PRODUCT = '/api/company/update-product',
@@ -80,5 +76,6 @@ GET_PRODUCT_DETAILS = '/api/company/get-products',
 DELETE_SINGLE_PRODUCT = '/api/company/delete-product',
 DELETE_ALL_PRODUCTS = '/api/company/delete-all-product',
 UPLOAD_TOOL_IMAGE = '/api/company/upload-tool-images',
-UPLOAD_PRODUCT_IMAGE = '/api/company/upload-product-images'
+UPLOAD_PRODUCT_IMAGE = '/api/company/upload-product-images',
+ADD_REVIEWS = '/api/company/add-review'
 }

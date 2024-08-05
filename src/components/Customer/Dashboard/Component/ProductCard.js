@@ -1,12 +1,13 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Carousel, Typography, Button, Rate, Badge, Tag, Flex, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { OPEN_ROUTES } from '../../../../utils/constants';
-import { getRandomRansomValue } from '../../../../utils/helper';
+import { getRandomRansomValue, getUserId } from '../../../../utils/helper';
 import './ProductCard.css';
 import StoreIcon from '@mui/icons-material/Store';
 import DescriptionIcon from '@mui/icons-material/Description';
 import TextArea from 'antd/es/input/TextArea';
+import { addProductReview } from '../../../../apis/Vendor/ProductDetails';
 
 const ProductCard = (props) => {
   const navigate = useNavigate();
@@ -15,21 +16,43 @@ const ProductCard = (props) => {
   }
 
   const [reviewModal, setReviewModal] = useState(false)
-  
+  const [starRating, setStarRating] = useState(0)
+  const [comment, setComment] = useState("")
+
   const random_val = getRandomRansomValue(3, 5);
+  const handleAddReview = async () => {
+    try {
+      if (getUserId() != null) {
+        let data = {
+          id: props.data.product_id,
+          rating: starRating,
+          comments: comment,
+          userIds: getUserId()
+        }
+
+        console.log(data)
+        const res = await addProductReview(data);
+
+      }
+
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <div className='bg-white p-4 rounded-lg shadow-md overflow-hidden flex flex-col mb-2'>
       <Carousel autoplay className='rounded-lg overflow-hidden mb-2'>
         {props.data.images && props.data.images.map((image, index) => (
           <div key={index} className='aspect-square bg-gray-200'>
-            <img src={image} alt={`Slide ${index}`} className='object-cover w-full h-full' style={{cursor:'pointer'}} onClick={handleConnect} />
+            <img src={image} alt={`Slide ${index}`} className='object-cover w-full h-full' style={{ cursor: 'pointer' }} onClick={handleConnect} />
           </div>
         ))}
       </Carousel>
       <div className='p-2 flex flex-col gap-2'>
         {props.data.Certificstes && props.data.Certificstes.map((item, index) => (
-          (index<1?<Badge.Ribbon key={index} text={item.fileName} />:'')
+          (index < 1 ? <Badge.Ribbon key={index} text={item.fileName} /> : '')
         ))}
         <div>
           <Typography.Title level={4}>{props.data.product_name}</Typography.Title>
@@ -38,16 +61,16 @@ const ProductCard = (props) => {
             <Rate defaultValue={random_val} allowHalf disabled />
           </div>
         </div>
-        <Button onClick = {() => {setReviewModal(true)}}>Review</Button>
+        <Button onClick={() => { setReviewModal(true) }}>Review</Button>
         <div>
           <Flex gap={2} align='center'>
-        <StoreIcon/> 
-          <Typography.Text className='font-semibold text-lg'>{props.data.company_data.company_name}</Typography.Text>
+            <StoreIcon />
+            <Typography.Text className='font-semibold text-lg'>{props.data.company_data.company_name}</Typography.Text>
           </Flex>
           <Flex gap={2} align='center'>
-            <DescriptionIcon/>
-          <Typography.Paragraph ellipsis className='text-gray-600 mb-0' style={{marginBottom:'0px'}}>{props.data.company_data.description}</Typography.Paragraph>
-            </Flex>
+            <DescriptionIcon />
+            <Typography.Paragraph ellipsis className='text-gray-600 mb-0' style={{ marginBottom: '0px' }}>{props.data.company_data.description}</Typography.Paragraph>
+          </Flex>
         </div>
         <div className='flex flex-wrap gap-1'>
           <Tag color='red' className='flex items-center justify-center'>
@@ -58,7 +81,7 @@ const ProductCard = (props) => {
           </Tag>
         </div>
         <div className='flex flex-wrap'>
-          {Object.entries(props.data.machine_details).map((entry, index) => { 
+          {Object.entries(props.data.machine_details).map((entry, index) => {
             let key = entry[0]
             let value = entry[1]
             return (index < 3 ? <Tag key={index} color='purple'>{key}: {value}</Tag> : '')
@@ -80,19 +103,47 @@ const ProductCard = (props) => {
         </Button>
       </div>
 
-      { reviewModal && <Modal
-                        title="Review"
-                        centered
-                        open={reviewModal}
-                        okText="Save"
-                        // footer={show ? null : ''}
-                        onOk={() => setReviewModal(false)}
-                        onCancel={() => setReviewModal(false)}
-                        width={750}
-                    >
-                      <Rate/>
-                      <TextArea/>
-                    </Modal>}
+      {reviewModal && <Modal
+        title="Leave your Review"
+        centered
+        open={reviewModal}
+        okText="Add Review"
+        // footer={show ? null : ''}
+        onOk={() => {
+          handleAddReview()
+          // setReviewModal(false)
+        }}
+        onCancel={() => setReviewModal(false)}
+        width={750}
+      >
+        <Flex vertical gap={20}>
+          <Flex vertical>
+            <Typography>Rate Your Experience</Typography>
+            <Rate
+              allowHalf
+              value={starRating}
+              onChange={(e) => {
+                setStarRating(e)
+              }}
+            />
+          </Flex>
+          <Flex vertical>
+            <Typography>Add Feedback</Typography>
+            <TextArea
+              placeholder="Add Review"
+              onChange={(event) => {
+                setComment(event.target.value)
+              }}
+              name="comment"
+              id="comment"
+              size='large'
+              // variant="filled"
+              allowClear
+              value={comment}
+            />
+          </Flex>
+        </Flex>
+      </Modal>}
     </div>
   )
 }

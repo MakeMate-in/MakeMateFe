@@ -13,6 +13,7 @@ import { getSearchResults } from '../../../apis/commonFunctions';
 import debounce from 'lodash.debounce';
 import Factory from '@mui/icons-material/Factory';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 const { Header } = Layout;
 
@@ -89,7 +90,7 @@ const CustomerHeader = (props) => {
     };
 
     const backToHome = () => {
-        if(loggedIn){
+        if (loggedIn) {
             navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD);
         } else {
             navigate(OPEN_ROUTES.PARENT_ROUTE);
@@ -107,7 +108,7 @@ const CustomerHeader = (props) => {
                 height: '80px'
             }}
         >
-            {PRODUCT_URL_PATTERN.test(window.location.pathname) ? <ArrowBackIcon onClick={backToHome} style={{cursor: 'pointer', color: 'white'}} /> : ''}
+            {PRODUCT_URL_PATTERN.test(window.location.pathname) ? <ArrowBackIcon onClick={backToHome} style={{ cursor: 'pointer', color: 'white' }} /> : ''}
 
             <div className="demo-logo" style={{ color: '#fff', fontWeight: '700', fontSize: '1.5rem' }}>
                 <span>🛠MAKERS MATE</span>
@@ -141,32 +142,36 @@ const CustomerHeader = (props) => {
                         id="myBtn"
                         size='large'
                         className='bg-primary p-2'
+                        style={{ border: 'none' }}
                         onClick={() => { props.handleSearch(search) }}
                         onKeyPress={() => { props.handleSearch(search) }}
                     >
-                        <SearchOutlined style={{color: 'black'}} />
+                        <SearchOutlined style={{ color: 'black' }} />
 
                     </Button>
                 </div> : ''}
 
             <Flex>
                 {
-                     <Button
-                     onClick={() => {
-                      props.showDrawer()
-                     }}
-                     size="large"
-                     className='bg-primary'
-                     style={{
-                         boxShadow: '0 4px 4px rgba(0, 0, 0, 0.2)',
-                         padding: '10px 20px',
-                         borderRadius: '5px',
-                         transition: 'all 0.2s ease-in-out',
-                         marginRight: '2vw'
-                     }}
-                 >
-                     Filters
-                 </Button>
+                   PRODUCT_URL_PATTERN.test(window.location.pathname) ? '': 
+                   <Button
+                        onClick={() => {
+                            props.showDrawer()
+                        }}
+                        size="large"
+                        className='bg-primary'
+                        style={{
+                            boxShadow: '0 4px 4px rgba(0, 0, 0, 0.2)',
+                            padding: '10px 10px',
+                            borderRadius: '5px',
+                            transition: 'all 0.2s ease-in-out',
+                            marginRight: '2vw',
+                            border: 'none',
+                            fontSize: '1.2rem'
+                        }}
+                    >
+                        <FilterAltIcon />  Filters
+                    </Button>
                 }
                 {
                     getRole() == ROLE.VENDOR ? <Button

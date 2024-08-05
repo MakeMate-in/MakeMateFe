@@ -48,7 +48,7 @@ const CustomerContent = (props) => {
         // )
        }
       </div>:      
-          <LinearProgress style={{width:'50%'}}/>
+          <LinearProgress style={{width:'30%'}}/>
       }  
         
     </Content>

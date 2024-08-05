@@ -102,21 +102,21 @@ const CustomerHeader = (props) => {
             className='flex items-center justif-between bg-white'
             style={{
                 justifyContent: 'space-between',
-                background: 'white',
+                background: '#001529',
                 borderBottom: '1px solid black',
                 height: '80px'
             }}
         >
-            {PRODUCT_URL_PATTERN.test(window.location.pathname) ? <ArrowBackIcon onClick={backToHome} style={{cursor: 'pointer'}} /> : ''}
+            {PRODUCT_URL_PATTERN.test(window.location.pathname) ? <ArrowBackIcon onClick={backToHome} style={{cursor: 'pointer', color: 'white'}} /> : ''}
 
             <div className="demo-logo" style={{ color: '#fff', fontWeight: '700', fontSize: '1.5rem' }}>
-                🛠<span style={{ color: 'black' }}>MAKERS MATE</span>
+                <span>🛠MAKERS MATE</span>
             </div>
 
 
             {(window.location.pathname == OPEN_ROUTES.PARENT_ROUTE || window.location.pathname == OPEN_ROUTES.CUSTOMER_DASHBOARD) ?
 
-                <div className='flex  border border-gray-300 rounded-full items-center justify-center shadow-md shadow-gray-300 w-1/3 '>
+                <div className='flex items-center justify-center shadow-md w-1/3 '>
 
                     <AutoComplete
                         id="myInput"
@@ -131,7 +131,7 @@ const CustomerHeader = (props) => {
                             width: '110%',
                             height: '100%',
                             objectFit: 'cover',
-                            borderRadius: '9999px'
+                            // borderRadius: '9999px'
                         }}
                         onSelect={handleSelect}
                         onSearch={debounceResults}
@@ -139,11 +139,12 @@ const CustomerHeader = (props) => {
                     />
                     <Button
                         id="myBtn"
-                        className='bg-primary text-white p-2 rounded-full'
+                        size='large'
+                        className='bg-primary p-2'
                         onClick={() => { props.handleSearch(search) }}
                         onKeyPress={() => { props.handleSearch(search) }}
                     >
-                        <SearchOutlined />
+                        <SearchOutlined style={{color: 'black'}} />
 
                     </Button>
                 </div> : ''}
@@ -155,10 +156,8 @@ const CustomerHeader = (props) => {
                       props.showDrawer()
                      }}
                      size="large"
+                     className='bg-primary'
                      style={{
-                         background: 'transparent',
-                         border: 'transparent',
-                         color: 'black',
                          boxShadow: '0 4px 4px rgba(0, 0, 0, 0.2)',
                          padding: '10px 20px',
                          borderRadius: '5px',
@@ -176,9 +175,6 @@ const CustomerHeader = (props) => {
                         }}
                         size="large"
                         style={{
-                            background: 'transparent',
-                            border: 'transparent',
-                            color: 'black',
                             boxShadow: '0 4px 4px rgba(0, 0, 0, 0.2)',
                             padding: '10px 20px',
                             borderRadius: '5px',
@@ -197,9 +193,6 @@ const CustomerHeader = (props) => {
                         onClick={login}
                         size="large"
                         style={{
-                            background: 'transparent',
-                            border: 'transparent',
-                            color: 'black',
                             boxShadow: '0 4px 4px rgba(0, 0, 0, 0.2)',
                             padding: '10px 20px',
                             borderRadius: '5px',

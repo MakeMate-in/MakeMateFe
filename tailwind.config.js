@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors:{
-        primary: 'rgb(254,189,105)'
+        primary: 'rgb(255, 216, 20)'
       },
       backgroundColor: ['hover'],
     },

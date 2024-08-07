@@ -294,7 +294,7 @@ const DigitalFactory = (props) => {
           <Col span={6}>
             <Card bordered hoverable
               style={{
-                height: '39rem',
+                height: '85vh',
                 overflow: 'auto',
                 scrollbarWidth: 'none'
               }}>
@@ -320,7 +320,7 @@ const DigitalFactory = (props) => {
           </Col>
           <Col span={18}>
             <Card bordered hoverable style={{
-              height: '39rem',
+              height: '85rem',
               overflow: 'auto',
               scrollbarWidth: 'none', position: 'relative'
             }}>

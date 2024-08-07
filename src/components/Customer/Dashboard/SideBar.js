@@ -1,5 +1,6 @@
 import { Layout, theme, Typography, Flex, Select, InputNumber, Button, Drawer, Row, Col } from 'antd';
 import { CERTIFIATE_TYPES, MACHINE_TYPE, SERVICES_NAMES } from '../../../utils/helper';
+import { useState } from 'react';
 const { Sider } = Layout;
 
 const SERVICES = SERVICES_NAMES.map((item) => {
@@ -14,6 +15,8 @@ const CustomerSideBar = (props) => {
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
+
+    const [certificate, setCertificate] = useState(undefined)
 
     return (
         <Drawer
@@ -52,9 +55,11 @@ const CustomerSideBar = (props) => {
                         size='large'
                         // variant="filled"
                         // value={item.name}
-                        value={props.filterData ? props.filterData["certificate_type"] : undefined}
+                        value={certificate}
                         allowClear
-                        onChange={(e) => { props.handleChange("certificate_type", e) }}
+                        onChange={(e) => {
+                            setCertificate(e)
+                         props.handleChange("certificate_type", e) }}
                         options={CERTIFIATE_TYPES}
                     />
                 </Col>
@@ -99,7 +104,9 @@ const CustomerSideBar = (props) => {
                             color: 'black',
                             marginTop: '30px'
                         }}
-                        onClick={() => { props.handleFilter() }}
+                        onClick={() => {
+                            setCertificate(undefined)
+                            props.handleFilter() }}
                     >
                         Apply
                     </Button>
@@ -116,6 +123,7 @@ const CustomerSideBar = (props) => {
                             marginTop: '30px'
                         }}
                         onClick={() => { 
+                            setCertificate(undefined)
                             props.handleChange("experience", 0)
                             props.handleChange("plant_area", 0)
                             props.handleChange("machine_types", [])

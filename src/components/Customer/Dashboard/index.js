@@ -49,7 +49,12 @@ const CustomerDashboard = () => {
       if(res.success){
         setData(res.data)
       }
-      setfiltersData({}) 
+      setfiltersData({
+        "experience": 0,
+        "certificate_type": "",
+        "machine_types": [],
+        "plant_area": 0,
+      }) 
       setLoading(false)
       console.log(res)
     }

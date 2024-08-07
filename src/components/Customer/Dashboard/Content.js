@@ -28,7 +28,7 @@ const CustomerContent = (props) => {
         alignItems: 'center'
       }}
     >
-     {props.data && props.data.length!=0 && props.loading==false? <div className='grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'>
+     {props.data && props.data.length!=0 && props.loading==false? <div className='grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-12'>
         {props.data && props.data.length!=0 && props.loading==false? 
         props.data.map((card, index) => (
           <ProductCard

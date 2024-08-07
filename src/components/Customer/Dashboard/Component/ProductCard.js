@@ -63,7 +63,7 @@ const ProductCard = (props) => {
             <Rate defaultValue={random_val} allowHalf disabled />
           </div>
         </div>
-        <div>{reviewsCount}+ Ratings | <Button color="primary" onClick={() => { setReviewModal(true) }}>Share your Review</Button></div>
+        <div>{reviewsCount}+ Ratings | <a style={{fontSize: '16px', fontWeight: '400'}} onClick={() => { setReviewModal(true) }}>Share your Review</a></div>
 
         <div>
           <Flex gap={2} align='center'>
@@ -77,10 +77,10 @@ const ProductCard = (props) => {
         </div>
         <div className='flex flex-wrap gap-1'>
           <Tag color='red' className='flex items-center justify-center'>
-            Experience: {props.data.company_data.experience}
+            Experience: {props.data.company_data.experience + " years"}
           </Tag>
           <Tag color='red' className='flex items-center justify-center'>
-            Plant Area: {props.data.infrastructuredetails.plant_area}
+            Plant Area: {props.data.infrastructuredetails.plant_area + " sqm"}
           </Tag>
         </div>
         <div className='flex flex-wrap'>

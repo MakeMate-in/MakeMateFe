@@ -41,6 +41,7 @@ const CustomerDashboard = () => {
 
   const handleFilter = async () => {
     try{
+      setOpen(false);
       setLoading(true)
       let params = {
         exp: filtersData["experience"],

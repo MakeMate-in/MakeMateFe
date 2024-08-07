@@ -157,7 +157,10 @@ const DashboardPage = () => {
 
                 {AllDetails.images.map((item, i) => {
                   let x = item
-                  return (<div style={{ height: '105%' }}>
+                  return (<div
+                   style={{
+                    //  height: '105%'
+                      }}>
                     <img key={i} src={item} style={{ height: "50vh", width: "80vw" }} />
                   </div>)
 
@@ -231,12 +234,12 @@ const DashboardPage = () => {
               </Row>
 
               <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Machine Details</Typography>
-              <Card style={{ overflow: 'auto', scrollbarWidth: 'none', height: '50vh' }}>
+              <Card style={{ overflow: 'auto', scrollbarWidth: 'none'}}>
                 <Machines />
               </Card>
 
               <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Customer Details</Typography>
-              <Card style={{ overflow: 'auto', scrollbarWidth: 'none', height: '50vh' }}>
+              <Card style={{ overflow: 'auto', scrollbarWidth: 'none'}}>
                 <CustomerDetails />
               </Card>
 
@@ -250,7 +253,9 @@ const DashboardPage = () => {
               <ContactDetails AllDetails={AllDetails} loggedIn={loggedIn}/>
 
               <Card
-              // style={{background: bg3}}
+              style={{
+                // height: '150vh'
+              }}
               >
                 <InfraDashboard AllDetails={AllDetails} />
 

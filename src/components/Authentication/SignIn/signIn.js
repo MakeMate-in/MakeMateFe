@@ -10,7 +10,7 @@ import { login } from '../../../apis/authentication.'
 
 import { notification } from 'antd';
 // import business_plan from './../../../assets/customer.jpg'
-import { SESSION_STORAGE_ITEMS, getRole, initializeUserValues } from '../../../utils/helper'
+import { SESSION_STORAGE_ITEMS, getRole, initializeUserValues, openNotificationWithIcon } from '../../../utils/helper'
 import { bg1 } from '../../../utils/colorGradient'
 import { LinearProgress } from '@mui/material'
 const Context = React.createContext({
@@ -33,33 +33,7 @@ const SignIn = () => {
 
   const [api, contextHolder] = notification.useNotification();
 
-  const openNotification = (placement) => {
-    api.success({
-      message: `Success`,
-      description: "Logged In !!",
-      placement,
-    });
-  };
-  let contextValue = useMemo(
-    () => ({
-      name: 'Make Mate',
-    }),
-    [],
-  );
 
-  const openFailedNotification = (placement, msg) => {
-    api.error({
-      message: `Something went wrong! Try Again`,
-      description: msg,
-      placement,
-    });
-  };
-  contextValue = useMemo(
-    () => ({
-      name: 'Make Mate',
-    }),
-    [],
-  );
 
 
   const navigate = useNavigate()
@@ -85,7 +59,7 @@ const SignIn = () => {
     if (res.success) {
       sessionStorage.setItem(SESSION_STORAGE_ITEMS.TOKEN, res.token);
       initializeUserValues(res.token)
-      openNotification('topRight')
+      openNotificationWithIcon('success', "Logged In !!");
       if (getRole() == ROLE.VENDOR) {
         navigate(OPEN_ROUTES.DIGITAL_FACTORY)
       }
@@ -93,7 +67,7 @@ const SignIn = () => {
         navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD)
       }
     } else {
-      openFailedNotification('topRight', res.msg);
+      openNotificationWithIcon('error', res.msg);
       // throw new Error('Login failed')
     }
     setLoading(false)

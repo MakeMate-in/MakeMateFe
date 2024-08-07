@@ -16,28 +16,17 @@ export const getProductDetails = async (data) => {
     }
 }
 
-export const updateProductDetails = async (company_id,product_id,customer_name,product_name,part_material,tool_material,no_of_cavity,runner,tool_tonnage,manufacturing_year) => {
+export const updateProductDetails = async (params,data) => {
     try {
-        const data = {
-            company_id: company_id,
-            product_id: product_id,
-            customer_name: customer_name,
-            product_name: product_name,
-            part_material: part_material,
-            tool_material: tool_material,
-            no_of_cavity: no_of_cavity,
-            runner: runner,
-            tool_tonnage: tool_tonnage,
-            manufacturing_year: manufacturing_year
-        }
         const url = PRODUCT_DETAILS_URL.UPDATE_PRODUCT
-        data = await axios.patch(
+       let response = await axios.patch(
             baseAPIUrl+url,
             data,
             {
                 headers: {
                     'Authorization': getToken(),
-                }
+                },
+                params: params
             }
         )
             .then((res)=>{
@@ -51,7 +40,7 @@ export const updateProductDetails = async (company_id,product_id,customer_name,p
                 return err
             }
         })
-        return data
+        return response
     }
     catch (err) {
         throw err

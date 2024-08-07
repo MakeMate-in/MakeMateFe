@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Space, Popover, Flex } from 'antd';
 import { MACHINE_TYPE, convertBufferToBinary, getCopanyId } from '../../../../utils/helper';
-import { addMachineDetails, getMachineDetails, deleteMachineDetails, uploadMachineImages } from '../../../../apis/Vendor/MachineDetails';
+import { addMachineDetails, getMachineDetails, deleteMachineDetails, uploadMachineImages, updateMachineDetails } from '../../../../apis/Vendor/MachineDetails';
 import { DeleteTwoTone } from '@ant-design/icons';
 import { notification } from 'antd';
 import { OPEN_ROUTES, PRODUCT_URL_PATTERN } from '../../../../utils/constants';
 import ImageUpload from '../../../ImageUpload/ImageUpload';
 import { useParams } from 'react-router-dom';
 import { getMachineDetailsCustomer } from '../../../../apis/commonFunctions';
+import { Edit } from '@mui/icons-material';
+import EditMachine from './EditMachine';
 const Context = React.createContext({
     name: 'Default',
 });
@@ -43,6 +45,9 @@ const Machines = (props) => {
     const [modalMachine, setmodalMachine] = useState(undefined)
     const [show, setnoShow] = useState(false);
 
+    const [editModal, setEditModal] = useState(false)
+    const [editItem, setEditItem] = useState(undefined)
+    const [isConventional, setIsConventional] = useState(false)
 
     const companyID = useParams()
 
@@ -125,9 +130,11 @@ const Machines = (props) => {
                                 name: machine.machine_name,
                                 make: machine.make,
                                 bedSize: machine.bed_Size ? <Flex>
-                                    {machine.bed_Size.length ? <p style={{ margin: '0' }}> {machine.bed_Size.length}</p> : '-'}X
-                                    {machine.bed_Size.breadth ? <p style={{ margin: '0' }}>{machine.bed_Size.breadth}</p> : '-'}X
-                                    {machine.bed_Size.height ? <p style={{ margin: '0' }}> {machine.bed_Size.height}</p> : '-'}
+                                    {machine.bed_Size.length ?  machine.bed_Size.length : 0}
+                                    {" X "} 
+                                    {machine.bed_Size.breadth ? machine.bed_Size.breadth : 0} 
+                                    {" X "}
+                                    {machine.bed_Size.height ? machine.bed_Size.height : 0}
                                 </Flex> : '',
                                 tonnage: machine.tonnage,
                                 axis: machine.no_of_Axis,
@@ -197,7 +204,7 @@ const Machines = (props) => {
             key: 'make',
         },
         {
-            title: 'Bed Size(in mm)',
+            title: 'Bed Size( in mm)',
             dataIndex: 'bedSize',
             key: 'bedSize',
         },
@@ -225,9 +232,18 @@ const Machines = (props) => {
                         setImageModal(true)
                         setmodalMachine(record)
                     }}>View</a>
-                    {tab ? <Popover content='Delete'>
+                    {tab ? <Flex gap={6}>
+                        <Popover content='Edit'>
+                    <Edit onClick={() => {
+                        setEditModal(true)
+                        setEditItem(record)
+                        }} twoToneColor="#F5222D" style={{ fontSize: '20px', cursor:'pointer' }} />
+                </Popover>
+                    <Popover content='Delete'>
                         <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
-                    </Popover> : ''}
+                    </Popover>
+                   
+                </Flex> : ''}
                 </Space>
             ),
         },
@@ -261,9 +277,19 @@ const Machines = (props) => {
                         setImageModal(true)
                         setmodalMachine(record)
                     }}>View</a>
-                    {tab ? <Popover content='Delete'>
+                   {tab ? <Flex gap={6}>
+                        <Popover content='Edit'>
+                    <Edit onClick={() => {
+                        setEditItem(record)
+                        setIsConventional(true)
+                        setEditModal(true)
+                        }} twoToneColor="#F5222D" style={{ fontSize: '20px', cursor:'pointer' }} />
+                </Popover>
+                    <Popover content='Delete'>
                         <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
-                    </Popover> : ''}
+                    </Popover>
+                   
+                </Flex> : ''}
                 </Space>
             ),
         },
@@ -466,6 +492,22 @@ const Machines = (props) => {
         }
     }
 
+    const handleEditForm = async (Machine, MachineId) => {
+        try {
+            // form.resetFields()
+            let params = {
+                id: MachineId
+            }
+            console.log(Machine)
+            const res = await updateMachineDetails(params, Machine)
+            return res;
+
+        }
+        catch (err) {
+            openFailedNotification('topRight', 'Unable to Add Mahine Details')
+            console.log(err)
+        }
+    }
 
     return (
 
@@ -701,8 +743,19 @@ const Machines = (props) => {
 
                     </Modal>}
 
+                        {
+                            editModal && <EditMachine 
+                            editModal={editModal}
+                            editItem={editItem} 
+                            isConventional={isConventional} 
+                            setEditModal={setEditModal} 
+                            setIsConventional={setIsConventional}
+                            handleEditForm = {handleEditForm}
+                            fetchMachineDetails = {fetchMachineDetails}
+                            />
+                        }
                 </Context.Provider>
-            </ConfigProvider>
+            </ConfigProvider> 
         </div>
     )
 }

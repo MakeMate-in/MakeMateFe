@@ -17,8 +17,6 @@ const CustomerDashboard = () => {
     "certificate_type": "",
     "machine_types": [],
     "plant_area": 0,
-    "inhouse_services": [],
-    "outsource_services": []
   })
 
   const [open, setOpen] = useState(false);
@@ -34,8 +32,6 @@ const CustomerDashboard = () => {
 
 
   const handleChange = (id,value) => {
-    console.log(id)
-    console.log(value)
     setfiltersData({[id]:value})
   }
 

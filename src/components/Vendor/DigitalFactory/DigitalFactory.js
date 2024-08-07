@@ -300,7 +300,7 @@ const DigitalFactory = (props) => {
               }}>
               <Flex vertical>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <h4 onClick={backToDashboard}><LeftOutlined /> Return to Dashboard</h4>
+                  <h4 style={{cursor:'pointer'}} onClick={backToDashboard}><LeftOutlined /> Return to Dashboard</h4>
                   <Progress strokeWidth={13} type="dashboard" percent={props.progress} size={150} gapDegree={150} />
                 </div>
                 <div style={{ margin: '0' }}>

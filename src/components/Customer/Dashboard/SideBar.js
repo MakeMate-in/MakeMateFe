@@ -52,6 +52,7 @@ const CustomerSideBar = (props) => {
                         size='large'
                         // variant="filled"
                         // value={item.name}
+                        value={props.filterData ? props.filterData["certificate_type"] : undefined}
                         allowClear
                         onChange={(e) => { props.handleChange("certificate_type", e) }}
                         options={CERTIFIATE_TYPES}
@@ -67,6 +68,7 @@ const CustomerSideBar = (props) => {
                         onChange={(e) => { props.handleChange("machine_types", e) }}
                         style={{ width: '60%' }}
                         mode="multiple"
+                        value={props.filtersData["machine_types"]}
                         allowClear
                         placeholder='Select Machine Type'
                         options={MACHINE_TYPE}
@@ -80,6 +82,7 @@ const CustomerSideBar = (props) => {
                         id="plant_area"
                         size='large'
                         // variant="filled"
+                        value={props.filterData ? props.filterData["plant_area"] : ''}
                         placeholder='Enter Plant Area'
                         onChange={(e) => { props.handleChange("plant_area", e) }}
                         style={{ width: '60%' }}
@@ -112,7 +115,13 @@ const CustomerSideBar = (props) => {
                             color: 'black',
                             marginTop: '30px'
                         }}
-                        onClick={() => { props.handleFilter() }}
+                        onClick={() => { 
+                            props.handleChange("experience", 0)
+                            props.handleChange("plant_area", 0)
+                            props.handleChange("machine_types", [])
+                            props.handleChange("certificate_type", undefined)
+                            props.handleFilter() 
+                        }}
                     >
                         Reset
                     </Button>

@@ -1,5 +1,22 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { Table, Input, Button, Modal, Form, Row, Col, InputNumber, ConfigProvider, DatePicker, Select, Upload, Space, Popover } from 'antd';
+import {
+     Table, 
+     Input, 
+     Button, 
+     Modal, 
+     Form, 
+     Row, 
+     Col, 
+     InputNumber, 
+     ConfigProvider, 
+     DatePicker, 
+     Select, 
+     Upload, 
+     Space, 
+     Popover,
+     Flex,
+
+    } from 'antd';
 import { OPEN_ROUTES, PRODUCT_URL_PATTERN } from '../../../../utils/constants';
 import { addProductDetails, getProductDetails, deleteProductDetails, uploadToolImages, uploadProductImages } from '../../../../apis/Vendor/ProductDetails';
 import { DeleteTwoTone } from '@ant-design/icons';
@@ -9,6 +26,8 @@ import { convertBufferToBinary } from '../../../../utils/helper';
 import { getCopanyId } from '../../../../utils/helper';
 import { useParams } from 'react-router-dom';
 import { getProductDetailsCustomer } from '../../../../apis/commonFunctions';
+import { Edit } from '@mui/icons-material';
+import EditCustomer from './EditCustomer';
 
 const Context = React.createContext({
     name: 'Default',
@@ -37,6 +56,9 @@ const CustomerDetails = (props) => {
 
     const [api, contextHolder] = notification.useNotification();
     const [show, setnoShow] = useState(false)
+
+    const [editModal, setEditModal] = useState(false)
+    const [editItem, setEditItem] = useState(undefined)
 
     let companyID = useParams()
 
@@ -201,9 +223,21 @@ const CustomerDetails = (props) => {
                         setImageModal(true)
                         setmodalProduct(record)
                     }}>View</a>
-                    {tab ? <Popover content='Delete'>
+                    {tab ? 
+                    <Flex gap={6}>
+                    <Popover content='Edit'>
+                <Edit onClick={() => {
+                    setEditItem(record)
+                    setEditModal(true)
+                    }} twoToneColor="#F5222D" style={{ fontSize: '20px', cursor:'pointer' }} />
+            </Popover>
+            <Popover content='Delete'>
                         <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
-                    </Popover> : ''}
+                    </Popover>
+               
+            </Flex>
+                    
+                    : ''}
                 </Space>
             ),
         },
@@ -379,14 +413,9 @@ const CustomerDetails = (props) => {
         setCustomer({ ...Customer, [id]: value })
     }
 
-    const onChangeYear = (dateString) => {
-        setCustomer({ ...Customer, ["manufacturing_year"]: dateString.$y })
-    };
-
     const handleChange = (e) => {
         setCustomer({ ...Customer, [e.target.id]: e.target.value })
     }
-
 
     const handleFormSubmit = async () => {
         try {
@@ -425,7 +454,7 @@ const CustomerDetails = (props) => {
                 <Context.Provider value={contextValue}>
                     {contextHolder}
                     <div >
-                        <Table style={{ whiteSpace: 'nowrap'}} columns={Customer_COLUMNS} dataSource={CustomerData} scroll={{ y: tab ? 265 : 200 }} />
+                        <Table columns={Customer_COLUMNS} dataSource={CustomerData} scroll={{ y: tab ? 265 : 200 }} />
                     </div>
                     {tab ? <div style={{ marginTop: 'auto' }}>
                         <Button type="primary" onClick={() => setModalOpen(true)}>
@@ -589,6 +618,15 @@ const CustomerDetails = (props) => {
                         <ImageUpload uploadImages={uploadProductImage} getImages={getProductImage} />
 
                     </Modal>}
+
+                    {
+                            editModal && <EditCustomer
+                            editModal={editModal}
+                            editItem={editItem} 
+                            setEditModal={setEditModal} 
+                            fetchCustomerDetails = {fetchCustomerDetails}
+                            />
+                        }
 
                 </Context.Provider>
             </ConfigProvider>

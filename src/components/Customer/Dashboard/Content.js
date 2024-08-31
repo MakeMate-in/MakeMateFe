@@ -54,7 +54,9 @@ const CustomerContent = (props) => {
     >
 
      {props.data && props.data.length!=0 && props.loading==false?
-     <Flex vertical style={{marginTop:'45rem'}} justify='center' align='center'>
+     <Flex vertical
+      // style={{marginTop:'50%'}} 
+      justify='center' align='center'>
           <Pagination
         defaultCurrent={1}
         responsive

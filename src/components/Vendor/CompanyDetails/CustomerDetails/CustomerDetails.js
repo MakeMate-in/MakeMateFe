@@ -162,12 +162,6 @@ const CustomerDetails = (props) => {
 
     const Customer_COLUMNS = [
         {
-            title: 'Customer Name',
-            dataIndex: 'customer_name',
-            key: 'customer_name',
-            render: (text) => <a>{text}</a>,
-        },
-        {
             title: 'Product Name',
             dataIndex: 'product_name',
             key: 'product_name',
@@ -225,12 +219,12 @@ const CustomerDetails = (props) => {
                     }}>View</a>
                     {tab ? 
                     <Flex gap={6}>
-                    <Popover content='Edit'>
+                    {/* <Popover content='Edit'>
                 <Edit onClick={() => {
                     setEditItem(record)
                     setEditModal(true)
                     }} twoToneColor="#F5222D" style={{ fontSize: '20px', cursor:'pointer' }} />
-            </Popover>
+            </Popover> */}
             <Popover content='Delete'>
                         <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
                     </Popover>
@@ -454,14 +448,23 @@ const CustomerDetails = (props) => {
                 <Context.Provider value={contextValue}>
                     {contextHolder}
                     <div >
-                        <Table columns={Customer_COLUMNS} dataSource={CustomerData} scroll={{ y: tab ? 265 : 200 }} />
+                        <Table 
+                        columns={Customer_COLUMNS} 
+                        dataSource={CustomerData} 
+                        // scroll={{ y: tab ? 265 : 200 }}
+                        pagination={{
+                            pageSize: tab?3:5, // Set the number of rows per page
+                            // showSizeChanger: true, // Allow changing page size
+                            // pageSizeOptions: ['5'], // Options for page sizes
+                          }}
+                        />
                     </div>
                     {tab ? <div style={{ marginTop: 'auto' }}>
                         <Button type="primary" onClick={() => setModalOpen(true)}>
-                            + Add Customer
+                            + Add Product
                         </Button>
                         <Modal
-                            title="Add Customer Details"
+                            title="Add Product Details"
                             centered
                             open={modalOpen}
                             okText="Save"
@@ -472,13 +475,13 @@ const CustomerDetails = (props) => {
                             <Form layout="vertical" onFinish={handleFormSubmit} form={form}>
                                 <Row gutter={16}>
                                     <Col span={12}>
-                                        <Form.Item label="Customer Name" name="customer_name" rules={[{ required: true, message: 'Customer Name is required' }]}>
+                                    <Form.Item label="Product Name" name="product_name" rules={[{ required: true, message: 'Product Name is required' }]}>
                                             <Input
                                                 className="custom-input"
                                                 variant="filled"
-                                                id="customer_name"
-                                                placeholder='Enter Customer Name'
-                                                value={Customer["customer_name"]}
+                                                id="product_name"
+                                                placeholder='Enter Product Name'
+                                                value={Customer["product_name"]}
                                                 onChange={handleChange}
                                             />
                                         </Form.Item>
@@ -496,16 +499,21 @@ const CustomerDetails = (props) => {
                                         
                                     </Col>
                                     <Col span={12}>
-                                    <Form.Item label="Product Name" name="product_name" rules={[{ required: true, message: 'Product Name is required' }]}>
-                                            <Input
-                                                className="custom-input"
+                                    <Form.Item
+                                            label="No of Cavity"
+                                            name="no_of_cavity"
+                                            rules={[{ required: true, message: 'No. of Cavity is required' }]}>
+                                            <InputNumber
+                                                min={1}
+                                                size='large'
                                                 variant="filled"
-                                                id="product_name"
-                                                placeholder='Enter Product Name'
-                                                value={Customer["product_name"]}
-                                                onChange={handleChange}
+                                                style={{ width: '93%' }}
+                                                placeholder='Enter No of Cavity'
+                                                value={Customer["no_of_cavity"]}
+                                                onChange={(e) => { handleInputNumber("no_of_cavity", e) }}
                                             />
                                         </Form.Item>
+
                                         <Form.Item label="Part Material" name="part_material" rules={[{ required: true, message: 'Material is required' }]}>
                                             <Input
                                                 className="custom-input"
@@ -556,20 +564,7 @@ const CustomerDetails = (props) => {
                                                 onChange={(e) => { handleInputNumber("tool_tonnage", e) }}
                                             />
                                         </Form.Item>
-                                        <Form.Item
-                                            label="No of Cavity"
-                                            name="no_of_cavity"
-                                            rules={[{ required: true, message: 'No. of Cavity is required' }]}>
-                                            <InputNumber
-                                                min={1}
-                                                size='large'
-                                                variant="filled"
-                                                style={{ width: '93%' }}
-                                                placeholder='Enter No of Cavity'
-                                                value={Customer["no_of_cavity"]}
-                                                onChange={(e) => { handleInputNumber("no_of_cavity", e) }}
-                                            />
-                                        </Form.Item>
+                                       
                                     </Col>
                                 </Row>
                             </Form>

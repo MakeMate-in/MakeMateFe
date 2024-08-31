@@ -60,6 +60,10 @@ const MANPOWER_DESIGNATION = [
   {
     value: 'Wirecut Operator',
     label: 'Wirecut Operator',
+  },
+  {
+    value: 'Miscellaneous',
+    label: 'Miscellaneous',
   }
 ]
 
@@ -233,7 +237,7 @@ const InfraStructureDetails = (props) => {
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
-                  label="Area of plant (in sq meters)"
+                  label="Area of plant (in sq. foot)"
                   name="plantArea"
                 // rules={[{ required: true, message: 'Area of plant is required' }]}
                 >
@@ -299,7 +303,7 @@ const InfraStructureDetails = (props) => {
               </Col>
               <Col span={12}>
                 <Form.Item
-                  label="Assembly area (in sq meters)"
+                  label="Assembly area (in sq. foot)"
                   name="assemblyArea"
                 // rules={[{ required: true, message: 'Assembly area is required' }]}
                 >

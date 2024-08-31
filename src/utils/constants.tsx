@@ -111,7 +111,7 @@ export const STEP_TAB_MAP_INFRA_2 = {
 export const STEPS_HEADINGS = {
     0: 'Company Overview',
     1: 'Infrastructure Details',
-    2: 'Customer Details',
+    2: 'Product Details',
     3: 'Complete'
 }
 

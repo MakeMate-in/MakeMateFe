@@ -8,6 +8,7 @@ import StoreIcon from '@mui/icons-material/Store';
 import DescriptionIcon from '@mui/icons-material/Description';
 import TextArea from 'antd/es/input/TextArea';
 import { addProductReview } from '../../../../apis/Vendor/ProductDetails';
+import wallpaper_1 from './../../../../assets/wallpaper_1.jpg'
 
 const ProductCard = (props) => {
   const navigate = useNavigate();
@@ -46,25 +47,19 @@ const ProductCard = (props) => {
   return (
     <div className='bg-white p-4 rounded-lg shadow-md overflow-hidden flex flex-col mb-2'>
       <Carousel autoplay className='rounded-lg overflow-hidden mb-2'>
-        {props.data.images && props.data.images.map((image, index) => (
-          <div key={index} className='aspect-square bg-gray-200'>
-            <img src={image} alt={`Slide ${index}`} className='object-cover w-full h-full' style={{ cursor: 'pointer' }} onClick={handleConnect} />
-          </div>
-        ))}
+        {props.data.images ?props.data.images.map((image, index) => {
+ return (<div key={index} className='aspect-square bg-gray-200'>
+            <img src={image==undefined?wallpaper_1:image} alt={`Slide ${index}`} className='object-cover w-full h-full' style={{ cursor: 'pointer' }} onClick={handleConnect} />
+          </div>)
+}):(<div className='aspect-square bg-gray-200'>
+  <img src={wallpaper_1} alt={`Slide ${1}`} className='object-cover w-full h-full' style={{ cursor: 'pointer' }} />
+</div>)}
       </Carousel>
       <div className='p-2 flex flex-col gap-2'>
         {props.data.Certificstes && props.data.Certificstes.map((item, index) => (
           (index < 1 ? <Badge.Ribbon key={index} text={item.fileName} /> : '')
         ))}
         <div>
-          <Typography.Title level={4}>{props.data.product_name}</Typography.Title>
-          <div className='flex items-center gap-1'>
-            <span className='text-lg'>{random_val}</span>
-            <Rate defaultValue={random_val} allowHalf disabled />
-          </div>
-        </div>
-        <div>{reviewsCount}+ Ratings | <a style={{fontSize: '16px', fontWeight: '400'}} onClick={() => { setReviewModal(true) }}>Share your Review</a></div>
-
         <div>
           <Flex gap={2} align='center'>
             <StoreIcon />
@@ -75,12 +70,21 @@ const ProductCard = (props) => {
             <Typography.Paragraph ellipsis className='text-gray-600 mb-0' style={{ marginBottom: '0px' }}>{props.data.company_data.description}</Typography.Paragraph>
           </Flex>
         </div>
+          {/* <Typography.Title level={4}>{props.data.product_name}</Typography.Title> */}
+          <div className='flex items-center gap-1'>
+            <span className='text-lg'>{random_val}</span>
+            <Rate defaultValue={random_val} allowHalf disabled />
+          </div>
+        </div>
+        <div>{reviewsCount}+ Ratings | <a style={{fontSize: '16px', fontWeight: '400'}} onClick={() => { setReviewModal(true) }}>Share your Review</a></div>
+
+     
         <div className='flex flex-wrap gap-1'>
           <Tag color='red' className='flex items-center justify-center'>
             Experience: {props.data.company_data.experience + " years"}
           </Tag>
           <Tag color='red' className='flex items-center justify-center'>
-            Plant Area: {props.data.infrastructuredetails.plant_area + " sqm"}
+            Plant Area: {props.data.infrastructuredetails?.plant_area + " sq. ft."}
           </Tag>
         </div>
         <div className='flex flex-wrap'>

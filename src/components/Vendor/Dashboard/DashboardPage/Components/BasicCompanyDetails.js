@@ -11,7 +11,6 @@ const BasicCompanyDetails = (props) => {
   let url 
   if(AllDetails && AllDetails.companyDetails && AllDetails.companyDetails.company_logo)
 url = `data:image/png;base64,${AllDetails.companyDetails.company_logo}`;
-  console.log(url)
   return (
     <Card style={{ marginBottom: '20px', background: bg3 }}>
       <Flex gap={"large"}>

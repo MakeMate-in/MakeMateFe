@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { Empty, Flex, Layout, theme } from 'antd';
+import { useEffect, useState } from 'react'
+import { Empty, Flex, Layout, Pagination, theme } from 'antd';
 import "./../../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
 import ProductCard from './Component/ProductCard';
 import './Header.css'
@@ -12,9 +12,31 @@ const CustomerContent = (props) => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(8);
+  const [totalCount, setTotalCount] = useState(0)
+  const [data, setData] = useState()
+
+
+  // useEffect(() => {
+  //   props.fetchDetails(pageIndex, pageSize)
+  // }, [])
+
   useEffect(() => {
-    props.fetchDetails()
+    props.fetchDetails(pageIndex, pageSize)
+    if(props.data){
+      setData(props.data)
+    }
   }, [])
+
+  useEffect(() => {
+    props.fetchDetails(pageIndex, pageSize)
+    if(props.data){
+      setData(props.data)
+    }
+  }, [pageIndex])
+
+  console.log(props.data)
 
   return (
     <Content
@@ -22,32 +44,38 @@ const CustomerContent = (props) => {
         background: colorBgContainer,
         borderRadius: borderRadiusLG,
         padding: '16px',
+        // paddingTop:'10rem',
         overflow: 'auto',
         display: 'flex', 
         justifyContent: 'center', 
-        alignItems: 'center'
+        alignItems: 'center',
+        // marginTop:'10rem'
       }}
     >
-     {props.data && props.data.length!=0 && props.loading==false? <div className='grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-12'>
-        {props.data && props.data.length!=0 && props.loading==false? 
+
+     {props.data && props.data.length!=0 && props.loading==false?
+     <Flex vertical style={{marginTop:'45rem'}} justify='center' align='center'>
+          <Pagination
+        defaultCurrent={1}
+        responsive
+        current={pageIndex}
+        pageSize={pageSize}
+        // total={props.totalCount}
+        total={72}
+        onChange={(value) => setPageIndex(value)}
+      />
+     <div className='grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'>
+        {data && data.length!=0 && props.loading==false? 
         props.data.map((card, index) => (
           <ProductCard
             key={index}
             data={card}
           />
         )):''
-        // : 
-        //  (
-        //   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '84vh', marginLeft:'40rem' }}>
-        //     <div class="spinner-squarea">
-        //       <div class="squarea-1 squarea"></div>
-        //       <div class="squarea-2 squarea"></div>
-        //       <div class="squarea-3 squarea"></div>
-        //     </div>
-        //   </div>
-        // )
        }
-      </div>:      
+      </div>
+      </Flex>
+      :      
           <LinearProgress style={{width:'30%'}}/>
       }  
         

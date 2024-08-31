@@ -233,12 +233,12 @@ const Machines = (props) => {
                         setmodalMachine(record)
                     }}>View</a>
                     {tab ? <Flex gap={6}>
-                        <Popover content='Edit'>
+                        {/* <Popover content='Edit'>
                     <Edit onClick={() => {
                         setEditModal(true)
                         setEditItem(record)
                         }} twoToneColor="#F5222D" style={{ fontSize: '20px', cursor:'pointer' }} />
-                </Popover>
+                </Popover> */}
                     <Popover content='Delete'>
                         <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
                     </Popover>
@@ -278,13 +278,13 @@ const Machines = (props) => {
                         setmodalMachine(record)
                     }}>View</a>
                    {tab ? <Flex gap={6}>
-                        <Popover content='Edit'>
+                        {/* <Popover content='Edit'>
                     <Edit onClick={() => {
                         setEditItem(record)
                         setIsConventional(true)
                         setEditModal(true)
                         }} twoToneColor="#F5222D" style={{ fontSize: '20px', cursor:'pointer' }} />
-                </Popover>
+                </Popover> */}
                     <Popover content='Delete'>
                         <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
                     </Popover>
@@ -532,7 +532,14 @@ const Machines = (props) => {
                         Conventional Machines
                     </Button>
                     <div >
-                        <Table columns={MACHINE_COLUMNS} dataSource={MachineData} scroll={{ y: tab ? 265 : 200 }} />
+                        <Table columns={MACHINE_COLUMNS} dataSource={MachineData} 
+                         pagination={{
+                            pageSize: tab?3:5, // Set the number of rows per page
+                            // showSizeChanger: true, // Allow changing page size
+                            // pageSizeOptions: ['5'], // Options for page sizes
+                          }}
+                        // scroll={{ y: tab ? 265 : 200 }}
+                         />
                     </div>
                     <div style={{ marginTop: '10px' }}>
 
@@ -739,7 +746,16 @@ const Machines = (props) => {
                         onCancel={() => setConvetionalModal(false)}
                         width={750}
                     >
-                        <Table columns={CONVENTIONAL_MACHINE_COLUMNS} dataSource={conventionalMachinesData} scroll={{ y: tab ? 265 : 200 }} />
+                        <Table 
+                        columns={CONVENTIONAL_MACHINE_COLUMNS} 
+                        dataSource={conventionalMachinesData} 
+                        // scroll={{ y: tab ? 265 : 200 }}
+                        pagination={{
+                            pageSize: tab?3:5, // Set the number of rows per page
+                            // showSizeChanger: true, // Allow changing page size
+                            // pageSizeOptions: ['5'], // Options for page sizes
+                          }}
+                        />
 
                     </Modal>}
 

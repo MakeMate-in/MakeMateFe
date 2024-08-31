@@ -216,7 +216,7 @@ const DashboardPage = () => {
                     <Row>
                       <Col span={16}>
                         <Statistic
-                          title="Customer Details"
+                          title="Product Details"
                           value={AllDetails?.companyDetails?.customer_details.length}
                           valueStyle={{
                             color: '#3f8600',
@@ -238,7 +238,7 @@ const DashboardPage = () => {
                 <Machines />
               </Card>
 
-              <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Customer Details</Typography>
+              <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Product Details</Typography>
               <Card style={{ overflow: 'auto', scrollbarWidth: 'none'}}>
                 <CustomerDetails />
               </Card>

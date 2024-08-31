@@ -141,15 +141,15 @@ const DigitalFactory = (props) => {
     
     if (CompanyDetails?.description !== undefined && CompanyDetails.description !== '') per = per + 10
 
-    if (AllDetails?.companyDetails?.address !== undefined && AllDetails?.companyDetails.address?.length > 0) per = per + 8
+    if (AllDetails?.companyDetails?.address !== undefined && AllDetails?.companyDetails.address?.length > 0) per = per + 13
 
-    if (AllDetails?.companyDetails?.contact_person !== undefined && AllDetails?.companyDetails?.contact_person.length > 0) per = per + 8
+    if (AllDetails?.companyDetails?.contact_person !== undefined && AllDetails?.companyDetails?.contact_person.length > 0) per = per + 13
 
     // if (AllDetails?.companyDetails?.customer_details !== undefined && AllDetails?.companyDetails?.customer_details.length > 0) per = per + 3
 
     // if (AllDetails?.companyDetails?.product_details !== undefined && AllDetails?.companyDetails?.product_details.length > 0) per = per + 3
 
-    if (certificateCount>0) per = per + PER_COUNT
+    // if (certificateCount>0) per = per + PER_COUNT
 
     if ( (InfrastructureDetails && InfrastructureDetails.assembly_area !== undefined && InfrastructureDetails.assembly_area !== null) && InfrastructureDetails?.assembly_area !== '') per = per + PER_INFRA_COUNT
 
@@ -182,7 +182,7 @@ const DigitalFactory = (props) => {
   useEffect(() => {
     CalculatePercentage()
 
-  }, [CompanyDetails,InfrastructureDetails,MachineDetails, plantImagesCount, customerDetails, AllDetails, certificateCount])
+  }, [CompanyDetails,InfrastructureDetails,MachineDetails, plantImagesCount, customerDetails, AllDetails])
 
   const onSaveAndSubmit = () => {
     const CURRENT_SUB = 2
@@ -320,7 +320,7 @@ const DigitalFactory = (props) => {
           </Col>
           <Col span={18}>
             <Card bordered hoverable style={{
-              height: '85rem',
+              height: '85vh',
               overflow: 'auto',
               scrollbarWidth: 'none', position: 'relative'
             }}>

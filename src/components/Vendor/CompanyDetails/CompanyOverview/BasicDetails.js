@@ -80,7 +80,8 @@ const BasicDetails = (props) => {
     "company_name": props.CompanyDetails.company_name,
     "GST_no": props.CompanyDetails.GST_no,
     "experience": props.CompanyDetails.experience,
-    "current_projects_no": props.CompanyDetails.current_projects_no
+    "current_projects_no": props.CompanyDetails.current_projects_no,
+    "specialization": props.CompanyDetails.specialization
   });
 
   const initialValues = {
@@ -88,8 +89,11 @@ const BasicDetails = (props) => {
     "company_name": props.CompanyDetails.company_name,
     "GST_no": props.CompanyDetails.GST_no,
     "experience": props.CompanyDetails.experience,
-    "current_projects_no": props.CompanyDetails.current_projects_no
+    "current_projects_no": props.CompanyDetails.current_projects_no,
+    "specialization": props.CompanyDetails.specialization
   }
+
+  console.log(props.CompanyDetails)
 
   const handleChange = (event) => {
     setBasicDetails({ ...basicDetails, [event.target.id]: event.target.value })
@@ -227,6 +231,7 @@ const BasicDetails = (props) => {
                       />
                     </Form.Item>
                   </Col>
+                
                 </Row>
               </Col>
             </Row>
@@ -247,6 +252,25 @@ const BasicDetails = (props) => {
                     value={basicDetails["company_name"]}
                   />
                 </Form.Item>
+
+                <Form.Item
+                  label="GST"
+                  name="GST_no"
+                  rules={[{ required: true, message: 'GST is required' }]}
+                >
+                  <Input
+                    className="custom-input"
+                    variant="filled"
+                    placeholder="Enter your GST No."
+                    id={"GST_no"}
+                    autoComplete='off'
+                    onChange={handleChange}
+                    value={basicDetails["GST_no"]}
+                  />
+                </Form.Item>
+              
+
+
                 <Form.Item
                   label="Total Experience (in Years)"
                   name="experience"
@@ -264,21 +288,22 @@ const BasicDetails = (props) => {
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item
-                  label="GST"
-                  name="GST_no"
-                  rules={[{ required: true, message: 'GST is required' }]}
+              <Form.Item
+                  label="Specialization"
+                  name="specialization"
+                  rules={[{ required: true, message: 'Specialization is required' }]}
                 >
-                  <Input
+                     <Input
                     className="custom-input"
                     variant="filled"
-                    placeholder="Enter your GST No."
-                    id={"GST_no"}
-                    autoComplete='off'
+                    placeholder="Enter Specialization"
+                    id={"specialization"}
                     onChange={handleChange}
-                    value={basicDetails["GST_no"]}
+                    autoComplete='off'
+                    value={basicDetails["specialization"]}
                   />
                 </Form.Item>
+              
                 <Form.Item
                   label="Current Running Project"
                   name="current_projects_no"

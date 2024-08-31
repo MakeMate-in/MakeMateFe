@@ -19,7 +19,7 @@ const InfraDashboard = (props) => {
                         valueStyle={{
                           color: '#3f8600',
                         }}
-                        suffix='sqm'
+                        suffix='sq. ft.'
                       />
                     </Card>
                     <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px',  background: bg4 }}>
@@ -30,7 +30,7 @@ const InfraDashboard = (props) => {
                         valueStyle={{
                           color: '#3f8600',
                         }}
-                        suffix='sqm'
+                        suffix='sq. ft.'
                       />
                     </Card>
                   </Col>

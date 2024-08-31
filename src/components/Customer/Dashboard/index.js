@@ -85,9 +85,11 @@ const CustomerDashboard = () => {
   };
 
 
-  const fetchDetails = async () => {
+  const fetchDetails = async (pageIndex, pageSize) => {
     let param = {
       companyId: null,
+      pageIndex: pageIndex,
+      pageSize: pageSize
     };
     try {
       const resp = await getAllUserDetails(param);

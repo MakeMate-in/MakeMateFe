@@ -15,7 +15,7 @@ const CustomerContent = (props) => {
   const [pageIndex, setPageIndex] = useState(1);
   const [pageSize, setPageSize] = useState(9);
   const [totalCount, setTotalCount] = useState(0)
-  const [data, setData] = useState()
+  const [data, setData] = useState(undefined)
 
 
   // useEffect(() => {
@@ -36,7 +36,12 @@ const CustomerContent = (props) => {
     }
   }, [pageIndex])
 
-  console.log(props.data)
+  useEffect(() => {
+    if(props.data){
+      setData(props.data)
+    }
+  }, [props.data])
+
 
   return (
     <Content
@@ -53,9 +58,9 @@ const CustomerContent = (props) => {
       }}
     >
 
-     {props.data && props.data.length!=0 && props.loading==false?
+     {data && data.length!=0 && props.loading==false?
      <Flex vertical
-      // style={{marginTop:'50%'}} 
+      style={{marginTop:'50%'}} 
       justify='center' align='center'>
           <Pagination
         defaultCurrent={1}
@@ -67,8 +72,8 @@ const CustomerContent = (props) => {
         onChange={(value) => setPageIndex(value)}
       />
      <div className='grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'>
-        {props.data && props.data.length!=0 && props.loading==false? 
-        props.data.map((card, index) => (
+        {data && data.length!=0 && props.loading==false? 
+        data.map((card, index) => (
           <ProductCard
             key={index}
             data={card}

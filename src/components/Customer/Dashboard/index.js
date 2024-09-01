@@ -72,7 +72,6 @@ const CustomerDashboard = () => {
       }
       let res = await getSearchedProducts(params)
       if (res.success) {
-        
         setData(res.results)
       }
       setLoading(false)
@@ -91,11 +90,13 @@ const CustomerDashboard = () => {
       pageIndex: pageIndex,
       pageSize: pageSize
     };
+    setLoading(true)
     try {
       const resp = await getAllUserDetails(param);
       if (resp.success) {
         setData(resp.data)
       }
+      setLoading(false)
     }
     catch (err) {
       console.log(err)

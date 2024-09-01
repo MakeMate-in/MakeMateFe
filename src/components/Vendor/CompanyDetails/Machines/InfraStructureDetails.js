@@ -377,6 +377,7 @@ const InfraStructureDetails = (props) => {
                           <Select.Option value="Quality Person" disabled={ManpowerSelected.includes("Quality Person")}>Quality Person</Select.Option>
                           <Select.Option value="Polisher" disabled={ManpowerSelected.includes("Polisher")}>Polisher</Select.Option>
                           <Select.Option value="Wirecut Operator" disabled={ManpowerSelected.includes("Wirecut Operator")}>Wirecut Operator</Select.Option>
+                          <Select.Option value="Miscellaneous" disabled={ManpowerSelected.includes("Miscellaneous")}>Miscellaneous</Select.Option>
                         </Select>
                       </Form.Item>
                       {index === inputs.length - 1 && (

@@ -13,7 +13,7 @@ const CustomerContent = (props) => {
   } = theme.useToken();
 
   const [pageIndex, setPageIndex] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize, setPageSize] = useState(9);
   const [totalCount, setTotalCount] = useState(0)
   const [data, setData] = useState()
 
@@ -67,7 +67,7 @@ const CustomerContent = (props) => {
         onChange={(value) => setPageIndex(value)}
       />
      <div className='grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'>
-        {data && data.length!=0 && props.loading==false? 
+        {props.data && props.data.length!=0 && props.loading==false? 
         props.data.map((card, index) => (
           <ProductCard
             key={index}

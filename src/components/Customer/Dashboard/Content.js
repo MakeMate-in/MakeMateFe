@@ -13,7 +13,7 @@ const CustomerContent = (props) => {
   } = theme.useToken();
 
   const [pageIndex, setPageIndex] = useState(1);
-  const [pageSize, setPageSize] = useState(9);
+  const [pageSize, setPageSize] = useState(8);
   const [totalCount, setTotalCount] = useState(0)
   const [data, setData] = useState(undefined)
 

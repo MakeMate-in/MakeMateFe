@@ -24,11 +24,11 @@ const CompanyDetailsComp = (props) => {
       label: 'Certificates',
       children: <Certificates {...props}/>,
     },
-    // {
-    //   key: '4',
-    //   label: 'Additional Information',
-    //   children: <AdditionalInfo {...props}/>,
-    // },
+    {
+      key: '4',
+      label: 'Additional Information',
+      children: <AdditionalInfo {...props}/>,
+    },
   ]
 
   return (

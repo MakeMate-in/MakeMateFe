@@ -185,7 +185,7 @@ const DigitalFactory = (props) => {
   }, [CompanyDetails,InfrastructureDetails,MachineDetails, plantImagesCount, customerDetails, AllDetails])
 
   const onSaveAndSubmit = () => {
-    const CURRENT_SUB = 2
+    const CURRENT_SUB = 3
     if (current === 0 && currentSub < CURRENT_SUB) {
       setCurrentSub(currentSub + 1);
     } else if (current === 0 && currentSub === CURRENT_SUB) {
@@ -242,9 +242,9 @@ const DigitalFactory = (props) => {
           {
             title: 'Certificates'
           },
-          // {
-          //   title: 'Additional Information'
-          // },
+          {
+            title: 'Additional Information'
+          },
         ]}
       />
     );

@@ -14,10 +14,10 @@ const AdditionalInfo = (props) => {
       <section style={{ height: '12rem' }}>
         <Contact {...props}  />
       </section>
-      <hr />
+      {/* <hr />
       <section>
       <Projects {...props} />
-      </section>
+      </section> */}
     </div>
   )
 }

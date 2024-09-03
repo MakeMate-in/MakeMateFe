@@ -106,7 +106,7 @@ const CustomerDashboard = () => {
 
   return (
 
-    <Layout style={{ height: '100vh', position:'relative' }}>
+    <Layout style={{height:loading?'100vh':''}}>
 
       {/* Header */}
       <CustomerHeader  handleSearch={handleSearch} fetchDetails={fetchDetails} showDrawer={showDrawer} setLoading={setLoading}/>

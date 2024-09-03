@@ -157,12 +157,9 @@ const DashboardPage = () => {
 
                 {AllDetails.images.map((item, i) => {
                   let x = item
-                  return (<div
-                   style={{
-                    //  height: '105%'
-                      }}>
+                  return (
                     <img key={i} src={item} style={{ height: "50vh", width: "80vw" }} />
-                  </div>)
+                  )
 
                 })}
               </Carousel>

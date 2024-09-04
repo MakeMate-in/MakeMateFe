@@ -18,6 +18,7 @@ import ServicesDetails from './Components/ServicesDetails';
 import { OPEN_ROUTES, PRODUCT_URL_PATTERN } from '../../../../utils/constants';
 import { useParams } from 'react-router-dom';
 import { getAllDetailsCustomer } from '../../../../apis/commonFunctions';
+import ImageGallery from "react-image-gallery";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -25,7 +26,8 @@ const DashboardPage = () => {
   const [AllDetails, setAllDetails] = useState(undefined);
   const [loading, setLoading] = useState(true);
   const [api] = notification.useNotification();
-  const [loggedIn, setloggedIn] = useState(false)
+  const [loggedIn, setloggedIn] = useState(false);
+  const [GalleryImages, setGalleryImages] = useState(undefined);
 
   const openFailedNotification = (placement, message) => {
     api.error({
@@ -124,22 +126,50 @@ const DashboardPage = () => {
 
   const totalManpower = AllDetails ? AllDetails?.infrastructureDetails?.manpower.reduce((total, m) => total + m.count, 0) : 0;
 
+  useEffect(() => {
+    if(AllDetails && AllDetails.images && AllDetails.images.length>0){
+      const data = AllDetails.images.map((img) => ({
+        original: img,
+        thumbnail: img,
+        sizes: 10
+      }));
+      console.log(data);
+      setGalleryImages(data);
+    }
+  }, [AllDetails]);
+
   return (
-    <div style={{ overflow: 'auto', scrollbarWidth: 'none', padding:window.location.pathname==OPEN_ROUTES.VENDOR_DASHBOARD?'':'1rem' }}>
+    <div
+      style={{
+        overflow: "auto",
+        scrollbarWidth: "none",
+        padding:
+          window.location.pathname == OPEN_ROUTES.VENDOR_DASHBOARD
+            ? ""
+            : "1rem",
+      }}
+    >
       {AllDetails == undefined ? (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '84vh' }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "84vh",
+          }}
+        >
           <div class="spinner-square">
             <div class="square-1 square"></div>
             <div class="square-2 square"></div>
             <div class="square-3 square"></div>
           </div>
         </div>
-      ) :
+      ) : (
         <ConfigProvider
           theme={{
             components: {
               Statistic: {
-                titleFontSize: 20
+                titleFontSize: 20,
               },
               Carousel: {
                 arrowSize: 35,
@@ -147,134 +177,194 @@ const DashboardPage = () => {
             },
           }}
         >
-
-
-          <Row gutter={16} style={{ marginTop: '10px' }}>
+          <Row gutter={16} style={{ marginTop: "10px" }}>
             <Col span={16}>
-
-
-              <Carousel arrows dotPosition="left">
+              {/* <Carousel className='rounded-lg overflow-hidden mb-2' arrows dotPosition="left">
 
                 {AllDetails.images.map((item, i) => {
                   let x = item
                   return (
-                    <img key={i} src={item} style={{ height: "50vh", width: "80vw" }} />
+                    // <img key={i} src={item} style={{ height: "50vh" }} />
+                    <div className="aspect-square bg-gray-200">
+                      <img key={i} src={item} className="object-cover w-full" style={{height: 'auto'}} />
+                    </div>
                   )
 
                 })}
-              </Carousel>
-
-
-
-              <Row gutter={16} style={{ marginTop: '10px', marginBottom: '10px' }}>
+              </Carousel> */}
+              {GalleryImages && <ImageGallery
+                items={GalleryImages}
+                showThumbnails={false}
+                showPlayButton={true}
+                showFullscreenButton={true}
+                showBullets={true}
+              />}
+        
+              <Row
+                gutter={16}
+                style={{ marginTop: "10px", marginBottom: "10px" }}
+              >
                 <Col span={8}>
-                  <Card size='small' hoverable>
+                  <Card size="small" hoverable>
                     <Row>
                       <Col span={16}>
                         <Statistic
                           title="Total Experience"
                           value={AllDetails?.companyDetails?.experience}
                           valueStyle={{
-                            color: '#3f8600',
+                            color: "#3f8600",
                             fontWeight: 600,
-                            fontSize: '28px'
+                            fontSize: "28px",
                           }}
                           suffix="Years"
                         />
                       </Col>
                       <Col span={8}>
-                        <img src={svg_experience} alt="" style={{ float: 'right' }} />
+                        <img
+                          src={svg_experience}
+                          alt=""
+                          style={{ float: "right" }}
+                        />
                       </Col>
                     </Row>
                   </Card>
                 </Col>
                 <Col span={8}>
-                  <Card size='small' hoverable>
+                  <Card size="small" hoverable>
                     <Row>
                       <Col span={16}>
                         <Statistic
                           title="No. of Projects"
-                          value={AllDetails?.companyDetails?.current_projects_no}
+                          value={
+                            AllDetails?.companyDetails?.current_projects_no
+                          }
                           valueStyle={{
-                            color: '#3f8600',
+                            color: "#3f8600",
                             fontWeight: 600,
-                            fontSize: '28px'
+                            fontSize: "28px",
                           }}
                         />
                       </Col>
                       <Col span={8}>
-                        <img src={svg_projects} alt="" style={{ float: 'right' }} />
+                        <img
+                          src={svg_projects}
+                          alt=""
+                          style={{ float: "right" }}
+                        />
                       </Col>
                     </Row>
                   </Card>
                 </Col>
                 <Col span={8}>
-                  <Card size='small' hoverable>
+                  <Card size="small" hoverable>
                     <Row>
                       <Col span={16}>
                         <Statistic
                           title="Product Details"
-                          value={AllDetails?.companyDetails?.customer_details.length}
+                          value={
+                            AllDetails?.companyDetails?.customer_details.length
+                          }
                           valueStyle={{
-                            color: '#3f8600',
+                            color: "#3f8600",
                             fontWeight: 600,
-                            fontSize: '28px'
+                            fontSize: "28px",
                           }}
                         />
                       </Col>
                       <Col span={8}>
-                        <img src={svg_customers} alt="" style={{ float: 'right' }} />
+                        <img
+                          src={svg_customers}
+                          alt=""
+                          style={{ float: "right" }}
+                        />
                       </Col>
                     </Row>
                   </Card>
                 </Col>
               </Row>
-
-              <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Machine Details</Typography>
-              <Card style={{ overflow: 'auto', scrollbarWidth: 'none'}}>
+              <Typography
+                style={{
+                  margin: "0",
+                  marginTop: "10px",
+                  fontSize: "20px",
+                  fontWeight: "600",
+                }}
+              >
+                Machine Details
+              </Typography>
+              <Card style={{ overflow: "auto", scrollbarWidth: "none" }}>
                 <Machines />
               </Card>
-
-              <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Product Details</Typography>
-              <Card style={{ overflow: 'auto', scrollbarWidth: 'none'}}>
+              <Typography
+                style={{
+                  margin: "0",
+                  marginTop: "10px",
+                  fontSize: "20px",
+                  fontWeight: "600",
+                }}
+              >
+                Product Details
+              </Typography>
+              <Card style={{ overflow: "auto", scrollbarWidth: "none" }}>
                 <CustomerDetails />
               </Card>
-
             </Col>
 
-
             <Col span={8}>
+              <BasicCompanyDetails
+                AllDetails={AllDetails}
+                loggedIn={loggedIn}
+              />
 
-              <BasicCompanyDetails AllDetails={AllDetails} loggedIn={loggedIn}/>
-
-              <ContactDetails AllDetails={AllDetails} loggedIn={loggedIn}/>
+              <ContactDetails AllDetails={AllDetails} loggedIn={loggedIn} />
 
               <Card
-              style={{
-                // height: '150vh'
-              }}
+                style={
+                  {
+                    // height: '150vh'
+                  }
+                }
               >
                 <InfraDashboard AllDetails={AllDetails} />
 
-                <Typography style={{ margin: '0', marginTop: '10px', fontSize: '20px', fontWeight: '600' }}>Total Manpower: {totalManpower}</Typography>
-                <Card
+                <Typography
                   style={{
-                    // backgroundImage: business_plan,
-                    // background: bg4 
-                  }} id='pie' >
-                  {pieData.labels && pieData.labels[0]!=undefined? <Doughnut style={{ height: '40vh' }} data={pieData} options={pieOptions} />:  <Empty />}
+                    margin: "0",
+                    marginTop: "10px",
+                    fontSize: "20px",
+                    fontWeight: "600",
+                  }}
+                >
+                  Total Manpower: {totalManpower}
+                </Typography>
+                <Card
+                  style={
+                    {
+                      // backgroundImage: business_plan,
+                      // background: bg4
+                    }
+                  }
+                  id="pie"
+                >
+                  {pieData.labels && pieData.labels[0] != undefined ? (
+                    <Doughnut
+                      style={{ height: "40vh" }}
+                      data={pieData}
+                      options={pieOptions}
+                    />
+                  ) : (
+                    <Empty />
+                  )}
                 </Card>
 
                 <ServicesDetails AllDetails={AllDetails} />
-
-
-
               </Card>
             </Col>
           </Row>
-        </ConfigProvider>}
+        </ConfigProvider>
+      )}
     </div>
-  )
+  );
 }
 
 export default DashboardPage;

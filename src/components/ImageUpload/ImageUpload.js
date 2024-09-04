@@ -5,7 +5,7 @@ import { LinearProgress } from '@mui/material'
 import { PlusOutlined } from '@ant-design/icons';
 import { NOTIFICATION_MESSAGES } from '../../utils/locale';
 import { OPEN_ROUTES, PRODUCT_URL_PATTERN } from '../../utils/constants';
-
+import ImageGallery from "react-image-gallery";
 
 const getBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -22,8 +22,7 @@ const ImageUpload = (props) => {
     const [api] = notification.useNotification();
     const [loading, setLoading] = useState(false)
     const [notShow, setShow] = useState(false)
-
-
+    const [GalleryImages, setGalleryImages] = useState(undefined);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
 
@@ -59,6 +58,14 @@ const ImageUpload = (props) => {
         setLoading(true)
         try {
             const newSrcList = await props.getImages()
+            console.log(newSrcList);
+            const data = newSrcList.map((img) => ({
+                original: img.url,
+                thumbnail: img.url,
+                sizes: 10
+              }));
+              console.log(data);
+              setGalleryImages(data);
 
             setFileList(newSrcList);
             setLoading(false)
@@ -148,6 +155,18 @@ const ImageUpload = (props) => {
         </button>
     );
 
+    // useEffect(() => {
+    //     if(fileList && fileList.length>0){
+    //       const data = fileList.map((img) => ({
+    //         original: img,
+    //         thumbnail: img,
+    //         sizes: 10
+    //       }));
+    //       console.log(data);
+    //       setGalleryImages(data);
+    //     }
+    //   }, [fileList]);
+
 
     return (
         <div>
@@ -156,15 +175,23 @@ const ImageUpload = (props) => {
                     <LinearProgress style={{ width: '50%' }} />
                 </div>
                 : <div>
-                    {fileList && fileList.length > 0 ? <Carousel arrows autoplay fade dotPosition="left" arrowSize={35} style={{ marginBottom: '10px' }}>
+                    {/* {fileList && fileList.length > 0 ? <Carousel arrows autoplay fade dotPosition="left" arrowSize={35} style={{ marginBottom: '10px' }}>
 
                         {fileList && fileList.map((item, i) => (
                             <div>
-                                <img src={item.url} style={{ height: "50vh", width: "80vw" }} />
+                                <img src={item.url} />
                             </div>
 
                         ))}
-                    </Carousel> : <Empty />}
+                    </Carousel> : <Empty />} */}
+
+                    {fileList && fileList.length > 0 && GalleryImages ? <ImageGallery
+                        items={GalleryImages}
+                        showThumbnails={false}
+                        showPlayButton={true}
+                        showFullscreenButton={true}
+                        showBullets={true}
+                    /> : <Empty />}
                     {notShow ? null : <Upload
                         listType="picture-card"
                         fileList={fileList}

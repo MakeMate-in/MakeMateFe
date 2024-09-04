@@ -127,6 +127,9 @@ const ProductCard = (props) => {
           </a>
         </div>
 
+        <Tag color="orange" className="flex items-center justify-center">
+            Specialization: {props.data.company_data?.specialization}
+        </Tag>
         <div className="flex flex-wrap gap-1">
           <Tag color="red" className="flex items-center justify-center">
             Experience: {props.data.company_data.experience + " years"}

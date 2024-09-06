@@ -10,7 +10,8 @@ const Context = React.createContext({
 });
 
 
-const DESIGN_SOFTWARE_OPTIONS = [{
+const DESIGN_SOFTWARE_OPTIONS = [
+  {
   label: 'PTC Creo',
   value: 'PTC Creo',
 },
@@ -21,7 +22,12 @@ const DESIGN_SOFTWARE_OPTIONS = [{
 {
   label: 'UX',
   value: 'UX'
-}];
+},
+{
+  label: 'Others',
+  value: 'Others',
+},
+];
 
 const MANPOWER_DESIGNATION = [
   {

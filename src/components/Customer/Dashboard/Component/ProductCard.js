@@ -8,6 +8,7 @@ import {
   Tag,
   Flex,
   Modal,
+  Empty,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import { OPEN_ROUTES } from "../../../../utils/constants";
@@ -60,8 +61,10 @@ const ProductCard = (props) => {
       {props.data.Certificstes && props.data.Certificstes.map((item, index) => (
           (index < 1 ? <Badge.Ribbon key={index} text={item.fileName} style={{zIndex:'1'}} /> : '')
         ))}
-      <Carousel autoplay className="rounded-lg overflow-hidden mb-2">
-        {props.data.images ? (
+     
+        {props.data.images && props.data.images.length>0 ? 
+         <Carousel autoplay className="rounded-lg overflow-hidden mb-2">
+        {
           props.data.images.map((image, index) => {
             return (
               <div key={index} className="aspect-square bg-gray-200">
@@ -74,18 +77,21 @@ const ProductCard = (props) => {
                 />
               </div>
             );
-          })
-        ) : (
-          <div className="aspect-square bg-gray-200">
-            <img
+          })}
+          </Carousel>
+         : 
+         <Carousel autoplay className="rounded-lg overflow-hidden mb-2">
+          <div className="aspect-square bg-gray-200" style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+            {/* <img
               src={wallpaper_1}
               alt={`Slide ${1}`}
               className="object-cover w-full h-full"
               style={{ cursor: "pointer" }}
-            />
+            /> */}
+            <Empty/>
           </div>
-        )}
-      </Carousel>
+        </Carousel>
+}
       <div className="p-2 flex flex-col gap-2">
         {/* {props.data.Certificstes && props.data.Certificstes.map((item, index) => (
           (index < 1 ? <Badge.Ribbon key={index} text={item.fileName} /> : '')

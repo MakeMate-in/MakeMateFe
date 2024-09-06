@@ -219,15 +219,15 @@ const CustomerDetails = (props) => {
                     }}>View</a>
                     {tab ? 
                     <Flex gap={6}>
-                    {/* <Popover content='Edit'>
+                    <Popover content='Edit'>
                 <Edit onClick={() => {
                     setEditItem(record)
                     setEditModal(true)
                     }} twoToneColor="#F5222D" style={{ fontSize: '20px', cursor:'pointer' }} />
-            </Popover> */}
-            <Popover content='Delete'>
+            </Popover>
+            {/* <Popover content='Delete'>
                         <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
-                    </Popover>
+                    </Popover> */}
                
             </Flex>
                     

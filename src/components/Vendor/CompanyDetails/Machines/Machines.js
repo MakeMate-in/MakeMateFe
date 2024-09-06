@@ -233,15 +233,15 @@ const Machines = (props) => {
                         setmodalMachine(record)
                     }}>View</a>
                     {tab ? <Flex gap={6}>
-                        {/* <Popover content='Edit'>
+                        <Popover content='Edit'>
                     <Edit onClick={() => {
                         setEditModal(true)
                         setEditItem(record)
                         }} twoToneColor="#F5222D" style={{ fontSize: '20px', cursor:'pointer' }} />
-                </Popover> */}
-                    <Popover content='Delete'>
+                </Popover>
+                    {/* <Popover content='Delete'>
                         <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
-                    </Popover>
+                    </Popover> */}
                    
                 </Flex> : ''}
                 </Space>
@@ -278,16 +278,16 @@ const Machines = (props) => {
                         setmodalMachine(record)
                     }}>View</a>
                    {tab ? <Flex gap={6}>
-                        {/* <Popover content='Edit'>
+                        <Popover content='Edit'>
                     <Edit onClick={() => {
                         setEditItem(record)
                         setIsConventional(true)
                         setEditModal(true)
                         }} twoToneColor="#F5222D" style={{ fontSize: '20px', cursor:'pointer' }} />
-                </Popover> */}
-                    <Popover content='Delete'>
+                </Popover>
+                    {/* <Popover content='Delete'>
                         <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
-                    </Popover>
+                    </Popover> */}
                    
                 </Flex> : ''}
                 </Space>

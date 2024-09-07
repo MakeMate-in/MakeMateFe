@@ -22,7 +22,7 @@ import StoreIcon from "@mui/icons-material/Store";
 import DescriptionIcon from "@mui/icons-material/Description";
 import TextArea from "antd/es/input/TextArea";
 import { addProductReview } from "../../../../apis/Vendor/ProductDetails";
-import wallpaper_1 from "./../../../../assets/wallpaper_1.jpg";
+import temp_logo from "./../../../../assets/temp_logo.png";
 
 const ProductCard = (props) => {
   const navigate = useNavigate();
@@ -69,7 +69,7 @@ const ProductCard = (props) => {
             return (
               <div key={index} className="aspect-square bg-gray-200">
                 <img
-                  src={image == undefined ? wallpaper_1 : image}
+                  src={image == undefined ? temp_logo : image}
                   alt={`Slide ${index}`}
                   className="object-cover w-full h-full"
                   style={{ cursor: "pointer" }}

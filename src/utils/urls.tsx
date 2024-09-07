@@ -31,7 +31,8 @@ export enum COMPANY_DETAILS_URLS{
   REMOVE_COMPANY_DETAILS_ARRAY_ELEMENT = '/api/company/delete/company-detail/one',
   UPLOAD_AVATAR = '/api/company/upload-avatar',
   GET_ALL_DETAILS = '/api/company/get/company-details/all',
-  UPDATE_PRIMARY_DETAILS = '/api/company/update/company-details/handle-primary'
+  UPDATE_PRIMARY_DETAILS = '/api/company/update/company-details/handle-primary',
+  DELETE_CUSTOMER_NAME = '/api/company/company-details/delete-customer'
 }
 
 export enum CERTIFICATES_URLS{

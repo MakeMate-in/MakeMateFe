@@ -380,3 +380,36 @@ export const updatePrimaryAddressContacts = async (params, data) => {
     }
 
 }
+
+
+
+export const deleteCustomerDetail = async (params, data) => {
+    try {
+        const url = COMPANY_DETAILS_URLS.DELETE_CUSTOMER_NAME
+        const requestData = {
+            name: data,  // Use the passed 'data' as the name in the request body
+        };
+        data = await axios.patch(baseAPIUrl + url,requestData, {
+            headers: {
+                'Authorization': getToken(),   
+            },
+            params:params
+        }).then((res) => {
+            return res.data;
+        })
+            .catch(err => {
+                if (err.response.status == 401) {
+                    console.log(err)
+                    errorValidator(err)
+                }
+                else {
+                    return err
+                }
+            })
+        return data
+    }
+    catch (err) {
+        throw err
+    }
+
+}

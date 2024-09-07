@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Button, Flex, Modal, Form, Input, Tag, Typography } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
-import { updateAddressandContacts, getCompanyDetails } from '../../../../../apis/Vendor/CompanyDetails'
+import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
+import { updateAddressandContacts, getCompanyDetails, deleteCustomerDetail } from '../../../../../apis/Vendor/CompanyDetails'
 import { notification } from 'antd';
 import { getUserId } from '../../../../../utils/helper';
 const Context = React.createContext({
@@ -47,33 +47,33 @@ const Customer = (props) => {
         [],
     );
 
-    // const deleteNotification = (placement) => {
-    //     api.success({
-    //         message: `Success`,
-    //         description: <Context.Consumer>{({ name }) => `Customer deleted Successfully`}</Context.Consumer>,
-    //         placement,
-    //     });
-    // };
-    // contextValue = useMemo(
-    //     () => ({
-    //         name: 'Make Mate',
-    //     }),
-    //     [],
-    // );
+    const deleteNotification = (placement) => {
+        api.success({
+            message: `Success`,
+            description: <Context.Consumer>{({ name }) => `Customer deleted Successfully`}</Context.Consumer>,
+            placement,
+        });
+    };
+    contextValue = useMemo(
+        () => ({
+            name: 'Make Mate',
+        }),
+        [],
+    );
 
-    // const deleteFailedNotification = (placement) => {
-    //     api.error({
-    //         message: `Success`,
-    //         description: <Context.Consumer>{({ name }) => `Unable to delete Customer`}</Context.Consumer>,
-    //         placement,
-    //     });
-    // };
-    // contextValue = useMemo(
-    //     () => ({
-    //         name: 'Make Mate',
-    //     }),
-    //     [],
-    // );
+    const deleteFailedNotification = (placement) => {
+        api.error({
+            message: `Failed`,
+            description: <Context.Consumer>{({ name }) => `Unable to delete Customer`}</Context.Consumer>,
+            placement,
+        });
+    };
+    contextValue = useMemo(
+        () => ({
+            name: 'Make Mate',
+        }),
+        [],
+    );
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -113,6 +113,28 @@ const Customer = (props) => {
         }
         setIsModalOpen(false)
     }
+
+    const handleDelete = async (customerName) => {
+        try {
+            const USER_ID = getUserId()
+            let params = {
+                user: USER_ID
+            }
+        const res = await deleteCustomerDetail(params, customerName);
+        if (res.success) {
+            deleteNotification('topRight');
+            const updatedData = await getCompanyDetails(params)
+            if (updatedData.success) {
+                props.setcompanyDetails(updatedData.data)
+            }
+        }
+        else {
+            deleteFailedNotification('topRight');
+        }
+        } catch (error) {
+          console.error('Error deleting customer detail:', error);
+        }
+      }
 
     const colors = [
         'processing', 'success', 'error', 'warning', 'magenta', 'red', 'volcano', 'orange', 'gold', 'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple',
@@ -163,7 +185,9 @@ const Customer = (props) => {
                 <Flex gap={"small"}>
                     {props.CompanyDetails.customer_details != undefined ? props.CompanyDetails.customer_details.map((item) => {
                         return (
-                            <Tag size='large' style={{ fontSize: '18px', fontFamily: 'none' }} color={getRandomColor()}>
+                            <Tag size='large' style={{ fontSize: '18px', fontFamily: 'none' }} color={getRandomColor()} closable
+                            closeIcon={<CloseOutlined onClick={() => handleDelete(item.name)} />}
+                          >
                              {item.name}
                           </Tag>    
                         )

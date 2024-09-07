@@ -225,9 +225,9 @@ const CustomerDetails = (props) => {
                     setEditModal(true)
                     }} twoToneColor="#F5222D" style={{ fontSize: '20px', cursor:'pointer' }} />
             </Popover>
-            {/* <Popover content='Delete'>
-                        <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
-                    </Popover> */}
+            <Popover content='Delete'>
+                <DeleteTwoTone onClick={() => handleDeleteInput(record)} twoToneColor="#F5222D" style={{ fontSize: '20px' }} />
+            </Popover>
                
             </Flex>
                     

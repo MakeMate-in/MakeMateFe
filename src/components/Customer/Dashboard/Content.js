@@ -17,10 +17,6 @@ const CustomerContent = (props) => {
   const [totalCount, setTotalCount] = useState(0);
   const [data, setData] = useState(undefined);
 
-  // useEffect(() => {
-  //   props.fetchDetails(pageIndex, pageSize)
-  // }, [])
-
   useEffect(() => {
     props.fetchDetails(pageIndex, pageSize);
     if (props.data) {
@@ -76,7 +72,7 @@ const CustomerContent = (props) => {
             current={pageIndex}
             pageSize={pageSize}
             // total={props.totalCount}
-            total={72}
+            total={props.totalCount}
             onChange={(value) => setPageIndex(value)}
           />
         </Flex>

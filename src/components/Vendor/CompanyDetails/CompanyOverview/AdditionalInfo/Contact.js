@@ -158,7 +158,7 @@ const Customer = (props) => {
                             <Form.Item label="Customer Name" name="customerName"
                                 rules={[{
                                     required: true,
-                                    message: 'Please input your username!',
+                                    message: 'Please input Customer name!',
                                 }
                                 ]}
                             >
@@ -168,6 +168,7 @@ const Customer = (props) => {
                                     id="name"
                                     onChange={handleChange}
                                     value={customer["name"]}
+                                    allowClear
                                 />
                             </Form.Item>
 
@@ -182,7 +183,7 @@ const Customer = (props) => {
                     </div>
                     <Button size='large' onClick={showModal} icon={<PlusOutlined />} iconPosition='start' style={{ fontWeight: 600, marginLeft: 'auto' }}>Add New Customer</Button>  
                 </Flex>
-                <Flex gap={"small"}>
+                <Flex gap={"small"} wrap>
                     {props.CompanyDetails.customer_details != undefined ? props.CompanyDetails.customer_details.map((item) => {
                         return (
                             <Tag size='large' style={{ fontSize: '18px', fontFamily: 'none' }} color={getRandomColor()} closable

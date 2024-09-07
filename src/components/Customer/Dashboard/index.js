@@ -20,6 +20,7 @@ const CustomerDashboard = () => {
   })
 
   const [open, setOpen] = useState(false);
+  const [totalCount, setTotalCount] = useState(0);
 
   const showDrawer = () => {
     setOpen(true);
@@ -94,9 +95,10 @@ const CustomerDashboard = () => {
     try {
       const resp = await getAllUserDetails(param);
       if (resp.success) {
-        setData(resp.data)
+        setData(resp.data);
+        setTotalCount(resp.totalCount);
       }
-      setLoading(false)
+      setLoading(false);
     }
     catch (err) {
       console.log(err)
@@ -120,7 +122,7 @@ const CustomerDashboard = () => {
               padding: '0 20px 20px',
             }}
           >
-            <CustomerContent data={data} fetchDetails={fetchDetails} loading={loading} />
+            <CustomerContent totalCount={totalCount} data={data} fetchDetails={fetchDetails} loading={loading} />
 
           </Layout>
       </Layout>

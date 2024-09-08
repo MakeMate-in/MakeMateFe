@@ -163,6 +163,7 @@ const SignUp = () => {
     data.otp = otp
     data.verification_key = otpResponse.response
     const res = await verifyOtp(data, true)
+    console.log(res)
     if (res.Status === MESSAGES.SUCCESS) {
       try {
         let res;
@@ -195,15 +196,6 @@ const SignUp = () => {
       errors.otp = res.msg
       setErrors(errors)
       navigate(OPEN_ROUTES.SIGNUP)
-      setUser({
-        "first_name": "",
-        "last_name": "",
-        "email": "",
-        "mobile_no": "",
-        "password": "",
-        "company_name": "",
-        "GST_no": ""
-      })
     }
     setLoading(false)
 

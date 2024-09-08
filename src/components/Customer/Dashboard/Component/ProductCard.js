@@ -22,6 +22,7 @@ import StoreIcon from "@mui/icons-material/Store";
 import DescriptionIcon from "@mui/icons-material/Description";
 import TextArea from "antd/es/input/TextArea";
 import { addProductReview } from "../../../../apis/Vendor/ProductDetails";
+import { addCompanyReview } from "../../../../apis/Vendor/CompanyDetails";
 import temp_logo from "./../../../../assets/temp_logo.png";
 
 const ProductCard = (props) => {
@@ -36,17 +37,18 @@ const ProductCard = (props) => {
 
   let reviewsCount = 100;
 
-  const random_val = getRandomRansomValue(3, 5);
+  // const random_val = getRandomRansomValue(3, 5);
   const handleAddReview = async () => {
     try {
       if (getUserId() != null) {
         let data = {
-          id: props.data.product_id,
+          id: props.data.company_data._id,
           rating: starRating,
           comments: comment,
           userIds: getUserId(),
         };
-        const res = await addProductReview(data);
+        // const res = await addProductReview(data);
+        const res = await addCompanyReview(data);
         if (res.success) {
           openNotificationWithIcon("success", "Thanks for the Feedback");
         }
@@ -117,12 +119,16 @@ const ProductCard = (props) => {
           </div>
           {/* <Typography.Title level={4}>{props.data.product_name}</Typography.Title> */}
           <div className="flex items-center gap-1">
-            <span className="text-lg">{random_val}</span>
-            <Rate defaultValue={random_val} allowHalf disabled />
+            {/* <span className="text-lg">{Math.round(props.data.company_data.additional_Information.rating)}</span>
+            <Rate defaultValue={Math.round(props.data.company_data.additional_Information.rating)} disabled /> */}
+
+            <span className="text-lg">{4}</span>
+            <Rate defaultValue={4} disabled />
           </div>
         </div>
         <div>
-          {reviewsCount}+ Ratings |{" "}
+            {reviewsCount}+ Ratings |{" "}
+           {/* Number of Reviews Given =  {props.data.company_data.additional_Information.userIds.length} |{" "} */}
           <a
             style={{ fontSize: "16px", fontWeight: "400" }}
             onClick={() => {

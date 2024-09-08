@@ -413,3 +413,29 @@ export const deleteCustomerDetail = async (params, data) => {
     }
 
 }
+
+
+export const addCompanyReview = (async (data) => {
+    const url = COMPANY_DETAILS_URLS.ADD_COMPANY_REVIEWS
+    const headers = {
+        'Authorization': getToken(),
+    }
+
+    let res = await axios.post(
+        baseAPIUrl + url, data,
+        {
+            headers: headers
+
+        }).then((response) => {
+            return response.data;
+        })
+        .catch((err) => {
+            if (err.response.status == 401) {
+                errorValidator(err)
+            }
+            else {
+                return err
+            }
+        })
+    return res;
+})

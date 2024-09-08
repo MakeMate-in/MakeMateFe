@@ -194,6 +194,16 @@ const SignUp = () => {
     else {
       errors.otp = res.msg
       setErrors(errors)
+      navigate(OPEN_ROUTES.SIGNUP)
+      setUser({
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "mobile_no": "",
+        "password": "",
+        "company_name": "",
+        "GST_no": ""
+      })
     }
     setLoading(false)
 
@@ -205,16 +215,7 @@ const SignUp = () => {
 
   return (
     <div style={{ background: '' }}>
-      <ConfigProvider
-        theme={{
-          components: {
-            Form: {
-              // itemMarginBottom: '12px'
-              /* here is your component tokens */
-            },
-          },
-        }}>
-
+      <ConfigProvider>
         {contextHolder}
         {loading ? <div style={{ height: '100vh', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <LinearProgress style={{ width: '50%' }} />

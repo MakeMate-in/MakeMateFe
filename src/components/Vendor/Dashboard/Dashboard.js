@@ -74,7 +74,9 @@ const Dashboard = (props) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} style={{background:'#001529'}}>
+      <AppBar position="fixed" open={open} 
+      // style={{background:'#001529'}}
+      >
       <Toolbar style={{ display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
       <Box style={{  marginLeft:open?'0px':'53px', position: 'absolute' }}>
         <Col>

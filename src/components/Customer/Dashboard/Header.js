@@ -103,14 +103,18 @@ const CustomerHeader = (props) => {
             className='flex items-center justif-between bg-white'
             style={{
                 justifyContent: 'space-between',
-                background: '#001529',
+                // background: '#001529',
                 borderBottom: '1px solid black',
                 height: '80px'
             }}
         >
-            {PRODUCT_URL_PATTERN.test(window.location.pathname) ? <ArrowBackIcon onClick={backToHome} style={{ cursor: 'pointer', color: 'white' }} /> : ''}
+            {PRODUCT_URL_PATTERN.test(window.location.pathname) ? <ArrowBackIcon onClick={backToHome} style={{ cursor: 'pointer' 
+                // ,color: 'white'
+                 }} /> : ''}
 
-            <div className="demo-logo" style={{ color: '#fff', fontWeight: '700', fontSize: '1.5rem' }}>
+            <div className="demo-logo" style={{ 
+                // color: '#fff', 
+                fontWeight: '700', fontSize: '1.5rem' }}>
                 <span>🛠MAKERS MATE</span>
             </div>
 

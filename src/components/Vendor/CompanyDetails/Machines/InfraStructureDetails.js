@@ -60,12 +60,16 @@ const MANPOWER_DESIGNATION = [
     label: 'Quality Person',
   },
   {
-    value: 'Polisher',
-    label: 'Polisher',
+    value: 'Polishing Expert',
+    label: 'Polishing Expert',
   },
   {
     value: 'Wirecut Operator',
     label: 'Wirecut Operator',
+  },
+  {
+    value: 'Welding Expert',
+    label: 'Welding Expert',
   },
   {
     value: 'Miscellaneous',

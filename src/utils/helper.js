@@ -175,7 +175,11 @@ export const MACHINE_TYPE = [
   {
     'label': "Conventional",
     'value': "Conventional"
-  }
+  },
+  {
+    'label': "Welding",
+    'value': "Welding"
+  },
 ]
 
 

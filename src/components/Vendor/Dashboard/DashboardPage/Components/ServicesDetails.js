@@ -34,7 +34,9 @@ const ServicesDetails = (props) => {
   return (
     <div>
        <Typography style={{ margin: '0', marginTop: '10px', fontSize:'20px', fontWeight:'600' }}>Services</Typography>
-                {AllDetails && AllDetails.services && AllDetails.services.services.length>0 && (inhouseCount!=0 || outboundCount!=0)?<Card style={{overflow:'auto', background:bg4}}>
+                {AllDetails && AllDetails.services && AllDetails.services.services.length>0 && (inhouseCount!=0 || outboundCount!=0)?<Card style={{overflow:'auto'
+                  // , background:bg4
+                  }}>
                 {AllDetails && AllDetails.services && AllDetails.services.services.length>0?<Typography style={{ margin: '0', fontSize:'18px', fontWeight:'500' }}>Inhouse</Typography>:''}
                   <Flex gap="5px 2px" wrap>
                   {AllDetails && AllDetails.services && AllDetails.services.services.length>0 && inhouseCount!=0? AllDetails.services.services.map((service, index) => 

@@ -11,7 +11,7 @@ const InfraDashboard = (props) => {
                 <Row gutter={16}>
 
                   <Col span={12}>
-                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px', background: bg4 }}>
+                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px' }}>
                       <Statistic
                         title="Plant Area"
                         value={AllDetails.infrastructureDetails?AllDetails.infrastructureDetails.plant_area:0}
@@ -22,7 +22,9 @@ const InfraDashboard = (props) => {
                         suffix='sq. ft.'
                       />
                     </Card>
-                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px',  background: bg4 }}>
+                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px'
+                      // ,  background: bg4
+                       }}>
                       <Statistic
                         title="Assembly Area"
                         value={AllDetails.infrastructureDetails?AllDetails.infrastructureDetails.assembly_area:0}
@@ -35,7 +37,7 @@ const InfraDashboard = (props) => {
                     </Card>
                   </Col>
                   <Col span={12}>
-                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px',  background: bg4 }}>
+                    <Card size='small' hoverable style={{ borderRadius: "15px", marginTop: '5px' }}>
                       <Statistic
                         title="Crane Tonnage"
                         value={AllDetails.infrastructureDetails?AllDetails.infrastructureDetails.crane_tonnage:0}
@@ -51,7 +53,7 @@ const InfraDashboard = (props) => {
                     style={{ 
                       borderRadius: "15px", 
                       marginTop: '5px',  
-                      background: bg4 
+                      // background: bg4 
                       }}>
                       <Statistic
                         title="Assembly Table"

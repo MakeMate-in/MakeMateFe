@@ -24,7 +24,7 @@ const ContactDetails = (props) => {
     <div style={{marginBottom:'15px'}}>
      {props.loggedIn? <ReactCardFlip isFlipped={isFlipped} flipDirection="vertical">
     
-        <Card style={{ background: bg4, cursor:'pointer' }} onClick={() => { setisFlipped(!isFlipped) }}>
+        <Card style={{ cursor:'pointer' }} onClick={() => { setisFlipped(!isFlipped) }}>
           <Typography style={{ margin: '0', fontSize: '18px', fontWeight: '600' }}><u>Contact Details</u></Typography>
           <div>
             {AllDetails?.companyDetails?.contact_person && AllDetails?.companyDetails?.contact_person.length > 0 && (
@@ -40,7 +40,7 @@ const ContactDetails = (props) => {
         </Card>
 
 
-        <Card style={{ background: bg4  , cursor:'pointer'}} onClick={() => { setisFlipped(!isFlipped) }}>
+        <Card style={{  cursor:'pointer'}} onClick={() => { setisFlipped(!isFlipped) }}>
           <Typography style={{ margin: '0', fontSize: '18px', fontWeight: '600' }}><u>Address Details</u></Typography>
           <div>
             {AllDetails?.companyDetails?.address && AllDetails?.companyDetails?.address.length > 0 && (
@@ -54,7 +54,7 @@ const ContactDetails = (props) => {
             )}
           </div>
         </Card>
-      </ReactCardFlip>:<Card style={{background: bg4}}>
+      </ReactCardFlip>:<Card >
         <Flex justify='center' align='center'>
             <Lock sx={{fontSize: 50}} style={{cursor:'pointer'}} onClick ={() => {navigate(OPEN_ROUTES.LOGIN)}}/>
             <p style={{position:'absolute', filter:'blur(4px)'}}>Please Login to view Contact and Address Details</p>

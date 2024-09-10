@@ -7,9 +7,7 @@ const ServicesDetails = (props) => {
     let AllDetails = props.AllDetails
     const [inhouseCount, setInhouseCount] = useState(0)
     const [outboundCount, setOutboundCount] = useState(0)
-    const colors = [
-        'processing', 'success', 'error', 'warning', 'magenta', 'red', 'volcano', 'orange', 'gold', 'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple',
-      ];
+    const colors = ['#3b5999','#55acee'];
 
       useEffect(() => {
         let inhous=0,out=0;
@@ -28,7 +26,8 @@ const ServicesDetails = (props) => {
       },[])
 
       console.log(AllDetails)
-    const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
+    
+      const getTagColor = (index) => colors[index%2];
 
 
   return (
@@ -43,7 +42,7 @@ const ServicesDetails = (props) => {
                   {
                      if(service.service_type=="Inhouse")
                     {
-                     return  <Tag size='large' key={index} style={{ fontSize: '18px', fontFamily: 'none' }} color={getRandomColor()}>
+                     return  <Tag size='large' key={index} style={{ fontSize: '18px', fontFamily: 'none' }} color={getTagColor(index)}>
                        {service.service_name}
                       </Tag>
                     }
@@ -57,7 +56,7 @@ const ServicesDetails = (props) => {
                   {
                      if(service.service_type=="Outsorced")
                     {
-                     return  <Tag size='large' key={index} style={{ fontSize: '18px', fontFamily: 'none' }} color={getRandomColor()}>
+                     return  <Tag size='large' key={index} style={{ fontSize: '18px', fontFamily: 'none' }} color={getTagColor(index)}>
                        {service.service_name}
                       </Tag>
                     }

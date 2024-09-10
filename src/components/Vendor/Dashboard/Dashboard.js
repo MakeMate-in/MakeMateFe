@@ -27,6 +27,7 @@ import Profile from '../Profile/Profile.js';
 import { connect } from 'react-redux';
 import { setProgress } from '../../../actions/allAction.js';
 import { openNotificationWithIcon } from '../../../utils/helper.js';
+import logo from './../../../assets/logo.png';
 
 const Dashboard = (props) => {
 
@@ -80,7 +81,7 @@ const Dashboard = (props) => {
       <Toolbar style={{ display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
       <Box style={{  marginLeft:open?'0px':'53px', position: 'absolute' }}>
         <Col>
-        <div className="demo-logo" style={{  fontWeight: '700', fontSize: '1.5rem' }}>🛠MAKERS MATE</div>
+        <img src={logo} alt='Makers Mate' style={{ height:'110%', width:'30%' }}/>
         </Col>
         </Box>
         <Box style={{ width: '100%', textAlign: 'center', position: 'absolute' }}>

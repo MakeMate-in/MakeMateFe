@@ -8,6 +8,8 @@ import OtpModal from '../OTP/otpModal';
 import { notification } from 'antd';
 import { forgotpassword, sendEmailOtp } from '../../../apis/authentication.';
 import { bg1 } from '../../../utils/colorGradient';
+import logo from './../../../assets/logo.png';
+
 const Context = React.createContext({
   name: 'Default',
 });
@@ -144,9 +146,9 @@ const ForgotPassword = () => {
 
         <Flex align='center' justify='center' vertical>
           <Flex vertical justify='center' align='center'>
-            <Col>
-              <div  className="demo-logo" style={{ fontWeight: '700', fontSize: '2rem'  }}><span onClick={() => {navigate(OPEN_ROUTES.PARENT_ROUTE)}} style={{cursor:'pointer'}}>🛠</span>MAKERS MATE</div>
-            </Col>
+              {/* <div  className="demo-logo" style={{ fontWeight: '700', fontSize: '2rem'  }}><span onClick={() => {navigate(OPEN_ROUTES.PARENT_ROUTE)}} style={{cursor:'pointer'}}>🛠</span>MAKERS MATE</div> */}
+              <img src={logo} alt='Makers Mate' onClick={() => {navigate(OPEN_ROUTES.PARENT_ROUTE)}} style={{ height:'60%', width:'80%', cursor:'pointer' }}/>
+            
             <Typography style={{ fontSize: '20px', color: 'grey' }} >Forgot Password</Typography>
           </Flex>
 

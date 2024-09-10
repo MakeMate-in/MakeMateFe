@@ -14,6 +14,7 @@ import debounce from 'lodash.debounce';
 import Factory from '@mui/icons-material/Factory';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import logo from './../../../assets/logo.png';
 
 const { Header } = Layout;
 
@@ -111,13 +112,8 @@ const CustomerHeader = (props) => {
             {PRODUCT_URL_PATTERN.test(window.location.pathname) ? <ArrowBackIcon onClick={backToHome} style={{ cursor: 'pointer' 
                 // ,color: 'white'
                  }} /> : ''}
-
-            <div className="demo-logo" style={{ 
-                // color: '#fff', 
-                fontWeight: '700', fontSize: '1.5rem' }}>
-                <span>🛠MAKERS MATE</span>
-            </div>
-
+    
+                <img src={logo} alt='Makers Mate' style={{ height:'85%', width:'15%' }}/>
 
             {(window.location.pathname == OPEN_ROUTES.PARENT_ROUTE || window.location.pathname == OPEN_ROUTES.CUSTOMER_DASHBOARD) ?
 

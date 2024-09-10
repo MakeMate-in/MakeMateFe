@@ -7,7 +7,7 @@ import gojo from './../../../assets/Login5.jpg'
 import { useNavigate } from 'react-router-dom'
 import { OPEN_ROUTES, ROLE } from '../../../utils/constants'
 import { login } from '../../../apis/authentication.'
-
+import logo from './../../../assets/logo.png';
 import { notification } from 'antd';
 // import business_plan from './../../../assets/customer.jpg'
 import { SESSION_STORAGE_ITEMS, getRole, initializeUserValues, openNotificationWithIcon } from '../../../utils/helper'
@@ -105,10 +105,10 @@ const SignIn = () => {
     : <Flex gap={100}>
           <img src={gojo} style={{ height: '45rem', width: '40rem' }} />
         <Flex vertical gap={30} justify='center' align='center'>
-          <Flex vertical justify='center' align='center' gap={30}>
-            <Col>
-            <div  className="demo-logo" style={{ fontWeight: '700', fontSize: '2rem', marginTop: '70px' }}><span onClick={() => {navigate(OPEN_ROUTES.PARENT_ROUTE)}} style={{cursor:'pointer'}}>🛠</span>MAKERS MATE</div>
-            </Col>
+          <Flex vertical justify='center' align='center' gap={10}>
+            
+              <img src={logo} alt='Makers Mate' onClick={() => {navigate(OPEN_ROUTES.PARENT_ROUTE)}} style={{ height:'50%', width:'90%', cursor:'pointer' }}/>
+            
             <Flex vertical justify='center' align='center'>
               <h1 style={{ margin: '0px' }}>Welcome back!</h1>
               <Typography style={{ fontSize: '20px', color: 'grey' }} >Log In</Typography>

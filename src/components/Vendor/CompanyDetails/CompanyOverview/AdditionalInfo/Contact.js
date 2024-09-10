@@ -137,10 +137,10 @@ const Customer = (props) => {
       }
 
     const colors = [
-        'processing', 'success', 'error', 'warning', 'magenta', 'red', 'volcano', 'orange', 'gold', 'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple',
+        '#3b5999','#55acee'
       ];
     
-    const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
+    const getTagColor = (index) => colors[index%2];
 
     return (
         <div>
@@ -184,9 +184,9 @@ const Customer = (props) => {
                     <Button size='large' onClick={showModal} icon={<PlusOutlined />} iconPosition='start' style={{ fontWeight: 600, marginLeft: 'auto' }}>Add New Customer</Button>  
                 </Flex>
                 <Flex gap={"small"} wrap>
-                    {props.CompanyDetails.customer_details != undefined ? props.CompanyDetails.customer_details.map((item) => {
+                    {props.CompanyDetails.customer_details != undefined ? props.CompanyDetails.customer_details.map((item, index) => {
                         return (
-                            <Tag size='large' style={{ fontSize: '18px', fontFamily: 'none' }} color={getRandomColor()} closable
+                            <Tag size='large' style={{ fontSize: '18px', fontFamily: 'none' }} color={getTagColor(index)} closable
                             closeIcon={<CloseOutlined onClick={() => handleDelete(item.name)} />}
                           >
                              {item.name}

@@ -29,9 +29,7 @@ import { SESSION_STORAGE_ITEMS, getRole, initializeUserValues } from '../../../u
 import business_plan from './../../../assets/customer.jpg'
 import { bg1 } from '../../../utils/colorGradient'
 import { LinearProgress } from '@material-ui/core'
-
-
-
+import logo from './../../../assets/logo.png';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -215,12 +213,12 @@ const SignUp = () => {
           <Flex>
             <img src={business_plan} style={{ height: '100%', width: '45%' }} />
 
-            <Flex vertical align='center' justify='center' gap={20}>
+            <Flex vertical align='center' justify='center' gap={10}>
               <Flex vertical justify='center' align='center'>
-                <Col>
-                  <div className="demo-logo" style={{ fontWeight: '700', fontSize: '2rem' }}><span onClick={() => { navigate(OPEN_ROUTES.CUSTOMER_DASHBOARD) }} style={{ cursor: 'pointer' }}>🛠</span>MAKERS MATE</div>
-                </Col>
-                <Typography style={{ fontSize: '20px', color: 'grey' }} >Create Account</Typography>
+                
+                  <img src={logo} alt='Makers Mate' onClick={() => {navigate(OPEN_ROUTES.PARENT_ROUTE)}} style={{ height:'70%', width:'90%', cursor:'pointer' }}/>
+                
+                {/* <Typography style={{ fontSize: '20px', color: 'grey' }} >Create Account</Typography> */}
               </Flex>
               <Flex vertical gap={25}>
                 <Flex gap="large" justify='center' align='flex-end' >

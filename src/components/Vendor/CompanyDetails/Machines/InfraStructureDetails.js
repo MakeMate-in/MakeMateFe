@@ -385,7 +385,8 @@ const InfraStructureDetails = (props) => {
                           <Select.Option value="EDM Operator" disabled={ManpowerSelected.includes("EDM Operator")}>EDM Operator</Select.Option>
                           <Select.Option value="Diefitter" disabled={ManpowerSelected.includes("Diefitter")}>Diefitter</Select.Option>
                           <Select.Option value="Quality Person" disabled={ManpowerSelected.includes("Quality Person")}>Quality Person</Select.Option>
-                          <Select.Option value="Polisher" disabled={ManpowerSelected.includes("Polisher")}>Polisher</Select.Option>
+                          <Select.Option value="Polishing Expert" disabled={ManpowerSelected.includes("Polishing Expert")}>Polishing Expert</Select.Option>
+                          <Select.Option value="Welding Expert" disabled={ManpowerSelected.includes("Welding Expert")}>Welding Expert</Select.Option>
                           <Select.Option value="Wirecut Operator" disabled={ManpowerSelected.includes("Wirecut Operator")}>Wirecut Operator</Select.Option>
                           <Select.Option value="Miscellaneous" disabled={ManpowerSelected.includes("Miscellaneous")}>Miscellaneous</Select.Option>
                         </Select>

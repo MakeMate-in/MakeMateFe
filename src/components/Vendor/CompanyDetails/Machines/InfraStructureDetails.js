@@ -86,7 +86,7 @@ const InfraStructureDetails = (props) => {
     "design_softwares": [],
     "surface_table": undefined,
     "CMM": undefined,
-    "crane_tonnage": "",
+    "crane_tonnage": 0,
     "manpower": []
   })
   const [allvalues, setallValues] = useState(undefined)
@@ -187,6 +187,9 @@ const InfraStructureDetails = (props) => {
 
 
   const handleChange = (value, id) => {
+    if(value == null) {
+      value = 0;
+    }
     setInfraStructureDetails({ ...InfraStructureDetails, [id]: value })
   }
 
@@ -243,6 +246,9 @@ const InfraStructureDetails = (props) => {
             layout="vertical"
             onFinish={handleFormSubmit}
             onValuesChange={handleValuechange}
+            initialValues={{
+              "craneTonnage": InfraStructureDetails["crane_tonnage"]
+            }}
           >
             <Row gutter={16}>
               <Col span={12}>

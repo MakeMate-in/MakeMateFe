@@ -261,7 +261,7 @@ const DashboardPage = () => {
                     <Row>
                       <Col span={16}>
                         <Statistic
-                          title="Product Details"
+                          title="Active Customers"
                           value={
                             AllDetails?.companyDetails?.customer_details.length
                           }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Col, Row, Form, Input, Button, Image, Upload } from 'antd';
+import { Col, Row, Form, Input, Button, Image, Upload, InputNumber } from 'antd';
 import './../../Dashboard/Dashboard.css'
 import { getCompanyDetails, updateCompanyDetails, uploadAvatar } from '../../../../apis/Vendor/CompanyDetails';
 import { convertBufferToBinary, deepEqual, getBase64, getUserId, openNotificationWithIcon, uploadButton } from '../../../../utils/helper';
@@ -97,6 +97,10 @@ const BasicDetails = (props) => {
 
   const handleChange = (event) => {
     setBasicDetails({ ...basicDetails, [event.target.id]: event.target.value })
+  }
+
+  const handleNumber = (value, id) => {
+    setBasicDetails({ ...basicDetails, [id]: value })
   }
 
   const handleFormSubmit = async () => {
@@ -309,13 +313,14 @@ const BasicDetails = (props) => {
                   name="current_projects_no"
                   rules={[{ required: true, message: 'Current Running Project is required' }]}
                 >
-                  <Input
+                  <InputNumber 
+                    min={0}
                     className="custom-input"
                     variant="filled"
                     placeholder="Enter your Current Running Project"
                     id={"current_projects_no"}
                     autoComplete='off'
-                    onChange={handleChange}
+                    onChange={(e) => handleNumber(e, "current_projects_no")}
                     value={basicDetails["current_projects_no"]}
                   />
                 </Form.Item>

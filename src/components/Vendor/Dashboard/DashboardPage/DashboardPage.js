@@ -19,6 +19,7 @@ import { OPEN_ROUTES, PRODUCT_URL_PATTERN } from '../../../../utils/constants';
 import { useParams } from 'react-router-dom';
 import { getAllDetailsCustomer } from '../../../../apis/commonFunctions';
 import ImageGallery from "react-image-gallery";
+import CustomerDetailsDashboard from './Components/CustomerDetailsDashboard';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -358,6 +359,8 @@ const DashboardPage = () => {
                 </Card>
 
                 <ServicesDetails AllDetails={AllDetails} />
+
+                <CustomerDetailsDashboard AllDetails={AllDetails} />
               </Card>
             </Col>
           </Row>

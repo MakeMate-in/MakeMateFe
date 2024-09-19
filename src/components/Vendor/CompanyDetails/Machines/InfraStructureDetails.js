@@ -299,7 +299,7 @@ const InfraStructureDetails = (props) => {
                   label="Crane Tonnage (In Ton)"
                   name="craneTonnage">
                   <InputNumber
-                    min={1}
+                    min={0}
                     id="craneTonnage"
                     size='large'
                     variant="filled"
